@@ -49,6 +49,13 @@ $qOrganiza = $conn->query ( "SELECT * FROM organiza" );
 $qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 $actividad = $row ['ciiu3'];
+$qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "'" );
+$qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
+		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
+		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" );
+
+$qq = $conn->query("select CODIGO from ciiu3 ")->fetch( PDO::FETCH_ASSOC); 
+
 $qActividad = $conn->query ( "SELECT * FROM ciiu3 WHERE CODIGO = $actividad" );
 foreach ( $qActividad as $lActividad ) {
 	$codCiiu = $lActividad ['CODIGO'];
@@ -165,44 +172,28 @@ p {
 			
 			/* Funcion para campos dimamicos */
 			$(document).ready(function() {
-	
-			    var MaxInputs       = 10; //Número Maximo de Campos
-			    var contenedor       = $("#contenedor"); //ID del contenedor
-			    var AddButton       = $("#agregarCampo"); //ID del Botón Agregar
-			
-			    //var x = número de campos existentes en el contenedor
-			    var x = $("#contenedor div").length;
-			    var FieldCount = x; //para el seguimiento de los campos
-			
-			    $(AddButton).click(function () {
-			        if(x <= MaxInputs) { //max input box allowed
-			            FieldCount++; // incremento de campos agregados
-			            //agregar campo
-			            $(contenedor).append('<div class="fromDinamic form-group"><div class="input-group"><span class="input-group-btn"><button class="btn btn-default eliminar" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span><input type="text" class="form-control" name="mitexto[]" id="campo_'+ FieldCount +'" ></div></div>');
-			            x++; //text box increment
-			        }
-			        
-			        if (x == MaxInputs) {
-			        	AddButton.removeClass('btn-info')
-			        	AddButton.addClass('disabled btn-danger');
-			        }
-			        	
-			        return false;
-			    });
-			
-			    //$("body").on("click",".eliminar", function(e){ //click en eliminar campo
-			    $("div").on("click",".eliminar", function(e){ //click en eliminar campo
-				    //e.preventDefault();
-			        if( x > 0 ) {
-			            //debugger;
-			            //$(this).parent('div').remove(); //eliminar el campo
-			            $(this).parents('div .fromDinamic').remove();
-			            AddButton.removeClass('disabled btn-danger');
-			            AddButton.addClass('btn-info');
-			            x--;
-			        }
-			        return false;
-			    });
+				var contenedor	= $("#actividades"); //ID del contenedor
+			    var actividad	= $("#listActividad"); // ID div.body modal 
+			    
+			  	//interaccion para agregar el div de la acividad del modal a la pagina
+			    $(actividad).on("click", ".addAct", function(e) {
+			    	$(this).children().removeClass("glyphicon-plus");
+					$(this).children().addClass("glyphicon-remove");
+					$(this).removeClass("addAct"); // agregar clase eliminar al div.
+					$(this).addClass("eliminar"); // agregar clase eliminar al div.
+					$(contenedor).append($(this).parent().parent().parent())
+				});
+			    
+			    // interaccion para remover el item de el listado de la pagina y regresarlo al modal
+			    $(contenedor).on("click", ".eliminar", function(e) {
+			    	var $that = $(this);
+			    	$that.children().removeClass("glyphicon-remove");
+			    	$that.children().addClass("glyphicon-plus");
+			    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
+			    	$that.addClass("addAct"); // agregar clase eliminar al div.
+			    	$(actividad).append($(this).parent().parent().parent())
+			    	//$(actividad).append($(this).parents(".form-group"));
+				});
 			});
 			/* Fin funcion campos dinamicos */
 			
@@ -213,14 +204,17 @@ p {
 			var retorno = "";
 			$(function() {
                 $("#idcara").submit(function(event) {
+					debugger;
                     event.preventDefault();
- 
+ 					var $items = $(this).serialize();
                     $.ajax({
                         url: "../persistencia/grabacara.php",
                         type: "POST",
 						beforeSend: validaCara,
-                        data: $(this).serialize(),
+                        //data: $(this).serialize(),
+                        data: $items,
                         success: function(dato) {
+                            debugger;
 							if (retorno == "") {
 								$("#idmsg").show();
 							}
@@ -408,7 +402,7 @@ latest: new Date(2099,11,31,23,59,59)
 								name="numeroreg" value="<?php echo $row['numeroreg'] ?>" /></td>
 							<td style="border: none"><input type="text"
 								class='form-control input-sm' style="width: 50px" id="ciiu"
-								name="datociiu" value="<?php //echo $row['numeroreg']; ?>" /></td>
+								name="ciiu3" value="<?php echo $row['ciiu3']; ?>" /></td>
 						</tr>
 					</table>
 				</div>
@@ -850,42 +844,30 @@ latest: new Date(2099,11,31,23,59,59)
 				<div class='form-group form-group-sm'>
 					<div class='col-xs-12 col-sm-2 small text-right'>
 						<!-- label class='control-label' for='idrep'>Representante Legal:</label-->
-						<a id="agregarCampo" class="btn btn-info" href="#">Agregar Campo</a>
+						<!--a id="agregarCampo" class="btn btn-info" href="#">Agregar Campo</a-->
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#myModal">Actividades Economicas</button>
+
 					</div>
-					<div id="contenedor" class='col-xs-8 col-sm-9 small'>
-						
-						<!--input type="text" class='form-control input-sm' id='idrep'
-							name="repleg" data-error='Diligencie Reoresentante Legal'
-							value="<?php echo trim($row['repleg']) ?>" required />
-						<div class="help-block with-errors"></div-->
+					<div id="actividades"
+						class='col-xs-12 col-sm-8 col-sm-offset-1 small'>
+						<!-- Listado de actividades de la empresa -->
+						<?php foreach ( $qActEmp as $actEmp ) { ?>
+						<div class="form-group ">
+							<div class="input-group ">
+								<span class="input-group-btn">
+									<button class="btn btn-default eliminar" type="button">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+								</span> 
+								<input type="text" class="form-control" id="<?php echo $actEmp['CODIGO']; ?>" name="<?php echo $actEmp['CODIGO']; ?>" 
+										value="<?php echo $actEmp['CODIGO'] . ' - ' . $actEmp['DESCRIP']; ?>" readonly>
+							</div>
+						</div>
+						<?php } ?>
 					</div>
+
 				</div>
-				<!-- div class='form-group form-group-sm'>
-						<div class='col-sm-2 small text-right'>
-							<label class='control-label' for='iddil'>Persona que Diligencia:</label>
-						</div>
-						<div class='col-sm-6 small'>
-							<input type="text" class='form-control input-sm' id='iddil' name="responde" data-error='Ingrese nombre Persona que Diligencia' value="<?php echo trim($row['responde']) ?>" required/>
-							<div class="help-block with-errors"></div>
-						</div>
-						
-						<div class='col-sm-1 small text-right'>
-							<label class='control-label' for='idteldil'>Tel&eacute;fono:</label>
-						</div>
-						<div class='col-sm-2 small'>
-							<input type="text" class='form-control input-sm' id='idteldil' name="teler" data-error='Diligencie tel&eacute;fono Persona que diligencia' value="<?php echo $row['teler'] ?>" required />
-							<div class="help-block with-errors"></div>
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-2 small text-right'>
-							<label class='control-label' for='idemres'>Email Persona que diligencia:</label>
-						</div>
-						<div class='col-sm-6 small'>
-							<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idemres' name="emailres" data-error='Ingrese Email persona que diligencia' value="<?php echo trim($row['emailres']) ?>" required />
-							<div class="help-block with-errors"></div>
-						</div>
-					</div-->
 			</fieldset>
 
 			<fieldset style='border-style: solid; border-width: 1px'>
@@ -977,5 +959,55 @@ latest: new Date(2099,11,31,23,59,59)
 			</div>
 		</form>
 	</div>
+	
+	<?php 
+	$nombres = array('1012','1020','1030','1040','1051','1052');
+	$nn = 'INSERT INTO actiemp (nordemp, actividad) values ';
+	echo gettype($qq);
+	for ($i=1; $i<count($nombres); $i++) {
+		if (in_array($nombres[$i], $qq)) {
+			$nn .= "(" . $numero . ', ' . $nombres[$i] . ") ,";
+			echo $nn;
+		}
+	
+	}
+	?>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				</div>
+				<div id="listActividad" class="modal-body">
+					<!-- Listado de actividades consultadas -->
+					<?php foreach ( $qlisActi as $lsAct ) { ?>
+					<div class="form-group">
+						<div class="input-group ">
+							<span class="input-group-btn">
+								<button class="btn btn-default addAct" type="button">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+							</span> <input type="text" class="form-control"
+								id="<?php echo $lsAct['CODIGO']; ?>" name="<?php echo $lsAct['CODIGO']; ?>"
+								value="<?php echo $lsAct['CODIGO'] . ' - ' . $lsAct['DESCRIP']; ?>"
+								readonly>
+						</div>
+					</div>
+					<?php } ?>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
 </body>
 </html>

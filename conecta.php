@@ -1,14 +1,16 @@
 <?php
 //	$con = mysql_connect("localhost", "root", "admin1");
 	
-	//Datos de conexion servidor de producción:
+	//Datos de conexion servidor de producciï¿½n:
 	/*$servidor ="192.168.1.121";  
 	$usuario  ="formulario_edit";
 	$password ="F0Rm2009541";*/
 
 //	$servidor ="localhost";  
-	$usuario  ="dimpe";
-	$password ="D1mP3D3s4rr0ll0";
+// 	$usuario  ="dimpe";
+// 	$password ="D1mP3D3s4rr0ll0";
+	$usuario  ="root";
+	$password ="toor";
 	
 	try {
 		$conn = new PDO('mysql:host=localhost;dbname=dane_evac', $usuario, $password);

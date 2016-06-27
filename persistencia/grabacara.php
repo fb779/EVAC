@@ -4,15 +4,18 @@
 	}
 	include '../conecta.php';
 	$nombres = Array(); $Valores = Array();
-	$textos = array("numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","dirnotifi","telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web","emailnotif","webnotif","emailres","lgg","fechaconst","fechahasta","fechadist");
+	$textos = array("numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","dirnotifi",
+					"telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web",
+					"emailnotif","webnotif","emailres","lgg","fechaconst","fechahasta","fechadist");
 	$i = 0;
 	$lineaMOD = ""; $lineaEXE = "";
-
 	foreach($_POST As $nombre => $valor) {
 		$nombres[$i] = $nombre;
 		$valores[$i] = $valor;
 		$i++;
 	}
+	
+	$qq = $conn->query("select CODIGO from ciiu3 ");
 	
 	$numero = $valores[0];
 	$qCaratula = $conn->prepare("SELECT * FROM caratula WHERE nordemp= :idNumero");
@@ -40,18 +43,34 @@
 	}
 	
 	$lineaMOD = 'UPDATE caratula SET ';
+	$actemp = 'INSERT INTO actiemp (nordemp, actividad) values ';
+	
 	for ($i=1; $i<count($nombres); $i++) {
 		if (in_array($nombres[$i], $textos)) {
 			$lineaMOD .= $nombres[$i] . '= "' . $valores[$i] . '", ';
 		}
-		else {
-			$lineaMOD .= $nombres[$i] . '= ' . $valores[$i] . ', ';
+		
+		if (in_array($nombres[$i], $qq)) {
+			$actemp .= "(" . $numero . ', ' . $nombres[$i] . ") ,";
 		}
+		
 	}
+	
 	$lineaMOD = rtrim($lineaMOD, ", ");
 	$lineaMOD .= ' WHERE nordemp = ' . $valores[0];
 //	print_r($lineaMOD);
 	$actucara = $conn->exec($lineaMOD);
+	
+	$conn->query("delete from actiemp where nordemp = ".$numero."");
+	
+	$activi = $conn->query(rtrim($actemp,', '));
+// 	$insActivi = 'INSERT INTO actiemp (nordemp, actividad) values ';
+	
+// 	foreach ($nombres as $clave){
+		
+// 	}
+	
+			
 /*	
 	for ($i=1; $i<count($nombres); $i++) {
 		if (in_array($nombres[$i], $textos)) {
@@ -71,7 +90,7 @@
 	$actucara->execute(array($lineaEXE));
 
 
-	$nuevoprop = "Prueba de Modificación";
+	$nuevoprop = "Prueba de Modificaciï¿½n";
 	$actucara = $conn->prepare('UPDATE caratula SET nompropie=:nompropie WHERE nordemp = :nordemp');
 	$actucara->execute(array(':nompropie'=>"OFFSET GRAFICO EDITORES S.A.", ':nordemp'=>$valores[0]));
 */	
