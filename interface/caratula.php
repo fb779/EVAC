@@ -52,9 +52,7 @@ $actividad = $row ['ciiu3'];
 $qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "'" );
 $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
 		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
-		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" );
-
-$qq = $conn->query("select CODIGO from ciiu3 ")->fetch( PDO::FETCH_ASSOC); 
+		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" ); 
 
 $qActividad = $conn->query ( "SELECT * FROM ciiu3 WHERE CODIGO = $actividad" );
 foreach ( $qActividad as $lActividad ) {
@@ -204,7 +202,6 @@ p {
 			var retorno = "";
 			$(function() {
                 $("#idcara").submit(function(event) {
-					debugger;
                     event.preventDefault();
  					var $items = $(this).serialize();
                     $.ajax({
@@ -214,7 +211,6 @@ p {
                         //data: $(this).serialize(),
                         data: $items,
                         success: function(dato) {
-                            debugger;
 							if (retorno == "") {
 								$("#idmsg").show();
 							}
@@ -402,7 +398,7 @@ latest: new Date(2099,11,31,23,59,59)
 								name="numeroreg" value="<?php echo $row['numeroreg'] ?>" /></td>
 							<td style="border: none"><input type="text"
 								class='form-control input-sm' style="width: 50px" id="ciiu"
-								name="ciiu3" value="<?php echo $row['ciiu3']; ?>" /></td>
+								name="ciiu3" value="<?php echo $row['ciiu3']; ?>" readonly /></td>
 						</tr>
 					</table>
 				</div>
@@ -959,19 +955,6 @@ latest: new Date(2099,11,31,23,59,59)
 			</div>
 		</form>
 	</div>
-	
-	<?php 
-	$nombres = array('1012','1020','1030','1040','1051','1052');
-	$nn = 'INSERT INTO actiemp (nordemp, actividad) values ';
-	echo gettype($qq);
-	for ($i=1; $i<count($nombres); $i++) {
-		if (in_array($nombres[$i], $qq)) {
-			$nn .= "(" . $numero . ', ' . $nombres[$i] . ") ,";
-			echo $nn;
-		}
-	
-	}
-	?>
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">

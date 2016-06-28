@@ -15,7 +15,11 @@
 		$i++;
 	}
 	
-	$qq = $conn->query("select CODIGO from ciiu3 ");
+	/** Consulta para validar los codigos de la CIIU */
+	$qCiiu = $conn->query("select CODIGO from ciiu3 ");
+	foreach ($qCiiu as $ciiu){
+		$codigos[] = $ciiu['CODIGO'];
+	}
 	
 	$numero = $valores[0];
 	$qCaratula = $conn->prepare("SELECT * FROM caratula WHERE nordemp= :idNumero");
@@ -43,14 +47,12 @@
 	}
 	
 	$lineaMOD = 'UPDATE caratula SET ';
-	$actemp = 'INSERT INTO actiemp (nordemp, actividad) values ';
+	$actemp = 'INSERT INTO actiemp (nordemp, actividad) VALUES ';
 	
 	for ($i=1; $i<count($nombres); $i++) {
 		if (in_array($nombres[$i], $textos)) {
 			$lineaMOD .= $nombres[$i] . '= "' . $valores[$i] . '", ';
-		}
-		
-		if (in_array($nombres[$i], $qq)) {
+		}elseif (in_array($nombres[$i], $codigos)) { /** Validacion de codigos de actividad */
 			$actemp .= "(" . $numero . ', ' . $nombres[$i] . ") ,";
 		}
 		
@@ -62,8 +64,7 @@
 	$actucara = $conn->exec($lineaMOD);
 	
 	$conn->query("delete from actiemp where nordemp = ".$numero."");
-	
-	$activi = $conn->query(rtrim($actemp,', '));
+	$activi = $conn->exec(rtrim($actemp,', '));
 // 	$insActivi = 'INSERT INTO actiemp (nordemp, actividad) values ';
 	
 // 	foreach ($nombres as $clave){
