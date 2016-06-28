@@ -364,7 +364,7 @@
 */			
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc1">
- 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - INNOVACI&Oacute;N Y SU IMPACTO EN LA EMPRESA EN EL PER&Iacute;ODO <?php echo $anterior . "-" . $vig . " " . $txtEstado ?>
+ 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " " . $txtEstado ?>
  		</div>
  		<div class="container text-justify" style="font-size: 12px">
 			Una innovaci&oacute;n se define en esta encuesta como un producto (servicio o bien) nuevo o significativamente mejorado
@@ -387,7 +387,7 @@
 			<div class='container'>
 				<input type="hidden" name="C1_nordemp" id="numero" value="<?php echo $numero ?>" />
 				<fieldset style='border-style: solid; border-width: 1px' id='i1'>
-					<legend><h5 style='font-family: arial'><b><?php echo ($consLog ? "<a href='../administracion/listaLog.php?idl=i1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> I.1 Indique si durante el per&iacute;odo <?php echo $anterior . "-" . $vig?> su empresa introdujo alguna de las siguientes innovaciones. Si su respuesta es afirmativa especifique el n&uacute;mero.</b></h5></legend>
+					<legend><h5 style='font-family: arial'><b><?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=i1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> I.1 Indique si durante el per&iacute;odo <?php echo $anterior . "-" . $vig?> su empresa introdujo alguna de las siguientes innovaciones. Si su respuesta es afirmativa especifique el n&uacute;mero.</b></h5></legend>
 					<div class='container-fluid bg-warning small'>
 						<b>Tenga en cuenta:</b> Un servicio o bien nuevo, es un producto cuyas caracter&iacute;sticas fundamentales
 							(especificaciones t&eacute;cnicas, componentes y materiales, software incorporado o usos previstos)

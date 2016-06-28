@@ -99,6 +99,9 @@
 			}
 		</style>
 		<script type="text/javascript">
+		$(document).ready(function(){
+
+		});
 		var retorno = "";
 		$(function() {
             $("#capitulo2").submit(function(event) {
@@ -287,21 +290,11 @@
 */			
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
- 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO II - INVERSI&Oacute;N EN ACTIVIDADES CIENT&Iacute;FICAS, TECNOL&Oacute;GICAS Y DE INNOVACI&Oacute;N EN LOS A&Ntilde;OS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?>
+ 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?>
  		</div>
- 		<?php
- 			if ($bloquear == "SI") {
- 				echo "<h3>No requiere diligenciamiento</h3>";
- 			}
- 			else {
- 		?>
+ 		
  		<div class="container text-justify" style="font-size: 12px">
-			Las Actividades Cient&iacute;ficas, Tecnol&oacute;gicas y de Innovaci&oacute;n (ACTI) son todas aquellas actividades que la empresa
-			realiza para producir, promover, difundir y/o aplicar conocimientos cient&iacute;ficos y t&eacute;cnicos; as&iacute; como tambi&eacute;n
-			para el desarrollo o introducci&oacute;n de servicios o bienes nuevos o significativamente mejorados, de procesos nuevos o
-			significativamente mejorados, de m&eacute;todos organizativos nuevos, o de t&eacute;cnicas de comercializaci&oacute;n nuevas.<br><br> 
- 			<b>&iquest;Quien deber&iacute;a responder este cap&iacute;tulo?:</b>&nbsp;Personas del &aacute;rea financiera y que conozcan las
- 				inversiones y gastos de la empresa en actividades cient&iacute;ficas, tecnol&oacute;gicas y de innovaci&oacute;n 
+			Este m&oacute;dulo  determina la cantidad de vacantes durante el "I trimestre del año <?php echo $vig;?>" e  identifica sus caracter&iacute;sticas. 
  		</div>
 
 		<input type="hidden" name="tipousu" id="idTipo" value="<?php echo $tipousu ?>" />
@@ -309,166 +302,281 @@
 			<div class='container'>
 				<input type="hidden" name="C2_nordemp" id="numero" value="<?php echo $numero ?>" />
 				<fieldset style='border-style: solid; border-width: 1px'>
-					<legend><h5 style='font-family: arial'><b><?php echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> II.1 Indique el valor invertido por su empresa en los a&ntilde;os
-						<?php echo $anterior . "-" . $vig?>, en cada una de las siguientes actividades cient&iacute;ficas, tecnol&oacute;gicas
-						y de innovaci&oacute;n, para la introducci&oacute;n de servicios o bienes nuevos o significativamente mejorados,
-						y/o la implementaci&oacute;n de procesos nuevos o significativamente mejorados, de m&eacute;todos organizativos nuevos,
-						o de t&eacute;cnicas de comercializaci&oacute;n nuevas.</b></h5>
+					<legend>
+						<h5 style='font-family: arial'><b>
+							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
+							1. Durante el periodo de referencia
+						</b></h5> 
+						
 					</legend>
 					
-					<center><img src="../images/mensaje.png" alt="Smiley face" height="" width=""></center>
-					
-					<div class='form-group form-group-sm'>
-						<center><img src="../images/mensaje.png" alt="Smiley face" height="" width=""></center>
-						<div class='col-sm-6 small'>&nbsp;</div>
-						<div class='col-sm-2 small text-right'><b>Monto invertido <?php echo $anterior?></b></div>
-						<div class='col-sm-2 small text-right'><b>Monto invertido <?php echo $vig?></b></div>
+					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1">
+						<label class="col-xs-12 col-sm-12" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
+						<div class="col-xs-12 col-sm-2 col-sm-offset-1">
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"> Si
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2"> No
+							</label>
+						</div>
 					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn11">
-							<b>1. </b>Actividades de I+D Internas. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Actividades de I+D Internas.' data-content='Trabajos de creación sistemáticos llevados a cabo dentro de la empresa con el fin de aumentar el volumen de conocimientos y su utilización para idear y validar servicios, bienes o procesos nuevos o significativamente mejorados. (Corresponde únicamente a los montos de inversión asociados a la etapa de investigación y desarrollo, previos a la de producción de los servicios, bienes o procesos nuevos o significativamente mejorados).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r1c1' name='ii1r1c1' value = "<?php echo $row['II1R1C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
+					
+					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1 ">
+						<label class="col-xs-12 col-sm-4">Indique la  cantidad  de  vacantes abiertas</label>
+						<div class='col-xs-12 col-sm-3 small'>
 							<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
 						</div>
 					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn12">
-							<b>2. </b>Adquisici&oacute;n de I+D (externa). <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Adquisici&oacute;n de I+D (externa).' data-content='Adquisición o financiación de las mismas actividades que las arriba indicadas (I+D) pero realizadas por otras organizaciones públicas o privadas (incluye organismos de investigación).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r2c1' name='ii1r2c1' value = "<?php echo $row['II1R2C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r2c2' name='ii1r2c2' value = "<?php echo $row['II1R2C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn13">
-							<b>3. </b>Adquisici&oacute;n de maquinaria y equipo. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Adquisici&oacute;n de maquinaria y equipo.' data-content='Maquinaria y equipo, específicamente comprada para la producción o introducción de servicios, bienes o procesos nuevos o significativamente mejorados. (No incluir maquinaria y equipo para I+D registrada en el ítem 1, ni la comprada simplemente para la reposición o ampliación de capacidad instalada, es decir, aquellos dedicados a la producción tradicional).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r3c1' name='ii1r3c1' value = "<?php echo $row['II1R3C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r3c2' name='ii1r3c2' value = "<?php echo $row['II1R3C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn14">
-							<b>4. </b>Tecnolog&iacute;as de informaci&oacute;n y telecomunicaciones. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Tecnolog&iacute;as de informaci&oacute;n y telecomunicaciones.' data-content='Adquisición, generación, outsourcing o arriendo de elementos de hardware, software y/o servicios para el manejo o procesamiento de la información, específicamente destinados a la producción o introducción de servicios, bienes o procesos nuevos o significativamente mejorados. (No incluir las tecnologías de información y telecomunicaciones  para I+D registradas en el ítem 1, ni las compradas simplemente para la reposición o ampliación de capacidad instalada, es decir, aquellas dedicadas a la producción tradicional).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r4c1' name='ii1r4c1' value = "<?php echo $row['II1R4C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r4c2' name='ii1r4c2' value = "<?php echo $row['II1R4C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn15">
-							<b>5. </b>Mercadotecnia. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Mercadotecnia.' data-content='Es la inversión en un nuevo método de comercialización que implica cambios significativos en el diseño o empaque de un producto -sea éste nuevo o no-, así como su posicionamiento, promoción o fijación de precios. Incluye las nuevas técnicas de investigación de mercados y publicidad de lanzamiento.'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r5c1' name='ii1r5c1' value = "<?php echo $row['II1R5C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r5c2' name='ii1r5c2' value = "<?php echo $row['II1R5C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn16">
-							<b>6. </b>Transferencia de tecnolog&iacute;a y/o adquisici&oacute;n de otros conocimientos externos. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' data-placement='left' title='Transferencia de tecnolog&iacute;a y/o adquisici&oacute;n de otros conocimientos externos.' data-content='Adquisición o uso bajo licencia, de patentes u otros registros de propiedad intelectual, de inventos no patentados y conocimientos técnicos o de otro tipo; de otras empresas u organizaciones para utilizar en las innovaciones de su empresa. Incluye acceso a bases de resúmenes y referencias bibliográficas de literatura científica o de ingeniería, así como modalidades de transferencia de know-how, definida como aquella relacionada con conocimiento no escrito y no protegido por patentes. (No incluir los reportado en adquisición de I+D interna y externa).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r6c1' name='ii1r6c1' value = "<?php echo $row['II1R6C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r6c2' name='ii1r6c2' value = "<?php echo $row['II1R6C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn17">
-							<b>7. </b>Asistencia t&eacute;cnica y consultor&iacute;a. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Asistencia t&eacute;cnica y consultor&iacute;a.' data-content='Asesorías para la utilización de conocimientos tecnológicos aplicados, por medio del ejercicio de un arte o técnica, específicamente contratadas  para la producción o introducción de servicios, bienes o procesos nuevos o significativamente mejorados. Incluye procesos de sondeo, monitoreo o vigilancia tecnológica e inteligencia competitiva, entre otros. (No incluir los reportado en adquisición de I+D interna y externa).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r7c1' name='ii1r7c1' value = "<?php echo $row['II1R7C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r7c2' name='ii1r7c2' value = "<?php echo $row['II1R7C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn18">
-							<b>8. </b>Ingenier&iacute;a y dise&ntilde;o industrial. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Ingenier&iacute;a y dise&ntilde;o industrial.' data-content='Cambios en los métodos o patrones de producción y control de calidad, y elaboración de planos y diseños orientados a definir procedimientos técnicos, necesarios para la producción o introducción de servicios, bienes o procesos nuevos o significativamente mejorados en la empresa. (No incluir lo reportado en adquisición de I+D interna y externa).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r8c1' name='ii1r8c1' value = "<?php echo $row['II1R8C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r8c2' name='ii1r8c2' value = "<?php echo $row['II1R8C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small' style='margin-left: 30px' id="txtn19">
-							<b>9. </b>Formaci&oacute;n y capacitaci&oacute;n. <a href='#'><span class='glyphicon glyphicon-info-sign' data-toggle='popover' data-trigger='hover' title='Formaci&oacute;n y capacitaci&oacute;n.' data-content='Formación de su personal, sea interna o externa, destinada específicamente a la introducción de productos nuevos o significativamente mejorados, y/o la implementación de procesos nuevos o significativamente mejorados, de métodos organizativos nuevos, o de técnicas de comercialización nuevas. (No incluir lo reportado en adquisición de I+D interna y externa).'></span></a>
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r9c1' name='ii1r9c1' value = "<?php echo $row['II1R9C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r9c2' name='ii1r9c2' value = "<?php echo $row['II1R9C2']?>" maxlength="9" />
-						</div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small text-right' id="txtn110">
-							<b>TOTAL MONTO INVERTIDO.</b>
-						</div>
-						<div class='col-sm-2 small text-right' style='margin-left: 30px'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r10c1' name='ii1r10c1' value = "<?php echo $row['II1R10C1']?>" maxlength="9" />
-						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii1r10c2' name='ii1r10c2' value = "<?php echo $row['II1R10C2']?>" maxlength="9" />
-						</div>
-					</div>
 				</fieldset>
+				
 				<fieldset style='border-style: solid; border-width: 1px'>
-					<legend><h5 style='font-family: arial'><b><?php echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii2&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> II.2 &iquest;Su empresa realiz&oacute; actividades relacionadas con biotecnolog&iacute;a
-						durante el per&iacute;odo <?php echo $anterior . "-" . $vig?>?</b></h5>
+					<legend>
+						<h5 style='font-family: arial'><b><?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii2&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
+							2. Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: </br>
+						 		&Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad:
+						 </b></h5>
+						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relacionelas en una sola fila, si alguna de ellas difiere agregue otra. </h6></div>
 					</legend>
-					<div class='container-fluid text-justify' style='margin-left: 30px' id="txtn21">
-						<p>Biotecnolog&iacute;a es la aplicaci&oacute;n de la ciencia y la tecnolog&iacute;a a organismos vivos, as&iacute; como
-						partes, productos y modelos de los mismos, para alterar materiales vivos o no, con el fin de producir conocimientos,
-						bienes o servicios.</p>
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Cantidad de vacantes abiertas</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">&Aacute;rea funcional</label>
+							<div class='small'>
+								<select class='form-control input-sm'>
+									<option value=''>Descarga Documentos</option>
+									<option value=''>Formulario Borrador</option>
+									<option value=''>Maual de Diligenciamiento</option>
+									<option value=''>Glosario de T&eacute;rminos</option>
+								</select>								
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Mínimo nivel educativo requerido</label>
+							<div class='small'>
+								<select class='form-control input-sm'>
+									<option value=''>Descarga Documentos</option>
+									<option value=''>Formulario Borrador</option>
+									<option value=''>Maual de Diligenciamiento</option>
+									<option value=''>Glosario de T&eacute;rminos</option>
+								</select>
+							</div>
+						</div>
+						
 					</div>
-					<div class='form-group form-group-sm'>
-						<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small'>&nbsp;</div>
-						<div class='col-sm-4 small text-right' id="ii2">
-							<label class='radio-inline'><input type='radio' id='idii2r1c1' name='ii2r1c1' value = '1' <?php echo ($row['II2R1C1'] == 1) ? 'checked' : ''?> <?php echo $estadoII2 ?> /><b>SI</b>(Pase al numeral II.3)</label>
-							<label class='radio-inline'><input type='radio' id='idii2r1c12' name='ii2r1c1' value = '2' <?php echo ($row['II2R1C1'] == 2) ? 'checked' : ''?> <?php echo $estadoII2 ?> /><b>NO</b>(Pase al cap&iacute;tulo III)</label>
+					
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Área de Formación</label>
+							<div class='small'>
+								<select class='form-control input-sm'>
+									<option value=''>Descarga Documentos</option>
+									<option value=''>Formulario Borrador</option>
+									<option value=''>Maual de Diligenciamiento</option>
+									<option value=''>Glosario de T&eacute;rminos</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Experiencia en meses</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Modalidad de Contratación</label>
+							<div class='small'>
+								<select class='form-control input-sm'>
+									<option value=''>Descarga Documentos</option>
+									<option value=''>Formulario Borrador</option>
+									<option value=''>Maual de Diligenciamiento</option>
+									<option value=''>Glosario de T&eacute;rminos</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Salario u honorarios mensuales</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">Edad</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
+							<div class='small'>
+								<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php echo $row['II1R1C2']?>" maxlength="9" />
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+							<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
+							<div class="small">
+								<select class='form-control input-sm'>
+									<option value=''>Descarga Documentos</option>
+									<option value=''>Formulario Borrador</option>
+									<option value=''>Maual de Diligenciamiento</option>
+									<option value=''>Glosario de T&eacute;rminos</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-7">
+							<label class="">Cual?</label>
+							<input type='text' class='form-control input-sm text-right' id='idii1r1c2' name='ii1r1c2' value = "<?php //echo $row['II1R1C2']?>" maxlength="9" />
 						</div>
 					</div>
 				</fieldset>
-				<fieldset style='border-style: solid; border-width: 1px' id="ii3" <?php echo $estadoII3 ?>>
-					<legend><h5 style='font-family: arial'><b><?php echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> II.3 Del valor total invertido en ACTI (pregunta II.1), indique el monto correspondiente
-						a actividades relacionadas con Biotecnolog&iacute;a realizadas por su empresa en los a&ntilde;os <?php echo $anterior . "-" . $vig?>.</b></h5>
+				
+				<fieldset style='border-style: solid; border-width: 1px' id="ii3" class="<?php //echo $estadoII3; ?>" >
+					<legend>
+						<h5 style='font-family: arial'><b>
+							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
+							3. Para  las <?php echo "XXX"; ?> vacantes mencionadas en el numeral 1, Seleccione  el (los) medio(s) de publicación utilizado(s):
+						</b></h5>
 					</legend>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small'>&nbsp;</div>
-						<div class='col-sm-2 small text-right' id="txtn31"><b>Monto invertido <?php echo $anterior?></b></div>
-						<div class='col-sm-2 small text-right' id="txtn32"><b>Monto invertido <?php echo $vig?></b></div>
-					</div>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-6 small'>&nbsp;</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii3r1c1' name='ii3r1c1' value = "<?php echo $row['II3R1C1']?>" <?php echo $estadoII31 ?> maxlength="9" />
+					<div class="container-fluid">
+						
+						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
 						</div>
-						<div class='col-sm-2 small text-right'>
-							<input type='text' class='form-control input-sm text-right' id='idii3r1c2' name='ii3r1c2' value = "<?php echo $row['II3R1C2']?>" <?php echo $estadoII32 ?> maxlength="9" />
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+						
+					</div>
+						
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Cambio de valor para saber cual carajoss es
+							  </label>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-2">
+							<div class="checkbox">
+							  <label>
+							    <input type="checkbox" value="">
+							    Option one is this and that&mdash;be sure to include why it's great
+							  </label>
+							</div>
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="col-xs-12 col-sm-1"></div>
+						<div class="form-group form-group-sm col-xs-12 col-sm-12">
+							<label class="">Cual?</label>
+							<input type='text' class='form-control input-sm' id='idii1r1c2' name='ii1r1c2' value = "<?php //echo $row['II1R1C2']?>" maxlength="9" />
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset style='border-style: solid; border-width: 1px' id="ii3" class="<?php //echo $estadoII3; ?>" >
+					<legend>
+						<h5 style='font-family: arial'><b>
+							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
+							4. De las <?php echo "XXX"; ?> vacantes mencionadas en el numeral 1.
+						</b></h5>
+					</legend>
+					
+					<div class="container-fluid">
+						<div class="form-group form-group-sm col-xs-12">
+							<label class="">¿Cuántas requerían de una competencia certificada?</label>
+							<input type='text' class='form-control input-sm' id='idii1r1c2' name='ii1r1c2' value = "<?php //echo $row['II1R1C2']?>" maxlength="9" />
 						</div>
 					</div>
 				</fieldset>
@@ -493,7 +601,7 @@
 				<?php } ?>
 			</div>
  		</form>
- 		<?php }?>
+ 		
 		<div id="idObs1" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 
@@ -557,3 +665,4 @@
 		</div>
  	</body>
  </html> 
+</h6>

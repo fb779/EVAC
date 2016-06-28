@@ -26,14 +26,14 @@
 	$qCaratula->execute(array('idNumero'=>$numero));
 	$row = $qCaratula->fetch(PDO::FETCH_BOTH);
 	
-	print_r($nombres);
+	//print_r($nombres);
 
 	for($i=1; $i<=count($nombres); $i++) {
-		$nomvar = $nombres[$i];
-//		echo $nombres[$i] . " - " . $nomvar . " - " . $valores[$i] . " - " . $row[$nomvar] . "\n"; 
+		$nomvar = $nombres[$i]; 
 		if ($valores[$i] != $row[$nomvar]) {
 			$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
 				tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
+			
 			$creaLog->execute(array(':numero'=>$numero,
 				':tipo'=>$_SESSION['tipou'],
 				':usuario'=>$_SESSION['idusu'],
@@ -95,4 +95,6 @@
 	$actucara = $conn->prepare('UPDATE caratula SET nompropie=:nompropie WHERE nordemp = :nordemp');
 	$actucara->execute(array(':nompropie'=>"OFFSET GRAFICO EDITORES S.A.", ':nordemp'=>$valores[0]));
 */	
+	
+	echo "{'success':'Transaccion correcta'}";
 ?>
