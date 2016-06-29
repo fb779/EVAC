@@ -58,7 +58,7 @@
             	<li <?php echo ($page=='cap3') ? 'class="active"' : '' ?>><a href="capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color3 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 3<?php echo ($icono3 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap4') ? 'class="active"' : '' ?>><a href="capitulo4.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color4 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 4<?php echo ($icono4 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li-->
             	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li>
 				<?php
 					if ($muestrapys) {

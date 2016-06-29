@@ -20,6 +20,7 @@
 	foreach ($qCiiu as $ciiu){
 		$codigos[] = $ciiu['CODIGO'];
 	}
+	/***/
 	
 	$numero = $valores[0];
 	$qCaratula = $conn->prepare("SELECT * FROM caratula WHERE nordemp= :idNumero");

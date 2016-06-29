@@ -50,9 +50,12 @@ $qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 $actividad = $row ['ciiu3'];
 $qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "'" );
+// $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
+// 		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
+// 		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" ); 
+
 $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
-		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
-		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" ); 
+		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')" );
 
 $qActividad = $conn->query ( "SELECT * FROM ciiu3 WHERE CODIGO = $actividad" );
 foreach ( $qActividad as $lActividad ) {
@@ -358,20 +361,19 @@ latest: new Date(2099,11,31,23,59,59)
 							<td class="text-center" style="border: none"><b>Numero</b></td>
 							<td class="text-center" style="border: none"><b>DV</b></td>
 							<td style="border: none"><b>Inscrip/Matricula/Renovaci&oacute;n</b></td>
-							<td class="text-center" style="border: none"><b>C&aacute;mara</b></td>
-							<td style="border: none"><b>Inscripci&oacute;n/Matricula</b></td>
-							<td style="border: none"><b>CIIU</b></td>
+							
 						</tr>
 						<tr>
-							<td style="border: none"><label class='radio-inline'><input
-									type='radio' id='rnit' name='tipodoc' value='1'
-									<?php echo ($row['tipodoc'] == 1) ? 'checked' : ''?> />Nit.</label>
-								<label class='radio-inline'><input type='radio' id='rcc'
-									name='tipodoc' value='2'
-									<?php echo ($row['tipodoc'] == 2) ? 'checked' : ''?> />C.C.</label>
-								<label class='radio-inline'><input type='radio' id='rce'
-									name='tipodoc' value='3'
-									<?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> />C.E.</label>
+							<td style="border: none">
+								<label class='radio-inline'>
+									<input type='radio' id='rnit' name='tipodoc' value='1' <?php echo ($row['tipodoc'] == 1) ? 'checked' : ''?> />Nit.
+								</label>
+								<label class='radio-inline'>
+									<input type='radio' id='rcc' name='tipodoc' value='2' <?php echo ($row['tipodoc'] == 2) ? 'checked' : ''?> />C.C.
+								</label>
+								<label class='radio-inline'>
+									<input type='radio' id='rce' name='tipodoc' value='3' <?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> />C.E.
+								</label>
 							</td>
 							<td style="border: none"><input type="text"
 								class='form-control input-sm' style="width: 150px" id='ndoc'
@@ -390,6 +392,14 @@ latest: new Date(2099,11,31,23,59,59)
 									name='registmat' value='2'
 									<?php echo ($row['registmat'] == 2) ? 'checked' : ''?> />Renovaci&oacute;n</label>
 							</td>
+						</tr>
+						<tr>
+							<td class="text-center" style="border: none"><b>C&aacute;mara</b></td>
+							<td class="text-center" style="border: none"><b>Inscripci&oacute;n/Matricula</b></td>
+							<td class="text-center" style="border: none"><b>CIIU</b></td>
+							<td class="text-center" style="border: none"><b>Novedad</b></td>
+						</tr>
+						<tr>
 							<td style="border: none"><input type="text"
 								class='form-control input-sm' style="width: 100px" id="cam"
 								name="camara" value="<?php echo $row['camara'] ?>" /></td>
@@ -397,8 +407,11 @@ latest: new Date(2099,11,31,23,59,59)
 								class='form-control input-sm' style="width: 100px" id="reg"
 								name="numeroreg" value="<?php echo $row['numeroreg'] ?>" /></td>
 							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 50px" id="ciiu"
+								class='form-control input-sm' style="width: 100px" id="ciiu"
 								name="ciiu3" value="<?php echo $row['ciiu3']; ?>" readonly /></td>
+							<td style="border: none"><input type="text"
+								class='form-control input-sm' style="width: 150px" id="ciiu"
+								name="ciiu3" value="<?php echo $row['novedad']; ?>" readonly /></td>
 						</tr>
 					</table>
 				</div>
@@ -841,8 +854,7 @@ latest: new Date(2099,11,31,23,59,59)
 					<div class='col-xs-12 col-sm-2 small text-right'>
 						<!-- label class='control-label' for='idrep'>Representante Legal:</label-->
 						<!--a id="agregarCampo" class="btn btn-info" href="#">Agregar Campo</a-->
-						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#myModal">Actividades Economicas</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Actividades Economicas</button>
 
 					</div>
 					<div id="actividades"
@@ -958,7 +970,7 @@ latest: new Date(2099,11,31,23,59,59)
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
