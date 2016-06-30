@@ -20,81 +20,38 @@
 	$grabaOK = false;
 	include '../persistencia/cargaDato.php';
 	
+	
+	
+/**########################**/
+	// verificacion para la carga de informacion de l formulario y creacion de registros para la informacion
+	/** Carga de informacion del capitulo 1 */
+// 	$llave = "C1_nordemp"; // campo de relacion para la empresa
+	
+// 	$qCapitulo = $conn->prepare("SELECT * FROM $tabla WHERE $llave = :nFuente AND vigencia = :periodo");
+// 	$qCapitulo->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
+// 	$row = $qCapitulo->fetch(PDO::FETCH_ASSOC);
+	
+	
+	
+	
+// 	$qControl = $conn->prepare("SELECT a.*, b.desc_estado FROM control a, estados b WHERE a.nordemp = :nFuente AND a.vigencia = :periodo
+// 			AND a.estado = b.idestados");
+// 	$qControl->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
+// 	$rowCtl = $qControl->fetch(PDO::FETCH_ASSOC);
+	
+	
+/**########################**/
+	
 // 	$estadoI1R4C2N = ''; $estadoI1R4C2M = ''; $estadoI2 = ''; $estadoI7 = ''; $estadoI9R1 = 'disabled'; $estadoI9R2 = 'disabled';
 // 	$estadoI10 = 'disabled';
 	
 // 	$estadoI4R1C1 = ''; $estadoI4R2C1 = ''; $estadoI4R3C1 = ''; $estadoI4R4C1 = ''; $estadoI4R1C2 = ''; $estadoI4R2C2 = ''; $estadoI4R3C2 = ''; $estadoI4R4C2 = '';
 	
-	$row = ['i1r1c1' => 1, /*'i1r1c1' => 2,*/ 'i1r1c2' => 25,
-			'i1r3c1' => 1,'i1r3c2' => 0,'i1r3c3' => 1,'i1r3c4' => 0,'i1r3c5' => 1,'i1r3c6' => 0,'i1r3c7' => 1,'i1r3c8' => 0, 'i1r3c9' => 'Medio de publicacion adicional',
-			'i1r4c1' => 1,
-			'OBSERVACIONES' => 'Observaciones de la fuente para el estado de la fuente'
-	];
-	
-	
-// 	if ($row['I1R1C2N']+$row['I1R2C2N']+$row['I1R3C2N'] == 0) {$estadoI1R4C2N = 'disabled';}
-// 	if ($row['I1R1C2M']+$row['I1R2C2M']+$row['I1R3C2M'] == 0) {$estadoI1R4C2M = 'disabled';}
-// 	if ($row['I1R1C1N']!=1 AND $row['I1R2C1N']!=1 AND $row['I1R3C1N']!=1 AND $row['I1R1C1M']!=1 AND $row['I1R2C1M']!=1 AND $row['I1R3C1M']!= 1 AND $row['I1R4C1']!=1 AND 
-// 		$row['I1R5C1']!=1 AND $row['I1R6C1']!=1) {
-// 		$estadoI2 = 'disabled';
-// 	}
-// 	if ($row['I1R1C1N']==1 OR $row['I1R2C1N']==1 OR $row['I1R3C1N']==1 OR $row['I1R1C1M']==1 OR $row['I1R2C1M']==1 OR 
-// 		$row['I1R3C1M']==1 OR $row['I1R5C1']==1 OR $row['I1R6C1']==1 OR $row['I5R1C1']==1 OR $row['I6R1C1']==1) {
-// 			$estadoI7 = 'disabled';
-// 	}
-// 	if ($row['I1R1C1N']!=1 AND $row['I1R2C1N']!=1 AND $row['I1R3C1N']!=1 AND $row['I1R1C1M']!=1 AND $row['I1R2C1M']!=1 AND 
-// 		$row['I1R3C1M']!=1 AND $row['I1R5C1']!=1 AND $row['I1R6C1']!=1 AND $row['I5R1C1']!=1 AND $row['I6R1C1']!=1) {
-// 			$estadoI7 = '';
-// 	}
-// 	//ESTADOS NUMERAL 4
-// 	if ($row['I3R2C1']==0) {
-// 		$estadoI4R4C1 = 'disabled'; $estadoI4R1C1 = 'disabled'; $estadoI4R2C1 = 'disabled'; $estadoI4R3C1 = 'disabled';
-// 	}
-// 	else {
-// 		if (($row['I1R1C1N']!=1 AND $row['I1R1C1M']!=1)) {
-// 			$estadoI4R1C1 = 'disabled';
-// 		}
-// 		if (($row['I1R2C1N']!=1 AND $row['I1R1C1M']!=1)) {
-// 			$estadoI4R2C1 = 'disabled';
-// 		}
-	
-// 		if (($row['I1R3C1N']!=1 AND $row['I1R3C1M']!=1)) {
-// 			$estadoI4R3C1 = 'disabled';
-// 		}
-// 	}
-	
-// 	if ($row['I3R2C1']==0) {
-// 		$estadoI4R4C1 = 'disabled';
-// 	}
-	
-// 	if ($row['I3R2C2']==0) {
-// 		$estadoI4R4C2 = 'disabled'; $estadoI4R1C2 = 'disabled'; $estadoI4R2C2 = 'disabled'; $estadoI4R3C2 = 'disabled';
-// 	}
-// 	else {
-// 		if (($row['I1R1C1N']!=1 AND $row['I1R1C1M']!=1)) {
-// 			$estadoI4R1C2 = 'disabled';
-// 		}
-// 		if (($row['I1R2C1N']!=1 AND $row['I1R1C1M']!=1)) {
-// 			$estadoI4R2C2 = 'disabled';
-// 		}
-	
-// 		if (($row['I1R3C1N']!=1 AND $row['I1R3C1M']!=1)) {
-// 			$estadoI4R3C2 = 'disabled';
-// 		}
-// 	}
-	
-// 	if (($row['I1R1C1N']==1 OR $row['I1R2C1N']==1 OR $row['I1R3C1N']==1 OR $row['I1R1C1M']==1 OR $row['I1R2C1M']==1 OR 
-// 		$row['I1R3C1M']==1) AND ($row['I8R1C1']==1)) {
-// 		$estadoI9R1 = '';
-// 	}
-// 	if (($row['I1R1C1N']==1 OR $row['I1R2C1N']==1 OR $row['I1R3C1N']==1 OR $row['I1R1C1M']==1 OR $row['I1R2C1M']==1 OR 
-// 		$row['I1R3C1M']==1) AND ($row['I8R2C1']==1)) {
-// 			$estadoI9R2 = '';
-// 	}
-// 	if ($row['I1R1C1N']==1 OR $row['I1R2C1N']==1 OR $row['I1R3C1N']==1 OR $row['I1R1C1M']==1 OR $row['I1R2C1M']==1 OR 
-// 		$row['I1R3C1M']==1 OR $row['I1R4C1']==1 OR $row['I1R5C1']==1 OR $row['I1R6C1']==1 OR $row['I5R1C1']==1 OR $row['I6R1C1']==1 OR $row['I7R1C1']==1) {
-// 			$estadoI10 = '';
-// 	}
+// 	$row = ['i1r1c1' => 1, /*'i1r1c1' => 2,*/ 'i1r1c2' => 25,
+// 			'i1r3c1' => 1,'i1r3c2' => 0,'i1r3c3' => 1,'i1r3c4' => 0,'i1r3c5' => 1,'i1r3c6' => 0,'i1r3c7' => 1,'i1r3c8' => 0, 'i1r3c9' => 'Medio de publicacion adicional',
+// 			'i1r4c1' => 1,
+// 			'OBSERVACIONES' => 'Observaciones de la fuente para el estado de la fuente'
+// 	];
 	
 	if ($tipousu != "FU") {
 		$txtEstado = " - estado - " . $rowCtl['desc_estado'];
@@ -134,212 +91,114 @@
 			}
 		</style>
 		<script type="text/javascript">
-			var retorno = "";
-			$(function() {
-				//$('input, textarea, button, select').attr('disabled','disabled');			
+			var retorno = 0;
+			var inputText = ['i1r1c2', 'i1r4c1']
+			function validaFormOther() {
+				debugger;
+				retorno = 0;
+				/**Validar radio buttons vacantes */
+				if (!$('input[name="i1r1c1"]').is(':checked')) {
+					$('input[name="i1r1c1"]').parent().parent().addClass('text-danger');
+			        retorno += 1;
+			    }
+
 				
-	            $("#capitulo1").submit(function(event) {
+				
+				if ($('[name="i1r1c1"]:checked').val() == 1){ /* Valor del radiobutton en si */
+					for (i=0; i<inputText.length; i++) {
+						if ($('[name="'+ inputText[i] +'"]').val() == ''){
+							$('[name="'+ inputText[i] +'"]').parent().addClass('text-danger');
+							retorno += 1;
+						}
+					}
+
+					if($('[name="i1r3c8"]').is(':checked')){
+						if ($('[name="i1r3c9"]').val() == ''){
+							$('[name="i1r3c9"]').parent().addClass('text-danger');
+							retorno += 1;
+						}
+					}
+				}
+				return retorno;
+			}
+			
+			$(document).ready(function() {
+
+				$('[type="checkbox"]').change(function(){
+					var item = $(this);
+					if(item.is(':checked')){
+						item.val(1);
+						if(item.attr('name') ==  'i1r3c8'){
+							$('input[name="i1r3c9"]').prop('disabled', false);
+						}
+					}else{ 
+						item.val(0);
+						if(item.attr('name') ==  'i1r3c8'){
+							$('input[name="i1r3c9"]').val('');
+							$('input[name="i1r3c9"]').prop('disabled', true);
+							
+						} 
+					}
+				});
+
+				if ($('[name="i1r3c8"]').is(':checked')){
+					$('input[name="i1r3c9"]').prop('disabled', false);
+				}else{
+					$('input[name="i1r3c9"]').val('');
+					$('input[name="i1r3c9"]').prop('disabled', true);
+				}
+				//$('input, textarea, button, select').attr('disabled','disabled');
+				
+				$("#capitulo1").submit(function(event) {
+		            debugger;
 	                event.preventDefault();
-	                $.ajax({
-	                    url: "../persistencia/grabacapi.php",
-	                    type: "POST",
-	                    beforeSend:  validaForm1,
-	                    data: $(this).serialize(),
-	                    success: function(dato) {
-							if (retorno=="") {
-								$("#btn_cont").show();
-								$("#idmsg").show();
-								$(function() {
-									$.ajax({
-									url: "../persistencia/grabactl.php",
-									type: "POST",
-									data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
-									success: function(dato) {
+	                retorno = validaFormOther();
+	                if (retorno == 0){
+		                $.ajax({
+		                    url: "../persistencia/grabacapi.php",
+		                    type: "POST",
+		                    //beforeSend:  validaFormOther,
+		                    data: $(this).serialize(),
+		                    success: function(dato) {
+								if (retorno==0) {
+									$("#btn_cont").show();
+									$("#idmsg").show();
+									$(function() {
+										$.ajax({
+										url: "../persistencia/grabactl.php",
+										type: "POST",
+										data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
+										success: function(dato) {
+										}
+									});
+									});
+									if ($("#idTipo").val() == "CR") {
+										$("#idObs1").modal('show');
 									}
-								});
-								});
-								if ($("#idTipo").val() == "CR") {
-									$("#idObs1").modal('show');
+								}
+								else {
+									//retorno = "id"+retorno;
+									//$("[name='" + retorno + "']").focus();
+									//document.getElementById(retorno).focus();
+									$(function() {
+										$.ajax({
+											url: "../persistencia/grabactl.php",
+											type: "POST",
+											data: {modulo: "m1", estado: "1", numero: $("#numero").val(), capitulo: "C1"},
+											success: function(dato) {
+											}
+										});
+									});
 								}
 							}
-							else {
-								retorno = "id"+retorno;
-								document.getElementById(retorno).focus();
-								$(function() {
-									$.ajax({
-									url: "../persistencia/grabactl.php",
-									type: "POST",
-									data: {modulo: "m1", estado: "1", numero: $("#numero").val(), capitulo: "C1"},
-									success: function(dato) {
-									}
-								});
-								});
-							}
-						}
-	                });
+		                });
+	                }
 	            });
 			});
 	
 			$(document).ready(function(){
 	    		$('[data-toggle="tooltip"]').tooltip();   
 			});
-
-// 			$(function() {
-// 				$("#idi4r1c1,#idi4r2c1,#idi4r3c1,#idi4r4c1,#idi4r1c2,#idi4r2c2,#idi4r3c2,#idi4r4c2").blur(function() {
-// 					if ($(this).val()>100 || $(this).val()<0) {
-// 						alert("Debe ingresar valor Mayor o igual a cero y Menor o igual a cien");
-// 						$(this).focus();
-// 					}
-// 				});
-// 			});
-			
-// 			$(function() {
-// 				$("#idi1r1c2n,#idi1r2c2n,#idi1r3c2n,#idi1r4c2n,#idi1r1c2m,#idi1r2c2m,#idi1r3c2m,#idi1r4c2m,#idi1r4c2,#idi1r5c2,#idi1r6c2,#idi3r1c1,#idi3r1c2,#idi3r2c1,#idi3r2c2,#idi4r1c1,#idi4r1c2,#idi4r2c1,#idi4r2c2,#idi4r3c1,#idi4r3c2,#idi4r4c1,#idi4r4c2,#idi4r5c1,#idi4r5c2").keyup(function(){
-// 					if ($(this).val() != "")
-// 						$(this).val( $(this).val().replace(/[^0-9]/g, '') );
-// 				});
-// 			});
-
-// 			$(function() {
-// 				$("#idi1r1c2n,#idi1r2c2n,#idi1r3c2n,#idi1r4c2n,#idi1r1c2m,#idi1r2c2m,#idi1r3c2m,#idi1r4c2m,#idi1r4c2,#idi1r5c2,#idi1r6c2,#idi3r1c1,#idi3r1c2,#idi3r2c1,#idi3r2c2,#idi4r1c1,#idi4r1c2,#idi4r2c1,#idi4r2c2,#idi4r3c1,#idi4r3c2,#idi4r4c1,#idi4r4c2,#idi4r5c1,#idi4r5c2").blur(function(){
-// 					if ($(this).val()!='') {
-// 						$(this).val(parseInt($(this).val()));
-// 					}
-// 				});
-// 			});
-
-// 			$(function() {
-// 				var desactiva = true;
-// 				$("#idi1r1c1n2,#idi1r2c1n2,#idi1r3c1n2,#idi1r1c1m2,#idi1r2c1m2,#idi1r3c1m2,#idi1r4c12,#idi1r5c12,#idi1r6c12").click(function(){
-// 					$("#idi1r1c1n,#idi1r2c1n,#idi1r3c1n,#idi1r1c1m,#idi1r2c1m,#idi1r3c1m,#idi1r4c1,#idi1r5c1,#idi1r6c1").each(function(){
-// 						if ($(this).is(":checked")) {
-// 							desactiva = false;
-// 						}
-// 					});
-// 					if (desactiva) {
-// 						$("#idi2r1c1,#idi2r1c12,#idi2r1c13,#idi2r2c1,#idi2r2c12,#idi2r2c13,#idi2r3c1,#idi2r3c12,#idi2r3c13,#idi2r4c1,#idi2r4c12,#idi2r4c13,#idi2r5c1,#idi2r5c12,#idi2r5c13,#idi2r6c1,#idi2r6c12,#idi2r6c13,#idi2r7c1,#idi2r7c12,#idi2r7c13,#idi2r8c1,#idi2r8c12,#idi2r8c13,#idi2r9c1,#idi2r9c12,#idi2r9c13,#idi2r10c1,#idi2r10c12,#idi2r10c13,#idi2r11c1,#idi2r11c12,#idi2r11c13,#idi2r12c1,#idi2r12c12,#idi2r12c13,#idi2r13c1,#idi2r13c12,#idi2r13c13,#idi2r14c1,#idi2r14c12,#idi2r14c13,#idi2r15c1,#idi2r15c12,#idi2r15c13").each(function() {
-// 							$(this).prop("checked", false);
-// 						});
-// 						$("#i2").prop("disabled", true);
-// 						$("#i7r1c1").prop("disabled", false);
-// 					}
-// 					desactiva = true;
-// 				});
-// 			});
-
-// 			$(function() {
-// 				$("#idi1r4c2n").blur(function() {
-// 					var Total = 0;
-// 					$("#idi1r1c2n,#idi1r2c2n,#idi1r3c2n").each(function() {
-// 						if ($(this).is(":disabled")) {
-// 							Total = parseInt(Total)+0;
-// 						}
-// 						else {
-// 							Total = parseInt(Total)+parseInt($(this).val());
-// 						}
-// 					});
-// 					if(parseInt(Total) != parseInt($("#idi1r4c2n").val())) {
-// 						alert("TOTAL DIGITADO INVALIDO, POR FAVOR REVISE");
-// 					}
-// 				});
-// 			});
-
-// 			$(function() {
-// 				$("#idi1r4c2m").blur(function() {
-// 					var Total = 0;
-// 					$("#idi1r1c2m,#idi1r2c2m,#idi1r3c2m").each(function() {
-// 						if ($(this).is(":disabled")) {
-// 							Total = Total+0;
-// 						}
-// 						else {
-// 							Total = Total+parseInt($(this).val());
-// 						}
-// 					}); 
-// 					if(Total != parseInt($("#idi1r4c2m").val())) {
-// 						alert("TOTAL DIGITADO INVALIDO, POR FAVOR REVISE");
-// 					}
-// 				});
-// 			});
-
-// 			$(function() {
-// 				$("#idi4r5c1").blur(function() {
-// 					var Total = 0;
-// 					$("#idi4r1c1,#idi4r2c1,#idi4r3c1,#idi4r4c1").each(function() {
-// 						if ($(this).is(":disabled")) {
-// 							Total = parseInt(Total)+0;
-// 						}
-// 						else {
-// 							Total = parseInt(Total)+parseInt($(this).val());
-// 						}
-// 					});
-// 					if(parseInt(Total) != parseInt($("#idi4r5c1").val())) {
-// 						alert("TOTAL DIGITADO INVALIDO O DIFERENTE DE 100");
-// 					}
-// 				});
-// 			});
-
-// 			$(function() {
-// 				$("#idi4r5c2").blur(function() {
-// 					var Total = 0;
-// 					$("#idi4r1c2,#idi4r2c2,#idi4r3c2,#idi4r4c2").each(function() {
-// 						if ($(this).is(":disabled")) {
-// 							Total = parseInt(Total)+0;
-// 						}
-// 						else {
-// 							Total = parseInt(Total)+parseInt($(this).val());
-// 						}
-// 					});
-// 					if(parseInt(Total) != parseInt($("#idi4r5c2").val())) {
-// 						alert("TOTAL DIGITADO INVALIDO O DIFERENTE DE 100");
-// 					}
-// 				});
-// 			});
-			
-// 			$(function() {
-// 			var activar = false;
-// 				$("#idi8r1c1").click(function() {
-// 					$("#idi1r1c1n,#idi1r2c1n,#idi1r3c1n,#idi1r1c1m,#idi1r2c1m,#idi1r3c1m").each(function(){
-// 						if ($(this).is(":checked")) {
-// 							activar = true;
-// 						}
-// 					});
-// 					if (activar) {
-// 						$("#idi9r1c1, #idi9r1c12").prop("disabled", false);
-// 					}
-// 					activar = false;
-// 				});
-// 			});
-			
-// 			$(function() {
-// 				$("#idi8r1c12").click(function() {
-// 					$("#idi9r1c1, #idi9r1c12").prop("disabled", true);
-// 					$("#idi9r1c1").prop("checked", false);
-// 					$("#idi9r1c12").prop("checked", false);
-// 				});
-// 			});
-			
-// 			$(function() {
-// 				var activar = false;
-// 				$("#idi8r2c1").click(function() {
-// 					$("#idi1r1c1n,#idi1r2c1n,#idi1r3c1n,#idi1r1c1m,#idi1r2c1m,#idi1r3c1m").each(function(){
-// 						if ($(this).is(":checked")) {
-// 							activar = true;
-// 						}
-// 					});
-// 					if (activar) {
-// 						$("#idi9r2c1, #idi9r2c12").prop("disabled", false);
-// 					}
-// 					activar = false;
-// 				});
-// 			});
-			
-// 			$(function() {
-// 				$("#idi8r2c12").click(function() {
-// 					$("#idi9r2c1, #idi9r2c12").prop("disabled", true);
-// 					$("#idi9r2c1").prop("checked", false);
-// 					$("#idi9r2c12").prop("checked", false);
-// 				});
-// 			});
 			
 			$(window).on('hidden.bs.modal', function() {
 				$.ajax({
@@ -373,7 +232,10 @@
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
  			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?>
- 			<?php echo '<br/>'; print_r($row); ?>
+ 			<!-- Informacion de prueba BORRAR  --> 			
+ 				<?php echo '<br/>'; print_r($row); ?>
+ 				<?php echo '<br/>'; print_r($rowCtl); ?>
+ 			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
  		<div class="container text-justify" style="font-size: 12px">
@@ -381,21 +243,20 @@
  		</div>
 
 		<input type="hidden" name="tipousu" id="idTipo" value="<?php echo $tipousu ?>" />
-		<form class='form-horizontal' role='form' data-toggle='validator' name="capitulo2" id="capitulo2" method="post" disabled>
+		<form class='form-horizontal' role='form' data-toggle='validator' name="capitulo1" id="capitulo1" method="post" disabled>
 			<div class='container'>
-				<input type="hidden" name="C2_nordemp" id="numero" value="<?php echo $numero ?>" />
+				<input type="hidden" name="C1_nordemp" id="numero" value="<?php echo $numero ?>" />
 				<fieldset style='border-style: solid; border-width: 1px'>
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
 							1. Durante el periodo de referencia
-						</b></h5> 
-						
+						</b></h5>
 					</legend>
 					
 					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1">
-						<label class="col-xs-12 col-sm-12" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
-						<div class="col-xs-12 col-sm-2 col-sm-offset-1">
+						<label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
+						<div class="col-xs-12 col-sm-2 ">
 							<label class="radio-inline">
 							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> > Si
 							</label>
@@ -579,7 +440,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c1" name="i1r3c1" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c1" name="i1r3c1" value="<?php echo $row['i1r3c1']?>" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> >
 							    Medios de comunicación (prensa,radio,tv)
 							  </label>
 							</div>
@@ -588,7 +449,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c2" name="i1r3c2" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c2" name="i1r3c2" value="<?php echo $row['i1r3c2']?>" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> >
 							    Servicio Público de Empleo
 							  </label>
 							</div>
@@ -597,7 +458,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c3" name="i1r3c3" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c3" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> >
 							    Portales laborales WEB
 							  </label>
 							</div>
@@ -606,7 +467,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c4" name="i1r3c4" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c4" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> >
 							    Agencias / bolsas de empleo / headhunters / firmas cazatalentos
 							  </label>
 							</div>
@@ -617,7 +478,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox" >
 							  <label>
-							    <input type="checkbox" id="i1r3c5" name="i1r3c5" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c5" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> >
 							    Universidades  e  instituciones educativas (oficinas de egresados)
 							  </label>
 							</div>
@@ -626,7 +487,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c6" name="i1r3c6" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c6" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> >
 							     Contactos no  formales (colegas, amigos, empleados)
 							  </label>
 							</div>
@@ -635,7 +496,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c7" name="i1r3c7" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c7" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> >
 							    Redes sociales o aplicaciones
 							  </label>
 							</div>
@@ -644,7 +505,7 @@
 						<div class="form-group form-group-sm col-xs-12 col-sm-2">
 							<div class="checkbox">
 							  <label>
-							    <input type="checkbox" id="i1r3c8" name="i1r3c8" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> >
+							    <input type="checkbox" id="i1r3c8" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> >
 							    Otra no mencionada anteriormente
 							  </label>
 							</div>
@@ -654,7 +515,7 @@
 						<div class="col-xs-12 col-sm-1"></div>
 						<div class="form-group form-group-sm col-xs-12 col-sm-12">
 							<label class="">Cual?</label>
-							<input type='text' class='form-control input-sm' id='idir3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>" maxlength="9" />
+							<input type='text' class='form-control input-sm' id='idir3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="9" />
 						</div>
 					</div>
 				</fieldset>
@@ -686,7 +547,8 @@
 						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Cap&iacute;tulo II Actualizado Correctamente</p>
 					</div>
 					<div class='col-sm-1 small pull-right' id="btn_cont" style="display: none;" >
-						<a href='capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
+						<!--a href='capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a-->
+						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
 					</div>
 					<div class='col-sm-1 small pull-right'>
 						<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Cap&iacute;tulo II'>Grabar</button>

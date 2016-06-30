@@ -97,5 +97,5 @@
 	$actucara->execute(array(':nompropie'=>"OFFSET GRAFICO EDITORES S.A.", ':nordemp'=>$valores[0]));
 */	
 	
-	echo "{'success':'Transaccion correcta'}";
+	//echo "{'success':'Transaccion correcta'}";
 ?>

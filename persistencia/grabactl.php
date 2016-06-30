@@ -4,7 +4,7 @@
 	}
 	
 	if (!isset($_SESSION['tipou'])) {
-		echo "<h2 style='text-align: center; font-family: arial'>SESIÓN HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
+		echo "<h2 style='text-align: center; font-family: arial'>SESIï¿½N HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
 	}
 	
@@ -56,14 +56,15 @@
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
 			$m1 = $rowCtl['m1'];
-			$m2 = $rowCtl['m2'];
-			$m3 = $rowCtl['m3'];
-			$m4 = $rowCtl['m4'];
-			$m5 = $rowCtl['m5'];
-			$m6 = $rowCtl['m6'];
+// 			$m2 = $rowCtl['m2'];
+// 			$m3 = $rowCtl['m3'];
+// 			$m4 = $rowCtl['m4'];
+// 			$m5 = $rowCtl['m5'];
+// 			$m6 = $rowCtl['m6'];
 		}
 		if ($rowCtl['estado'] <= 3) {
-			if ($m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+			//if ($m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+			if ($m1 == 2) {
 				$estadoFor = 3;
 			}
 			else {

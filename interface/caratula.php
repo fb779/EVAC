@@ -315,18 +315,20 @@ latest: new Date(2099,11,31,23,59,59)
 		<?php
 		include 'menuFuente.php';
 		?>
+		<div class='well well-sm' style='font-size: 12px; padding-top: 60px; z-index: 1;' id='wcara'>
 		<?php
-		echo "<div class='well well-sm' style='font-size: 12px; padding-top: 60px; z-index: 1;' id='wcara'>";
-		if ($tipousu == "CO" and $region == 99) {
-			echo "<a href='#' onClick='confBorra(" . $numero . ", \"" . $nombre . "\");'>Limpiar Formulario</a> | ";
-			echo "<a href='../administracion/traslados.php?numero=" . $numero . "'>Traslado de Sede</a> | ";
-			echo "<a href='../administracion/estados.php?numero=" . $numero . "'>Cambiar Estado</a> | ";
-		}
-		if ($tipousu == "CO" or ($tipousu == "CR" and $region == 99)) {
-			echo "<a href='../administracion/novedades.php?numero=" . $numero . "'>Asignar Novedad</a> | ";
-		}
-		echo "</div>";
+			//echo "<div class='well well-sm' style='font-size: 12px; padding-top: 60px; z-index: 1;' id='wcara'>";
+			if ($tipousu == "CO" and $region == 99) {
+				echo "<a href='#' onClick='confBorra(" . $numero . ", \"" . $nombre . "\");'>Limpiar Formulario</a> | ";
+				echo "<a href='../administracion/traslados.php?numero=" . $numero . "'>Traslado de Sede</a> | ";
+				echo "<a href='../administracion/estados.php?numero=" . $numero . "'>Cambiar Estado</a> | ";
+			}
+			if ($tipousu == "CO" or ($tipousu == "CR" and $region == 99)) {
+				echo "<a href='../administracion/novedades.php?numero=" . $numero . "'>Asignar Novedad</a> | ";
+			}
+			//echo "</div>";
 		?>
+		</div>
 		<div class='container'>
 			<?php if ($tipousu == "FU") { ?>
 			<div class='row'>

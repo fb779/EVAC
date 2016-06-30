@@ -30,7 +30,7 @@
 			}
 		}
 		else {
-			$mensaje = "Identificación/Clave Incorrectos";
+			$mensaje = "Identificaciï¿½n/Clave Incorrectos";
 		}
 	} 
 ?>
@@ -42,7 +42,7 @@
 	    <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>DANE EDIT - Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica</title>
+		<title>DANE EVAC - Encuesta de Disponibilidad Laboral</title>
 		<link href="bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -132,13 +132,11 @@
 
 			<div class="clearfix"></div>
 		</div>
-
-<div class="container">
-</div>
-
-<?php
-	include 'login.php'; 
-?>
+		<div class="container">
+		<?php
+			include 'login.php'; 
+		?>
+		</div>
 		<footer class="footer">
 		 <div class="container">
 			<div>

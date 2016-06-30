@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-06-2016 a las 19:54:47
+-- Tiempo de generación: 30-06-2016 a las 23:38:43
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -127,55 +127,6 @@ CREATE TABLE `capitulo_i` (
   `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
--- --------------------------------------------------------
--- ########################################################
---
--- Estructura de tabla para la tabla `capitulo_i_other`
---
-
-CREATE TABLE `capitulo_i_other` (
-  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
-  `vigencia` mediumint(4) UNSIGNED NOT NULL,
-  `i1r1c1n` tinyint(1) DEFAULT NULL, 
-  `i1r1c2n` mediumint(3) DEFAULT NULL, 
-  `i1r3c1` tinyint(1) DEFAULT NULL,
-  `i1r3c2` tinyint(1) DEFAULT NULL,
-  `i1r3c3` tinyint(1) DEFAULT NULL,
-  `i1r3c4` tinyint(1) DEFAULT NULL,
-  `i1r3c5` tinyint(1) DEFAULT NULL,
-  `i1r3c6` tinyint(1) DEFAULT NULL,
-  `i1r3c7` tinyint(1) DEFAULT NULL,
-  `i1r3c8` tinyint(1) DEFAULT NULL,
-  `i1r3c9` text DEFAULT NULL,
-  `i1r4c1` tinyint(1) DEFAULT NULL,
-  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
---
--- Estructura de tabla para la tabla `capitulo_i_other_displab`
---
-
-CREATE TABLE `capitulo_i_other_displab` (
-  `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
-  `vigencia` mediumint(4) UNSIGNED NOT NULL,
-  `i1r2c1` int(10) DEFAULT NULL, 
-  `i1r2c2` tinyint(1) DEFAULT NULL, 
-  `i1r2c3` tinyint(1) DEFAULT NULL,
-  `i1r2c4` tinyint(1) DEFAULT NULL,
-  `i1r2c5` int(10) DEFAULT NULL,
-  `i1r2c6` tinyint(1) DEFAULT NULL,
-  `i1r2c7` int(10) DEFAULT NULL,
-  `i1r2c8` int(10) DEFAULT NULL,
-  `i1r2c9` int(10) DEFAULT NULL,
-  `i1r2c10` int(10) DEFAULT NULL,
-  `i1r2c11` int(10) DEFAULT NULL,
-  `i1r2c12` int(10) DEFAULT NULL,
-  `i1r2c13` tinyint(1) DEFAULT NULL,
-  `i1r2c14` varchar(200) DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
--- ########################################################
 -- --------------------------------------------------------
 
 --
@@ -485,6 +436,56 @@ CREATE TABLE `capitulo_iv` (
   `IV7R5C1` bigint(5) DEFAULT NULL,
   `IV7R5C2` bigint(5) DEFAULT NULL,
   `OBSERVACIONES` text COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `capitulo_i_other`
+--
+
+CREATE TABLE `capitulo_i_other` (
+  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
+  `vigencia` mediumint(4) UNSIGNED NOT NULL,
+  `i1r1c1` tinyint(1) DEFAULT NULL,
+  `i1r1c2` mediumint(3) DEFAULT NULL,
+  `i1r3c1` tinyint(1) DEFAULT NULL,
+  `i1r3c2` tinyint(1) DEFAULT NULL,
+  `i1r3c3` tinyint(1) DEFAULT NULL,
+  `i1r3c4` tinyint(1) DEFAULT NULL,
+  `i1r3c5` tinyint(1) DEFAULT NULL,
+  `i1r3c6` tinyint(1) DEFAULT NULL,
+  `i1r3c7` tinyint(1) DEFAULT NULL,
+  `i1r3c8` tinyint(1) DEFAULT NULL,
+  `i1r3c9` text COLLATE latin1_spanish_ci,
+  `i1r4c1` tinyint(1) DEFAULT NULL,
+  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `capitulo_i_other_displab`
+--
+
+CREATE TABLE `capitulo_i_other_displab` (
+  `id_displab` bigint(10) UNSIGNED NOT NULL,
+  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
+  `vigencia` mediumint(4) UNSIGNED NOT NULL,
+  `i1r2c1` int(10) DEFAULT NULL,
+  `i1r2c2` tinyint(1) DEFAULT NULL,
+  `i1r2c3` tinyint(1) DEFAULT NULL,
+  `i1r2c4` tinyint(1) DEFAULT NULL,
+  `i1r2c5` int(10) DEFAULT NULL,
+  `i1r2c6` tinyint(1) DEFAULT NULL,
+  `i1r2c7` int(10) DEFAULT NULL,
+  `i1r2c8` int(10) DEFAULT NULL,
+  `i1r2c9` int(10) DEFAULT NULL,
+  `i1r2c10` int(10) DEFAULT NULL,
+  `i1r2c11` int(10) DEFAULT NULL,
+  `i1r2c12` int(10) DEFAULT NULL,
+  `i1r2c13` tinyint(1) DEFAULT NULL,
+  `i1r2c14` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 -- --------------------------------------------------------
@@ -922,7 +923,7 @@ CREATE TABLE `casos` (
 --
 
 CREATE TABLE `ciiu3` (
-  `CODIGO` mediumint(4) NOT NULL DEFAULT '0',
+  `CODIGO` varchar(4) COLLATE latin1_spanish_ci NOT NULL DEFAULT '0',
   `DESCRIP` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
@@ -1467,31 +1468,6 @@ ALTER TABLE `capitulo_i`
   ADD PRIMARY KEY (`C1_nordemp`,`vigencia`),
   ADD KEY `nordemp` (`C1_nordemp`);
 
--- --------------------------------------------------------
--- ########################################################
---
--- Indices de la tabla `capitulo_i_other`
---
-ALTER TABLE `capitulo_i_other`
-  ADD PRIMARY KEY (`C1_nordemp`,`vigencia`),
-  ADD KEY `nordemp` (`C1_nordemp`);
-
---
--- Indices de la tabla `capitulo_i_other_displab`
---
-ALTER TABLE `capitulo_i_other_displab`
-  ADD PRIMARY KEY (`id_displab`),
-  ADD KEY `nordemp` (`C1_nordemp`,`vigencia`);
-
---
--- AUTO_INCREMENT de la tabla `capitulo_i_other_displab`
---
-ALTER TABLE `capitulo_i_other_displab`
-  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
--- ########################################################
--- --------------------------------------------------------
-
 --
 -- Indices de la tabla `capitulo_ii`
 --
@@ -1512,6 +1488,20 @@ ALTER TABLE `capitulo_iii`
 ALTER TABLE `capitulo_iv`
   ADD PRIMARY KEY (`C4_nordemp`,`vigencia`),
   ADD KEY `nordemp` (`C4_nordemp`);
+
+--
+-- Indices de la tabla `capitulo_i_other`
+--
+ALTER TABLE `capitulo_i_other`
+  ADD PRIMARY KEY (`C1_nordemp`,`vigencia`),
+  ADD KEY `nordemp` (`C1_nordemp`);
+
+--
+-- Indices de la tabla `capitulo_i_other_displab`
+--
+ALTER TABLE `capitulo_i_other_displab`
+  ADD PRIMARY KEY (`id_displab`),
+  ADD KEY `nordemp` (`C1_nordemp`,`vigencia`);
 
 --
 -- Indices de la tabla `capitulo_v`
@@ -1659,7 +1649,12 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2079389;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2079755;
+--
+-- AUTO_INCREMENT de la tabla `capitulo_i_other_displab`
+--
+ALTER TABLE `capitulo_i_other_displab`
+  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --

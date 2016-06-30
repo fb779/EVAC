@@ -10,29 +10,33 @@
 		}
 		echo "</select>";
 	}
+	
 	if (isset($tabla)) {
 		switch($tabla) {
 			case "capitulo_i":
 				$llave = "C1_nordemp";
 				break;
-			case "capitulo_ii":
-				$llave = "C2_nordemp";
+			case "capitulo_i_other":
+				$llave = "C1_nordemp";
 				break;
-			case "capitulo_iii":
-				$llave = "C3_nordemp";
-				break;
-			case "capitulo_iv":
-				$llave = "C4_nordemp";
-				break;
-			case "capitulo_v":
-				$llave = "C5_nordemp";
-				break;
-			case "capitulo_vi":
-				$llave = "C6_nordemp";
-				break;
-			case "capitulo_vii":
-				$llave = "C7_nordemp";
-				break;
+// 			case "capitulo_ii":
+// 				$llave = "C2_nordemp";
+// 				break;
+// 			case "capitulo_iii":
+// 				$llave = "C3_nordemp";
+// 				break;
+// 			case "capitulo_iv":
+// 				$llave = "C4_nordemp";
+// 				break;
+// 			case "capitulo_v":
+// 				$llave = "C5_nordemp";
+// 				break;
+// 			case "capitulo_vi":
+// 				$llave = "C6_nordemp";
+// 				break;
+// 			case "capitulo_vii":
+// 				$llave = "C7_nordemp";
+// 				break;
 		}
 		$qCapitulo = $conn->prepare("SELECT * FROM $tabla WHERE $llave = :nFuente AND vigencia = :periodo");
 		$qCapitulo->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
