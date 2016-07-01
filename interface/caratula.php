@@ -990,10 +990,9 @@ latest: new Date(2099,11,31,23,59,59)
 								<button class="btn btn-default addAct" type="button">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 								</button>
-							</span> <input type="text" class="form-control"
-								id="<?php echo $lsAct['CODIGO']; ?>" name="<?php echo $lsAct['CODIGO']; ?>"
-								value="<?php echo $lsAct['CODIGO'] . ' - ' . $lsAct['DESCRIP']; ?>"
-								readonly>
+							</span> 
+							<input type="text" class="form-control" id="<?php echo $lsAct['CODIGO']; ?>" name="<?php echo $lsAct['CODIGO']; ?>" 
+								value="<?php echo $lsAct['CODIGO'] . ' - ' . $lsAct['DESCRIP']; ?>" readonly>
 						</div>
 					</div>
 					<?php } ?>
