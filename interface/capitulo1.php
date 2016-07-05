@@ -94,16 +94,14 @@
 			var retorno = 0;
 			var inputText = ['i1r1c2', 'i1r4c1']
 			function validaFormOther() {
-				debugger;
+				//debugger;
 				retorno = 0;
 				/**Validar radio buttons vacantes */
 				if (!$('input[name="i1r1c1"]').is(':checked')) {
 					$('input[name="i1r1c1"]').parent().parent().addClass('text-danger');
 			        retorno += 1;
 			    }
-
-				
-				
+			    				
 				if ($('[name="i1r1c1"]:checked').val() == 1){ /* Valor del radiobutton en si */
 					for (i=0; i<inputText.length; i++) {
 						if ($('[name="'+ inputText[i] +'"]').val() == ''){
@@ -157,7 +155,7 @@
 		                $.ajax({
 		                    url: "../persistencia/grabacapi.php",
 		                    type: "POST",
-		                    //beforeSend:  validaFormOther,
+		                    //beforeSend: validaFormOther,
 		                    data: $(this).serialize(),
 		                    success: function(dato) {
 								if (retorno==0) {
@@ -195,7 +193,7 @@
 	                }
 	            });
 			});
-	
+			
 			$(document).ready(function(){
 	    		$('[data-toggle="tooltip"]').tooltip();   
 			});
@@ -215,6 +213,144 @@
 					offset: {top: 10}
 				});
 			});
+
+			/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
+			$(document).ready(function(){
+				var lista = $("#listDisTab"); // Div del listado de la navbar
+			    var conte = $("#listDisForm"); // Div contenedor para agregar la caracterización
+			    var total = $('#disTotales'); // Div del contenedor de los campos de totales
+			    var carac = $('#caracterizacion');
+
+			    /** Habilita o deshabilita el boton de eliminar caracterizaciones */
+			    if (lista.children().length > 0 && conte.children().length > 0){
+			    	$('#removeDisp').removeClass('disabled');
+			    	$('#removeDisp').prop('disabled', false);
+			    }else { 
+			    	$('#removeDisp').addClass('disabled');
+			    	$('#removeDisp').prop('disabled', true);
+			    }
+
+				/** Boton para agregar caracterizacion nueva */
+			    $('#addDisp').click(function(){
+			    	var x = lista.children().length + 1;
+			    	var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Disp '+ x +'</a></li>'
+//			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"><div class="col-xs-12"> <h3> '+ $('#tituloDisp').val() +' </h3> </div> </div>';
+			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"><div class="col-xs-12"></div> </div>';
+			    	
+			    	lista.append(vinculo);
+			    	conte.append(panel)
+			    	
+			    	var item = carac.clone();
+			    	item.removeClass('hidden');
+			    	item.find('input, select').each(function(index, element){
+			    		$(element).addClass('validar');
+			    		$(element).attr('name', $(element).attr('name') + x + index);
+			    	});
+			    	$('#disp' + x).append(item);
+			    	
+			    	if (lista.length > 0 && conte.length > 0){
+			    		$('#removeDisp').removeClass('disabled');
+			    		$('#removeDisp').prop('disabled', false); 
+			    	}
+				});
+
+				/** Boton para eliminar caracterizacion */
+			    $('#removeDisp').click(function(){
+			    	if (lista.children().length > 0 && conte.children().length > 0){
+			    		lista.children(':last-child').remove();
+			    		conte.children(':last-child').remove();
+			    	}
+			    	
+			    	if (lista.children().length == 0 && conte.children().length == 0){
+			    		$('#removeDisp').addClass('disabled');
+			    		$('#removeDisp').prop('disabled', true);
+			    	}
+
+			    	validar_totales();
+			    });
+
+			    /** Funciona para validar los cambios y comportamientos de cada input */
+			    $('#listDisForm').on('change', '.validar', function(){
+				    
+				    var $ele = $('#listDisForm');
+				    //console.log($(this, $ele).parents('div .active').attr('id'));
+					var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
+		    		var vacAbi = 'i1r2c' + pnal + '0';
+	    			var vacCub = 'i1r2c' + pnal + '8';
+	    			var vacHom = 'i1r2c' + pnal + '9';
+	    			var vacMuj = 'i1r2c' + pnal + '10';
+	    			var vacNoCub = 'i1r2c' + pnal + '11';
+	    			var vacNoCubCa = 'i1r2c' + pnal + '12';
+	    			var cual = 'i1r2c' + pnal + '13';
+
+	    			debugger;
+	    			
+					if( $(this).attr('name') === vacAbi && $(this).val() <= $('[name="i1r1c2"]').val() ){ /** interaccion con el total de vacantes por disponibilidad */
+						$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
+			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+			    		}else{
+			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+				    	}	
+					} else {
+						$('[name="'+vacAbi+'"').val('0');
+
+					}
+
+					if( $(this).attr('name') === vacCub && parseInt($(this).val()) <= parseInt($('[name="'+vacAbi+'"]').val()) ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+						$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+						$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
+			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+			    		}else{
+			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+				    	}
+					}else{
+						$('[name="'+vacCub+'"').val('0');
+					}
+
+					if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+						$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
+					}
+					
+					if( $(this).attr('name') === vacNoCubCa  ){
+						if ($('[name="'+vacNoCubCa+'"').val() == '7'){
+			    			$('[name="'+cual+'"]').prop('disabled', false);
+			    			$('[name="'+cual+'"]').prop('required', true);
+			    		} else {
+			    			$('[name="'+cual+'"]').prop('disabled', true);
+			    			$('[name="'+cual+'"]').prop('required', false);
+				    	}
+					}
+
+			    	validar_totales();
+			    });
+			}); //$(document).ready()
+			
+			function validar_totales(){
+		    	/** Actualizacion de total de vacantes */
+		    	var sumTotVac = 0, sumTotVacCub = 0, sumTotVacNoCub = 0;
+		    	$('#listDisForm').children().each(function(){
+		    		var pnal = $(this).attr('id').substring(4);
+		    		var totalVac = 'i1r2c' + pnal + '0';
+	    			var totalVacCub = 'i1r2c' + pnal + '8';
+	    			var totalVacNoCub = 'i1r2c' + pnal + '11';
+		    		$(this).find(':input,select').each(function(){	
+		    			if ($(this).attr('name') == totalVac && $(this).val() != '' ){
+		    				sumTotVac += parseInt($(this).val());
+		    				$('#idi1r2ctv').val(sumTotVac);
+		    			}
+		    			if ($(this).attr('name') == totalVacCub && $(this).val() != '' ){
+		    				sumTotVacCub += parseInt($(this).val());
+		    				$('#idi1r2ctvcb').val(sumTotVacCub);
+		    			}
+		    			if ($(this).attr('name') == totalVacNoCub && $(this).val() != '' ){
+		    				sumTotVacNoCub += parseInt($(this).val());
+		    				$('#idi1r2ctvnocb').val(sumTotVacNoCub);
+		    			}
+		    		});
+		    	});
+			}
 		</script>
 	</head>
 	<?php
@@ -258,10 +394,10 @@
 						<label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
 						<div class="col-xs-12 col-sm-2 ">
 							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> > Si
+							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> required > Si
 							</label>
 							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?> > No
+							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?> required > No
 							</label>
 						</div>
 					</div>
@@ -269,7 +405,7 @@
 					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1 ">
 						<label class="col-xs-12 col-sm-4">Indique la  cantidad  de  vacantes abiertas</label>
 						<div class='col-xs-12 col-sm-3 small'>
-							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php echo $row['i1r1c2']; ?>" maxlength="9" />
+							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php echo $row['i1r1c2']; ?>" maxlength="9" required />
 						</div>
 					</div>
 				</fieldset>
@@ -284,192 +420,67 @@
 					</legend>
 					<div class="container-fluid">
 						<div class="col-xs-12 col-sm-12">
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Agregar Caracterizacion</button>
+							<label for="">Este módulo  determina la cantidad de vacantes durante el "I trimestre del año 2016" e  identifica sus características.</label>
 						</div>
 						<div id="contenido" class="col-xs-12 col-sm-12">
+							<!--div class="input-group col-sm-4">
+								<span class="input-group-btn">
+									<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+									</button>
+      							</span>
+      							<input type="text" id="tituloDisp" class="form-control" placeholder="Search for...">
+    						</div-->
+							<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button>
 							
+							<button id="removeDisp" type="button" class="btn btn-danger" aria-label="Left Align">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<p>
+								<ul class="nav nav-tabs" id="listDisTab">
+								<?php //foreach (){} ?>
+								</ul>
+							</p>
+							<p>
+								<form id="disForm" action="">
+								<div id="listDisForm" class="tab-content">
+								<?php //foreach (){} ?>
+								</div>
+								</form>
+							</p>
 						</div>
 						
 						<div id="totales" class="col-xs-12 col-sm-12">
-							<h5>Totales solicitados por la encuesta</h5>
-						</div>
-						
-						
-						
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Cantidad de vacantes abiertas</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='id1r2c1' name='i1r2c1' value = "<?php //echo $row['d1r2c1']?>" maxlength="9" />
+							<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+								<label class="">Total Vacantes</label>
+								<div class='small'>
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r2ctv' value = "<?php //echo $row['i1r2ctv']?>"  />
+								</div>
 							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">&Aacute;rea funcional</label>
-							<div class='small'>
-								<select class='form-control input-sm' id="idi1r2c2" name="i1r2c2">
-									<option value="0"> Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c2'] == 1) ? 'checked' : '';  ?> >Área de dirección general</option>
-									<option value="2" <?php //echo ($row['i1r2c2'] == 2) ? 'checked' : '';  ?> >Área de administración</option>
-									<option value="3" <?php //echo ($row['i1r2c2'] == 3) ? 'checked' : '';  ?> >Área de mercadeo/ventas</option>
-									<option value="4" <?php //echo ($row['i1r2c2'] == 4) ? 'checked' : '';  ?> >Área de producción</option>
-									<option value="5" <?php //echo ($row['i1r2c2'] == 5) ? 'checked' : '';  ?> >Área de contabilidad y finanzas</option>
-									<option value="6" <?php //echo ($row['i1r2c2'] == 6) ? 'checked' : '';  ?> >Personal de Investigación y desarrollo</option>
-									<option value="7" <?php //echo ($row['i1r2c2'] == 7) ? 'checked' : '';  ?> >Personal de apoyo</option>
-								</select>								
+							<div class="col-xs-1"></div>
+							<div class="form-group form-group-sm col-xs-12 col-sm-3">
+								<label class="">Total Vacantes Cubiertas</label>
+								<div class='small'>
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r2ctvccb' value = "<?php //echo $row['i1r2ctvc']?>" />
+								</div>
 							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Mínimo nivel educativo requerido</label>
-							<div class='small'>
-								<select class='form-control input-sm' id="idi1r2c3" name="i1r2c3">
-									<option value="0" > Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c3'] == 1) ? 'checked' : '';  ?> >No bachiller</option>
-									<option value="2" <?php //echo ($row['i1r2c3'] == 2) ? 'checked' : '';  ?> >Educación básica secundaria (6° - 9°)</option>
-									<option value="3" <?php //echo ($row['i1r2c3'] == 3) ? 'checked' : '';  ?> >Educación media   (10° - 13°)</option>
-									<option value="4" <?php //echo ($row['i1r2c3'] == 4) ? 'checked' : '';  ?> >Técnico laboral</option>
-									<option value="5" <?php //echo ($row['i1r2c3'] == 5) ? 'checked' : '';  ?> >Técnico profesional</option>
-									<option value="6" <?php //echo ($row['i1r2c3'] == 6) ? 'checked' : '';  ?> >Tecnológo</option>
-									<option value="7" <?php //echo ($row['i1r2c3'] == 7) ? 'checked' : '';  ?> >Estudiante universitario</option>
-									<option value="8" <?php //echo ($row['i1r2c3'] == 8) ? 'checked' : '';  ?> >Profesional universitario</option>
-									<option value="9" <?php //echo ($row['i1r2c3'] == 9) ? 'checked' : '';  ?> >Especialización </option>
-									<option value="10" <?php //echo ($row['i1r2c3'] == 10) ? 'checked' : '';  ?> >Maestría</option>
-									<option value="11" <?php //echo ($row['i1r2c3'] == 11) ? 'checked' : '';  ?> >Doctorado</option>
-									<option value="12" <?php //echo ($row['i1r2c3'] == 12) ? 'checked' : '';  ?> >No requiere estudios</option>
-								</select>
+							<div class="col-xs-1"></div>
+							<div class="form-group form-group-sm col-xs-12 col-sm-3">
+								<label class="">Total Vacantes No Cubiertas</label>
+								<div class='small'>
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r2ctvcnocb' value = "<?php //echo $row['i1r2ctvc']?>" />
+								</div>
 							</div>
+							<!--div class="col-xs-12 col-sm-1">
+								<button id="calcTotalDisp" type="button" class="btn btn-success" >
+									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+								</button>
+							</div-->
 						</div>
-						
-					</div>
-					
-					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Área de Formación</label>
-							<div class='small'>
-								<select class='form-control input-sm' id="idi1r2c4" name="i1r2c4">
-									<option value="0" > Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c4'] == 1) ? 'checked' : '';  ?> >Economía, Administración y Contaduría</option>
-									<option value="2" <?php //echo ($row['i1r2c4'] == 2) ? 'checked' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
-									<option value="3" <?php //echo ($row['i1r2c4'] == 3) ? 'checked' : '';  ?> >Ciencias Sociales y humanas</option>
-									<option value="4" <?php //echo ($row['i1r2c4'] == 4) ? 'checked' : '';  ?> >Ciencias de la educación</option>
-									<option value="5" <?php //echo ($row['i1r2c4'] == 5) ? 'checked' : '';  ?> >Ciencias de la salud</option>
-									<option value="6" <?php //echo ($row['i1r2c4'] == 6) ? 'checked' : '';  ?> >Bellas artes</option>
-									<option value="7" <?php //echo ($row['i1r2c4'] == 7) ? 'checked' : '';  ?> >Agronomía, Veterinaria</option>
-									<option value="8" <?php //echo ($row['i1r2c4'] == 8) ? 'checked' : '';  ?> >Matemáticas y ciencias naturales</option>
-									<option value="9" <?php //echo ($row['i1r2c4'] == 9) ? 'checked' : '';  ?> >No aplica</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Experiencia en meses</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c5' name='i1r2c5' value = "<?php //echo $row['i1r2c5']?>" maxlength="9" />
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Modalidad de Contratación</label>
-							<div class='small'>
-								<select class='form-control input-sm' id="idi1r2c6" name="i1r2c6">
-									<option value="0" > Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c6'] == 1) ? 'checked' : '';  ?> >Término Indefinido</option>
-									<option value="2" <?php //echo ($row['i1r2c6'] == 2) ? 'checked' : '';  ?> >Término  Fijo</option>
-									<option value="3" <?php //echo ($row['i1r2c6'] == 3) ? 'checked' : '';  ?> >Prestación de servicios</option>
-									<option value="4" <?php //echo ($row['i1r2c6'] == 4) ? 'checked' : '';  ?> >Por  obra  o  labor  contratada</option>
-									<option value="5" <?php //echo ($row['i1r2c6'] == 5) ? 'checked' : '';  ?> >Ocasional ó Transitorio</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					
-					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Salario u honorarios mensuales</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c7' name='i1r2c7' value = "<?php //echo $row['i1r2c7']?>" maxlength="9" />
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">Edad</label>
-							<div class='small'>
-								<select class='form-control input-sm' id="idi1r2c8" name="i1r2c8">
-									<option value="0" > Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c8'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
-									<option value="2" <?php //echo ($row['i1r2c8'] == 2) ? 'checked' : '';  ?> >20 - 25</option>
-									<option value="3" <?php //echo ($row['i1r2c8'] == 3) ? 'checked' : '';  ?> >25 - 30</option>
-									<option value="4" <?php //echo ($row['i1r2c8'] == 4) ? 'checked' : '';  ?> >30 - 35</option>
-									<option value="5" <?php //echo ($row['i1r2c8'] == 5) ? 'checked' : '';  ?> >35 - 40</option>
-									<option value="6" <?php //echo ($row['i1r2c8'] == 6) ? 'checked' : '';  ?> >40 - 45</option>
-									<option value="7" <?php //echo ($row['i1r2c8'] == 7) ? 'checked' : '';  ?> >45 - 50</option>
-									<option value="8" <?php //echo ($row['i1r2c8'] == 8) ? 'checked' : '';  ?> >50 - 55</option>
-									<option value="9" <?php //echo ($row['i1r2c8'] == 9) ? 'checked' : '';  ?> >55 - 60</option>
-									<option value="10" <?php //echo ($row['i1r2c8'] == 10) ? 'checked' : '';  ?> >60 - 65</option>
-									<option value="11" <?php //echo ($row['i1r2c8'] == 11) ? 'checked' : '';  ?> >65 - 70</option>
-									<option value="12" <?php //echo ($row['i1r2c8'] == 12) ? 'checked' : '';  ?> >70 - 75</option>
-									<option value="13" <?php //echo ($row['i1r2c8'] == 13) ? 'checked' : '';  ?> >75 - 80</option>
-									<option value="14" <?php //echo ($row['i1r2c8'] == 14) ? 'checked' : '';  ?> >80 - 85</option>
-									<option value="15" <?php //echo ($row['i1r2c8'] == 15) ? 'checked' : '';  ?> >85 - 90</option>
-									<option value="16" <?php //echo ($row['i1r2c8'] == 16) ? 'checked' : '';  ?> >Indiferente</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c9' name='i1r2c9' value = "<?php //echo $row['i1r2c9']?>" maxlength="9" />
-							</div>
-						</div>
-					</div>
-					
-					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c10' name='i1r2c10' value = "<?php //echo $row['i1r2c10']?>" maxlength="9" />
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c11' name='i1r2c11' value = "<?php //echo $row['i1r2c11']?>" maxlength="9" />
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
-							<div class='small'>
-								<input type='text' class='form-control input-sm text-right' id='idi1r2c12' name='i1r2c12' value = "<?php //echo $row['i1r2c12']?>" maxlength="9" />
-							</div>
-						</div>
-						
-					</div>
-					
-					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-							<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-							<div class="small">
-								<select class='form-control input-sm' id="idi1r2c13" name="idi1r2c13">
-									<option value="0" > Seleccione una opción</option>
-									<option value="1" <?php //echo ($row['i1r2c13'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-									<option value="2" <?php //echo ($row['i1r2c13'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
-									<option value="3" <?php //echo ($row['i1r2c13'] == 3) ? 'checked' : '';  ?> >Postulantes sobre-calificados</option>
-									<option value="4" <?php //echo ($row['i1r2c13'] == 4) ? 'checked' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-									<option value="5" <?php //echo ($row['i1r2c13'] == 5) ? 'checked' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-									<option value="6" <?php //echo ($row['i1r2c13'] == 6) ? 'checked' : '';  ?> >Pocos postulantes</option>
-									<option value="7" <?php //echo ($row['i1r2c13'] == 7) ? 'checked' : '';  ?> >Otra</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-1"></div>
-						<div class="form-group form-group-sm col-xs-12 col-sm-7">
-							<label class="">Cual?</label>
-							<input type='text' class='form-control input-sm text-right' id='idi1r2c14' name='i1r2c14' value = "<?php //echo $row['i1r2c14']?>" maxlength="9" />
-						</div>
-					</div>
 				</fieldset>
 				
 				<fieldset style='border-style: solid; border-width: 1px' id="ii3" class="<?php //echo $estadoII3; ?>" >
@@ -574,7 +585,7 @@
 					<div class="container-fluid">
 						<div class="form-group form-group-sm col-xs-12">
 							<label class="">¿Cuántas requerían de una competencia certificada?</label>
-							<input type='text' class='form-control input-sm' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="9" />
+							<input type='text' class='form-control input-sm' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="9" required />
 						</div>
 					</div>
 				</fieldset>
@@ -620,47 +631,187 @@
 			</div>
 		</div>
 		
-		<?php include 'modalediteas.php' ?>
+		<?php //include 'modalediteas.php' ?>
 		
-		<div id="avisoCrit" class="modal fade" role="dialog">
-  			<div class="modal-dialog modal-lg">
-   				 <div class="modal-content">
-      				<div class="modal-header">
-        				<button type="button" class="close" data-dismiss="modal">&times;</button>
-        					<h4 class="modal-title">RECOMENDACIONES PARA UN BUEN PROCESO DE CR&Iacute;TICA EN EL CAP&Iacute;TULO II</h4>
-      				</div>
-      				<div class="modal-body">
-        				<ol style='text-align: justify; font-family: arial'>
-						<li>Las cifras en este cap&iacute;tulo deben  registrarse en <b>MILES DE PESOS</b> y asegurarse  que sean <b>&Uacute;NICAMENTE</b> las inversiones
-							relacionadas con las innovaciones, proyecto en marcha y/o abandonado del cap&iacute;tulo I,  se aconseja tener en cuenta el tama&ntilde;o de la
-							empresa como referente para  los montos reportados.
-						<li>Revisar las fuentes que registren un monto de inversi&oacute;n en <b>MAQUINARIA Y EQUIPO</b> en la EDIT, <b>SUPERIOR</b> a la inversi&oacute;n
-							total en maquinaria y equipo, reportado en la <b>EAC</b> o <b>EAS</b> para cualquiera de los dos a&ntilde;os.
-						<li>Revisar las fuentes que registren un monto de inversi&oacute;n en <b>TICS</b> en la EDIT, <b>SUPERIOR</b> a la inversi&oacute;n total en
-							tecnolog&iacute;as de la informaci&oacute;n, reportado en la <b>EAC</b> o <b>EAS</b> para cualquiera de los dos a&ntilde;os.
-						<li>Las fuentes que tengan para ambos a&ntilde;os el <b>MISMO MONTO</b> de inversi&oacute;n, se recomienda indagar que no sean presupuestos o gastos incurridos
-							por la empresa.
-						<li>Revisar las fuentes que registren un monto de <b>INVERSI&Oacute;N EN ACTI</b> en la EDIT para cualquiera de los dos a&ntilde;os <b>IGUAL O SUPERIOR</b>
-							al <b>TOTAL DE VENTAS</b> reportados en el capitulo 1, JUSTIFICAR si es el caso.
-						<li>Cuando la fuente registra valores de inversi&oacute;n en <b>BIOTECNOLOG&Iacute;A</b> (es una tecnolog&iacute;a que involucra t&eacute;cnicas cient&iacute;ficas que
-							utilizan organismos vivos o sus partes para obtener o modificar productos, para mejorar plantas o animales o para desarrollar
-							microorganismos con usos espec&iacute;ficos)  es necesario <b>VERIFICAR y JUSTIFICAR</b> que la actividad seg&uacute;n c&oacute;digo <b>CIIU</b>
-							realmente est&eacute; relacionado con ese tipo de actividades. Por ejemplo,  en muchas ocasiones los concesionarios de veh&iacute;culos y/o
-							empresas de transporte reportan  de manera incorrecta inversiones de este tipo; mientras que es posible que empresas que realicen
-							tratamiento  de aguas o  realicen actividades relacionadas con la salud si presenten este tipo de inversi&oacute;n.
-						<li>Revisar las fuentes que registren el <b>MISMO VALOR</b> invertido en <b>ACTI</b> para cualquiera de los dos a&ntilde;os en <b>BIOTECNOLOG&Iacute;A</b>
-							(valor invertido en pregunta referente a montos de biotecnolog&iacute;a igual a valor invertido en actividades cient&iacute;ficas, tecnol&oacute;gicas
-							y de innovaci&oacute;n para cada uno de los a&ntilde;os).
-						<li>Realizar observaciones claras, <b>NO DEJAR NOTAS</b> como datos ok, datos verificados, etc. en lo posible indicar el nombre y cargo
-							de la persona que suministra la informaci&oacute;n, en los casos donde las cifras son muy grandes y se confirme que  est&aacute;n expresadas en
-							miles de pesos hacer la aclaraci&oacute;n en  las observaciones.
-						</ol>
-      				</div>
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      				</div>
-    			</div>
-  			</div>
+		<!-- Contenedor de la caracterizacion -->
+		<div id="caracterizacion" class="hidden">
+			<div class="container-fluid">		
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Cantidad de vacantes abiertas</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9"  required/>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">&Aacute;rea funcional</label>
+					<div class='small'>
+						<select class='form-control input-sm' id="" name="i1r2c" required>
+							<option value=""> Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Área de dirección general</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Área de administración</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Área de mercadeo/ventas</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Área de producción</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Área de contabilidad y finanzas</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Personal de Investigación y desarrollo</option>
+							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Personal de apoyo</option>
+						</select>								
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Mínimo nivel educativo requerido</label>
+					<div class='small'>
+						<select class='form-control input-sm' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >No bachiller</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Educación básica secundaria (6° - 9°)</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Educación media   (10° - 13°)</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Técnico laboral</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Técnico profesional</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Tecnológo</option>
+							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Estudiante universitario</option>
+							<option value="8" <?php //echo ($row['i1r2c'] == 8) ? 'checked' : '';  ?> >Profesional universitario</option>
+							<option value="9" <?php //echo ($row['i1r2c'] == 9) ? 'checked' : '';  ?> >Especialización </option>
+							<option value="10" <?php //echo ($row['i1r2c'] == 10) ? 'checked' : '';  ?> >Maestría</option>
+							<option value="11" <?php //echo ($row['i1r2c'] == 11) ? 'checked' : '';  ?> >Doctorado</option>
+							<option value="12" <?php //echo ($row['i1r2c'] == 12) ? 'checked' : '';  ?> >No requiere estudios</option>
+						</select>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="container-fluid">
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Área de Formación</label>
+					<div class='small'>
+						<select class='form-control input-sm' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Economía, Administración y Contaduría</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Ciencias Sociales y humanas</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Ciencias de la educación</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Ciencias de la salud</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Bellas artes</option>
+							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Agronomía, Veterinaria</option>
+							<option value="8" <?php //echo ($row['i1r2c'] == 8) ? 'checked' : '';  ?> >Matemáticas y ciencias naturales</option>
+							<option value="9" <?php //echo ($row['i1r2c'] == 9) ? 'checked' : '';  ?> >No aplica</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Experiencia en meses</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Modalidad de Contratación</label>
+					<div class='small'>
+						<select class='form-control input-sm' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Término Indefinido</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Término  Fijo</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Prestación de servicios</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Por  obra  o  labor  contratada</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Ocasional ó Transitorio</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-fluid">
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Salario u honorarios mensuales</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">Edad</label>
+					<div class='small'>
+						<select class='form-control input-sm' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >20 - 25</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >25 - 30</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >30 - 35</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >35 - 40</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >40 - 45</option>
+							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >45 - 50</option>
+							<option value="8" <?php //echo ($row['i1r2c'] == 8) ? 'checked' : '';  ?> >50 - 55</option>
+							<option value="9" <?php //echo ($row['i1r2c'] == 9) ? 'checked' : '';  ?> >55 - 60</option>
+							<option value="10" <?php //echo ($row['i1r2c'] == 10) ? 'checked' : '';  ?> >60 - 65</option>
+							<option value="11" <?php //echo ($row['i1r2c'] == 11) ? 'checked' : '';  ?> >65 - 70</option>
+							<option value="12" <?php //echo ($row['i1r2c'] == 12) ? 'checked' : '';  ?> >70 - 75</option>
+							<option value="13" <?php //echo ($row['i1r2c'] == 13) ? 'checked' : '';  ?> >75 - 80</option>
+							<option value="14" <?php //echo ($row['i1r2c'] == 14) ? 'checked' : '';  ?> >80 - 85</option>
+							<option value="15" <?php //echo ($row['i1r2c'] == 15) ? 'checked' : '';  ?> >85 - 90</option>
+							<option value="16" <?php //echo ($row['i1r2c'] == 16) ? 'checked' : '';  ?> >Indiferente</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-fluid">
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "" maxlength="9" readonly required />
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
+					<div class='small'>
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "" maxlength="9" readonly required />
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="container-fluid">
+				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+					<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
+					<div class="small">
+						<select class='form-control input-sm ' id="" name="i1r2c" disabled>
+							<option value="" > Seleccione una opción</option>
+							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
+							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
+							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Postulantes sobre-calificados</option>
+							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Falta de experiencia o conocimiento específico</option>
+							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Pocos postulantes</option>
+							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Otra</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1"></div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-7">
+					<label class="">Cual?</label>
+					<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" disabled />
+				</div>
+			</div>
 		</div>
+		<!-- Contenedor de la caracterizacion -->
+		
  	</body>
  </html> 
