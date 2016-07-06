@@ -94,8 +94,9 @@
 			var retorno = 0;
 			var inputText = ['i1r1c2', 'i1r4c1']
 			function validaFormOther() {
-				//debugger;
+				debugger;
 				retorno = 0;
+				var cont = 0;
 				/**Validar radio buttons vacantes */
 				if (!$('input[name="i1r1c1"]').is(':checked')) {
 					$('input[name="i1r1c1"]').parent().parent().addClass('text-danger');
@@ -117,35 +118,56 @@
 						}
 					}
 				}
+
+
+				
+				$(':checkbox').each(function(){ 
+				  if($(this).is(':checked')){
+				    cont ++;
+				  }
+				});
+
+				if (cont == 0){ 
+				  $('#ii3contenido').removeClass('hidden');
+				  cont=0;
+				  returno += 1;
+				}else{
+				  $('#ii3contenido').addClass('hidden');
+				  cont=0;
+				}
+
+// 				$('#listDisForm').children().each(function(){
+// 					var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
+// 					var vacNoCub = 'i1r2c' + pnal + '11';
+// 					var vacNoCubCa = 'i1r2c' + pnal + '12';
+// 	    			var cual = 'i1r2c' + pnal + '13';
+// 					$(this).find(':input,select').each(function(){
+
+// 						switch($(this).attr('name')){
+// 							case vacNoCubCa:{
+// 								var vnc = parseInt($('[name="'+ vacNoCub +'"]').val());
+// 								if ( vnc > 0){
+// 									if( $(this).val() == '' ){
+// 										retorno += 1;
+// 									}
+// 								}
+// 							}break;
+							
+// 							case cual:{
+								
+// 							}break;
+							
+// 							default: {}break;
+// 						}
+
+// 						console.log('campo '+ $(this).attr('name') +': ' + $(this).val());   
+// 					}); 
+// 				});
+				
 				return retorno;
 			}
 			
 			$(document).ready(function() {
-
-				$('[type="checkbox"]').change(function(){
-					var item = $(this);
-					if(item.is(':checked')){
-						item.val(1);
-						if(item.attr('name') ==  'i1r3c8'){
-							$('input[name="i1r3c9"]').prop('disabled', false);
-						}
-					}else{ 
-						item.val(0);
-						if(item.attr('name') ==  'i1r3c8'){
-							$('input[name="i1r3c9"]').val('');
-							$('input[name="i1r3c9"]').prop('disabled', true);
-							
-						} 
-					}
-				});
-
-				if ($('[name="i1r3c8"]').is(':checked')){
-					$('input[name="i1r3c9"]').prop('disabled', false);
-				}else{
-					$('input[name="i1r3c9"]').val('');
-					$('input[name="i1r3c9"]').prop('disabled', true);
-				}
-				//$('input, textarea, button, select').attr('disabled','disabled');
 				
 				$("#capitulo1").submit(function(event) {
 		            debugger;
@@ -214,8 +236,32 @@
 				});
 			});
 
-			/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
+			
 			$(document).ready(function(){
+				$('[type="checkbox"]').change(function(){
+					var item = $(this);
+					if(item.is(':checked')){
+						item.val(1);
+						if(item.attr('name') ==  'i1r3c8'){
+							$('[name="i1r3c9"]').prop('disabled', false);
+						}
+					}else{ 
+						item.val(0);
+						if(item.attr('name') ==  'i1r3c8'){
+							$('[name="i1r3c9"]').val('');
+							$('[name="i1r3c9"]').prop('disabled', true);
+						} 
+					}
+				});
+
+				if ($('[name="i1r3c8"]').is(':checked')){
+					$('input[name="i1r3c9"]').prop('disabled', false);
+				}else{
+					$('input[name="i1r3c9"]').val('');
+					$('input[name="i1r3c9"]').prop('disabled', true);
+				}
+
+				/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
 				var lista = $("#listDisTab"); // Div del listado de la navbar
 			    var conte = $("#listDisForm"); // Div contenedor para agregar la caracterización
 			    var total = $('#disTotales'); // Div del contenedor de los campos de totales
@@ -223,10 +269,8 @@
 
 			    /** Habilita o deshabilita el boton de eliminar caracterizaciones */
 			    if (lista.children().length > 0 && conte.children().length > 0){
-			    	$('#removeDisp').removeClass('disabled');
 			    	$('#removeDisp').prop('disabled', false);
-			    }else { 
-			    	$('#removeDisp').addClass('disabled');
+			    }else {
 			    	$('#removeDisp').prop('disabled', true);
 			    }
 
@@ -249,7 +293,6 @@
 			    	$('#disp' + x).append(item);
 			    	
 			    	if (lista.length > 0 && conte.length > 0){
-			    		$('#removeDisp').removeClass('disabled');
 			    		$('#removeDisp').prop('disabled', false); 
 			    	}
 				});
@@ -262,7 +305,7 @@
 			    	}
 			    	
 			    	if (lista.children().length == 0 && conte.children().length == 0){
-			    		$('#removeDisp').addClass('disabled');
+			    		//$('#removeDisp').addClass('disabled');
 			    		$('#removeDisp').prop('disabled', true);
 			    	}
 
@@ -282,36 +325,106 @@
 	    			var vacNoCub = 'i1r2c' + pnal + '11';
 	    			var vacNoCubCa = 'i1r2c' + pnal + '12';
 	    			var cual = 'i1r2c' + pnal + '13';
-
-	    			debugger;
+	    			//var tvac = ($('#idi1r2ctv').val()!='') ? parseInt($('#idi1r2ctv').val()):0;
+	    			//var tvac = subVacantes();
+					
+	    			//debugger;
 	    			
-					if( $(this).attr('name') === vacAbi && $(this).val() <= $('[name="i1r1c2"]').val() ){ /** interaccion con el total de vacantes por disponibilidad */
-						$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
-			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
-			    		}else{
-			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
-				    	}	
-					} else {
-						$('[name="'+vacAbi+'"').val('0');
+	    			if( $(this).attr('name') === vacAbi){ /** interaccion con el total de vacantes por disponibilidad */
+	    				var vac = parseInt($(this).val());
+		    			
+		    			if ( !isNaN(vac) ){
+		    				//if (tvac <= parseInt($('[name="i1r1c2"]').val())){
+		    					if ( vac < parseInt($('[name="'+vacCub+'"').val()) ){
+			    					$('[name="'+vacCub+'"').val('0');
+			    					$('[name="'+vacHom+'"').val('0');
+			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+			    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+			    				}else{
+			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+			    					$('[name="'+vacNoCub+'"').val( vac - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+	
+				    			}
+		    					
+		    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){ // validacion para activar la seleccion de vacantes no cubiertas
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+		    		    		}else{
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+		    			    	}
 
-					}
-
-					if( $(this).attr('name') === vacCub && parseInt($(this).val()) <= parseInt($('[name="'+vacAbi+'"]').val()) ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
-						$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
-						$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
-			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
-			    		}else{
-			    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+// 		    				}else{
+// 		    					$('[name="'+vacAbi+'"').val('0');
+// 		    					alert('La cantidad de vacantes debe ser menor a la cantidad de vacantes totales registradas');
+// 		    				}
+	    					//$('[name="'+vacAbi+'"').val('0');
+		    			}else{
+		    				$('[name="'+vacAbi+'"').val('0');
+		    				$('[name="'+vacCub+'"').val('0');
+	    					$('[name="'+vacHom+'"').val('0');
+	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+		    				
+	    					alert('Debe ingresar un valor numerico en el campo');
 				    	}
-					}else{
-						$('[name="'+vacCub+'"').val('0');
-					}
+	    			}
 
-					if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
-						$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
-					}
+	    			if( $(this).attr('name') === vacCub ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+		    			var vacCu = parseInt($(this).val());
+		    			if ( !isNaN(vacCu) ){
+		    				if( vacCu <= parseInt($('[name="'+vacAbi+'"]').val()) ){
+			    				if (vacCu >= parseInt($('[name="'+vacHom+'"').val()) ){
+			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+			    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+				    			}else {
+				    				$('[name="'+vacHom+'"').val('0');
+			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+			    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+					    		}
+					    		
+		    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+		    		    		}else{
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+		    			    	}
+		    					
+		    				}else{
+		    					$('[name="'+vacCub+'"').val('0');
+		    					$('[name="'+vacHom+'"').val('0');
+		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+		    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+		    					alert('Debe ingresar un valor menor o igual al numero de vacantes abiertas');
+		    				}
+		    				
+			    		}else{
+			    			$('[name="'+vacCub+'"').val('0');
+	    					$('[name="'+vacHom+'"').val('0');
+	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+	    					alert('Debe ingresar un valor numerico en el campo');
+				    	}
+			    		
+	    				
+	    				
+	    			}
+	    			
+	    			if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+	    				var vacHo = parseInt($(this).val());
+		    			if ( !isNaN(vacHo) ){
+		    				if ( vacHo <= parseInt($('[name="'+vacCub+'"').val()) ){
+		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
+		    				}else{
+		    					$(this).val('0');
+		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
+		    					alert('Debe ingresar un valor menor o igual al numero de vacantes cubiertas');
+		    				}
+			    		}else{
+			    			$(this).val('0');
+	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
+	    					alert('Debe ingresar un valor numerico en el campo');
+				    	}
+	    				
+	    					
+	    			}
 					
 					if( $(this).attr('name') === vacNoCubCa  ){
 						if ($('[name="'+vacNoCubCa+'"').val() == '7'){
@@ -323,33 +436,42 @@
 				    	}
 					}
 
-			    	validar_totales();
+					validar_totales();
 			    });
 			}); //$(document).ready()
+
+			function subVacantes(){ /** Metodo para sumar el total de vacantes abiertas dinamicamente */
+				var $ele = $('#listDisForm');
+				var suma = 0;
+				$('.subVac', $ele).each(function(){
+					suma += ($(this).val()!='')?parseInt($(this).val()):0;
+				});
+				return suma;
+			}
 			
 			function validar_totales(){
 		    	/** Actualizacion de total de vacantes */
 		    	var sumTotVac = 0, sumTotVacCub = 0, sumTotVacNoCub = 0;
 		    	$('#listDisForm').children().each(function(){
 		    		var pnal = $(this).attr('id').substring(4);
-		    		var totalVac = 'i1r2c' + pnal + '0';
-	    			var totalVacCub = 'i1r2c' + pnal + '8';
-	    			var totalVacNoCub = 'i1r2c' + pnal + '11';
-		    		$(this).find(':input,select').each(function(){	
-		    			if ($(this).attr('name') == totalVac && $(this).val() != '' ){
+		    		var vacantes = 'i1r2c' + pnal + '0';
+	    			var vacCubiertas = 'i1r2c' + pnal + '8';
+	    			var vacNoCubiertas = 'i1r2c' + pnal + '11';
+		    		$(this).find(':input,select').each(function(){
+		    			if ($(this).attr('name') == vacantes && $(this).val() != '' ){
 		    				sumTotVac += parseInt($(this).val());
-		    				$('#idi1r2ctv').val(sumTotVac);
 		    			}
-		    			if ($(this).attr('name') == totalVacCub && $(this).val() != '' ){
+		    			if ($(this).attr('name') == vacCubiertas && $(this).val() != '' ){
 		    				sumTotVacCub += parseInt($(this).val());
-		    				$('#idi1r2ctvcb').val(sumTotVacCub);
 		    			}
-		    			if ($(this).attr('name') == totalVacNoCub && $(this).val() != '' ){
+		    			if ($(this).attr('name') == vacNoCubiertas && $(this).val() != '' ){
 		    				sumTotVacNoCub += parseInt($(this).val());
-		    				$('#idi1r2ctvnocb').val(sumTotVacNoCub);
 		    			}
 		    		});
 		    	});
+		    	$('#idi1r2ctv').val(sumTotVac);
+		    	$('#idi1r2ctvcb').val(sumTotVacCub);
+		    	$('#idi1r2ctvnocb').val(sumTotVacNoCub);
 			}
 		</script>
 	</head>
@@ -367,10 +489,12 @@
 */			
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
- 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?>
+ 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
- 				<?php echo '<br/>'; print_r($row); ?>
- 				<?php echo '<br/>'; print_r($rowCtl); ?>
+ 				<?php //echo '<br/> consulta de datos: '; print_r($row); ?>
+ 				<?php echo '<br/> consulta de control: '; print_r($rowCtl); ?>
+ 				
+ 				<?php echo '<br/> consulta de sesion: '; print_r($_SESSION['tipou']) ;?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
@@ -403,7 +527,7 @@
 					</div>
 					
 					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1 ">
-						<label class="col-xs-12 col-sm-4">Indique la  cantidad  de  vacantes abiertas</label>
+						<label class="col-xs-12 col-sm-4">Indique la  cantidad total  de  vacantes abiertas</label>
 						<div class='col-xs-12 col-sm-3 small'>
 							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php echo $row['i1r1c2']; ?>" maxlength="9" required />
 						</div>
@@ -423,14 +547,6 @@
 							<label for="">Este módulo  determina la cantidad de vacantes durante el "I trimestre del año 2016" e  identifica sus características.</label>
 						</div>
 						<div id="contenido" class="col-xs-12 col-sm-12">
-							<!--div class="input-group col-sm-4">
-								<span class="input-group-btn">
-									<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-									</button>
-      							</span>
-      							<input type="text" id="tituloDisp" class="form-control" placeholder="Search for...">
-    						</div-->
 							<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
@@ -458,28 +574,23 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 								<label class="">Total Vacantes</label>
 								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r2ctv' value = "<?php //echo $row['i1r2ctv']?>"  />
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r2ctv' value = "<?php //echo $row['i1r2ctv']?>" readonly required />
 								</div>
 							</div>
 							<div class="col-xs-1"></div>
 							<div class="form-group form-group-sm col-xs-12 col-sm-3">
 								<label class="">Total Vacantes Cubiertas</label>
 								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r2ctvccb' value = "<?php //echo $row['i1r2ctvc']?>" />
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r2ctvccb' value = "<?php //echo $row['i1r2ctvc']?>" readonly required />
 								</div>
 							</div>
 							<div class="col-xs-1"></div>
 							<div class="form-group form-group-sm col-xs-12 col-sm-3">
 								<label class="">Total Vacantes No Cubiertas</label>
 								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r2ctvcnocb' value = "<?php //echo $row['i1r2ctvc']?>" />
+									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r2ctvcnocb' value = "<?php //echo $row['i1r2ctvc']?>" readonly required />
 								</div>
 							</div>
-							<!--div class="col-xs-12 col-sm-1">
-								<button id="calcTotalDisp" type="button" class="btn btn-success" >
-									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-								</button>
-							</div-->
 						</div>
 				</fieldset>
 				
@@ -490,6 +601,9 @@
 							3. Para  las <?php echo "XXX"; ?> vacantes mencionadas en el numeral 1, Seleccione  el (los) medio(s) de publicación utilizado(s):
 						</b></h5>
 					</legend>
+					<div id="ii3contenido" class="container-fluid hidden">
+						<div class="col-sx-12 text-danger"> <h4>Debe seleccionar alguno de los valores </h4> </div>
+					</div>
 					<div class="container-fluid">
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox">
@@ -598,14 +712,14 @@
 				<?php if ($grabaOK) { ?>
 				<div class='form-group form-group-sm'>
 					<div class='col-md-8'>
-						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Cap&iacute;tulo II Actualizado Correctamente</p>
+						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Cap&iacute;tulo I Actualizado Correctamente</p>
 					</div>
 					<div class='col-sm-1 small pull-right' id="btn_cont" style="display: none;" >
-						<!--a href='capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a-->
+						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
 						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
 					</div>
 					<div class='col-sm-1 small pull-right'>
-						<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Cap&iacute;tulo II'>Grabar</button>
+						<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Cap&iacute;tulo I'>Grabar</button>
 					</div>
 				</div>
 				<?php } ?>
@@ -639,14 +753,14 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Cantidad de vacantes abiertas</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9"  required/>
+						<input type='text' class='form-control input-sm text-right subVac' id='' name='i1r2c' value = "0" maxlength="9"  required="required"/>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">&Aacute;rea funcional</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm' id="" name="i1r2c" required="required">
 							<option value=""> Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Área de dirección general</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Área de administración</option>
@@ -662,7 +776,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Mínimo nivel educativo requerido</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm' id="" name="i1r2c" required="required">
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >No bachiller</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Educación básica secundaria (6° - 9°)</option>
@@ -686,7 +800,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Área de Formación</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm' id="" name="i1r2c" required="required">
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Economía, Administración y Contaduría</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
@@ -704,14 +818,14 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Experiencia en meses</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required="required" />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Modalidad de Contratación</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm' id="" name="i1r2c" required="required">
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Término Indefinido</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Término  Fijo</option>
@@ -727,14 +841,14 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Salario u honorarios mensuales</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required="required" />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Edad</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm' id="" name="i1r2c" required="required">
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >20 - 25</option>
@@ -759,7 +873,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required="required" />
 					</div>
 				</div>
 			</div>
@@ -768,21 +882,21 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required="required" />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "" maxlength="9" readonly required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" readonly required="required" />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "" maxlength="9" readonly required />
+						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" readonly required="required" />
 					</div>
 				</div>
 				

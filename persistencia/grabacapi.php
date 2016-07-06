@@ -384,7 +384,7 @@
 */
 // REVERSAR ESTADO DE CAPITULOS I, II, V SI SE MODIFICA EL CAPITULO I.
 
-	if ($capitulo == "C1" AND ($tipousu == "FU" OR $tipousu == "CR") AND $region != 99) {
-		$qControl = $conn->query("UPDATE control SET m2=1, m3=1, m5=1 WHERE nordemp = $valores[0] AND vigencia = $vig");
-	}
+// 	if ($capitulo == "C1" AND ($tipousu == "FU" OR $tipousu == "CR") AND $region != 99) {
+// 		$qControl = $conn->query("UPDATE control SET m2=1, m3=1, m5=1 WHERE nordemp = $valores[0] AND vigencia = $vig");
+// 	}
 ?>
