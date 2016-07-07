@@ -8,11 +8,11 @@
 	$region = $_SESSION['region'];
 	$anterior = $vig-1;
 	$nombres = Array(); $Valores = Array();
-	$c1n1 = array('i1r1c1', 'i1r1c2', 'i1r3c1', 'i1r3c2', 'i1r3c3', 'i1r3c4', 'i1r3c5', 'i1r3c6', 'i1r3c7', 'i1r3c8', 'i1r3c9', 'i1r4c1', 'observaciones');
+	$c1n1 = array('i1r1c1', 'i1r1c2', 'i1r1c3', 'i1r1c4', 'i1r3c1', 'i1r3c2', 'i1r3c3', 'i1r3c4', 'i1r3c5', 'i1r3c6', 'i1r3c7', 'i1r3c8', 'i1r3c9', 'i1r4c1', 'observaciones');
 	
 	$i = 0;
 	$lineaMOD = ""; $lineaEXE = ""; $modo = "MODI";
-
+	
 	foreach($_POST As $nombre => $valor) {
 		$nombres[$i] = $nombre;
 		$valores[$i] = $valor;
@@ -23,7 +23,6 @@
 	switch ($capitulo) {
 		case 'C1':
 			$tabla = "capitulo_i";
-			$tabla = "capitulo_i_other";
 			$modulo = "m1";
 			break;
 // 		case 'C2':
@@ -358,6 +357,36 @@
 	$lineaMOD .= ' WHERE ' . $nombres[0] . ' = ' . $valores[0];
 //	print_r($lineaMOD)."<br>";
 	$actucapi = $conn->exec($lineaMOD);
+	
+	
+	if ($modulo == 'm1'){
+		$dt = $_POST;
+		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14) values ';
+		$pnl = $valores[1];
+		$tem = '';
+		for ($i=1; $i<= $pnl; $i++){
+			$tem .= "('" . $numero . "','" . $vig . "',";
+			for ($j=0; $j<14; $j++){
+				$nc = 'i1r2c' . $i . $j;
+				$c1n2[] = $nc;
+				//echo $nc . ' - ';
+				if (isset($dt[$nc]) && $dt[$nc] != ''){
+					$tem .= "'" . $dt[$nc] . "',";
+				}else{
+					$tem .= "NULL,";
+				}
+			}
+			$tem = rtrim($tem, ",") .  '),';
+		}
+		
+		$lineaINS .= rtrim($tem, ",");
+		
+		$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
+		
+		$actcapi = $conn->exec($lineaINS);
+	}
+	
+	
 //	print_r($lineaMOD);
 /*	
 	for ($i=1; $i<count($nombres); $i++) {

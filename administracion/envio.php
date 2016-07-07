@@ -14,22 +14,24 @@
 	
 	foreach($qControl AS $rowCtl) {
 		$m1 = $rowCtl['m1'];
-		$m2 = $rowCtl['m2'];
-		$m3 = $rowCtl['m3'];
-		$m4 = $rowCtl['m4'];
-		$m5 = $rowCtl['m5'];
-		$m6 = $rowCtl['m6'];
+// 		$m2 = $rowCtl['m2'];
+// 		$m3 = $rowCtl['m3'];
+// 		$m4 = $rowCtl['m4'];
+// 		$m5 = $rowCtl['m5'];
+// 		$m6 = $rowCtl['m6'];
 	}
 	
 	if ($region == 99) {
 		$envioOK = true;
 	}
 	else {
-		if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+		//if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+		if ($tipousu == "FU" AND $m1 == 2) {
 			$envioOK = true;
 		}
 		else {
-			if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
+// 			if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
+			if ($tipousu == "CR" AND $m1 == 3) {
 				$envioOK = true;
 			}
 		}
@@ -45,7 +47,7 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovación Tecnológica - Formulario Electrónico</title>
+		<title>Encuesta de Desarrollo e Innovaciï¿½n Tecnolï¿½gica - Formulario Electrï¿½nico</title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -134,7 +136,7 @@
 	</head>
 	<body>
 		<div class="well well-sm text-center" style="font-weight: bold; padding-top: 60px">
- 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
+ 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIï¿½N
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
  		</div>
 		<div class="container">
@@ -145,7 +147,7 @@
 						if ($region != 99) {
 							if ($envioOK) {
 								if (!$reenv) {
-									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIÓN";
+									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIï¿½N";
 									echo "<div class='form-group' style='padding-top: 60px'>";
 									echo "<button type='submit' class='btn btn-primary btn-lg' id='enviof'>ENVIAR FORMULARIO</button>";
 									echo "&nbsp;";
@@ -161,17 +163,17 @@
 									echo "</div>";
 								}
 								else {
-									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIÓN";
+									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIï¿½N";
 									echo "<div class='form-group' style='padding-top: 60px'>";
 									echo "<button type='button' id='reenvio' class='btn btn-primary btn-lg'>REENVIAR FORMULARIO</button>";
 									echo "&nbsp;";
 									echo "<a href='../administracion/operativo.php' class='btn btn-default btn-lg' data-toggle='tooltip' title='Volver a Inicio'>Volver</a>";
 									echo "</div>";
-									echo "<div class='row' style='color: #F00'>NO olvide registrar las observaciones en los respectivos capítulos</div>";
+									echo "<div class='row' style='color: #F00'>NO olvide registrar las observaciones en los respectivos capï¿½tulos</div>";
 								}
 							}
 							else {
-								echo "EXISTEN CAPÍTULOS SIN TERMINAR DEBE TERMINARLOS PARA REALIZAR EL ENVÍO DE INFORMACIÓN";
+								echo "EXISTEN CAPï¿½TULOS SIN TERMINAR DEBE TERMINARLOS PARA REALIZAR EL ENVï¿½O DE INFORMACIï¿½N";
 								echo "<div class='form-group' style='padding-top: 60px'>";
 								echo "<a href='../interface/capitulo1.php?numord=$numero&nombre=$nombre' class='btn btn-primary btn-lg'>VOLVER AL FORMULARIO</a>";
 								echo "</div>";

@@ -17,9 +17,7 @@ if ($_SESSION ['tipou'] == "FU") {
 	// Busqueda por nombre o numero
 }
 $qCaratula = $conn->prepare ( "SELECT * FROM caratula WHERE nordemp= :idNumero" );
-$qCaratula->execute ( array (
-		'idNumero' => $numero 
-) );
+$qCaratula->execute ( array ('idNumero' => $numero) );
 $row = $qCaratula->fetch ( PDO::FETCH_ASSOC );
 
 $qControl = $conn->prepare ( "SELECT a.*, b.desc_estado FROM control a, estados b WHERE a.nordemp= :idNumero AND a.vigencia = :idPeriodo
