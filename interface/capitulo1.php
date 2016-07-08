@@ -24,73 +24,12 @@
 	
 /**########################**/
 	// verificacion para la carga de informacion de l formulario y creacion de registros para la informacion
-	/** Carga de informacion del capitulo 1 */
-// 	$llave = "C1_nordemp"; // campo de relacion para la empresa
+	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
 	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-// 	$qDispo->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
-// 	$rowDis = $qDispo->fetch(PDO::FETCH_ASSOC);
-	
-// 	$qControl = $conn->prepare("SELECT a.*, b.desc_estado FROM control a, estados b WHERE a.nordemp = :nFuente AND a.vigencia = :periodo
-// 			AND a.estado = b.idestados");
-// 	$qControl->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
-// 	$rowCtl = $qControl->fetch(PDO::FETCH_ASSOC);
-	
-// 	$nom = ["C1_nordemp" => "15", "C1_numdisp" => "", "i1r1c1" => "1", "i1r1c2" => "10", "i1r1c3" => "8", "i1r1c4" => "2",
-// 			"i1r2c10" => "10", "i1r2c11" => "1", "i1r2c12" => "1", "i1r2c13" => "1", "i1r2c14" => "12", "i1r2c15" => "2", "i1r2c16" => "1500000", "i1r2c17" => "2", "i1r2c18" => "8", "i1r2c19" => "4", "i1r2c110" => "4",
-// 			"i1r2c111" => "2", "i1r2c112" => "7", "i1r2c113" => "por que a", 
-// 			"i1r2c20" => "0", "i1r2c21" => "", "i1r2c22" => "", "i1r2c23" => "", "i1r2c24" => "",  "i1r2c25" => "", "i1r2c26" => "", "i1r2c27" => "", "i1r2c28" => "0", "i1r2c29" => "0", "i1r2c210" => "0", "i1r2c211" => "0",
-// 			"i1r2c30" => "0", "i1r2c31" => "", "i1r2c32" => "", "i1r2c33" => "", "i1r2c34" => "", "i1r2c35" => "", "i1r2c36" => "", "i1r2c37" => "", "i1r2c38" => "0", "i1r2c39" => "0", "i1r2c310" => "0", "i1r2c311" => "0", 
-// 			"i1r3c5" => "1",  "i1r4c1" => "23", "observaciones" => ""];
-	
-// // 	$pnl = 3;
-// 	$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14) values ';
-// 	$pnl = 2;
-// 	$tem = '';
-// 	for ($i=1; $i<= $pnl; $i++){
-// 		$tem .= '(' . $numero . ',' . $vig . ',' ;
-// 		for ($j=0; $j<14; $j++){
-// 			$nc = 'i1r2c' . $i . $j;
-// 			$c1n2[] = $nc;
-// 			echo $nc . ' - ';
-// 			if (isset($dt[$nc]) && $nom[$nc] != ''){
-// 				$tem .= "'" .$nom[$nc] . "',";
-// 			}else{
-// 				$tem .= "'NULL',";
-// 			}
-// 		}
-// 		$tem = rtrim($tem, ", ") .  '),';
-// 	}
-	
-// 	$lineaINS .= rtrim($tem, ", ");
-	
-	
-// 	for ($i=1; $i<= $pnl; $i++){
-// 		$tem .= '(' . $numero . ',' . $vig . ',' ;
-// 		for ($j=0; $j<14; $j++){
-// 			$nc = 'i1r2c' . $i . $j;
-// 			$c1n2[] = $nc;
-// 			if (in_array(($nc), $nombres )){
-// 				$tem .= $dt[$nc] . ',';
-// 			}else{
-// 				$tem .= 'NULL,';
-// 			}
-// 		}
-// 		$tem = rtrim($tem, ", ") .  '),';
-// 	}
+
 	
 /**########################**/
-	
-// 	$estadoI1R4C2N = ''; $estadoI1R4C2M = ''; $estadoI2 = ''; $estadoI7 = ''; $estadoI9R1 = 'disabled'; $estadoI9R2 = 'disabled';
-// 	$estadoI10 = 'disabled';
-	
-// 	$estadoI4R1C1 = ''; $estadoI4R2C1 = ''; $estadoI4R3C1 = ''; $estadoI4R4C1 = ''; $estadoI4R1C2 = ''; $estadoI4R2C2 = ''; $estadoI4R3C2 = ''; $estadoI4R4C2 = '';
-	
-// 	$row = ['i1r1c1' => 1, /*'i1r1c1' => 2,*/ 'i1r1c2' => 25,
-// 			'i1r3c1' => 1,'i1r3c2' => 0,'i1r3c3' => 1,'i1r3c4' => 0,'i1r3c5' => 1,'i1r3c6' => 0,'i1r3c7' => 1,'i1r3c8' => 0, 'i1r3c9' => 'Medio de publicacion adicional',
-// 			'i1r4c1' => 1,
-// 			'OBSERVACIONES' => 'Observaciones de la fuente para el estado de la fuente'
-// 	];
 	
 	if ($tipousu != "FU") {
 		$txtEstado = " - estado - " . $rowCtl['desc_estado'];
@@ -169,7 +108,7 @@
 					  $('#ii3contenido').addClass('hidden');
 					}
 
-					
+// 					validacion de los campos dinamicos si son requeridos */
 // 	 				$('#listDisForm').children().each(function(){
 // 		 				var pnal = $(this).attr('id').substring(4);
 // 						var vacNoCub = 'i1r2c' + pnal + '11';
@@ -202,7 +141,7 @@
 				}
 
 				// cantidad de disponibilidades agregadas
-				$('#C1_numdisp').val( $('#listDisForm').children().length );
+				$('#C1_numdisp').val( $('#listDisForm').children().length);
 				
 				return retorno;
 			}
@@ -210,9 +149,10 @@
 			$(document).ready(function() {
 				
 				$("#capitulo1").submit(function(event) {
-	                event.preventDefault();
+					event.preventDefault();
 // 	                retorno = validaFormOther();
 // 	                if (retorno == 0){
+					$('#C1_numdisp').val( $('#listDisForm').children().length);
 		                $.ajax({
 		                    url: "../persistencia/grabacapi.php",
 		                    type: "POST",
@@ -354,6 +294,19 @@
 					$('input[name="i1r3c9"]').prop('disabled', true);
 				}
 
+				$('#idi1r4c1').on('change', function(){
+					debugger;
+					var val = parseInt($(this).val());
+					var vac = parseInt($('#idi1r2ctv').val());
+					if ( !isNaN(val) ){
+						if( val > vac ){
+							alert('El valor del campo no puede ser mayor al total de vacantes');
+						}
+					}else{
+						alert('El valor del campo deber ser numerico');
+					}
+				})
+
 			/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
 				
 			    /** Habilita o deshabilita el boton de eliminar caracterizaciones */
@@ -370,7 +323,7 @@
 			    	var x = lista.children().length + 1;
 			    	var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Disp '+ x +'</a></li>'
 //			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"><div class="col-xs-12"> <h3> '+ $('#tituloDisp').val() +' </h3> </div> </div>';
-			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> </div></div>';
+			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
 			    	
 			    	lista.append(vinculo);
 			    	conte.append(panel)
@@ -423,9 +376,7 @@
 	    			var cual = 'i1r2c' + pnal + '13';
 	    			//var tvac = ($('#idi1r2ctv').val()!='') ? parseInt($('#idi1r2ctv').val()):0;
 	    			//var tvac = subVacantes();
-					
-	    			//debugger;
-	    			
+						    			
 	    			if( $(this).attr('name') === vacAbi){ /** interaccion con el total de vacantes por disponibilidad */
 	    				var vac = parseInt($(this).val());
 		    			
@@ -588,9 +539,6 @@
  			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
  				<?php //echo '<br/> consulta de datos: '; print_r($row); ?>
- 				<?php //echo '<br/> consulta de control: '; print_r($rowCtl); ?>
- 				<?php //echo '<br/>'; print_r($c1n2) ;?>
- 				<?php echo '<br/>'; print_r($rowDisCont); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
@@ -691,6 +639,7 @@
 									<?php $ncam = 'i1r2c' . $z; ?>
 									<div class="tab-pane <?php echo ($z==1)?'active':''; ?>" id="disp<?php echo $z; ?>">
 										<div class="col-xs-12">
+											<h4 class="text-danger">Todos los campos son obligatorios</h4>
 											 <div id="carateriza<?php echo $z; ?>" class="">
 												<div class="container-fluid">		
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -846,24 +795,24 @@
 			
 												<div class="container-fluid">
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-														<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas? </label>
+														<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 														<div class="small">
 															<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
 																<option value="" > Seleccione una opción</option>
-																<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-																<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
-																<option value="3" <?php echo ($dispc['i1r2c13'] == 3) ? 'checked' : '';  ?> >Postulantes sobre-calificados</option>
-																<option value="4" <?php echo ($dispc['i1r2c13'] == 4) ? 'checked' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-																<option value="5" <?php echo ($dispc['i1r2c13'] == 5) ? 'checked' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-																<option value="6" <?php echo ($dispc['i1r2c13'] == 6) ? 'checked' : '';  ?> >Pocos postulantes</option>
-																<option value="7" <?php echo ($dispc['i1r2c13'] == 7) ? 'checked' : '';  ?> >Otra</option>
+																<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
+																<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
+																<option value="3" <?php echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >Postulantes sobre-calificados</option>
+																<option value="4" <?php echo ($dispc['i1r2c13'] == 4) ? 'selected' : '';  ?> >Falta de experiencia o conocimiento específico</option>
+																<option value="5" <?php echo ($dispc['i1r2c13'] == 5) ? 'selected' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
+																<option value="6" <?php echo ($dispc['i1r2c13'] == 6) ? 'selected' : '';  ?> >Pocos postulantes</option>
+																<option value="7" <?php echo ($dispc['i1r2c13'] == 7) ? 'selected' : '';  ?> >Otra</option>
 															</select>
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-1"></div>
 													<div class="form-group form-group-sm col-xs-12 col-sm-7">
 														<label class="">Cual?</label>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' value = "<?php echo $dispc['i1r2c14']?>" <?php echo ($dispc['i1r2c13']!='')?'':'disabled' ?> />
+														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
 													</div>
 												</div>
 											</div>

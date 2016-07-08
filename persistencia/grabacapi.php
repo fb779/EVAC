@@ -362,7 +362,13 @@
 	if ($modulo == 'm1'){
 		$dt = $_POST;
 		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14) values ';
-		$pnl = $valores[1];
+		
+		if (isset($dt['C1_numdisp'])){
+			$pnl = $valores[1];
+		}else{
+			$pnl = 0;
+		}
+			
 		$tem = '';
 		for ($i=1; $i<= $pnl; $i++){
 			$tem .= "('" . $numero . "','" . $vig . "',";

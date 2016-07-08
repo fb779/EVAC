@@ -43,7 +43,7 @@
     	<div class="navbar-header">
     		<?php
     			if ($tipousu == "FU") {
-    				echo "<span class='navbar-brand small' style='font-size: 12px'>EDIT - SERVICIOS</span>";
+    				echo "<span class='navbar-brand small' style='font-size: 12px'>EVAC - DISPONIBILIDAD LABORAL</span>";
     			} 
     			else {
     				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>EDIT - SERVICIOS</a></span>";
@@ -54,12 +54,12 @@
         	<ul class="nav navbar-nav">
             	<li <?php echo ($page=='cara') ? 'class="active"' : '' ?>><a href="caratula.php?numero=<?php echo $numero ?>">Car&aacute;tula &Uacute;nica</a></li>
             	<li <?php echo ($page=='cap1') ? 'class="active"' : '' ?>><a href="capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color1 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 1<?php echo ($icono1 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap2') ? 'class="active"' : '' ?>><a href="capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color2 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 2<?php echo ($icono2 == "SI") ? $icono : ''?></a></li>
+            	<!-- li <?php echo ($page=='cap2') ? 'class="active"' : '' ?>><a href="capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color2 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 2<?php echo ($icono2 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap3') ? 'class="active"' : '' ?>><a href="capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color3 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 3<?php echo ($icono3 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap4') ? 'class="active"' : '' ?>><a href="capitulo4.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color4 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 4<?php echo ($icono4 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li-->
-            	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li>
+            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li-->
 				<?php
 					if ($muestrapys) {
 						echo "<li><a href='../administracion/registro.php?numord=" . $numero . "'>PAZ Y SALVO</a></li>";
@@ -68,7 +68,7 @@
             	<?php 
             		if ($tipousu != "FU") {
 						if ($page!="cara") {
-							echo "<li><a href='#' data-toggle='modal' data-target='#idediteas'>EDIT-EAS</a></li>";
+							//echo "<li><a href='#' data-toggle='modal' data-target='#idediteas'>EDIT-EAS</a></li>";
 							echo "<li><a href='observa.php?numord=" . $numero . "&capit=" . $page . "' target='_blank'>Observaciones</a></li>";
 						}
             		}

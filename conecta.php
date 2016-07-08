@@ -13,7 +13,7 @@
 	$password ="toor";
 	
 	try {
-		$conn = new PDO('mysql:host=localhost;dbname=dane_evac', $usuario, $password);
+		$conn = new PDO('mysql:host=localhost;dbname=dane_evac_pr', $usuario, $password);
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$conn->exec("SET CHARACTER SET UTF8");
 	} catch(PDOException $e) {
