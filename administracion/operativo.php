@@ -78,6 +78,10 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$regOpe));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
+	
+	/** Consulta de periodos creados */
+	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoActivo");
+	/** Consulta de periodos creados */
 ?>
 <!DOCTYPE html>
 <html>
@@ -142,17 +146,11 @@
 
 			$(document).ready(function(){
 				$('#periodo').on('change', function(e){
-					$.ajax({
-						// URL a la que se enviará la solicitud Ajax
+					$.ajax({ 
 					    url: "cambioperiodo.php",
-					    //Cambiar a type: POST si necesario
-					    //type: "GET",
 					    type: "POST",
-					    // Formato de datos que se espera en la respuesta
 					    dataType: "json",
-					    // Befor send
 					    //beforeSend: validaFormOther(),
-					    // En data puedes utilizar un objeto JSON, un array o un query string
 					    data: {"newPer" : $(this).val()},
 					    success: function(dato) {
 							if (dato.success){
@@ -182,12 +180,16 @@
 						<label for="">Seleccione el periodo</label>
 						<select class='form-control' id="periodo" name="periodo">
 							<option value="">Periodo</option>
-							<option value="2015" <?php //echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >2015</option>
+							<?php foreach ($qPerac as $per){?>
+								<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
+							<?php } ?>
+							<!--option value="2015" <?php //echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >2015</option>
 							<option value="2016" <?php //echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >2016</option>
-							<option value="2017" <?php //echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >2017</option>
+							<option value="2017" <?php //echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >2017</option-->
 						</select>
-						<h4><?php echo $_SESSION['vigencia']; ?></h4>
+						
 					</div>
+					<h4>Periodo <?php echo $_SESSION['vigencia']; ?> - Periodo activo <?php echo $_SESSION['periodoAct']; ?></h4>
 				</div>
 		</div>
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">

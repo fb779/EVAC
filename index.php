@@ -6,11 +6,13 @@
 	ini_set('default_charset', 'UTF-8');
 	if (isset($_POST['btnIngresar'])) {
 		$qVigencia = $conn->query("SELECT vigencia FROM control LIMIT 1");
-		//$qVigencia = $conn->query("SELECT codPeriodo, anioperiodo, nomperiodo FROM dane_evac_pr.periodoActivo where estperiodo = 'AC';LIMIT 1");
+		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoActivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
+		$perAct = $qPeriodoac['id'];
+		
 		foreach($qVigencia AS $lVigencia) {
 			$vigencia = $lVigencia['vigencia'];
-			//$vigencia = $lVigencia['anioperiodo'];
 		}
+		
 		$qUsuario = $conn->prepare('SELECT * FROM usuarios WHERE ident LIKE BINARY :idUsu AND clave LIKE BINARY :pwdUsu');
 		$qUsuario->execute(array('idUsu' => $_POST['inputLogin'], 'pwdUsu' => $_POST['inputPassword']));
 	
@@ -22,7 +24,9 @@
 				$_SESSION['idusu'] = $row['ident'];
 				$_SESSION['numero'] = $row['numemp'];
 				$_SESSION['region'] = $row['region'];
-				$_SESSION['vigencia'] = $vigencia;
+				//$_SESSION['vigencia'] = $vigencia;
+				$_SESSION['vigencia'] = $perAct;
+				$_SESSION['periodoAct'] = $perAct;
 			}
 			if ($row['tipo'] == 'FU') {
 				header("location: interface/caratula.php");
