@@ -139,6 +139,33 @@
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();   
 			});
+
+			$(document).ready(function(){
+				$('#periodo').on('change', function(e){
+					$.ajax({
+						// URL a la que se enviará la solicitud Ajax
+					    url: "cambioperiodo.php",
+					    //Cambiar a type: POST si necesario
+					    //type: "GET",
+					    type: "POST",
+					    // Formato de datos que se espera en la respuesta
+					    dataType: "json",
+					    // Befor send
+					    //beforeSend: validaFormOther(),
+					    // En data puedes utilizar un objeto JSON, un array o un query string
+					    data: {"newPer" : $(this).val()},
+					    success: function(dato) {
+							if (dato.success){
+								location.reload();
+								//alert (dato.message)
+							}
+						},
+					    error: function(dato){
+							
+						}
+					});
+				});
+			});
 		</script>
 	</head>
 	<body>
@@ -149,6 +176,20 @@
 			}
 		?>
 		<br><br><br>
+		<div class="container">
+			<div class="row col-xs-12">
+					<div class="input-group">
+						<label for="">Seleccione el periodo</label>
+						<select class='form-control' id="periodo" name="periodo">
+							<option value="">Periodo</option>
+							<option value="2015" <?php //echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >2015</option>
+							<option value="2016" <?php //echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >2016</option>
+							<option value="2017" <?php //echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >2017</option>
+						</select>
+						<h4><?php echo $_SESSION['vigencia']; ?></h4>
+					</div>
+				</div>
+		</div>
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">
 			<div class="container">
 				<div class="row col-sm-3">
@@ -164,7 +205,7 @@
 					?>
 				</div>
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-5">
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="Buscar..." id="txtBusca">
 							<span class="input-group-btn">

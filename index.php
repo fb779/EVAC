@@ -6,8 +6,10 @@
 	ini_set('default_charset', 'UTF-8');
 	if (isset($_POST['btnIngresar'])) {
 		$qVigencia = $conn->query("SELECT vigencia FROM control LIMIT 1");
+		//$qVigencia = $conn->query("SELECT codPeriodo, anioperiodo, nomperiodo FROM dane_evac_pr.periodoActivo where estperiodo = 'AC';LIMIT 1");
 		foreach($qVigencia AS $lVigencia) {
 			$vigencia = $lVigencia['vigencia'];
+			//$vigencia = $lVigencia['anioperiodo'];
 		}
 		$qUsuario = $conn->prepare('SELECT * FROM usuarios WHERE ident LIKE BINARY :idUsu AND clave LIKE BINARY :pwdUsu');
 		$qUsuario->execute(array('idUsu' => $_POST['inputLogin'], 'pwdUsu' => $_POST['inputPassword']));
