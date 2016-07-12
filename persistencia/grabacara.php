@@ -1,10 +1,12 @@
 <?php
+if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){ //validamos que la peticion sea ajax
 	if (session_id() == "") {
 		session_start();
 	}
 	include '../conecta.php';
 	$nombres = Array(); $Valores = Array();
-	$textos = array("numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","dirnotifi",
+	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara",
+					"numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","dirnotifi",
 					"telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web",
 					"emailnotif","webnotif","emailres","lgg","fechaconst","fechahasta","fechadist");
 	$i = 0;
@@ -54,7 +56,7 @@
 		if (in_array($nombres[$i], $textos)) {
 			$lineaMOD .= $nombres[$i] . '= "' . $valores[$i] . '", ';
 		}elseif (in_array($nombres[$i], $codigos)) { /** Validacion de codigos de actividad */
-			$actemp .= "(" . $numero . ', ' . $nombres[$i] . ") ,";
+			$actemp .= "('" . $numero . "', '" . $nombres[$i] . "'),";
 		}
 		
 	}
@@ -98,4 +100,7 @@
 */	
 	
 	//echo "{'success':'Transaccion correcta'}";
+}else{
+	exit();
+}
 ?>

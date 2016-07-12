@@ -1,4 +1,5 @@
 <?php
+if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){ //validamos que la peticion sea ajax
 	if (session_id() == "") {
 		session_start();
 	}
@@ -422,4 +423,7 @@
 // 	if ($capitulo == "C1" AND ($tipousu == "FU" OR $tipousu == "CR") AND $region != 99) {
 // 		$qControl = $conn->query("UPDATE control SET m2=1, m3=1, m5=1 WHERE nordemp = $valores[0] AND vigencia = $vig");
 // 	}
+}else{
+	exit();
+}
 ?>

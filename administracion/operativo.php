@@ -146,6 +146,8 @@
 
 			$(document).ready(function(){
 				$('#periodo').on('change', function(e){
+					e.preventDefault();
+				
 					$.ajax({ 
 					    url: "cambioperiodo.php",
 					    type: "POST",
@@ -155,11 +157,7 @@
 					    success: function(dato) {
 							if (dato.success){
 								location.reload();
-								//alert (dato.message)
 							}
-						},
-					    error: function(dato){
-							
 						}
 					});
 				});
@@ -172,6 +170,7 @@
 			if ($tipousu == "CO") {
 				include 'menuCO.php';
 			}
+			
 		?>
 		<br><br><br>
 		<div class="container">

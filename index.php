@@ -36,7 +36,7 @@
 			}
 		}
 		else {
-			$mensaje = "Identificaci�n/Clave Incorrectos";
+			$mensaje = "Identificación/Clave Incorrectos";
 		}
 	} 
 ?>

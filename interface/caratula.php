@@ -33,12 +33,12 @@ $nombre = $row ['nombre'];
 $qDpto = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola" );
 $qDptoN = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola" );
 
-$qMpio = $conn->prepare ( "SELECT muni, nmuni FROM divipola WHERE dpto = :idDpto" );
+$qMpio = $conn->prepare ( "SELECT muni, nmuni FROM divipola WHERE dpto = :idDpto ORDER BY muni" );
 $qMpio->execute ( array (
 		'idDpto' => $row ['depto'] 
 ) );
 
-$qMpioN = $conn->prepare ( "SELECT muni, nmuni FROM divipola WHERE dpto = :idDptoN" );
+$qMpioN = $conn->prepare ( "SELECT muni, nmuni FROM divipola WHERE dpto = :idDptoN ORDER BY muni" );
 $qMpioN->execute ( array (
 		'idDptoN' => $row ['depnotific'] 
 ) );
@@ -47,6 +47,7 @@ $qOrganiza = $conn->query ( "SELECT * FROM organiza" );
 $qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 $actividad = $row ['ciiu3'];
+
 $qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "'" );
 // $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
 // 		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
@@ -54,6 +55,8 @@ $qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner
 
 $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
 		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')" );
+
+$qCIIU3 = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3" );
 
 $qActividad = $conn->query ( "SELECT * FROM ciiu3 WHERE CODIGO = $actividad" );
 foreach ( $qActividad as $lActividad ) {
@@ -109,6 +112,9 @@ p {
 
 <script type="text/javascript">
 			$(function(){
+				$('.solo-numero').keyup(function (){
+					this.value = (this.value + '').replace(/[^0-9]/g, '');
+				});
 
 				$("#idfechai, #idfechah").attr("tabindex","-1"); //Deshabilito cambiar foco.
 				
@@ -203,11 +209,13 @@ p {
 			var retorno = "";
 			$(function() {
                 $("#idcara").submit(function(event) {
+                    debugger;
                     event.preventDefault();
  					var $items = $(this).serialize();
                     $.ajax({
                         url: "../persistencia/grabacara.php",
                         type: "POST",
+					    dataType: "json",
 						beforeSend: validaCara,
                         //data: $(this).serialize(),
                         data: $items,
@@ -307,6 +315,29 @@ latest: new Date(2099,11,31,23,59,59)
                     });
 				});
 			});
+
+			$(document).ready(function(){
+				/** Validacion campo ndoc Numero documento */
+				$('#ndoc').on('blur', function() {
+					var v = parseInt($(this).val());
+					if (v <= 0){
+						alert('El Numero de documento debe ser mayor a 0');
+					}
+				});
+
+				/** Validacion campo ndiv Digito de verificacion */
+				$('#ndv').on('blur', function() {
+					if ($(this).val() == ''){
+						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+					}else{
+						$(this).parent().children('span').remove();
+					}
+				});
+
+				
+
+				
+			});
 		</script>
 </head>
 <body>
@@ -351,7 +382,7 @@ latest: new Date(2099,11,31,23,59,59)
 				value="<?php echo $numero ?>" />
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
-					<h4 style='font-family: arial'>Car&aacute;tula &Uacute;nica - <?php echo $row['nordemp'] . $txtEstado ?></h4>
+					<h4 style='font-family: arial'>Car&aacute;tula &Uacute;nica - Numero de orden: <?php echo $row['nordemp'] . $txtEstado ?></h4>
 				</legend>
 				<div class='form-group form-group-sm'>
 					<table class="table table-condensed"
@@ -375,22 +406,20 @@ latest: new Date(2099,11,31,23,59,59)
 									<input type='radio' id='rce' name='tipodoc' value='3' <?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> />C.E.
 								</label>
 							</td>
-							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 150px" id='ndoc'
-								name='numdoc'
-								data-error='Diligencie Numero Identificaci&oacute;n'
-								value=<?php echo $row['numdoc']?> required />
-								<div class="help-block with-errors"></div></td>
-							<td style="border: none"><input type='text'
-								class='form-control text-center input-sm' style='width: 50px'
-								id='ndv' maxlength='1' name='dv' value=<?php echo $row['dv']?> />
+							<td style="border: none">
+								<input type="text" class='form-control input-sm solo-numero' style="width: 150px" id='ndoc' name='numdoc' value=<?php echo $row['numdoc']?> required />
+								<div class="help-block with-errors"></div>
 							</td>
-							<td style="border: none"><label class='radio-inline'><input
-									type='radio' id='mat1' name='registmat' value='1'
-									<?php echo ($row['registmat'] == 1) ? 'checked' : ''?> />Inscrip./Matr.</label>
-								<label class='radio-inline'><input type='radio' id='mat2'
-									name='registmat' value='2'
-									<?php echo ($row['registmat'] == 2) ? 'checked' : ''?> />Renovaci&oacute;n</label>
+							<td style="border: none">
+								<input type='text' class='form-control text-center input-sm solo-numero' style='width: 50px' id='ndv' maxlength='1' name='dv' value=<?php echo $row['dv']?> />
+							</td>
+							<td style="border: none">
+								<label class='radio-inline'>
+									<input type='radio' id='mat1' name='registmat' value='1' <?php echo ($row['registmat'] == 1) ? 'checked' : ''?> disabled />Inscrip./Matr.
+								</label>
+								<label class='radio-inline'>
+									<input type='radio' id='mat2' name='registmat' value='2' <?php echo ($row['registmat'] == 2) ? 'checked' : ''?> disabled/>Renovaci&oacute;n
+								</label>
 							</td>
 						</tr>
 						<tr>
@@ -400,18 +429,30 @@ latest: new Date(2099,11,31,23,59,59)
 							<td class="text-center" style="border: none"><b>Novedad</b></td>
 						</tr>
 						<tr>
-							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 100px" id="cam"
-								name="camara" value="<?php echo $row['camara'] ?>" /></td>
-							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 100px" id="reg"
-								name="numeroreg" value="<?php echo $row['numeroreg'] ?>" /></td>
-							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 100px" id="ciiu"
-								name="ciiu3" value="<?php echo $row['ciiu3']; ?>" readonly /></td>
-							<td style="border: none"><input type="text"
-								class='form-control input-sm' style="width: 150px" id="ciiu"
-								name="ciiu3" value="<?php echo $row['novedad']; ?>" readonly /></td>
+							<td style="border: none">
+								<input type="text" class='form-control input-sm' style="width: 100px" id="cam" name="camara" value="<?php echo $row['camara'] ?>" readonly />
+							</td>
+							<td style="border: none">
+								<input type="text" class='form-control input-sm' style="width: 100px" id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" readonly />
+							</td>
+							<td style="border: none">
+								<!-- Cambiar este campo por un select para la eleccion de la CIIU -->
+								<select class='form-control' id='listadep' name='ciiu3' style="width: 100px">
+									<?php
+										foreach ( $qCIIU3 as $ciiu3 ) {
+											if ($ciiu3 ['CODIGO'] == $row ['ciiu3']) {
+												echo "<option value='" . $ciiu3 ['CODIGO'] . "' selected>" . $ciiu3 ['DESCRIP'] . "</option>";
+											} else {
+												echo "<option value='" . $ciiu3 ['CODIGO'] . "'>" . $ciiu3 ['DESCRIP'] . "</option>";
+											}
+										}
+									?>
+								</select>
+								<input type="text" class='form-control input-sm' style="width: 100px" id="ciiu" name="ciiu3" value="<?php echo $row['ciiu3']; ?>" />
+							</td>
+							<td style="border: none">
+								<input type="text" class='form-control input-sm' style="width: 150px" id="novedad" name="novedad" maxlength='2' value="<?php echo $row['novedad']; ?>" readonly />
+							</td>
 						</tr>
 					</table>
 				</div>

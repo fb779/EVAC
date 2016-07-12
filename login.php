@@ -22,6 +22,12 @@
 			    			<input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contrase&ntilde;a" required>
 			    			<br/>
 			    			<button type="submit" id="btnIngresar" name="btnIngresar" class="btn btn-danger btn-block">Ingresar</button>
+			    			<br/>
+			    			<?php if (isset($mensaje)) {
+			    				echo '<label class="text-center">' . $mensaje .'</label>';
+			    				
+							}?>
+			    			
 				  		</form>
 				  		<br/>
 				  		<p align="center">
