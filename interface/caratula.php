@@ -30,8 +30,8 @@ $rowCtl = $qControl->fetch ( PDO::FETCH_ASSOC );
 
 $nombre = $row ['nombre'];
 
-$qDpto = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola" );
-$qDptoN = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola" );
+$qDpto = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola order by ndpto" );
+$qDptoN = $conn->query ( "SELECT DISTINCT dpto, ndpto FROM divipola order by ndpto" );
 
 $qMpio = $conn->prepare ( "SELECT muni, nmuni FROM divipola WHERE dpto = :idDpto ORDER BY muni" );
 $qMpio->execute ( array (
@@ -112,9 +112,37 @@ p {
 
 <script type="text/javascript">
 			$(function(){
-				$('.solo-numero').keyup(function (){
+				/** Convertir campos texto a mausculas */ 
+				$('.mayusculas').on('keyup', function(){
+					var v = $(this);
+					v.val( v.val().toUpperCase());
+					
+				});
+
+				/** Permitir solo numeros en los campos */
+				$('.solo-numero').on('keyup',function (){
 					this.value = (this.value + '').replace(/[^0-9]/g, '');
 				});
+
+				/** Evitar caracteres especiales */
+				$('.no-especiales').on('keyup', function() {
+				      var regex = new RegExp("^[. 0-9a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
+				      var _this = this;
+
+				      var texto = $(_this).val();
+			          if(!regex.test(texto))
+			          {
+			              $(_this).val(texto.substring(0, (texto.length-1)))
+			          }
+				      // Curta pausa para esperar colar para completar
+// 				      setTimeout( function(){
+// 				          var texto = $(_this).val();
+// 				          if(!regex.test(texto))
+// 				          {
+// 				              $(_this).val(texto.substring(0, (texto.length-1)))
+// 				          }
+// 				      }, 100);
+				  });
 
 				$("#idfechai, #idfechah").attr("tabindex","-1"); //Deshabilito cambiar foco.
 				
@@ -316,26 +344,76 @@ latest: new Date(2099,11,31,23,59,59)
 				});
 			});
 
+			/** Validaciones de los campos de la caratula unica */
 			$(document).ready(function(){
+				var color = '#a94442';
+				var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 				/** Validacion campo ndoc Numero documento */
 				$('#ndoc').on('blur', function() {
+					$(this).css('border',"");
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().children('span').remove();
+					
 					var v = parseInt($(this).val());
-					if (v <= 0){
-						alert('El Numero de documento debe ser mayor a 0');
+					if (!isNaN(v)){
+						if (v <= 0){
+							$(this).val('');
+							$(this).parent().parent().addClass('text-danger');
+							$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
+							
+						}
+					}else{
+						$(this).parent().parent().addClass('text-danger');
+						$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
 					}
 				});
 
 				/** Validacion campo ndiv Digito de verificacion */
 				$('#ndv').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
 					if ($(this).val() == ''){
+						$(this).parent().parent().addClass('text-danger');
+						$(this).css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
-					}else{
-						$(this).parent().children('span').remove();
 					}
 				});
 
+				/** Validacion campo Razon social */
+				$('#rs').on('blur', function() {
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+					if ($(this).val() == ''){
+						$(this).css('border',"1px solid" + color);
+						//$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+					}
+				});
+
+				/** Validacion email */
+				$('#idmail').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+				    // Se utiliza la funcion test() nativa de JavaScript
+				    if ($(this).val() != ''){
+				    	if (!regex.test($(this).val().trim()) ) {
+					    	$(this).parent().parent().addClass('text-danger');
+					    	$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+					    }   
+					}else{
+						$(this).parent().parent().addClass('text-danger');
+				    	$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
+					}
+				    
+				});
 				
 
+				
 				
 			});
 		</script>
@@ -384,18 +462,11 @@ latest: new Date(2099,11,31,23,59,59)
 				<legend>
 					<h4 style='font-family: arial'>Car&aacute;tula &Uacute;nica - Numero de orden: <?php echo $row['nordemp'] . $txtEstado ?></h4>
 				</legend>
-				<div class='form-group form-group-sm'>
-					<table class="table table-condensed"
-						style="margin-left: 15px; margin-right: 15px">
-						<tr>
-							<td class="text-center" style="border: none"><b>Identificaci&oacute;n</b></td>
-							<td class="text-center" style="border: none"><b>Numero</b></td>
-							<td class="text-center" style="border: none"><b>DV</b></td>
-							<td style="border: none"><b>Inscrip/Matricula/Renovaci&oacute;n</b></td>
-							
-						</tr>
-						<tr>
-							<td style="border: none">
+				<div class="container-fluid text-center">
+					<div class="row">
+						<div class="col-xs-12 col-sm-3" >
+							<label for="">Identificación</label>
+							<div class="form-group form-group-sm col">
 								<label class='radio-inline'>
 									<input type='radio' id='rnit' name='tipodoc' value='1' <?php echo ($row['tipodoc'] == 1) ? 'checked' : ''?> />Nit.
 								</label>
@@ -405,39 +476,52 @@ latest: new Date(2099,11,31,23,59,59)
 								<label class='radio-inline'>
 									<input type='radio' id='rce' name='tipodoc' value='3' <?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> />C.E.
 								</label>
-							</td>
-							<td style="border: none">
-								<input type="text" class='form-control input-sm solo-numero' style="width: 150px" id='ndoc' name='numdoc' value=<?php echo $row['numdoc']?> required />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<label for="">Numero</label>
+							<div class="from-group form-group-sm">
+								<input type="text" class='form-control input-sm solo-numero' id='ndoc' name='numdoc' value=<?php echo $row['numdoc']?> required />
 								<div class="help-block with-errors"></div>
-							</td>
-							<td style="border: none">
-								<input type='text' class='form-control text-center input-sm solo-numero' style='width: 50px' id='ndv' maxlength='1' name='dv' value=<?php echo $row['dv']?> />
-							</td>
-							<td style="border: none">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<label for="">DV</label>
+							<div class="from-group form-group-sm">
+								<input type='text' class='form-control text-center input-sm solo-numero' id='ndv' maxlength='1' name='dv' value=<?php echo $row['dv']?> required/>
+							</div>
+						</div>
+						
+						<div class="col-xs-12 col-sm-3">
+							<label for="">Inscrip/Matricula/Renovaci&oacute;n</label>
+							<div class="from-group form-group-sm">
 								<label class='radio-inline'>
 									<input type='radio' id='mat1' name='registmat' value='1' <?php echo ($row['registmat'] == 1) ? 'checked' : ''?> disabled />Inscrip./Matr.
 								</label>
 								<label class='radio-inline'>
 									<input type='radio' id='mat2' name='registmat' value='2' <?php echo ($row['registmat'] == 2) ? 'checked' : ''?> disabled/>Renovaci&oacute;n
 								</label>
-							</td>
-						</tr>
-						<tr>
-							<td class="text-center" style="border: none"><b>C&aacute;mara</b></td>
-							<td class="text-center" style="border: none"><b>Inscripci&oacute;n/Matricula</b></td>
-							<td class="text-center" style="border: none"><b>CIIU</b></td>
-							<td class="text-center" style="border: none"><b>Novedad</b></td>
-						</tr>
-						<tr>
-							<td style="border: none">
-								<input type="text" class='form-control input-sm' style="width: 100px" id="cam" name="camara" value="<?php echo $row['camara'] ?>" readonly />
-							</td>
-							<td style="border: none">
-								<input type="text" class='form-control input-sm' style="width: 100px" id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" readonly />
-							</td>
-							<td style="border: none">
-								<!-- Cambiar este campo por un select para la eleccion de la CIIU -->
-								<select class='form-control' id='listadep' name='ciiu3' style="width: 100px">
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-0">&nbsp;</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-3">
+							<label for="">C&aacute;mara</label>
+							<div class="from-group form-group-sm">
+								<input type="text" class='form-control input-sm' id="cam" name="camara" value="<?php echo $row['camara'] ?>" readonly />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<label for="">Inscripci&oacute;n/Matricula</label>
+							<div class="from-group form-group-sm">
+								<input type="text" class='form-control input-sm' id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" readonly />
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<label for="">CIIU</label>
+							<div class="from-group form-group-sm">
+								<select class='form-control' id='listadep' name='ciiu3'>
 									<?php
 										foreach ( $qCIIU3 as $ciiu3 ) {
 											if ($ciiu3 ['CODIGO'] == $row ['ciiu3']) {
@@ -448,13 +532,17 @@ latest: new Date(2099,11,31,23,59,59)
 										}
 									?>
 								</select>
-								<input type="text" class='form-control input-sm' style="width: 100px" id="ciiu" name="ciiu3" value="<?php echo $row['ciiu3']; ?>" />
-							</td>
-							<td style="border: none">
-								<input type="text" class='form-control input-sm' style="width: 150px" id="novedad" name="novedad" maxlength='2' value="<?php echo $row['novedad']; ?>" readonly />
-							</td>
-						</tr>
-					</table>
+								<!-- input type="text" class='form-control input-sm' style="width: 100px" id="ciiu" name="ciiu3" value="<?php echo $row['ciiu3']; ?>" /-->
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							<label for="">Novedad</label>
+							<div class="from-group form-group-sm">
+								<input type="text" class='form-control input-sm' id="novedad" name="novedad" maxlength='2' value="<?php echo $row['novedad']; ?>" readonly />
+							</div>
+						</div>
+						<div class="col-xs-12">&nbsp;</div>					
+					</div>
 				</div>
 			</fieldset>
 			<fieldset style='border-style: solid; border-width: 1px'>
@@ -463,72 +551,61 @@ latest: new Date(2099,11,31,23,59,59)
 						Ubicaci&oacute;n y Datos Generales <small><?php echo $txtActividad?></small>
 					</h4>
 				</legend>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='rs'>Raz&oacute;n Social:</label>
+				
+				<div class="container-fluid text-right">
+					<div class="col-xs-12">
+						<label class='col-xs-2' for='rs'>Raz&oacute;n Social:</label>
+						<div class='col-xs-10 small'>
+							<input type='text' class='form-control input-sm no-especiales mayusculas' id='rs' name='nompropie' maxlength="60" data-error='Diligencie Raz&oacute;n Social' value='<?php echo trim($row['nompropie']) ?>' required />
+							<div class="help-block with-errors"></div>
+						</div>
 					</div>
-					<div class='col-sm-8 small'>
-						<input type='text' class='form-control input-sm' id='rs'
-							name='nompropie' data-error='Diligencie Raz&oacute;n Social'
-							value='<?php echo trim($row['nompropie']) ?>' required />
-						<div class="help-block with-errors"></div>
+					<div class="col-xs-12">
+						<label class='col-xs-2' for='nc'>Nombre Comercial:</label>
+						<div class='col-xs-10 small'>
+							<input type='text' class='form-control input-sm no-especiales mayusculas' id='nc' name='nombre' maxlength="60" data-error='Diligencie Nombre Comercial' value='<?php echo trim($row['nombre']) ?>' required />
+							<div class="help-block with-errors"></div>
+						</div>
 					</div>
-				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='nc'>Nombre Comercial:</label>
+					<div class="col-xs-12">
+						<label class='col-xs-2' for='sig'>SIGLA:</label>
+						<div class='col-xs-10 small'>
+							<input type='text' class='form-control input-sm no-especiales mayusculas' id='sig' name='sigla' maxlength="20" value='<?php echo trim($row['sigla']) ?>' />
+						</div>
 					</div>
-					<div class='col-sm-8 small'>
-						<input type='text' class='form-control input-sm' id='nc'
-							name='nombre' data-error='Diligencie Nombre Comercial'
-							value='<?php echo trim($row['nombre']) ?>' required />
-						<div class="help-block with-errors"></div>
-					</div>
-				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='sig'>SIGLA:</label>
-					</div>
-					<div class='col-sm-4 small'>
-						<input type='text' class='form-control input-sm' id='sig'
-							name='sigla' value='<?php echo trim($row['sigla']) ?>' />
-					</div>
-				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='dire'>Direcci&oacute;n Gerencia:</label>
-					</div>
-					<div class='col-sm-8 small'>
-						<input type='text' class='form-control input-sm' id='dire'
-							name='direccion'
-							data-error='Diligencie Direcci&oacute;n Gerencia'
-							value='<?php echo trim($row['direccion']) ?>' required />
-						<div class="help-block with-errors"></div>
+					<div class="col-xs-12">&nbsp;</div>
+					<div class="col-xs-12">
+						<label class='col-xs-2' for='dire'>Direcci&oacute;n Gerencia General:</label>
+						<div class='col-xs-10 small'>
+							<input type='text' class='form-control input-sm' id='dire' name='direccion' maxlength="40" data-error='Falta la Direcci&oacute;n de la Gerencia General' value='<?php echo trim($row['direccion']) ?>' required />
+							<div class="help-block with-errors"></div>
+						</div>
 					</div>
 				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='listadep'>Departamento:</label>
-					</div>
-					<div class='col-sm-2 small'>
-						<select class='form-control' id='listadep' name='depto'
-							onChange='cargaMuni(this.value, "cntMuni", "listamuni", "mpio")'>
+				
+				<div class="container-fluid text-center">
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-2">
+						<label class='' for='listadep'>Departamento:</label>
+						<div class='small'>
+							<select class='form-control' id='listadep' name='depto' onChange='cargaMuni(this.value, "cntMuni", "listamuni", "mpio")'>
 								<?php
 								foreach ( $qDpto as $lDpto ) {
 									if ($lDpto ['dpto'] == $row ['depto']) {
-										echo "<option value='" . $lDpto ['dpto'] . "' selected>" . $lDpto ['ndpto'] . "</option>";
+										echo "<option value='" . $lDpto ['dpto'] . "' selected>" . $lDpto['ndpto'] . "</option>";
 									} else {
-										echo "<option value='" . $lDpto ['dpto'] . "'>" . $lDpto ['ndpto'] . "</option>";
+										echo "<option value='" . $lDpto ['dpto'] . "'>" . $lDpto['ndpto'] . "</option>";
 									}
 								}
 								?>
 							</select>
+						</div>
 					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='listamuni'>Municipio:</label>
-					</div>
-					<div class='col-sm-2 small' id='cntMuni'>
-						<select class='form-control' name='mpio' id='listamuni'>
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-2">
+						<label class='' for='listamuni'>Municipio:</label>
+						<div class='small' id='cntMuni'>
+							<select class='form-control' name='mpio' id='listamuni'>
 								<?php
 								foreach ( $qMpio as $lMpio ) {
 									if ($lMpio ['muni'] == $row ['mpio']) {
@@ -539,57 +616,53 @@ latest: new Date(2099,11,31,23,59,59)
 								}
 								?>
 							</select>
+						</div>
 					</div>
-					<div class='col-sm-1 small text-right' style="width: 50px">
-						<label class='control-label' for='ntele'>Tel.:</label>
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-3">
+						<label class='control-label' for='ntele'>Telefono</label>
+						<div class=''>
+							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Tel&eacute;fono Inv&aacute;lido' value='<?php echo $row['telefono'] ?>' required />
+							<div class="help-block with-errors"></div>
+						</div>
 					</div>
-					<div class='col-sm-2 small' style="width: 150px">
-						<input type='tel' class='form-control input-sm' id='ntele'
-							name='telefono' data-error='Tel&eacute;fono Inv&aacute;lido'
-							value='<?php echo $row['telefono'] ?>' requiered />
-						<div class="help-block with-errors"></div>
-					</div>
-
-					<div class='col-sm-1 small text-right' style="width: 50px">
-						<label class='control-label' for='nfax'>Fax:</label>
-					</div>
-					<div class='col-sm-2 small' style="width: 150px">
-						<input type='text' class='form-control input-sm' id='nfax'
-							name='fax' value='<?php echo $row['fax'] ?>' />
-					</div>
-				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idmail'>Email Empresa:</label>
-					</div>
-					<div class='col-sm-3 small'>
-						<input type="email" class='form-control input-sm'
-							style='text-transform: lowercase' id='idmail' name="emailemp"
-							data-error='email incorrecto'
-							value="<?php echo $row['emailemp'] ?>" required />
-						<div class="help-block with-errors"></div>
-					</div>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idweb'>Sitio Web:</label>
-					</div>
-					<div class='col-sm-3 small'>
-						<input type="url" class='form-control input-sm'
-							style='text-transform: lowercase' name="web" id="idweb"
-							value="<?php echo $row['web'] ?>" /> * Si no tiene sitio web, por
-						favor no diligencie este campo.
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-3">
+						<label class='control-label' for='nfax'>Extensión:</label>
+						<div class=''>
+							<input type='text' class='form-control input-sm' id='nfax'  name='fax' maxlength="5" value='<?php echo $row['fax'] ?>' />
+						</div>
 					</div>
 				</div>
+				
+				<div class="container-fluid text-right">
+				
+					<div class="form group form-group-sm  col-xs-6">
+						<label class='col-xs-4' for='idmail'>Email Empresa:</label>
+						<div class='col-xs-8 small'>
+							<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idmail' name="emailemp" maxlength="50" value="<?php echo $row['emailemp'] ?>" required />
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="form group form-group-sm col-xs-6">
+						<label class='col-xs-4' for='idweb'>Sitio Web:</label>
+						<div class='col-sm-8 small'>
+							<input type="url" class='form-control input-sm' style='text-transform: lowercase' name="web" id="idweb" maxlength="50" value="<?php echo $row['web'] ?>" /> * Si no tiene sitio web, por
+							<span> favor no diligencie este campo. </span>
+						</div>
+					</div>
+				</div>
+				
 
+				<!-- mas para cambiar -->
+				
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
 						<label class='control-label' for='dirn'>Direcci&oacute;n
 							Notificaci&oacute;n:</label>
 					</div>
 					<div class='col-sm-8 small'>
-						<input type='text' class='form-control input-sm' id='dirn'
-							name='dirnotifi'
-							data-error='Diligencie Direcci&oacute;n de notificaci&oacute;n'
-							value='<?php echo trim($row['dirnotifi']) ?>' required />
+						<input type='text' class='form-control input-sm' id='dirn' name='dirnotifi' data-error='Diligencie Direcci&oacute;n de notificaci&oacute;n' value='<?php echo trim($row['dirnotifi']) ?>' required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -631,41 +704,29 @@ latest: new Date(2099,11,31,23,59,59)
 						<label class='control-label' for='ntelen'>Tel. Not:</label>
 					</div>
 					<div class='col-sm-2 small' style="width: 150px">
-						<input type='text' class='form-control input-sm' id='ntelen'
-							name='telenotific'
-							data-error='Diligencie Tel&eacute;fono Notificaci&oacute;n'
-							value='<?php echo $row['telenotific'] ?>' required />
+						<input type='text' class='form-control input-sm' id='ntelen' name='telenotific' data-error='Diligencie Tel&eacute;fono Notificaci&oacute;n' value='<?php echo $row['telenotific'] ?>' required />
 						<div class="help-block with-errors"></div>
 					</div>
 					<div class='col-sm-1 small text-right' style="width: 50px">
 						<label class='control-label' for='nfaxn'>Fax Not:</label>
 					</div>
 					<div class='col-sm-2 small' style="width: 150px">
-						<input type='text' class='form-control input-sm' id='nfaxn'
-							name='faxnotific' value='<?php echo $row['faxnotific'] ?>' />
+						<input type='text' class='form-control input-sm' id='nfaxn' name='faxnotific' value='<?php echo $row['faxnotific'] ?>' />
 					</div>
 				</div>
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idmailn'>Email
-							Notificaci&oacute;n:</label>
+						<label class='control-label' for='idmailn'>Email Notificaci&oacute;n:</label>
 					</div>
 					<div class='col-sm-3 small'>
-						<input type="email" class='form-control input-sm'
-							style='text-transform: lowercase' id='idmailn' name="emailnotif"
-							data-error='Diligencie Email Notificaci&oacute;n'
-							value="<?php echo $row['emailnotif'] ?>" required />
+						<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idmailn' name="emailnotif" data-error='Diligencie Email Notificaci&oacute;n' value="<?php echo $row['emailnotif'] ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idwebn'>Sitio Web
-							Notificaci&oacute;n:</label>
+						<label class='control-label' for='idwebn'>Sitio Web Notificaci&oacute;n:</label>
 					</div>
 					<div class='col-sm-3 small'>
-						<input type="text" class='form-control input-sm'
-							style='text-transform: lowercase' name="webnotif" id="idwebn"
-							value="<?php echo $row['webnotif'] ?>" /> * Si no tiene sitio
-						web, por favor no diligencie este campo.
+						<input type="text" class='form-control input-sm' style='text-transform: lowercase' name="webnotif" id="idwebn" value="<?php echo $row['webnotif'] ?>" /> * Si no tiene sitio web, por favor no diligencie este campo.
 					</div>
 				</div>
 			</fieldset>
@@ -676,8 +737,7 @@ latest: new Date(2099,11,31,23,59,59)
 				</legend>
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idorg'>Organizaci&oacute;n
-							Jur&iacute;dica:</label>
+						<label class='control-label' for='idorg'>Organizaci&oacute;n Jur&iacute;dica:</label>
 					</div>
 					<div class='col-sm-3' id='cntOrga'>
 						<select class='form-control' name='orgju' id='idorg'>
@@ -891,18 +951,15 @@ latest: new Date(2099,11,31,23,59,59)
 				<legend>
 					<h4 style='font-family: arial'>Actividades Economicas</h4>
 				</legend>
-				<div class='form-group form-group-sm'>
-					<div class='col-xs-12 col-sm-2 small text-right'>
-						<!-- label class='control-label' for='idrep'>Representante Legal:</label-->
-						<!--a id="agregarCampo" class="btn btn-info" href="#">Agregar Campo</a-->
+				<div class="container-fluid text-center">
+					<!-- div class="row">&nbsp; </div-->
+					<div class='form-group col-xs-12 col-sm-3'>
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Actividades Economicas</button>
-
 					</div>
-					<div id="actividades"
-						class='col-xs-12 col-sm-8 col-sm-offset-1 small'>
-						<!-- Listado de actividades de la empresa -->
+					
+					<div id="actividades" class="col-xs-12 col-sm-9">
 						<?php foreach ( $qActEmp as $actEmp ) { ?>
-						<div class="form-group ">
+						<div class="form-group" >
 							<div class="input-group ">
 								<span class="input-group-btn">
 									<button class="btn btn-default eliminar" type="button">
@@ -915,7 +972,6 @@ latest: new Date(2099,11,31,23,59,59)
 						</div>
 						<?php } ?>
 					</div>
-
 				</div>
 			</fieldset>
 
