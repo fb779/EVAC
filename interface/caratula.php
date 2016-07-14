@@ -43,7 +43,7 @@ $qMpioN->execute ( array (
 		'idDptoN' => $row ['depnotific'] 
 ) );
 
-$qOrganiza = $conn->query ( "SELECT * FROM organiza" );
+$qOrganiza = $conn->query ( "SELECT * FROM organiza order by nombre" );
 $qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 $actividad = $row ['ciiu3'];
@@ -112,38 +112,6 @@ p {
 
 <script type="text/javascript">
 			$(function(){
-				/** Convertir campos texto a mausculas */ 
-				$('.mayusculas').on('keyup', function(){
-					var v = $(this);
-					v.val( v.val().toUpperCase());
-					
-				});
-
-				/** Permitir solo numeros en los campos */
-				$('.solo-numero').on('keyup',function (){
-					this.value = (this.value + '').replace(/[^0-9]/g, '');
-				});
-
-				/** Evitar caracteres especiales */
-				$('.no-especiales').on('keyup', function() {
-				      var regex = new RegExp("^[. 0-9a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
-				      var _this = this;
-
-				      var texto = $(_this).val();
-			          if(!regex.test(texto))
-			          {
-			              $(_this).val(texto.substring(0, (texto.length-1)))
-			          }
-				      // Curta pausa para esperar colar para completar
-// 				      setTimeout( function(){
-// 				          var texto = $(_this).val();
-// 				          if(!regex.test(texto))
-// 				          {
-// 				              $(_this).val(texto.substring(0, (texto.length-1)))
-// 				          }
-// 				      }, 100);
-				  });
-
 				$("#idfechai, #idfechah").attr("tabindex","-1"); //Deshabilito cambiar foco.
 				
 				//Permitir solo caracteres numericos en la caja de texto del numero NIT.
@@ -202,33 +170,6 @@ p {
 
 				
 			});
-			
-			/* Funcion para campos dimamicos */
-			$(document).ready(function() {
-				var contenedor	= $("#actividades"); //ID del contenedor
-			    var actividad	= $("#listActividad"); // ID div.body modal 
-			    
-			  	//interaccion para agregar el div de la acividad del modal a la pagina
-			    $(actividad).on("click", ".addAct", function(e) {
-			    	$(this).children().removeClass("glyphicon-plus");
-					$(this).children().addClass("glyphicon-remove");
-					$(this).removeClass("addAct"); // agregar clase eliminar al div.
-					$(this).addClass("eliminar"); // agregar clase eliminar al div.
-					$(contenedor).append($(this).parent().parent().parent())
-				});
-			    
-			    // interaccion para remover el item de el listado de la pagina y regresarlo al modal
-			    $(contenedor).on("click", ".eliminar", function(e) {
-			    	var $that = $(this);
-			    	$that.children().removeClass("glyphicon-remove");
-			    	$that.children().addClass("glyphicon-plus");
-			    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
-			    	$that.addClass("addAct"); // agregar clase eliminar al div.
-			    	$(actividad).append($(this).parent().parent().parent())
-			    	//$(actividad).append($(this).parents(".form-group"));
-				});
-			});
-			/* Fin funcion campos dinamicos */
 			
 			$(document).ready(function(){
     			$('[data-toggle="tooltip"]').tooltip();   
@@ -344,8 +285,58 @@ latest: new Date(2099,11,31,23,59,59)
 				});
 			});
 
+			/* Funcion para campos dimamicos */
+			$(document).ready(function() {
+				var contenedor	= $("#actividades"); //ID del contenedor
+			    var actividad	= $("#listActividad"); // ID div.body modal 
+			    
+			  	//interaccion para agregar el div de la acividad del modal a la pagina
+			    $(actividad).on("click", ".addAct", function(e) {
+			    	$(this).children().removeClass("glyphicon-plus");
+					$(this).children().addClass("glyphicon-remove");
+					$(this).removeClass("addAct"); // agregar clase eliminar al div.
+					$(this).addClass("eliminar"); // agregar clase eliminar al div.
+					$(contenedor).append($(this).parent().parent().parent())
+				});
+			    
+			    // interaccion para remover el item de el listado de la pagina y regresarlo al modal
+			    $(contenedor).on("click", ".eliminar", function(e) {
+			    	var $that = $(this);
+			    	$that.children().removeClass("glyphicon-remove");
+			    	$that.children().addClass("glyphicon-plus");
+			    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
+			    	$that.addClass("addAct"); // agregar clase eliminar al div.
+			    	$(actividad).append($(this).parent().parent().parent())
+			    	//$(actividad).append($(this).parents(".form-group"));
+				});
+			});
+			/* Fin funcion campos dinamicos */
+
 			/** Validaciones de los campos de la caratula unica */
 			$(document).ready(function(){
+				/** Convertir campos texto a mausculas */ 
+				$('.mayusculas').on('keyup', function(){
+					var v = $(this);
+					v.val( v.val().toUpperCase());
+					
+				});
+
+				/** Permitir solo numeros en los campos */
+				$('.solo-numero').on('keyup',function (){
+					this.value = (this.value + '').replace(/[^0-9]/g, '');
+				});
+
+				/** Evitar caracteres especiales */
+				$('.no-especiales').on('keyup', function() {
+					var regex = new RegExp("^[. 0-9a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
+				    var _this = this;
+				    
+				    var texto = $(_this).val();
+			        if(!regex.test(texto)) {
+				        $(_this).val(texto.substring(0, (texto.length-1)))
+					}
+				});
+				  
 				var color = '#a94442';
 				var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 				/** Validacion campo ndoc Numero documento */
@@ -408,6 +399,39 @@ latest: new Date(2099,11,31,23,59,59)
 						$(this).parent().parent().addClass('text-danger');
 				    	$(this).css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
+					}
+				    
+				});
+
+				/** Validacion direccion de notificacion */
+				$('#dirn').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+				    // Se utiliza la funcion test() nativa de JavaScript
+				    if ($(this).val() == ''){
+				    	$(this).parent().parent().addClass('text-danger');
+				    	$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Falta dirección de notificación</span>');
+					}
+				});
+
+				/** Validacion email notificacion */
+				$('#idmailn').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+				    // Se utiliza la funcion test() nativa de JavaScript
+				    if ($(this).val() != ''){
+				    	if (!regex.test($(this).val().trim()) ) {
+					    	$(this).parent().parent().addClass('text-danger');
+					    	$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+					    }   
+					}else{
+						$(this).parent().parent().addClass('text-danger');
+				    	$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
 					}
 				    
 				});
@@ -545,6 +569,7 @@ latest: new Date(2099,11,31,23,59,59)
 					</div>
 				</div>
 			</fieldset>
+			
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
 					<h4 style='font-family: arial'>
@@ -552,7 +577,7 @@ latest: new Date(2099,11,31,23,59,59)
 					</h4>
 				</legend>
 				
-				<div class="container-fluid text-right">
+				<div class="container-fluid small text-right">
 					<div class="col-xs-12">
 						<label class='col-xs-2' for='rs'>Raz&oacute;n Social:</label>
 						<div class='col-xs-10 small'>
@@ -581,12 +606,13 @@ latest: new Date(2099,11,31,23,59,59)
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
+					<div class="col-xs-12">&nbsp;</div>
 				</div>
 				
-				<div class="container-fluid text-center">
+				<div class="container-fluid small text-center">
 					<div class="form-group col-xs-1"> &nbsp;</div>
-					<div class="form-group col-xs-2">
-						<label class='' for='listadep'>Departamento:</label>
+					<div class="form-group col-xs-3">
+						<label class='' for='listadep'>Departamento</label>
 						<div class='small'>
 							<select class='form-control' id='listadep' name='depto' onChange='cargaMuni(this.value, "cntMuni", "listamuni", "mpio")'>
 								<?php
@@ -602,8 +628,8 @@ latest: new Date(2099,11,31,23,59,59)
 						</div>
 					</div>
 					<div class="form-group col-xs-1"> &nbsp;</div>
-					<div class="form-group col-xs-2">
-						<label class='' for='listamuni'>Municipio:</label>
+					<div class="form-group col-xs-3">
+						<label class='' for='listamuni'>Municipio</label>
 						<div class='small' id='cntMuni'>
 							<select class='form-control' name='mpio' id='listamuni'>
 								<?php
@@ -619,7 +645,7 @@ latest: new Date(2099,11,31,23,59,59)
 						</div>
 					</div>
 					<div class="form-group col-xs-1"> &nbsp;</div>
-					<div class="form-group col-xs-3">
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='ntele'>Telefono</label>
 						<div class=''>
 							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Tel&eacute;fono Inv&aacute;lido' value='<?php echo $row['telefono'] ?>' required />
@@ -627,7 +653,7 @@ latest: new Date(2099,11,31,23,59,59)
 						</div>
 					</div>
 					<div class="form-group col-xs-1"> &nbsp;</div>
-					<div class="form-group col-xs-3">
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='nfax'>Extensión:</label>
 						<div class=''>
 							<input type='text' class='form-control input-sm' id='nfax'  name='fax' maxlength="5" value='<?php echo $row['fax'] ?>' />
@@ -635,60 +661,58 @@ latest: new Date(2099,11,31,23,59,59)
 					</div>
 				</div>
 				
-				<div class="container-fluid text-right">
-				
-					<div class="form group form-group-sm  col-xs-6">
-						<label class='col-xs-4' for='idmail'>Email Empresa:</label>
+				<div class="container-fluid small">
+					<div class="form group form-group-sm col-xs-6">
+						<label class='col-xs-4 text-right' for='idmail'>Email Empresa:</label>
 						<div class='col-xs-8 small'>
 							<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idmail' name="emailemp" maxlength="50" value="<?php echo $row['emailemp'] ?>" required />
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
 					<div class="form group form-group-sm col-xs-6">
-						<label class='col-xs-4' for='idweb'>Sitio Web:</label>
+						<label class='col-xs-4 text-right' for='idweb'>Sitio Web:</label>
 						<div class='col-sm-8 small'>
-							<input type="url" class='form-control input-sm' style='text-transform: lowercase' name="web" id="idweb" maxlength="50" value="<?php echo $row['web'] ?>" /> * Si no tiene sitio web, por
-							<span> favor no diligencie este campo. </span>
+							<input type="url" class='form-control input-sm' style='text-transform: lowercase' name="web" id="idweb" maxlength="50" value="<?php echo $row['web'] ?>" />
+						</div>
+						<span class="col-xs-12 text-center">* Si no tiene sitio web, por favor no diligencie este campo. </span>
+					</div>
+					<div class="col-xs-12">&nbsp;</div>
+				</div>
+				
+				<div class="container-fluid small">
+					<div class="col-xs-12">
+						<label class='col-xs-2 text-right' for='dirn'>Direcci&oacute;n Notificaci&oacute;n:</label>
+						<div class="col-xs-10">
+							<input type='text' class='form-control input-sm' id='dirn' name='dirnotifi' maxlength="40" value='<?php echo trim($row['dirnotifi']) ?>' required />
+							<div class="help-block with-errors"></div>
 						</div>
 					</div>
+					<div class="col-xs-12">&nbsp;</div>
 				</div>
 				
-
-				<!-- mas para cambiar -->
-				
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='dirn'>Direcci&oacute;n
-							Notificaci&oacute;n:</label>
-					</div>
-					<div class='col-sm-8 small'>
-						<input type='text' class='form-control input-sm' id='dirn' name='dirnotifi' data-error='Diligencie Direcci&oacute;n de notificaci&oacute;n' value='<?php echo trim($row['dirnotifi']) ?>' required />
-						<div class="help-block with-errors"></div>
-					</div>
-				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='ldepn'>Depto Notif.:</label>
-					</div>
-					<div class='col-sm-2 small'>
-						<select class='form-control' id='ldepn' name='depnotific'
-							onChange='cargaMuni(this.value, "cntMuniN", "lmunin", "munnotific")'>
+				<div class="container-fluid small text-center">
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-3">
+						<label class='' for='ldepn'>Departamento Notificación</label>
+						<div class='small'>
+							<select class='form-control' id='ldepn' name='depnotific' onChange='cargaMuni(this.value, "cntMuniN", "lmunin", "munnotific")'>
 								<?php
-								foreach ( $qDptoN as $lDptoN ) {
-									if ($lDptoN ['dpto'] == $row ['depnotific']) {
-										echo "<option value='" . $lDptoN ['dpto'] . "' selected>" . $lDptoN ['ndpto'] . "</option>";
-									} else {
-										echo "<option value='" . $lDptoN ['dpto'] . "'>" . $lDptoN ['ndpto'] . "</option>";
+									foreach ( $qDptoN as $lDptoN ) {
+										if ($lDptoN ['dpto'] == $row ['depnotific']) {
+											echo "<option value='" . $lDptoN ['dpto'] . "' selected>" . $lDptoN ['ndpto'] . "</option>";
+										} else {
+											echo "<option value='" . $lDptoN ['dpto'] . "'>" . $lDptoN ['ndpto'] . "</option>";
+										}
 									}
-								}
 								?>
 							</select>
+						</div>
 					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='lmunin'>M/pio Notif.:</label>
-					</div>
-					<div class='col-sm-2 small' id='cntMuniN'>
-						<select class='form-control' name='munnotific' id='lmunin'>
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-3">
+						<label class='' for='lmunin'>Municipio Notificación</label>
+						<div class='small' id='cntMuniN'>
+							<select class='form-control' name='munnotific' id='lmunin'>
 								<?php
 								foreach ( $qMpioN as $lMpioN ) {
 									if ($lMpioN ['muni'] == $row ['munnotific']) {
@@ -699,35 +723,41 @@ latest: new Date(2099,11,31,23,59,59)
 								}
 								?>
 							</select>
+						</div>
 					</div>
-					<div class='col-sm-1 small text-right' style="width: 50px">
-						<label class='control-label' for='ntelen'>Tel. Not:</label>
-					</div>
-					<div class='col-sm-2 small' style="width: 150px">
-						<input type='text' class='form-control input-sm' id='ntelen' name='telenotific' data-error='Diligencie Tel&eacute;fono Notificaci&oacute;n' value='<?php echo $row['telenotific'] ?>' required />
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-2">
+						<label class='control-label' for='ntelen'>Tel. Not</label>
+						<div class=''>
+							<input type='text' class='form-control input-sm' id='ntelen' name='telenotific' maxlength="10" data-error='Diligencie Tel&eacute;fono Notificaci&oacute;n' value='<?php echo $row['telenotific'] ?>' required />
 						<div class="help-block with-errors"></div>
+						</div>
 					</div>
-					<div class='col-sm-1 small text-right' style="width: 50px">
-						<label class='control-label' for='nfaxn'>Fax Not:</label>
-					</div>
-					<div class='col-sm-2 small' style="width: 150px">
-						<input type='text' class='form-control input-sm' id='nfaxn' name='faxnotific' value='<?php echo $row['faxnotific'] ?>' />
+					<div class="form-group col-xs-1"> &nbsp;</div>
+					<div class="form-group col-xs-2">
+						<label class='control-label' for='nfaxn'>Ext. Not</label>
+						<div class=''>
+							<input type='text' class='form-control input-sm' id='nfaxn' name='faxnotific' maxlength="5" value='<?php echo $row['faxnotific'] ?>' />
+						</div>
 					</div>
 				</div>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idmailn'>Email Notificaci&oacute;n:</label>
-					</div>
-					<div class='col-sm-3 small'>
-						<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idmailn' name="emailnotif" data-error='Diligencie Email Notificaci&oacute;n' value="<?php echo $row['emailnotif'] ?>" required />
+				
+				<div class="container-fluid small">
+					<div class="form group form-group-sm col-xs-6">
+						<label class='col-xs-4 text-right' for='idmailn'>Email Notificaci&oacute;n:</label>
+						<div class='col-xs-8 small'>
+							<input type="email" class='form-control input-sm' style='text-transform: lowercase' id='idmailn' name="emailnotif" data-error='Diligencie Email Notificaci&oacute;n' value="<?php echo $row['emailnotif'] ?>" required />
 						<div class="help-block with-errors"></div>
+						</div>
 					</div>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idwebn'>Sitio Web Notificaci&oacute;n:</label>
+					<div class="form group form-group-sm col-xs-6">
+						<label class='col-xs-4 text-right' for='idwebn'>Sitio Web Notificaci&oacute;n:</label>
+						<div class='col-sm-8 small'>
+							<input type="text" class='form-control input-sm' style='text-transform: lowercase' name="webnotif" id="idwebn" value="<?php echo $row['webnotif'] ?>" />
+						</div>
+						<span class="col-xs-12 text-center">* Si no tiene sitio web, por favor no diligencie este campo. </span>
 					</div>
-					<div class='col-sm-3 small'>
-						<input type="text" class='form-control input-sm' style='text-transform: lowercase' name="webnotif" id="idwebn" value="<?php echo $row['webnotif'] ?>" /> * Si no tiene sitio web, por favor no diligencie este campo.
-					</div>
+					<div class="col-xs-12">&nbsp;</div>
 				</div>
 			</fieldset>
 			<fieldset style='border-style: solid; border-width: 1px'>
@@ -737,7 +767,7 @@ latest: new Date(2099,11,31,23,59,59)
 				</legend>
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idorg'>Organizaci&oacute;n Jur&iacute;dica:</label>
+						<label class='control-label' for='idorg'>Tipo de organizaci&oacute;n Jur&iacute;dica:</label>
 					</div>
 					<div class='col-sm-3' id='cntOrga'>
 						<select class='form-control' name='orgju' id='idorg'>
@@ -753,21 +783,16 @@ latest: new Date(2099,11,31,23,59,59)
 							</select>
 					</div>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idfechai'>Fecha
-							Constituci&oacute;n Desde:</label>
+						<label class='control-label' for='idfechai'>Fecha Constituci&oacute;n Desde:</label>
 					</div>
 					<div class='col-sm-2 small date'>
 						<div class='input-group input-append date' id='idFechaDesde'>
-							<input type='text' class='form-control col-xs-1'
-								name='fechaconst' id='idfechai'
-								value=<?php echo $row['fechaconst']?> /> <span
-								class='input-group-addon add-on'>
-								<button type='button' id='btnFechaDesde'
-									class='btn btn-default btn-xs'>
-									<span class='glyphicon glyphicon-calendar'>
-								
-								</button>
-							</span></span>
+							<input type='text' class='form-control col-xs-1' name='fechaconst' id='idfechai' value=<?php echo $row['fechaconst']?> /> 
+								<span class='input-group-addon add-on'>
+									<button type='button' id='btnFechaDesde' class='btn btn-default btn-xs'>
+										<span class='glyphicon glyphicon-calendar'></span>
+									</button>
+								</span>
 						</div>
 					</div>
 					<div class='col-sm-1 small text-right'>
@@ -775,16 +800,12 @@ latest: new Date(2099,11,31,23,59,59)
 					</div>
 					<div class='col-sm-2 small date'>
 						<div class='input-group input-append date' id='idfechaH'>
-							<input type='text' class='form-control col-xs-1'
-								name='fechahasta' id="idfechaf"
-								value=<?php echo $row['fechahasta']?> /> <span
-								class='input-group-addon add-on'>
-								<button type='button' id='btnFechaHasta'
-									class='btn btn-default btn-xs'>
-									<span class='glyphicon glyphicon-calendar'>
-								
+							<input type='text' class='form-control col-xs-1' name='fechahasta' id="idfechaf" value=<?php echo $row['fechahasta']?> />
+							<span class='input-group-addon add-on'>
+								<button type='button' id='btnFechaHasta' class='btn btn-default btn-xs'>
+									<span class='glyphicon glyphicon-calendar'></span>
 								</button>
-							</span></span>
+							</span>
 						</div>
 					</div>
 				</div>
