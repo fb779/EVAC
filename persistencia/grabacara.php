@@ -1,12 +1,18 @@
 <?php
 if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){ //validamos que la peticion sea ajax
+	$jsondata = array();
+	
 	if (session_id() == "") {
 		session_start();
 	}
 	include '../conecta.php';
 	$nombres = Array(); $Valores = Array();
-	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara",
-					"numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","dirnotifi",
+	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara", "numero", "depto", "mpio", "depnotific", "munnotific", 
+					"capsocinpu", "capsocinpr", "capsociepu", "capsociepr", "estagrop", "estminero", "estind", "estservpub",
+					"estconst", "estcom", "estreshot", "esttrans", "estcomunic", "estfinanc", "estservcom", "uniaux", "teler",
+					"otro",
+
+					"numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","orgjucual","dirnotifi",
 					"telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web",
 					"emailnotif","webnotif","emailres","lgg","fechaconst","fechahasta","fechadist");
 	$i = 0;
@@ -31,23 +37,26 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 	//print_r($nombres);
 
-	for($i=1; $i<=count($nombres); $i++) {
-		$nomvar = $nombres[$i]; 
-		if ($valores[$i] != $row[$nomvar]) {
-			$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
-				tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
+// 	for($i=1; $i<=count($nombres); $i++) {
+// 		$nomvar = $nombres[$i];
+// 		if ( isset($nomvar) ){
+// 		if ($valores[$i] != $row[$nomvar]) {
+// 			$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
+// 				tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
 			
-			$creaLog->execute(array(':numero'=>$numero,
-				':tipo'=>$_SESSION['tipou'],
-				':usuario'=>$_SESSION['idusu'],
-				':fecha'=>date("Y-m-d"),
-				'hora'=>date("h:i:sa"),
-				':variable'=>$nombres[$i],
-				':anterior'=>$row[$nomvar],
-				':actual'=>$valores[$i],
-				':tabla'=>"caratula"));
-		}
-	}
+// 			$creaLog->execute(array(':numero'=>$numero,
+// 				':tipo'=>$_SESSION['tipou'],
+// 				':usuario'=>$_SESSION['idusu'],
+// 				':fecha'=>date("Y-m-d"),
+// 				'hora'=>date("h:i:sa"),
+// 				':variable'=>$nombres[$i],
+// 				':anterior'=>$row[$nomvar],
+// 				':actual'=>$valores[$i],
+// 				':tabla'=>"caratula"));
+// 		}
+// 		$jsondata['auditoria'][] = $creaLog;
+// 		}
+// 	}
 	
 	$lineaMOD = 'UPDATE caratula SET ';
 	$actemp = 'INSERT INTO actiemp (nordemp, actividad) VALUES ';
@@ -65,9 +74,19 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$lineaMOD .= ' WHERE nordemp = ' . $valores[0];
 //	print_r($lineaMOD);
 	$actucara = $conn->exec($lineaMOD);
+	$jsondata['caratula'] = $actucara;
+	$jsondata['caratula_sql'] = $lineaMOD;
 	
 	$conn->query("delete from actiemp where nordemp = ".$numero."");
 	$activi = $conn->exec(rtrim($actemp,', '));
+	$jsondata['actividades'] = $activi;
+	$jsondata['actividades_sql'] = $actemp;
+	$jsondata['success'] = true;
+
+	header('Content-type: application/json; charset=utf-8');
+	echo json_encode($jsondata);
+	//exit();
+	
 // 	$insActivi = 'INSERT INTO actiemp (nordemp, actividad) values ';
 	
 // 	foreach ($nombres as $clave){

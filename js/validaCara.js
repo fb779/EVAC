@@ -3,13 +3,13 @@ function validaCara() {
 	retorno = "";
 	var capital = parseInt(document.getElementById("idnalpub").value)+parseInt(document.getElementById("idnalpr").value)+parseInt(document.getElementById("idexpub").value)+parseInt(document.getElementById("idexpr").value);
 	if (parseInt(capital)!=100) {
-		alert("Por favor revise Composición del capital social debe ser igual a 100");
+		alert("Por favor revise ComposiciÃ³n del capital social debe ser igual a 100");
 		retorno = "idnalpr";
 		return retorno;
 	}
 //FECHA CONSTITUCION	
 	if (document.getElementById("idfechai").value == "0000-00-00" || document.getElementById("idfechai").value == "") {
-		alert("Por favor diligencie la Fecha de Constitución");
+		alert("Por favor diligencie la Fecha de Constituciï¿½n");
 		retorno = "idfechai";
 		return retorno;
 	}
