@@ -89,8 +89,8 @@ if ($tipousu != "FU") {
 <link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 <link href="../js/anytime.5.1.2.css" rel="stylesheet">
 <script src="../bootstrap/js/jquery.js"></script>
-<script src="../bootstrap/js/transition.js"></script>
-<script src="../bootstrap/js/collapse.js"></script>
+<!-- script src="../bootstrap/js/transition.js"></script>
+<script src="../bootstrap/js/collapse.js"></script-->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="../js/cargaDato.js"></script>
@@ -115,7 +115,7 @@ p {
 
 <script type="text/javascript">
 			$(function(){
-				$("#idfechai, #idfechah").attr("tabindex","-1"); //Deshabilito cambiar foco.
+				$("#idfechai, #idfechah, #idfecdil").attr("tabindex","-1"); //Deshabilito cambiar foco.
 				
 				//Permitir solo caracteres numericos en la caja de texto del numero NIT.
 				$("#ndoc, #ntele, #ntelen, #nfax, #nfaxn, #idteldil").keyup(function(){
@@ -265,8 +265,24 @@ p {
 					labelDayOfMonth: "Dia del Mes", 
 					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
 					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'], 
-					minYear: 2000,
-					earliest: new Date(2000,0,1,0,0,0),
+					minYear: 1800,
+					//earliest: new Date(2000,0,1,0,0,0),
+					earliest: new Date(Convertidor.parse($('#idfechai').val()).getTime()+oneDay),
+					latest: new Date(2099,11,31,23,59,59)
+				});
+
+				
+				$("#idfecdil").AnyTime_picker({
+					format: Formato,
+					labelTitle: "FECHA",
+					labelYear: "A\xF1o",
+					labelMonth: "Mes",
+					labelDayOfMonth: "Día del Mes",
+					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'], 
+					baseYear: "1800",
+					//earliest: new Date(2001,0,1,0,0,0),
+					earliest: new Date(),
 					latest: new Date(2099,11,31,23,59,59)
 				});
 
@@ -279,7 +295,7 @@ p {
 					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
 					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 				});
-
+					
 				$("#btnFecha").click(function() {
 					$("#idfechad").focus();
 				});
@@ -292,68 +308,67 @@ p {
 					$("#idfechaf").focus();
 				});
 
-				$("#idfechai, #idfechaf").on('change',function(){
-					debugger;
-					var fec = $(this);
-					if (fec.attr('id') == 'idfechai'){
-						var feci = Convertidor.parse(fec.val()).getTime();
-						
-						var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia 
-						dayLater.setHours(0,0,0,0);
-						var moreDaysLater = new Date(feci+(2*oneMonth)); // a la fecha seleccionada se le agrega 2 meses
-						moreDaysLater.setHours(23,59,59,999)
-
-						$('#idfechaf').
-						AnyTime_noPicker().
-						removeAttr("disabled").
-						val(Convertidor.format(dayLater)).
-						AnyTime_picker( {
-							format: Formato,
-							labelTitle: "FECHA",
-							labelYear: "A\xF1o",
-							labelMonth: "Mes",
-							labelDayOfMonth: "Dia del Mes", 
-							dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
-							monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-							earliest: dayLater,
-							latest: moreDaysLater
-						});
-
-						
-						
-						
-					}
-
-					if (fec.attr('id') == 'idfechaf'){
-						console.log('Fecha final.');
-					}
+				$("#btnFechaDili").click(function() {
+					$("#idfecdil").focus();
 				});
 				
+				$("#idfechai").on('change',function(){
+					var item = $(this);
+					var feci = Convertidor.parse($('#idfechai').val()).getTime();
+					var fecf = Convertidor.parse($('#idfechaf').val()).getTime();
+					
+					if (item.attr('id') == 'idfechai'){
+						
+						if (parseInt( $('#idfechai').val().replace(/-/g,'') ) > parseInt( $('#idfechaf').val().replace(/-/g,''))){	
+							var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia 
+							dayLater.setHours(0,0,0,0);
+							var moreDaysLater = new Date(feci+(2*oneMonth)); // a la fecha seleccionada se le agrega 2 meses
+							moreDaysLater.setHours(23,59,59,999)
+							
+							$('#idfechaf').
+							AnyTime_noPicker().
+							removeAttr("disabled").
+							val(Convertidor.format(dayLater)).
+							AnyTime_picker( {
+								format: Formato,
+								labelTitle: "FECHA",
+								labelYear: "A\xF1o",
+								labelMonth: "Mes",
+								labelDayOfMonth: "Dia del Mes", 
+								dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
+								monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+								earliest: dayLater,
+								//latest: moreDaysLater
+							});
+						}else{
+							var day = new Date(fecf);
+							day.setHours(0,0,0,0);
+							var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia 
+							dayLater.setHours(0,0,0,0);
+							
+							$('#idfechaf').
+							AnyTime_noPicker().
+							removeAttr("disabled").
+							val(Convertidor.format(day)).
+							AnyTime_picker( {
+								format: Formato,
+								labelTitle: "FECHA",
+								labelYear: "A\xF1o",
+								labelMonth: "Mes",
+								labelDayOfMonth: "Dia del Mes", 
+								dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
+								monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+								earliest: dayLater
+								//latest: moreDaysLater
+							});
+						}						
+					}
 
-
-				/** Manejo y validacion para las fechas */
-// 				$("#idfechai").on('change', function(){
-// 					try {
-// 						debugger;
-// 				        var fromDay = rangeDemoConv.parse($("#idfechai").val()).getTime();
-// 				        var dayLater = new Date(fromDay+oneDay);
-// 				        dayLater.setHours(0,0,0,0);
-// 				        var ninetyDaysLater = new Date(fromDay+(90*oneDay));
-// 				        ninetyDaysLater.setHours(23,59,59,999);
-// 				        $("#idfechaf").
-// 				          AnyTime_noPicker().
-// 				          removeAttr("disabled").
-// 				          val(rangeDemoConv.format(dayLater)).
-// 				          AnyTime_picker( {
-// 				            earliest: dayLater,
-// 				            format: rangeDemoFormat,
-// 				            latest: ninetyDaysLater
-// 				            } );
-// 				        }
-// 				      catch(e) {
-// 				        $("#idfechaf").val("").attr("disabled","disabled");
-// 				        }
-// 				});
+// 					if (item.attr('id') == 'idfechaf'){
+// 						//console.log('Fecha final.');
+// 					}
+				});
+			
 			});
 
 			
@@ -381,7 +396,8 @@ p {
 			$(document).ready(function() {
 				var contenedor	= $("#actividades"); //ID del contenedor
 			    var actividad	= $("#listActividad"); // ID div.body modal 
-			    
+
+			    contenedor.css('z-index', -100);
 			  	//interaccion para agregar el div de la acividad del modal a la pagina
 			    $(actividad).on("click", ".addAct", function(e) {
 			    	$(this).children().removeClass("glyphicon-plus");
@@ -605,7 +621,7 @@ p {
 						$('#idestactotro').parent().parent().addClass('hidden');
 						$('#idestactotro').prop('required',false);
 						$('#idestactotro').prop('disabled',true);
-						$('#idestactotro').val('');
+						$('#idestactotro').val(' ');
 					}
 				});
 
@@ -622,14 +638,14 @@ p {
 
 				$('.numestab :input').on('change', function(){
 					var v = $(this);
-					debugger;
-
+					v.parent().removeClass('text-danger');
+					v.css('border',"");
+					$(this).parent().children('span').remove();
 					if (v.val() == ''){
-						v.val('0');
+						//v.val('0');
+						v.parent().addClass('text-danger');
 						v.css('border',"1px solid" + color);
-						alert('Debe digitar un valor entre 0-999');
-					}else{
-						v.css('border',"");
+						$(this).parent().append('<span class="text-danger">Debe digitar un valor entre 0-999</span>');
 					}
 				});
 
@@ -664,6 +680,9 @@ p {
 			if ($tipousu == "CO" or ($tipousu == "CR" and $region == 99)) {
 				echo "<a href='../administracion/novedades.php?numero=" . $numero . "'>Asignar Novedad</a> | ";
 			}
+			
+			echo '<br/>'; print_r($row);
+		
 		?>
 		</div>
 		<div class='container'>
@@ -1092,83 +1111,77 @@ p {
 						que conforman la Empresa de acuerdo con la actividad
 						Econ&oacute;mica</h4>
 				</legend>
-				<div class='form-group form-group-sm numestab' style="margin-left: 20px">
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idagr' style="font-size: 10px">Agropecuarios:</label>
+				<div class="container-fluid text-center small numestab">
+					<div class="col-xs-12">
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Agropecuarios</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idagr' name="estagrop" maxlength="3" value="<?php echo $row['estagrop'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Mineros</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idmin' name="estminero" maxlength="3" value="<?php echo $row['estminero'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Manufactureros</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idmanu' name="estind" maxlength="3" value="<?php echo $row['estind'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Servicios P&uacute;blicos</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idspu' name="estservpub" maxlength="3" value="<?php echo $row['estservpub'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
 					</div>
-					<div class='col-xs-1 small' style="width: 80px">
-						<input type="text" class='form-control input-xs solo-numero' id='idagr' name="estagrop" maxlength="3" value="<?php echo $row['estagrop'] ?>" reuqired />
+					
+					<div class="col-xs-12">
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Const. y Obras Civiles</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idcons' name="estconst" maxlength="3" value="<?php echo $row['estconst'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Comerciales</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idcom' name="estcom" maxlength="3" value="<?php echo $row['estcom'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Rest. y Hoteles</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idresh' name="estreshot" maxlength="3" value="<?php echo $row['estreshot'] ?>" required/>
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Transp y Almacenamiento</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idtya' name="esttrans" maxlength="3" value="<?php echo $row['esttrans'] ?>" required/>
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
 					</div>
-					<div class='col-sm-1 small text-right' style="font-size: 10px">
-						<label class='control-label' for='idmin'>Mineros:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idmin' name="estminero" maxlength="3 value="<?php echo $row['estminero'] ?>" reuqired />
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idmanu' style="font-size: 10px">Manufactureros:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idmanu' name="estind" maxlength="3" value="<?php echo $row['estind'] ?>" reuqired />
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idspu' style="font-size: 10px">Servicios
-							P&uacute;blicos:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idspu' name="estservpub" maxlength="3" value="<?php echo $row['estservpub'] ?>" reuqired />
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idcons' style="font-size: 10px">Const. y Obras Civiles:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idcons' name="estconst" maxlength="3" value="<?php echo $row['estconst'] ?>" reuqired />
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idcom' style="font-size: 10px">Comerciales:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idcom' name="estcom" maxlength="3" value="<?php echo $row['estcom'] ?>" reuqired />
-					</div>
-				</div>
-
-				<div class='form-group form-group-sm numestab' style="margin-left: 20px">
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idresh' style="font-size: 10px">Rest. y Hoteles:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idresh' name="estreshot" maxlength="3" value="<?php echo $row['estreshot'] ?>" reuqired/>
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idtya' style="font-size: 10px">Transp. y Almacenamiento:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idtya' name="esttrans" maxlength="3" value="<?php echo $row['esttrans'] ?>" reuqired/>
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idcyc' style="font-size: 10px">Comunicaci&oacute;n
-							y Correo:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idcyc' name="estcomunic" value="<?php echo $row['estcomunic'] ?>" reuqired/>
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idfin' style="font-size: 10px">Financ. y Otros Serv.:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idfin' name="estfinanc" value="<?php echo $row['estfinanc'] ?>" reuqired />
-					</div>
-					<div class='col-sm-1 small text-right' style="font-size: 10px">
-						<label class='control-label' for='idserc'>Servicios Comunales:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idserc' name="estservcom" value="<?php echo $row['estservcom'] ?>" reuqired/>
-					</div>
-					<div class='col-sm-1 small text-right'>
-						<label class='control-label' for='idaux' style="font-size: 10px">Unidades Auxiliares:</label>
-					</div>
-					<div class='col-sm-1 small' style="width: 80px">
-						<input type="text" class='form-control input-sm solo-numero' id='idaux' name="uniaux" value="<?php echo $row['uniaux'] ?>" reuqired />
+					
+					<div class="col-xs-12">
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Comunicaci&oacute;n y Correo</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idcyc' name="estcomunic" value="<?php echo $row['estcomunic'] ?>" required/>
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Financ. y Otros Serv.</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idfin' name="estfinanc" value="<?php echo $row['estfinanc'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Servicios Comunales</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idserc' name="estservcom" value="<?php echo $row['estservcom'] ?>" required/>
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
+						<div class="form-group col-xs-2">
+							<label for="">Unidades Auxiliares</label>
+							<input type="text" class='form-control input-sm solo-numero' id='idaux' name="uniaux" value="<?php echo $row['uniaux'] ?>" required />
+						</div>
+						<div class="col-xs-1">&nbsp;</div>
 					</div>
 				</div>
 			</fieldset>
@@ -1205,6 +1218,20 @@ p {
 				<legend>
 					<h4 style='font-family: arial'>Datos de diligenciamiento</h4>
 				</legend>
+				<div class="form-group form-group-sm small">
+					<div class="">
+						<label class="col-sm-2 text-right" for="">Fecha de diligenciamiento</label>
+						
+						<div class="input-group col-sm-2 col-sm-offset-1">
+							<input type="text" class="form-control" name='fechadili' id="idfecdil" value=<?php echo $row['fechadili']?>>
+							<span class="input-group-btn">
+								<button class="btn btn-default btn-sm" id='btnFechaDili' type="button">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</button>
+					      </span>
+					    </div><!-- /input-group -->
+					</div>
+				</div>
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
 						<label class='control-label' for='idrep'>Representante Legal:</label>
@@ -1238,7 +1265,7 @@ p {
 						<label class='control-label' for='idteldil'>Extención:</label>
 					</div>
 					<div class='col-sm-2 small'>
-						<input type="text" class='form-control input-sm solo-numero' id='idfaxdil' name="faxer" maxlength="5" data-error='Diligencie tel&eacute;fono Persona que diligencia' value="<?php //echo $row['faxer'] ?>" required />
+						<input type="text" class='form-control input-sm solo-numero' id='idfaxdil' name="faxr" maxlength="5" data-error='Diligencie la Extención de la Persona que diligencia' value="<?php echo $row['faxr'] ?>" />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>

@@ -10,7 +10,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara", "numero", "depto", "mpio", "depnotific", "munnotific", 
 					"capsocinpu", "capsocinpr", "capsociepu", "capsociepr", "estagrop", "estminero", "estind", "estservpub",
 					"estconst", "estcom", "estreshot", "esttrans", "estcomunic", "estfinanc", "estservcom", "uniaux", "teler",
-					"otro",
+					"otro","faxr","fechadili",
 
 					"numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","orgjucual","dirnotifi",
 					"telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web",
@@ -67,7 +67,10 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		}elseif (in_array($nombres[$i], $codigos)) { /** Validacion de codigos de actividad */
 			$actemp .= "('" . $numero . "', '" . $nombres[$i] . "'),";
 		}
-		
+	}
+	
+	if (!in_array('otro', $nombres)){
+		$lineaMOD .= 'otro = "' . NULL . '", ';
 	}
 	
 	$lineaMOD = rtrim($lineaMOD, ", ");
