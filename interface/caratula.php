@@ -322,7 +322,7 @@ p {
 						if (parseInt( $('#idfechai').val().replace(/-/g,'') ) > parseInt( $('#idfechaf').val().replace(/-/g,''))){	
 							var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia 
 							dayLater.setHours(0,0,0,0);
-							var moreDaysLater = new Date(feci+(2*oneMonth)); // a la fecha seleccionada se le agrega 2 meses
+							var moreDaysLater = new Date(feci+(2*oneYear)); // a la fecha seleccionada se le agrega 2 meses
 							moreDaysLater.setHours(23,59,59,999)
 							
 							$('#idfechaf').
@@ -485,11 +485,36 @@ p {
 
 				/** Validacion campo Razon social */
 				$('#rs').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
 					$(this).css('border',"");
 					$(this).parent().children('span').remove();
 					if ($(this).val() == ''){
+						$(this).parent().parent().addClass('text-danger');
 						$(this).css('border',"1px solid" + color);
-						//$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+						$(this).parent().append('<span class="text-danger"><h6>Falta Rason social</h6></span>');
+					}
+				});
+
+				/** Validacion nmombre comercial */
+				$('#nc').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+					if ($(this).val() == ''){
+						$(this).parent().parent().addClass('text-danger');
+						$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger"><h6>Falta Nombre comercial</h6></span>');
+					}
+				});
+
+				$('#dire').on('blur', function() {
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+					if ($(this).val() == ''){
+						$(this).parent().parent().addClass('text-danger');
+						$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger"><h6>Falta Nombre comercial</h6></span>');
 					}
 				});
 
@@ -680,9 +705,6 @@ p {
 			if ($tipousu == "CO" or ($tipousu == "CR" and $region == 99)) {
 				echo "<a href='../administracion/novedades.php?numero=" . $numero . "'>Asignar Novedad</a> | ";
 			}
-			
-			echo '<br/>'; print_r($row);
-		
 		?>
 		</div>
 		<div class='container'>
@@ -802,30 +824,30 @@ p {
 					</h4>
 				</legend>
 				
-				<div class="container-fluid small text-right">
+				<div class="container-fluid small">
 					<div class="col-xs-12">
-						<label class='col-xs-2' for='rs'>Raz&oacute;n Social:</label>
+						<label class='col-xs-2 text-right' for='rs'>Raz&oacute;n Social:</label>
 						<div class='col-xs-10 small'>
 							<input type='text' class='form-control input-sm no-especiales mayusculas' id='rs' name='nompropie' maxlength="60" data-error='Diligencie Raz&oacute;n Social' value='<?php echo trim($row['nompropie']) ?>' required />
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
 					<div class="col-xs-12">
-						<label class='col-xs-2' for='nc'>Nombre Comercial:</label>
+						<label class='col-xs-2 text-right' for='nc'>Nombre Comercial:</label>
 						<div class='col-xs-10 small'>
 							<input type='text' class='form-control input-sm no-especiales mayusculas' id='nc' name='nombre' maxlength="60" data-error='Diligencie Nombre Comercial' value='<?php echo trim($row['nombre']) ?>' required />
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
 					<div class="col-xs-12">
-						<label class='col-xs-2' for='sig'>SIGLA:</label>
+						<label class='col-xs-2 text-right' for='sig'>SIGLA:</label>
 						<div class='col-xs-10 small'>
 							<input type='text' class='form-control input-sm no-especiales mayusculas' id='sig' name='sigla' maxlength="20" value='<?php echo trim($row['sigla']) ?>' />
 						</div>
 					</div>
 					<div class="col-xs-12">&nbsp;</div>
 					<div class="col-xs-12">
-						<label class='col-xs-2' for='dire'>Direcci&oacute;n Gerencia General:</label>
+						<label class='col-xs-2 text-right'  for='dire'>Direcci&oacute;n Gerencia General:</label>
 						<div class='col-xs-10 small'>
 							<input type='text' class='form-control input-sm' id='dire' name='direccion' maxlength="40" data-error='Falta la Direcci&oacute;n de la Gerencia General' value='<?php echo trim($row['direccion']) ?>' required />
 							<div class="help-block with-errors"></div>
@@ -873,7 +895,7 @@ p {
 					<div class="form-group col-xs-2">
 						<label class='control-label' for='ntele'>Telefono</label>
 						<div class=''>
-							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Tel&eacute;fono Inv&aacute;lido' value='<?php echo $row['telefono'] ?>' required />
+							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Falta Tel&eacute;fono' value='<?php echo $row['telefono'] ?>' required />
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
@@ -904,7 +926,7 @@ p {
 					<div class="col-xs-12">&nbsp;</div>
 				</div>
 				
-				<div class="container-fluid small">
+				<div class="container-fluid small text-center">
 					<div class="col-xs-12">
 						<label class='col-xs-2 text-right' for='dirn'>Direcci&oacute;n Notificaci&oacute;n:</label>
 						<div class="col-xs-10">
