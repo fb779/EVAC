@@ -238,22 +238,27 @@ p {
 			}
 			
 			$(document).ready(function() {
-
+				var oneDay = 24*60*60*1000; // Valor de 1 dia
+				var oneMonth = 31*oneDay; // Valor de 1 mes
+				var oneYear = 365*oneDay; // Valor de 1 año
+				var Formato = "%Y-%m-%d"; // Formato de trabajo para las fechas
+				var Convertidor = new AnyTime.Converter({format:Formato}); // Objeto para la conversion o parseo de fechas 
+				
 				$("#idfechai").AnyTime_picker({
-					format: "%Y-%m-%d",
+					format: Formato,
 					labelTitle: "FECHA",
 					labelYear: "A\xF1o",
 					labelMonth: "Mes",
-					labelDayOfMonth: "Dia del Mes",
+					labelDayOfMonth: "Día del Mes",
 					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'], 
 					baseYear: "1800",
-					earliest: new Date(1800,0,1,0,0,0),
+					earliest: new Date(2000,0,1,0,0,0),
 					latest: new Date(2099,11,31,23,59,59)
 				});
 
 				$("#idfechaf").AnyTime_picker({
-					format: "%Y-%m-%d",
+					format: Formato,
 					labelTitle: "FECHA",
 					labelYear: "A\xF1o",
 					labelMonth: "Mes",
@@ -266,7 +271,7 @@ p {
 				});
 
 				$("#idfechad").AnyTime_picker({
-					format: "%Y-%m-%d",
+					format: Formato,
 					labelTitle: "FECHA",
 					labelYear: "A\xF1o",
 					labelMonth: "Mes",
@@ -286,6 +291,44 @@ p {
 				$("#btnFechaHasta").click(function() {
 					$("#idfechaf").focus();
 				});
+
+				$("#idfechai, #idfechaf").on('change',function(){
+					debugger;
+					var fec = $(this);
+					if (fec.attr('id') == 'idfechai'){
+						var feci = Convertidor.parse(fec.val()).getTime();
+						
+						var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia 
+						dayLater.setHours(0,0,0,0);
+						var moreDaysLater = new Date(feci+(2*oneMonth)); // a la fecha seleccionada se le agrega 2 meses
+						moreDaysLater.setHours(23,59,59,999)
+
+						$('#idfechaf').
+						AnyTime_noPicker().
+						removeAttr("disabled").
+						val(Convertidor.format(dayLater)).
+						AnyTime_picker( {
+							format: Formato,
+							labelTitle: "FECHA",
+							labelYear: "A\xF1o",
+							labelMonth: "Mes",
+							labelDayOfMonth: "Dia del Mes", 
+							dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'], 
+							monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+							earliest: dayLater,
+							latest: moreDaysLater
+						});
+
+						
+						
+						
+					}
+
+					if (fec.attr('id') == 'idfechaf'){
+						console.log('Fecha final.');
+					}
+				});
+				
 
 
 				/** Manejo y validacion para las fechas */
