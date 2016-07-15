@@ -217,7 +217,31 @@
 
 			
 			$(document).ready(function(){
+				$('.mayusculas').on('keyup', function(){
+					var v = $(this);
+					v.val( v.val().toUpperCase());
+					
+				});
+
+				/** Permitir solo numeros en los campos */
+				$('.solo-numero').on('keyup', function (){
+					this.value = (this.value + '').replace(/[^0-9]/g, '');
+				});
+
+				/** Evitar caracteres especiales */
+				$('.no-especiales').on('keyup', function() {
+					var regex = new RegExp("^[. 0-9a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
+				    var _this = this;
+				    
+				    var texto = $(_this).val();
+			        if(!regex.test(texto)) {
+				        $(_this).val(texto.substring(0, (texto.length-1)))
+					}
+				});
+
+				
 				var $fr = $('#capitulo1');
+				var color = '#a94442';
 				
 				if ($('[name="i1r1c1"]:checked').val() == 2){
 					$(':input,select', $fr ).each(function(){
@@ -244,11 +268,11 @@
 						
 						// retiramos los vicculos de la caracterización
 						lista.children().each(function(){ 
-							$(this).remove() 
+							$(this).remove();
 						});
 
 						conte.children().each(function(){ 
-							$(this).remove() 
+							$(this).remove();
 						});
 						
 						$(':input,select', $fr).each(function(){
@@ -260,9 +284,10 @@
 						$(':input,select', $fr ).each(function(){
 							$(this).prop('disabled', false);
 						});
-						
-						$('#idir3c9').prop('disabled', true)
+						$('#removeDisp').prop('disabled', true);
+						$('#idir3c9').prop('disabled', true);
 					}
+
 					
 					$('#btnGuardar').prop('disabled', false);
 					$('#idTipo').prop('disabled', false);
@@ -295,15 +320,23 @@
 				}
 
 				$('#idi1r4c1').on('change', function(){
-					debugger;
+					$(this).css('border',"");
+					$(this).parent().removeClass('text-danger');
+					$(this).parent().children('span').remove();
 					var val = parseInt($(this).val());
 					var vac = parseInt($('#idi1r2ctv').val());
 					if ( !isNaN(val) ){
 						if( val > vac ){
-							alert('El valor del campo no puede ser mayor al total de vacantes');
+							$(this).css('border',"");
+							$(this).parent().addClass('text-danger');
+							$(this).parent().append('<span class="text-danger">El valor del campo no puede ser mayor al total de vacantes</span>');
+							//alert('El valor del campo no puede ser mayor al total de vacantes');
 						}
 					}else{
-						alert('El valor del campo deber ser numerico');
+						$(this).css('border',"");
+						$(this).parent().addClass('text-danger');
+						$(this).parent().append('<span class="text-danger">El valor del campo deber ser numerico</span>');
+						//alert('El valor del campo deber ser numerico');
 					}
 				})
 
@@ -332,7 +365,7 @@
 			    	item.removeClass('hidden');
 			    	item.attr('id', 'caracteriza' + x);
 			    	item.find('input, select').each(function(index, element){
-			    		$(element).addClass('validar');
+			    		//$(element).addClass('validar');
 			    		$(element).attr('name', $(element).attr('name') + x + index);
 			    	});
 			    	$('#disp' + x).append(item);
@@ -362,8 +395,12 @@
 			    });
 
 			    /** Funciona para validar los cambios y comportamientos de cada input */
-			    $('#listDisForm').on('change', '.validar', function(){
-				    
+			    
+			    $('#listDisForm').on('change, blur', '.validar', function(){
+			    	$(this).css('border',"");
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().children('span').remove();
+					
 				    var $ele = $('#listDisForm');
 				    //console.log($(this, $ele).parents('div .active').attr('id'));
 					var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
@@ -376,7 +413,7 @@
 	    			var cual = 'i1r2c' + pnal + '13';
 	    			//var tvac = ($('#idi1r2ctv').val()!='') ? parseInt($('#idi1r2ctv').val()):0;
 	    			//var tvac = subVacantes();
-						    			
+					
 	    			if( $(this).attr('name') === vacAbi){ /** interaccion con el total de vacantes por disponibilidad */
 	    				var vac = parseInt($(this).val());
 		    			
@@ -410,12 +447,13 @@
 	    					$('[name="'+vacHom+'"').val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-		    				
-	    					alert('Debe ingresar un valor numerico en el campo');
-				    	}
-	    			}
 
-	    			if( $(this).attr('name') === vacCub ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+	    					$(this).parent().parent().addClass('text-danger');
+							$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">Campo numerico obligatorio</span>');
+	    					//alert('Debe ingresar un valor numerico en el campo');
+				    	}
+	    			}else if ( $(this).attr('name') === vacCub ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
 		    			var vacCu = parseInt($(this).val());
 		    			if ( !isNaN(vacCu) ){
 		    				if( vacCu <= parseInt($('[name="'+vacAbi+'"]').val()) ){
@@ -439,7 +477,11 @@
 		    					$('[name="'+vacHom+'"').val('0');
 		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 		    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-		    					alert('Debe ingresar un valor menor o igual al numero de vacantes abiertas');
+
+		    					$(this).parent().parent().addClass('text-danger');
+								$(this).css('border',"1px solid" + color);
+								$(this).parent().append('<span class="text-info">Debe ingresar un valor menor o igual al numero de vacantes abiertas</span>');
+		    					//alert('Debe ingresar un valor menor o igual al numero de vacantes abiertas');
 		    				}
 		    				
 			    		}else{
@@ -447,14 +489,16 @@
 	    					$('[name="'+vacHom+'"').val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-	    					alert('Debe ingresar un valor numerico en el campo');
+
+	    					$(this).parent().parent().addClass('text-danger');
+							$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 			    		
 	    				
 	    				
-	    			}
-	    			
-	    			if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
+	    			}else if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
 	    				var vacHo = parseInt($(this).val());
 		    			if ( !isNaN(vacHo) ){
 		    				if ( vacHo <= parseInt($('[name="'+vacCub+'"').val()) ){
@@ -462,18 +506,22 @@
 		    				}else{
 		    					$(this).val('0');
 		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
-		    					alert('Debe ingresar un valor menor o igual al numero de vacantes cubiertas');
+		    					$(this).parent().parent().addClass('text-danger');
+								$(this).css('border',"1px solid" + color);
+								$(this).parent().append('<span class="text-danger">Debe ingresar un valor menor o igual al numero de vacantes cubiertas</span>');
+		    					//alert('Debe ingresar un valor menor o igual al numero de vacantes cubiertas');
 		    				}
 			    		}else{
 			    			$(this).val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
-	    					alert('Debe ingresar un valor numerico en el campo');
+	    					$(this).parent().parent().addClass('text-danger');
+							$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 	    				
 	    					
-	    			}
-					
-					if( $(this).attr('name') === vacNoCubCa  ){
+	    			}else if( $(this).attr('name') === vacNoCubCa  ){
 						if ($('[name="'+vacNoCubCa+'"').val() == '7'){
 			    			$('[name="'+cual+'"]').prop('disabled', false);
 			    			$('[name="'+cual+'"]').prop('required', true);
@@ -481,6 +529,15 @@
 			    			$('[name="'+cual+'"]').prop('disabled', true);
 			    			$('[name="'+cual+'"]').prop('required', false);
 				    	}
+					}else{
+						//debugger;
+						if($(this).val() == ''){
+							$(this).parent().parent().addClass('text-danger');
+							$(this).css('border',"1px solid" + color);
+							//if ($(this).type())
+							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+						}
+						
 					}
 
 					validar_totales();
@@ -543,7 +600,8 @@
  		</div>
  		
  		<div class="container text-justify" style="font-size: 12px">
-			Este m&oacute;dulo  determina la cantidad de vacantes durante el "I trimestre del año <?php echo $vig;?>" e  identifica sus caracter&iacute;sticas.s
+ 			<h4>Este m&oacute;dulo  determina la cantidad de vacantes durante el "I trimestre del año <?php echo $vig;?>" e  identifica sus caracter&iacute;sticas.s</h4>
+		 	
  		</div>
 
 		<input type="hidden" name="tipousu" id="idTipo" value="<?php echo $tipousu ?>" />
@@ -602,26 +660,26 @@
 						</div>
 						<div id="totales" class="col-xs-12 col-sm-12">
 							<p> 
-							<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-								<label class="">Total Vacantes</label>
-								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r1c2' value = "<?php echo $row['i1r1c2']; //echo $row['i1r2ctvc']?>" readonly  />
+								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+									<label class="">Total Vacantes</label>
+									<div class='small'>
+										<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r1c2' value = "<?php echo $row['i1r1c2']; //echo $row['i1r2ctvc']?>" readonly  />
+									</div>
 								</div>
-							</div>
-							<div class="col-xs-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-3">
-								<label class="">Total Vacantes Cubiertas</label>
-								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r1c3' value = "<?php echo $row['i1r1c3']; //echo $row['i1r2ctvc']?>" readonly  />
+								<div class="col-xs-1"></div>
+								<div class="form-group form-group-sm col-xs-12 col-sm-3">
+									<label class="">Total Vacantes Cubiertas</label>
+									<div class='small'>
+										<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r1c3' value = "<?php echo $row['i1r1c3']; //echo $row['i1r2ctvc']?>" readonly  />
+									</div>
 								</div>
-							</div>
-							<div class="col-xs-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-3">
-								<label class="">Total Vacantes No Cubiertas</label>
-								<div class='small'>
-									<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r1c4' value = "<?php echo $row['i1r1c4']; //echo $row['i1r2ctvc']?>" readonly  />
+								<div class="col-xs-1"></div>
+								<div class="form-group form-group-sm col-xs-12 col-sm-3">
+									<label class="">Total Vacantes No Cubiertas</label>
+									<div class='small'>
+										<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r1c4' value = "<?php echo $row['i1r1c4']; //echo $row['i1r2ctvc']?>" readonly  />
+									</div>
 								</div>
-							</div>
 							</p>
 						</div>
 						<div class="col-xs-12 col-sm-12">
@@ -935,7 +993,7 @@
 					<div class="container-fluid">
 						<div class="form-group form-group-sm col-xs-12">
 							<label class="">¿Cuántas requerían de una competencia certificada?</label>
-							<input type='text' class='form-control input-sm' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="9" required />
+							<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="9" required />
 						</div>
 					</div>
 				</fieldset>
@@ -984,19 +1042,19 @@
 		<?php //include 'modalediteas.php' ?>
 		
 		<!-- Contenedor de la caracterizacion -->
-		<div id="caracterizacion" class="hidden">
-			<div class="container-fluid">		
+		<div id="caracterizacion" class="text-center hidden">
+			<div class="container-fluid">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Cantidad de vacantes abiertas</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right subVac' id='' name='i1r2c' value = "0" maxlength="9"  required/>
+						<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name='i1r2c' value = "0" maxlength="9"  required/>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">&Aacute;rea funcional</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value=""> Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Área de dirección general</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Área de administración</option>
@@ -1012,7 +1070,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Mínimo nivel educativo requerido</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >No bachiller</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Educación básica secundaria (6° - 9°)</option>
@@ -1036,7 +1094,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Área de Formación</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Economía, Administración y Contaduría</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
@@ -1054,14 +1112,14 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Experiencia en meses</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' maxlength="3" value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Modalidad de Contratación</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >Término Indefinido</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Término  Fijo</option>
@@ -1077,14 +1135,14 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Salario u honorarios mensuales</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' maxlength="9" value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Edad</label>
 					<div class='small'>
-						<select class='form-control input-sm' id="" name="i1r2c" required>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >20 - 25</option>
@@ -1109,7 +1167,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+						<input type='text' class='form-control input-sm validar text-right solo-numero' id='' name='i1r2c' value = "0" maxlength="3" required />
 					</div>
 				</div>
 			</div>
@@ -1118,21 +1176,21 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" required />
+						<input type='text' class='form-control input-sm validar text-right solo-numero' id='' name='i1r2c' value = "0" maxlength="3" required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" readonly required />
+						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' value = "0" maxlength="3" readonly required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "0" maxlength="9" readonly required />
+						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' value = "0" maxlength="3" readonly required />
 					</div>
 				</div>
 				
@@ -1142,7 +1200,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 					<div class="small">
-						<select class='form-control input-sm ' id="" name="i1r2c" disabled>
+						<select class='form-control input-sm validar' id="" name="i1r2c" disabled>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
 							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
@@ -1157,7 +1215,7 @@
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-7">
 					<label class="">Cual?</label>
-					<input type='text' class='form-control input-sm text-right' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" disabled />
+					<input type='text' class='form-control input-sm text-right validar' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" disabled />
 				</div>
 			</div>
 		</div>
