@@ -1,44 +1,44 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Linux (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
--- Host: localhost    Database: dane_evac_pr
--- ------------------------------------------------------
--- Server version	5.7.12-0ubuntu1.1
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 15-07-2016 a las 18:11:58
+-- Versión del servidor: 10.1.13-MariaDB
+-- Versión de PHP: 5.6.20
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `actiemp`
+-- Base de datos: `dane_evac_pr`
 --
 
-DROP TABLE IF EXISTS `actiemp`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `actiemp`
+--
+
 CREATE TABLE `actiemp` (
-  `nordemp` mediumint(7) unsigned NOT NULL COMMENT 'Numero de orden empresa',
-  `actividad` mediumint(4) unsigned NOT NULL COMMENT 'C├│digo actividad CIIU a 4 d├¡gitos',
-  KEY `numero` (`nordemp`),
-  KEY `activ` (`actividad`)
+  `nordemp` mediumint(7) UNSIGNED NOT NULL COMMENT 'Numero de orden empresa',
+  `actividad` mediumint(4) UNSIGNED NOT NULL COMMENT 'C├│digo actividad CIIU a 4 d├¡gitos'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci COMMENT='Actividades de la empresa';
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `auditoria`
+-- Estructura de tabla para la tabla `auditoria`
 --
 
-DROP TABLE IF EXISTS `auditoria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auditoria` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `ciiu3` int(4) NOT NULL,
   `tipo_usuario` varchar(2) COLLATE latin1_spanish_ci NOT NULL,
@@ -48,21 +48,18 @@ CREATE TABLE `auditoria` (
   `nom_var` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
   `valor_anterior` varchar(100) COLLATE latin1_spanish_ci DEFAULT NULL,
   `valor_actual` varchar(100) COLLATE latin1_spanish_ci DEFAULT NULL,
-  `tabla` varchar(20) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2079807 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `tabla` varchar(20) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `capitulo_i`
+-- Estructura de tabla para la tabla `capitulo_i`
 --
 
-DROP TABLE IF EXISTS `capitulo_i`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `capitulo_i` (
-  `C1_nordemp` bigint(10) unsigned NOT NULL,
-  `vigencia` mediumint(4) unsigned NOT NULL,
+  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
+  `vigencia` mediumint(4) UNSIGNED NOT NULL,
   `i1r1c1` tinyint(1) DEFAULT NULL,
   `i1r1c2` int(11) DEFAULT '0',
   `i1r1c3` int(11) NOT NULL DEFAULT '0',
@@ -77,23 +74,19 @@ CREATE TABLE `capitulo_i` (
   `i1r3c8` tinyint(1) DEFAULT NULL,
   `i1r3c9` text COLLATE latin1_spanish_ci,
   `i1r4c1` tinyint(1) DEFAULT NULL,
-  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci,
-  PRIMARY KEY (`C1_nordemp`,`vigencia`),
-  KEY `nordemp` (`C1_nordemp`)
+  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `capitulo_i_displab`
+-- Estructura de tabla para la tabla `capitulo_i_displab`
 --
 
-DROP TABLE IF EXISTS `capitulo_i_displab`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `capitulo_i_displab` (
-  `id_displab` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `C1_nordemp` bigint(10) unsigned NOT NULL,
-  `vigencia` mediumint(4) unsigned NOT NULL,
+  `id_displab` bigint(10) UNSIGNED NOT NULL,
+  `C1_nordemp` bigint(10) UNSIGNED NOT NULL,
+  `vigencia` mediumint(4) UNSIGNED NOT NULL,
   `i1r2c1` int(10) DEFAULT NULL,
   `i1r2c2` tinyint(1) DEFAULT NULL,
   `i1r2c3` tinyint(1) DEFAULT NULL,
@@ -107,73 +100,71 @@ CREATE TABLE `capitulo_i_displab` (
   `i1r2c11` int(10) DEFAULT NULL,
   `i1r2c12` int(10) DEFAULT NULL,
   `i1r2c13` tinyint(1) DEFAULT NULL,
-  `i1r2c14` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL,
-  PRIMARY KEY (`id_displab`),
-  KEY `nordemp` (`C1_nordemp`,`vigencia`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `i1r2c14` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `caratula`
+-- Estructura de tabla para la tabla `caratula`
 --
 
-DROP TABLE IF EXISTS `caratula`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `caratula` (
-  `nordemp` bigint(10) unsigned NOT NULL,
-  `regional` tinyint(2) unsigned NOT NULL,
-  `prioridad` tinyint(1) unsigned NOT NULL,
-  `tipodoc` tinyint(1) unsigned NOT NULL,
-  `numdoc` bigint(12) unsigned NOT NULL,
-  `dv` tinyint(1) unsigned NOT NULL,
-  `registmat` tinyint(1) unsigned NOT NULL,
-  `camara` mediumint(8) unsigned NOT NULL,
+  `nordemp` bigint(10) UNSIGNED NOT NULL,
+  `regional` tinyint(2) UNSIGNED NOT NULL,
+  `prioridad` tinyint(1) UNSIGNED NOT NULL,
+  `tipodoc` tinyint(1) UNSIGNED NOT NULL,
+  `numdoc` bigint(12) UNSIGNED NOT NULL,
+  `dv` tinyint(1) UNSIGNED NOT NULL,
+  `registmat` tinyint(1) UNSIGNED NOT NULL,
+  `camara` mediumint(8) UNSIGNED NOT NULL,
   `numeroreg` char(14) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   `nompropie` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `sigla` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   `direccion` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `depto` tinyint(2) unsigned NOT NULL,
-  `mpio` mediumint(3) unsigned NOT NULL,
+  `depto` tinyint(2) UNSIGNED NOT NULL,
+  `mpio` mediumint(3) UNSIGNED NOT NULL,
   `telefono` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `aa` mediumint(6) unsigned NOT NULL,
+  `aa` mediumint(6) UNSIGNED NOT NULL,
   `fax` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
   `orgju` char(7) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `orgjucual` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `dirnotifi` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `depnotific` tinyint(2) unsigned NOT NULL,
-  `munnotific` mediumint(3) unsigned NOT NULL,
+  `depnotific` tinyint(2) UNSIGNED NOT NULL,
+  `munnotific` mediumint(3) UNSIGNED NOT NULL,
   `telenotific` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
   `faxnotific` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `aanotifica` mediumint(6) unsigned NOT NULL,
-  `capsocin` tinyint(3) unsigned NOT NULL,
-  `capsocinpu` tinyint(3) unsigned NOT NULL,
-  `capsocinpr` tinyint(3) unsigned NOT NULL,
-  `capsocie` tinyint(3) unsigned NOT NULL,
-  `capsociepu` tinyint(3) unsigned NOT NULL,
-  `capsociepr` tinyint(3) unsigned NOT NULL,
-  `estagrop` tinyint(3) unsigned NOT NULL,
-  `estminero` tinyint(3) unsigned NOT NULL,
-  `estservpub` tinyint(3) unsigned NOT NULL,
-  `estconst` tinyint(3) unsigned NOT NULL,
-  `estreshot` tinyint(3) unsigned NOT NULL,
-  `esttrans` tinyint(3) unsigned NOT NULL,
-  `estcomunic` tinyint(3) unsigned NOT NULL,
-  `estfinanc` tinyint(3) unsigned NOT NULL,
-  `estservcom` tinyint(3) unsigned NOT NULL,
-  `estind` tinyint(3) unsigned NOT NULL,
-  `estcom` tinyint(3) unsigned NOT NULL,
-  `estser` tinyint(3) unsigned NOT NULL,
-  `uniaux` tinyint(3) unsigned NOT NULL,
-  `otrose` tinyint(3) unsigned NOT NULL,
-  `actie` mediumint(5) unsigned NOT NULL,
-  `actic` mediumint(5) unsigned NOT NULL,
-  `ciiu3` mediumint(4) unsigned NOT NULL,
+  `aanotifica` mediumint(6) UNSIGNED NOT NULL,
+  `capsocin` tinyint(3) UNSIGNED NOT NULL,
+  `capsocinpu` tinyint(3) UNSIGNED NOT NULL,
+  `capsocinpr` tinyint(3) UNSIGNED NOT NULL,
+  `capsocie` tinyint(3) UNSIGNED NOT NULL,
+  `capsociepu` tinyint(3) UNSIGNED NOT NULL,
+  `capsociepr` tinyint(3) UNSIGNED NOT NULL,
+  `estagrop` tinyint(3) UNSIGNED NOT NULL,
+  `estminero` tinyint(3) UNSIGNED NOT NULL,
+  `estservpub` tinyint(3) UNSIGNED NOT NULL,
+  `estconst` tinyint(3) UNSIGNED NOT NULL,
+  `estreshot` tinyint(3) UNSIGNED NOT NULL,
+  `esttrans` tinyint(3) UNSIGNED NOT NULL,
+  `estcomunic` tinyint(3) UNSIGNED NOT NULL,
+  `estfinanc` tinyint(3) UNSIGNED NOT NULL,
+  `estservcom` tinyint(3) UNSIGNED NOT NULL,
+  `estind` tinyint(3) UNSIGNED NOT NULL,
+  `estcom` tinyint(3) UNSIGNED NOT NULL,
+  `estser` tinyint(3) UNSIGNED NOT NULL,
+  `uniaux` tinyint(3) UNSIGNED NOT NULL,
+  `otrose` tinyint(3) UNSIGNED NOT NULL,
+  `actie` mediumint(5) UNSIGNED NOT NULL,
+  `actic` mediumint(5) UNSIGNED NOT NULL,
+  `ciiu3` mediumint(4) UNSIGNED NOT NULL,
   `fechaconst` date NOT NULL,
   `fechahasta` date NOT NULL,
   `repleg` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   `responde` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `teler` bigint(12) unsigned NOT NULL,
+  `teler` bigint(12) UNSIGNED NOT NULL,
+  `faxr` varchar(10) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `estadoact` char(9) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   `otro` varchar(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   `emailemp` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
@@ -190,58 +181,42 @@ CREATE TABLE `caratula` (
   `activa` tinyint(1) NOT NULL COMMENT 'Indica si la empresa esta activa (1) o inactiva (2)',
   `fechadist` date DEFAULT NULL,
   `novedad` int(11) DEFAULT NULL,
-  PRIMARY KEY (`nordemp`),
-  KEY `regional` (`regional`),
-  KEY `depto` (`depto`),
-  KEY `mpio` (`mpio`),
-  KEY `orgju` (`orgju`),
-  KEY `depnoti` (`depnotific`),
-  KEY `munoti` (`munnotific`),
-  KEY `ciiu3` (`ciiu3`),
-  KEY `estadoemp` (`estadoact`)
+  `fechadili` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `casos`
+-- Estructura de tabla para la tabla `casos`
 --
 
-DROP TABLE IF EXISTS `casos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `casos` (
-  `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos',
+  `caso` int(11) NOT NULL COMMENT 'Secuencial casos',
   `condicion` longtext COLLATE utf8_spanish_ci NOT NULL COMMENT 'formula',
-  `descripcion` longtext COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion caso',
-  PRIMARY KEY (`caso`)
-) ENGINE=MyISAM AUTO_INCREMENT=260 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `descripcion` longtext COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion caso'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `ciiu3`
+-- Estructura de tabla para la tabla `ciiu3`
 --
 
-DROP TABLE IF EXISTS `ciiu3`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ciiu3` (
   `CODIGO` varchar(4) COLLATE latin1_spanish_ci NOT NULL DEFAULT '0',
-  `DESCRIP` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL,
-  PRIMARY KEY (`CODIGO`)
+  `DESCRIP` varchar(200) COLLATE latin1_spanish_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `control`
+-- Estructura de tabla para la tabla `control`
 --
 
-DROP TABLE IF EXISTS `control`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `control` (
-  `nordemp` bigint(10) unsigned NOT NULL,
-  `vigencia` mediumint(4) unsigned NOT NULL,
-  `estado` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `nordemp` bigint(10) UNSIGNED NOT NULL,
+  `vigencia` mediumint(4) UNSIGNED NOT NULL,
+  `estado` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
   `usuario` char(8) COLLATE latin1_spanish_ci NOT NULL,
   `usuariodt` char(8) COLLATE latin1_spanish_ci NOT NULL,
   `usuarioss` char(8) COLLATE latin1_spanish_ci NOT NULL,
@@ -263,22 +238,15 @@ CREATE TABLE `control` (
   `fecacept` date NOT NULL,
   `aceptadc` date NOT NULL COMMENT 'Fecha acepta DANE central',
   `prio2` tinyint(1) NOT NULL DEFAULT '0',
-  `acceso` char(3) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Indica a que rol se le permite acceso a modificaci├│n (FU(fuente), CR(cr├¡tico), DC(dane central))',
-  PRIMARY KEY (`nordemp`,`vigencia`),
-  KEY `nordemp` (`nordemp`),
-  KEY `estado` (`estado`),
-  KEY `usuario` (`usuario`),
-  KEY `usuarioR` (`usuarioss`)
+  `acceso` char(3) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Indica a que rol se le permite acceso a modificaci├│n (FU(fuente), CR(cr├¡tico), DC(dane central))'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `devoluciones`
+-- Estructura de tabla para la tabla `devoluciones`
 --
 
-DROP TABLE IF EXISTS `devoluciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `devoluciones` (
   `vigencia` mediumint(4) NOT NULL DEFAULT '0' COMMENT 'Periodo Devoluci├│n',
   `nordemp` bigint(10) NOT NULL DEFAULT '0' COMMENT 'Numero empresa',
@@ -287,36 +255,28 @@ CREATE TABLE `devoluciones` (
   `tipo` char(5) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT '(DV)-Devuelto (RV)-Reenviado',
   `coddev` char(7) COLLATE latin1_bin NOT NULL COMMENT 'Quien devuelve el formulario',
   `codcrit` char(8) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'C├│digo de cr├¡tico',
-  `fecha` date NOT NULL COMMENT 'Fecha Devoluci├│n/Reenvio',
-  KEY `periodo` (`vigencia`,`nordemp`)
+  `fecha` date NOT NULL COMMENT 'Fecha Devoluci├│n/Reenvio'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `divipola`
+-- Estructura de tabla para la tabla `divipola`
 --
 
-DROP TABLE IF EXISTS `divipola`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `divipola` (
-  `dpto` tinyint(2) unsigned NOT NULL,
-  `muni` mediumint(3) unsigned NOT NULL,
+  `dpto` tinyint(2) UNSIGNED NOT NULL,
+  `muni` mediumint(3) UNSIGNED NOT NULL,
   `ndpto` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  `nmuni` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`dpto`,`muni`),
-  KEY `dpto` (`dpto`),
-  KEY `mpio` (`muni`)
+  `nmuni` varchar(45) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `edit_eam`
+-- Estructura de tabla para la tabla `edit_eam`
 --
 
-DROP TABLE IF EXISTS `edit_eam`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `edit_eam` (
   `nordemp` mediumint(7) NOT NULL DEFAULT '0' COMMENT 'Numero de orden',
   `novedad` mediumint(2) NOT NULL DEFAULT '0' COMMENT 'novedad',
@@ -334,18 +294,15 @@ CREATE TABLE `edit_eam` (
   `pertot2009` bigint(13) NOT NULL DEFAULT '0' COMMENT 'Personal total 2009',
   `pertot2010` bigint(13) NOT NULL DEFAULT '0' COMMENT 'Personal total 2010',
   `enmarcha` char(2) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Proyectos en marcha',
-  `desc_novedad` char(80) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Descripci├│n novedad',
-  PRIMARY KEY (`nordemp`)
+  `desc_novedad` char(80) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Descripci├│n novedad'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci COMMENT='Comparaci├│n EAMvsEDIT';
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `edit_eas`
+-- Estructura de tabla para la tabla `edit_eas`
 --
 
-DROP TABLE IF EXISTS `edit_eas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `edit_eas` (
   `nordemp` bigint(10) NOT NULL,
   `novedad` int(2) NOT NULL COMMENT 'NOvedad Anuales',
@@ -365,82 +322,68 @@ CREATE TABLE `edit_eas` (
   `novant` int(2) NOT NULL COMMENT 'Novedad EDIT Anterior',
   `dirbase` char(10) NOT NULL COMMENT 'INvestigaci├│m'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `estadoact`
+-- Estructura de tabla para la tabla `estadoact`
 --
 
-DROP TABLE IF EXISTS `estadoact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `estadoact` (
   `codigo` char(2) COLLATE latin1_spanish_ci NOT NULL,
-  `estado` varchar(80) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`codigo`)
+  `estado` varchar(80) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `estados`
+-- Estructura de tabla para la tabla `estados`
 --
 
-DROP TABLE IF EXISTS `estados`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `estados` (
-  `idestados` tinyint(2) unsigned NOT NULL,
-  `desc_estado` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`idestados`)
+  `idestados` tinyint(2) UNSIGNED NOT NULL,
+  `desc_estado` varchar(45) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `fechaacepta`
+-- Estructura de tabla para la tabla `fechaacepta`
 --
 
-DROP TABLE IF EXISTS `fechaacepta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fechaacepta` (
   `nordemp` bigint(9) NOT NULL,
   `acepta` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `fechadig`
+-- Estructura de tabla para la tabla `fechadig`
 --
 
-DROP TABLE IF EXISTS `fechadig`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fechadig` (
   `nordemp` bigint(9) NOT NULL,
   `digita` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `fecharev`
+-- Estructura de tabla para la tabla `fecharev`
 --
 
-DROP TABLE IF EXISTS `fecharev`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fecharev` (
   `nordemp` bigint(9) NOT NULL,
   `revision` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `hoja_casos`
+-- Estructura de tabla para la tabla `hoja_casos`
 --
 
-DROP TABLE IF EXISTS `hoja_casos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hoja_casos` (
   `nordemp` bigint(12) NOT NULL DEFAULT '0' COMMENT 'Numero de Orden',
   `C1` tinyint(1) DEFAULT NULL COMMENT 'Caso 1',
@@ -662,167 +605,138 @@ CREATE TABLE `hoja_casos` (
   `C217` tinyint(1) DEFAULT NULL COMMENT 'Caso 217',
   `C218` tinyint(1) DEFAULT NULL COMMENT 'Caso 218',
   `C219` tinyint(1) DEFAULT NULL COMMENT 'Caso 219',
-  `C220` tinyint(1) DEFAULT NULL COMMENT 'Caso 220',
-  PRIMARY KEY (`nordemp`)
+  `C220` tinyint(1) DEFAULT NULL COMMENT 'Caso 220'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `novedades`
+-- Estructura de tabla para la tabla `novedades`
 --
 
-DROP TABLE IF EXISTS `novedades`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `novedades` (
-  `idnovedades` tinyint(2) unsigned NOT NULL,
-  `desc_novedad` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`idnovedades`)
+  `idnovedades` tinyint(2) UNSIGNED NOT NULL,
+  `desc_novedad` varchar(45) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `observaciones`
+-- Estructura de tabla para la tabla `observaciones`
 --
 
-DROP TABLE IF EXISTS `observaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observaciones` (
   `vigencia` mediumint(4) NOT NULL COMMENT 'Periodo',
   `nordemp` bigint(8) NOT NULL COMMENT 'Nro de Orden',
   `usuario` char(8) COLLATE utf8_spanish_ci NOT NULL COMMENT 'usuario que ingresa la observacion',
   `capitulo` tinyint(1) NOT NULL COMMENT 'capitulo',
   `observacion` longtext COLLATE utf8_spanish_ci NOT NULL COMMENT 'Observacion',
-  `fecha` date NOT NULL COMMENT 'Fecha observacion',
-  KEY `nordemp` (`nordemp`)
+  `fecha` date NOT NULL COMMENT 'Fecha observacion'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `organiza`
+-- Estructura de tabla para la tabla `organiza`
 --
 
-DROP TABLE IF EXISTS `organiza`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `organiza` (
   `codigo` char(7) COLLATE latin1_spanish_ci NOT NULL,
-  `nombre` varchar(100) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`codigo`)
+  `nombre` varchar(100) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `periodoActivo`
+-- Estructura de tabla para la tabla `periodoactivo`
 --
 
-DROP TABLE IF EXISTS `periodoActivo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `periodoActivo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `periodoactivo` (
+  `id` int(11) NOT NULL,
   `codperiodo` varchar(45) NOT NULL,
   `estperiodo` varchar(45) NOT NULL,
   `nomperiodo` varchar(45) NOT NULL,
   `numperiodo` int(11) NOT NULL,
-  `anioperiodo` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `anioperiodo` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `recvtas`
+-- Estructura de tabla para la tabla `recvtas`
 --
 
-DROP TABLE IF EXISTS `recvtas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `recvtas` (
   `nordemp` bigint(10) NOT NULL,
   `I3R1C1` bigint(15) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `regionales`
+-- Estructura de tabla para la tabla `regionales`
 --
 
-DROP TABLE IF EXISTS `regionales`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `regionales` (
-  `dpto` int(2) unsigned NOT NULL,
-  `codis` tinyint(2) unsigned NOT NULL,
+  `dpto` int(2) UNSIGNED NOT NULL,
+  `codis` tinyint(2) UNSIGNED NOT NULL,
   `nombre` char(30) COLLATE latin1_spanish_ci NOT NULL,
-  `activo` tinyint(1) unsigned NOT NULL,
-  `codireg` int(2) unsigned NOT NULL,
+  `activo` tinyint(1) UNSIGNED NOT NULL,
+  `codireg` int(2) UNSIGNED NOT NULL,
   `asistente` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
   `telefono` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
   `direccion` varchar(200) COLLATE latin1_spanish_ci NOT NULL,
-  `correo` char(80) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`codis`)
+  `correo` char(80) CHARACTER SET latin1 NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `soportes`
+-- Estructura de tabla para la tabla `soportes`
 --
 
-DROP TABLE IF EXISTS `soportes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `soportes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `soporte_binario` mediumblob NOT NULL,
   `soporte_nombre` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
   `soporte_peso` varchar(15) COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_tipo` varchar(25) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4733 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `soporte_tipo` varchar(25) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `soportesb`
+-- Estructura de tabla para la tabla `soportesb`
 --
 
-DROP TABLE IF EXISTS `soportesb`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `soportesb` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `soporte_binario` mediumblob NOT NULL,
   `soporte_nombre` varchar(255) COLLATE latin1_spanish_ci NOT NULL,
   `soporte_peso` varchar(15) COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_tipo` varchar(25) COLLATE latin1_spanish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1744 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `soporte_tipo` varchar(25) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `tipoPeriodo`
+-- Estructura de tabla para la tabla `tipoperiodo`
 --
 
-DROP TABLE IF EXISTS `tipoPeriodo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tipoPeriodo` (
-  `idperiodo` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tipoperiodo` (
+  `idperiodo` int(11) NOT NULL,
   `codPeriodo` varchar(45) NOT NULL,
-  `descperiodo` varchar(45) NOT NULL,
-  PRIMARY KEY (`idperiodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `descperiodo` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
   `ident` char(20) COLLATE latin1_spanish_ci NOT NULL,
   `nombre` varchar(80) COLLATE latin1_spanish_ci NOT NULL,
@@ -834,19 +748,208 @@ CREATE TABLE `usuarios` (
   `primera` tinyint(1) NOT NULL,
   `region` tinyint(2) NOT NULL,
   `ciiu3` mediumint(4) NOT NULL,
-  `email` varchar(80) COLLATE latin1_spanish_ci NOT NULL,
-  KEY `ident` (`ident`),
-  KEY `numemp` (`numemp`)
+  `email` varchar(80) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `actiemp`
+--
+ALTER TABLE `actiemp`
+  ADD KEY `numero` (`nordemp`),
+  ADD KEY `activ` (`actividad`);
+
+--
+-- Indices de la tabla `auditoria`
+--
+ALTER TABLE `auditoria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `capitulo_i`
+--
+ALTER TABLE `capitulo_i`
+  ADD PRIMARY KEY (`C1_nordemp`,`vigencia`),
+  ADD KEY `nordemp` (`C1_nordemp`);
+
+--
+-- Indices de la tabla `capitulo_i_displab`
+--
+ALTER TABLE `capitulo_i_displab`
+  ADD PRIMARY KEY (`id_displab`),
+  ADD KEY `nordemp` (`C1_nordemp`,`vigencia`);
+
+--
+-- Indices de la tabla `caratula`
+--
+ALTER TABLE `caratula`
+  ADD PRIMARY KEY (`nordemp`),
+  ADD KEY `regional` (`regional`),
+  ADD KEY `depto` (`depto`),
+  ADD KEY `mpio` (`mpio`),
+  ADD KEY `orgju` (`orgju`),
+  ADD KEY `depnoti` (`depnotific`),
+  ADD KEY `munoti` (`munnotific`),
+  ADD KEY `ciiu3` (`ciiu3`),
+  ADD KEY `estadoemp` (`estadoact`);
+
+--
+-- Indices de la tabla `casos`
+--
+ALTER TABLE `casos`
+  ADD PRIMARY KEY (`caso`);
+
+--
+-- Indices de la tabla `ciiu3`
+--
+ALTER TABLE `ciiu3`
+  ADD PRIMARY KEY (`CODIGO`);
+
+--
+-- Indices de la tabla `control`
+--
+ALTER TABLE `control`
+  ADD PRIMARY KEY (`nordemp`,`vigencia`),
+  ADD KEY `nordemp` (`nordemp`),
+  ADD KEY `estado` (`estado`),
+  ADD KEY `usuario` (`usuario`),
+  ADD KEY `usuarioR` (`usuarioss`);
+
+--
+-- Indices de la tabla `devoluciones`
+--
+ALTER TABLE `devoluciones`
+  ADD KEY `periodo` (`vigencia`,`nordemp`);
+
+--
+-- Indices de la tabla `divipola`
+--
+ALTER TABLE `divipola`
+  ADD PRIMARY KEY (`dpto`,`muni`),
+  ADD KEY `dpto` (`dpto`),
+  ADD KEY `mpio` (`muni`);
+
+--
+-- Indices de la tabla `edit_eam`
+--
+ALTER TABLE `edit_eam`
+  ADD PRIMARY KEY (`nordemp`);
+
+--
+-- Indices de la tabla `estadoact`
+--
+ALTER TABLE `estadoact`
+  ADD PRIMARY KEY (`codigo`);
+
+--
+-- Indices de la tabla `estados`
+--
+ALTER TABLE `estados`
+  ADD PRIMARY KEY (`idestados`);
+
+--
+-- Indices de la tabla `hoja_casos`
+--
+ALTER TABLE `hoja_casos`
+  ADD PRIMARY KEY (`nordemp`);
+
+--
+-- Indices de la tabla `novedades`
+--
+ALTER TABLE `novedades`
+  ADD PRIMARY KEY (`idnovedades`);
+
+--
+-- Indices de la tabla `observaciones`
+--
+ALTER TABLE `observaciones`
+  ADD KEY `nordemp` (`nordemp`);
+
+--
+-- Indices de la tabla `organiza`
+--
+ALTER TABLE `organiza`
+  ADD PRIMARY KEY (`codigo`);
+
+--
+-- Indices de la tabla `periodoactivo`
+--
+ALTER TABLE `periodoactivo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `regionales`
+--
+ALTER TABLE `regionales`
+  ADD PRIMARY KEY (`codis`);
+
+--
+-- Indices de la tabla `soportes`
+--
+ALTER TABLE `soportes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `soportesb`
+--
+ALTER TABLE `soportesb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipoperiodo`
+--
+ALTER TABLE `tipoperiodo`
+  ADD PRIMARY KEY (`idperiodo`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD KEY `ident` (`ident`),
+  ADD KEY `numemp` (`numemp`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `auditoria`
+--
+ALTER TABLE `auditoria`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2080133;
+--
+-- AUTO_INCREMENT de la tabla `capitulo_i_displab`
+--
+ALTER TABLE `capitulo_i_displab`
+  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT de la tabla `casos`
+--
+ALTER TABLE `casos`
+  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=260;
+--
+-- AUTO_INCREMENT de la tabla `periodoactivo`
+--
+ALTER TABLE `periodoactivo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `soportes`
+--
+ALTER TABLE `soportes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4733;
+--
+-- AUTO_INCREMENT de la tabla `soportesb`
+--
+ALTER TABLE `soportesb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1744;
+--
+-- AUTO_INCREMENT de la tabla `tipoperiodo`
+--
+ALTER TABLE `tipoperiodo`
+  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2016-07-10 19:52:35
