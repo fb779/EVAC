@@ -610,7 +610,7 @@ p {
 					
 				});
 
-
+				/** validacion para la suma del capital nacional privado y extranjero publico*/
 				$('#idnalpr, #idexpub').on('change',function(){
 					
 					var npr = parseInt($('#idnalpr').val());
@@ -623,6 +623,7 @@ p {
 					
 				});
 
+				/** validacion para la suma del capital extranjero publico y privado*/
 				$('#idexpub, #idexpr').on('change',function(){
 					var epu = parseInt($('#idexpub').val());
 					var epr = parseInt($('#idexpr').val());
@@ -634,6 +635,29 @@ p {
 					
 				});
 
+				/** Validacion para la composicion del capital social */
+				$('#idnalpub, #idnalpr, #idexpub, #idexpr').on('change', function(){
+					var npu = parseInt($('#idnalpub').val());
+					var npr = parseInt($('#idnalpr').val());
+					var epu = parseInt($('#idexpub').val());
+					var epr = parseInt($('#idexpr').val());
+
+					$(this).css('border',"");
+					$(this).parent().children('span').remove();
+					$(this).parent().parent().children('span').remove();
+
+					if ($(this).val() == '' ){
+						$(this).css('border',"1px solid" + color);
+						//$(this).parent().css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">El dato debe se numerico de 0-100 </span>');
+					}
+					
+					if ((npu + npr + epu + epr) != 100){
+						$(this).parent().parent().append('<span class="text-danger">La suma de la composición social debeb ser 100%</span>');
+					}
+
+					
+				});
 
 				$('#idestado').on('change', function(){
 					var v = parseInt($(this).val());
