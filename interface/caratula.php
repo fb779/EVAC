@@ -445,6 +445,17 @@ p {
 					}
 				});
 
+				/** Evitar caracteres especiales */
+				$('.solo-letras').on('keyup', function() {
+					var regex = new RegExp("^[ a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
+				    var _this = this;
+				    
+				    var texto = $(_this).val();
+			        if(!regex.test(texto)) {
+				        $(_this).val(texto.substring(0, (texto.length-1)))
+					}
+				});
+
 				
 				  
 				var color = '#a94442';
@@ -514,7 +525,7 @@ p {
 					if ($(this).val() == ''){
 						$(this).parent().parent().addClass('text-danger');
 						$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger"><h6>Falta Nombre comercial</h6></span>');
+						$(this).parent().append('<span class="text-danger"><h6>Falta La Dirección de Gerencia</h6></span>');
 					}
 				});
 
@@ -603,24 +614,21 @@ p {
 					var npu = parseInt($('#idnalpub').val());
 					var npr = parseInt($('#idnalpr').val());
 
-					if ((npu + npr) >= 100){
+					if (npu > 0 && npr > 0 && (npu + npr) >= 100){
 						alert('La suma de el capital naciona publico y privado no puede sumar 100%');
-						$(this).val('0');
+						$(this).val('');
 					}
-					
 				});
 
 				/** validacion para la suma del capital nacional privado y extranjero publico*/
 				$('#idnalpr, #idexpub').on('change',function(){
-					
 					var npr = parseInt($('#idnalpr').val());
 					var epu = parseInt($('#idexpub').val());
 
-					if ((npr + epu) >= 100){
+					if ( npr > 0 && epu > 0 && (npr + epu) >= 100){
 						alert('La suma de el capital naciona privado y extranjero publico no puede sumar 100%');
 						$(this).val('0');
 					}
-					
 				});
 
 				/** validacion para la suma del capital extranjero publico y privado*/
@@ -628,37 +636,37 @@ p {
 					var epu = parseInt($('#idexpub').val());
 					var epr = parseInt($('#idexpr').val());
 
-					if ((epu + epr) > 100){
+					if ( epu > 0 && epr > 0 && (epu + epr) >= 100){
 						alert('La suma de el capital extranjer publico y privado no puede sumar 100%');
 						$(this).val('0');
 					}
-					
 				});
 
 				/** Validacion para la composicion del capital social */
 				$('#idnalpub, #idnalpr, #idexpub, #idexpr').on('change', function(){
+					var msj = $('#msjCo');
 					var npu = parseInt($('#idnalpub').val());
 					var npr = parseInt($('#idnalpr').val());
 					var epu = parseInt($('#idexpub').val());
 					var epr = parseInt($('#idexpr').val());
-
-					$(this).css('border',"");
-					$(this).parent().children('span').remove();
-					$(this).parent().parent().children('span').remove();
+					
+					$(this).parent().css('border',"");
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().parent().children('div span').remove()
+					msj.children('span').remove();
 
 					if ($(this).val() == '' ){
-						$(this).css('border',"1px solid" + color);
+						$(this).parent().parent().addClass('text-danger');
 						//$(this).parent().css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">El dato debe se numerico de 0-100 </span>');
+						$(this).parent().parent().append('<span class="text-danger">El dato debe se numerico de 0-100 </span>');
 					}
 					
 					if ((npu + npr + epu + epr) != 100){
-						$(this).parent().parent().append('<span class="text-danger">La suma de la composición social debeb ser 100%</span>');
-					}
-
-					
+						msj.append('<span class="text-danger">La suma de la composición social debe ser 100%</span>');
+					}					
 				});
 
+				/** Validacion para el campo estado y activacion de la casilla adicional */
 				$('#idestado').on('change', function(){
 					var v = parseInt($(this).val());
 					
@@ -674,6 +682,7 @@ p {
 					}
 				});
 
+				/** Validación para la casilla adicional del estado */
 				$('#idestactotro').on('change', function(){
 					$(this).parent().parent().removeClass('text-danger');
 					$(this).css('border',"");
@@ -776,7 +785,7 @@ p {
 						<div class="col-xs-12 col-sm-3">
 							<label for="">Numero</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm solo-numero' id='ndoc' name='numdoc' value=<?php echo $row['numdoc']?> required />
+								<input type="text" class='form-control input-sm solo-numero' id='ndoc' name='numdoc' maxlength="11" value=<?php echo $row['numdoc']?> required />
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
@@ -1056,7 +1065,7 @@ p {
 						</div>
 						<div class="col-xs-12">&nbsp;</div>
 						<div class='hidden'>
-							<input type="text" class='form-control ' name="orgjucual" id="idorgcual" value="<?php echo $row['orgjucual'] ?>" placeholder="Cual ?" disabled/>
+							<input type="text" class='form-control ' name="orgjucual" id="idorgcual" maxlength="50" value="<?php echo $row['orgjucual'] ?>" placeholder="Cual ?" disabled/>
 						</div>
 						<div class="col-xs-12">&nbsp;</div>
 					</div>
@@ -1098,37 +1107,45 @@ p {
 					<div ><h6 > Nota: La sigiente información esta representada en porcentaje %, la sumatoria de todos los campos debe representar el 100% </h6></div>
 				</legend>
 				
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-1 small text-right'>
+				<div class="container-fluid small text-center">
+					<div class="col-xs-12" id="msjCo"></div>
+					<div class="col-xs-1"></div>
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='idnalpub'>Nacional P&uacute;blico:</label>
+						<div class="input-group input-group-sm">
+						  <input type="text" class='form-control input-sm solo-numero' id='idnalpub' name="capsocinpu" maxlength="3" value="<?php echo $row['capsocinpu'] ?>" required />
+						  <span class="input-group-addon" id="sizing-addon1">%</span>
+						</div>
 					</div>
-					<div class='col-sm-1 small'>
-						<input type="text" class='form-control input-sm solo-numero' id='idnalpub' name="capsocinpu" maxlength="3" value="<?php echo $row['capsocinpu'] ?>" />
-					</div>
-					<div class='col-sm-1 small text-right'>
+					<div class="col-xs-1"></div>
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='idnalpr'>Nacional Privado:</label>
+						<div class="input-group input-group-sm">
+							<input type="text" class='form-control input-sm solo-numero' name="capsocinpr" id="idnalpr" maxlength="3" value="<?php echo $row['capsocinpr'] ?>" required/>
+							<span class="input-group-addon" id="sizing-addon1">%</span>
+						</div>
 					</div>
-					<div class='col-sm-1 small'>
-						<input type="text" class='form-control input-sm solo-numero' name="capsocinpr" id="idnalpr" maxlength="3" value="<?php echo $row['capsocinpr'] ?>" />
-					</div>
-					<div class='col-sm-1 small text-right'>
+					<div class="col-xs-1"></div>
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='idexpub'>Extranjero P&uacute;blico:</label>
+						<div class="input-group input-group-sm">
+							<input type="text" class='form-control input-sm solo-numero' id='idexpub' name="capsociepu" maxlength="3" value="<?php echo $row['capsociepu'] ?>" required />
+							<span class="input-group-addon" id="sizing-addon1">%</span>
+						</div>
 					</div>
-					<div class='col-sm-1 small'>
-						<input type="text" class='form-control input-sm solo-numero' id='idexpub' name="capsociepu" maxlength="3" value="<?php echo $row['capsociepu'] ?>" />
-					</div>
-					<div class='col-sm-1 small text-right'>
+					<div class="col-xs-1"></div>
+					<div class="form-group col-xs-2">
 						<label class='control-label' for='idexpr'>Extranjero Privado:</label>
+						<div class="input-group input-group-sm">
+							<input type="text" class='form-control input-sm solo-numero' name="capsociepr" id="idexpr" maxlength="3" value="<?php echo $row['capsociepr'] ?>" required/>
+							<span class="input-group-addon" id="sizing-addon1">%</span>
+						</div>
 					</div>
-					<div class='col-sm-1 small'>
-						<input type="text" class='form-control input-sm solo-numero' name="capsociepr" id="idexpr" maxlength="3" value="<?php echo $row['capsociepr'] ?>" />
-					</div>
-					
-					
-					
 				</div>
+				
 				<div class="container-fluid">
-					<div class="form-group col-xs-4" id='estadoAct'>
+					<div class="col-xs-1"></div>
+					<div class="form-group col-xs-5" id='estadoAct'>
 						<label class='control-label' for='idestado'>Estado Actual:</label>
 						<select class='form-control form-control-sm' name='estadoact' id='idestado'>
 							<?php
@@ -1143,7 +1160,7 @@ p {
 						</select>
 					</div>
 					<div class="col-xs-1"></div>
-					<div class="form-group col-xs-4 <?php echo ($row['otro'] != '')?'':'hidden';  ?>">
+					<div class="form-group col-xs-5 <?php echo ($row['otro'] != '')?'':'hidden';  ?>">
 						<label class='control-label' for='nfaxn'>Otro</label>
 						<div class=''>
 							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo $row['otro'] ?>' required/>
@@ -1210,22 +1227,22 @@ p {
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
 							<label for="">Comunicaci&oacute;n y Correo</label>
-							<input type="text" class='form-control input-sm solo-numero' id='idcyc' name="estcomunic" value="<?php echo $row['estcomunic'] ?>" required/>
+							<input type="text" class='form-control input-sm solo-numero' id='idcyc' name="estcomunic" maxlength="3" value="<?php echo $row['estcomunic'] ?>" required/>
 						</div>
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
 							<label for="">Financ. y Otros Serv.</label>
-							<input type="text" class='form-control input-sm solo-numero' id='idfin' name="estfinanc" value="<?php echo $row['estfinanc'] ?>" required />
+							<input type="text" class='form-control input-sm solo-numero' id='idfin' name="estfinanc" maxlength="3" value="<?php echo $row['estfinanc'] ?>" required />
 						</div>
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
 							<label for="">Servicios Comunales</label>
-							<input type="text" class='form-control input-sm solo-numero' id='idserc' name="estservcom" value="<?php echo $row['estservcom'] ?>" required/>
+							<input type="text" class='form-control input-sm solo-numero' id='idserc' name="estservcom" maxlength="3" value="<?php echo $row['estservcom'] ?>" required/>
 						</div>
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
 							<label for="">Unidades Auxiliares</label>
-							<input type="text" class='form-control input-sm solo-numero' id='idaux' name="uniaux" value="<?php echo $row['uniaux'] ?>" required />
+							<input type="text" class='form-control input-sm solo-numero' id='idaux' name="uniaux" maxlength="3" value="<?php echo $row['uniaux'] ?>" required />
 						</div>
 						<div class="col-xs-1">&nbsp;</div>
 					</div>
@@ -1283,7 +1300,7 @@ p {
 						<label class='control-label' for='idrep'>Representante Legal:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="text" class='form-control input-sm mayusculas no-especiales' id='idrep' name="repleg" data-error='Diligencie Reoresentante Legal' maxlength="50" value="<?php echo trim($row['repleg']) ?>" required />
+						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='idrep' name="repleg" data-error='Diligencie Reoresentante Legal' maxlength="50" value="<?php echo trim($row['repleg']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1292,10 +1309,22 @@ p {
 						<label class='control-label' for='iddil'>Persona que Diligencia:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="text" class='form-control input-sm mayusculas no-especiales' id='iddil' name="responde" data-error='Ingrese nombre Persona que Diligencia' maxlength="50" value="<?php echo trim($row['responde']) ?>" required />
+						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='iddil' name="responde" data-error='Ingrese nombre Persona que Diligencia' maxlength="50" value="<?php echo trim($row['responde']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
+				
+				<div class='form-group form-group-sm'>
+					<div class='col-sm-2 small text-right'>
+						<label class='control-label' for='iddil'>Cargo Persona que Diligencia:</label>
+					</div>
+					<div class='col-sm-6 small'>
+						<input type="text" class='form-control input-sm solo-letras  mayusculas no-especiales' id='idcadil' name="carresponde" data-error='Ingrese el cargo de la Persona que Diligencia' maxlength="50" value="<?php echo trim($row['carresponde']) ?>" required />
+						<div class="help-block with-errors"></div>
+					</div>
+				</div>
+				
+				
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
 						<label class='control-label' for='idteldil'>Tel&eacute;fono:</label>
@@ -1308,10 +1337,10 @@ p {
 				
 				<div class='form-group form-group-sm'>
 					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='idteldil'>Extención:</label>
+						<label class='control-label' for='idteldil'>Extensión:</label>
 					</div>
 					<div class='col-sm-2 small'>
-						<input type="text" class='form-control input-sm solo-numero' id='idfaxdil' name="faxr" maxlength="5" data-error='Diligencie la Extención de la Persona que diligencia' value="<?php echo $row['faxr'] ?>" />
+						<input type="text" class='form-control input-sm solo-numero' id='idfaxdil' name="faxr" maxlength="5" data-error='Diligencie la Extensión de la Persona que diligencia' value="<?php echo $row['faxr'] ?>" />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1321,7 +1350,7 @@ p {
 						<label class='control-label' for='idemres'>Email Persona que diligencia:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="email" class='form-control input-sm mayusculas no-especiales' style='text-transform: lowercase' id='idemres' name="emailres" maxlength="50" data-error='Ingrese Email persona que diligencia' value="<?php echo trim($row['emailres']) ?>" required />
+						<input type="email" class='form-control input-sm mayusculas' style='text-transform: lowercase' id='idemres' name="emailres" maxlength="50" data-error='Ingrese Email persona que diligencia' value="<?php echo trim($row['emailres']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>

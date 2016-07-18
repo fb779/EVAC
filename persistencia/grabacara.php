@@ -10,7 +10,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara", "numero", "depto", "mpio", "depnotific", "munnotific", 
 					"capsocinpu", "capsocinpr", "capsociepu", "capsociepr", "estagrop", "estminero", "estind", "estservpub",
 					"estconst", "estcom", "estreshot", "esttrans", "estcomunic", "estfinanc", "estservcom", "uniaux", "teler",
-					"otro","faxr","fechadili",
+					"otro","faxr","fechadili","carresponde",
 
 					"numeroreg","nompropie","nombre","sigla","direccion","telefono","fax","orgju","orgjucual","dirnotifi",
 					"telenotific","faxnotific","repleg","responde","estadoact","otro","emailemp","web",
