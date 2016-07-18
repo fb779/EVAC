@@ -6,8 +6,8 @@
 	ini_set('default_charset', 'UTF-8');
 	if (isset($_POST['btnIngresar'])) {
 		$qVigencia = $conn->query("SELECT vigencia FROM control LIMIT 1");
-		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoActivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
-		$perAct = $qPeriodoac['id'];
+		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
+		//$perAct = $qPeriodoac['id'];
 		
 		foreach($qVigencia AS $lVigencia) {
 			$vigencia = $lVigencia['vigencia'];
@@ -25,8 +25,9 @@
 				$_SESSION['numero'] = $row['numemp'];
 				$_SESSION['region'] = $row['region'];
 				//$_SESSION['vigencia'] = $vigencia;
-				$_SESSION['vigencia'] = $perAct;
-				$_SESSION['periodoAct'] = $perAct;
+				$_SESSION['vigencia'] = $qPeriodoac['id'];
+				$_SESSION['periodoAct'] = $qPeriodoac['id'];
+				$_SESSION['nomPeriAct'] = $qPeriodoac['nomperiodo'];
 			}
 			if ($row['tipo'] == 'FU') {
 				header("location: interface/caratula.php");
@@ -38,7 +39,11 @@
 		else {
 			$mensaje = "Identificación/Clave Incorrectos";
 		}
-	} 
+	} else {
+		echo '<h2>vinculo de otro lugar</h2>';
+		session_unset();
+		session_destroy();
+	}
 ?>
 <!DOCTYPE html>
 <html lang="es">

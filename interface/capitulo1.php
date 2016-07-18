@@ -8,6 +8,7 @@
 	$tipousu = $_SESSION['tipou'];
 	$page='cap1';
 	$vig=$_SESSION['vigencia'];
+	$nomPeriodo = $_SESSION['nomPeriAct'];
 	$estadObs = ($tipousu != "FU" ? "readonly" : "");
 	$consLog = ($region == 99 ? true : false);
 	
@@ -239,6 +240,17 @@
 					}
 				});
 
+				/** Evitar caracteres especiales */
+				$('.solo-letras').on('keyup', function() {
+					var regex = new RegExp("^[ a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
+				    var _this = this;
+				    
+				    var texto = $(_this).val();
+			        if(!regex.test(texto)) {
+				        $(_this).val(texto.substring(0, (texto.length-1)))
+					}
+				});
+
 				
 				var $fr = $('#capitulo1');
 				var color = '#a94442';
@@ -395,11 +407,15 @@
 			    });
 
 			    /** Funciona para validar los cambios y comportamientos de cada input */
-			    
+			    $('#listDisForm').on('keyup', '.validar', function(){
+			    	if ($(this).hasClass('solo-numero')){
+			    		this.value = (this.value + '').replace(/[^0-9]/g, '');
+					}
+				});
 			    $('#listDisForm').on('change, blur', '.validar', function(){
 			    	$(this).css('border',"");
 					$(this).parent().parent().removeClass('text-danger');
-					$(this).parent().children('span').remove();
+					$(this).parent().parent().children('span').remove();
 					
 				    var $ele = $('#listDisForm');
 				    //console.log($(this, $ele).parents('div .active').attr('id'));
@@ -417,7 +433,7 @@
 	    			if( $(this).attr('name') === vacAbi){ /** interaccion con el total de vacantes por disponibilidad */
 	    				var vac = parseInt($(this).val());
 		    			
-		    			if ( !isNaN(vac) ){
+		    			if ( !isNaN(vac) && vac > 0 ){
 		    				//if (tvac <= parseInt($('[name="i1r1c2"]').val())){
 		    					if ( vac < parseInt($('[name="'+vacCub+'"').val()) ){
 			    					$('[name="'+vacCub+'"').val('0');
@@ -442,21 +458,20 @@
 // 		    				}
 	    					//$('[name="'+vacAbi+'"').val('0');
 		    			}else{
-		    				$('[name="'+vacAbi+'"').val('0');
-		    				$('[name="'+vacCub+'"').val('0');
-	    					$('[name="'+vacHom+'"').val('0');
-	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
-	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-
+		    				//$('[name="'+vacAbi+'"').val('0');
+// 		    				$('[name="'+vacCub+'"').val('0');
+// 	    					$('[name="'+vacHom+'"').val('0');
+// 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+// 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">Campo numerico obligatorio</span>');
+							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 1 - 999 en el campo</span>');
 	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 	    			}else if ( $(this).attr('name') === vacCub ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
 		    			var vacCu = parseInt($(this).val());
-		    			if ( !isNaN(vacCu) ){
-		    				if( vacCu <= parseInt($('[name="'+vacAbi+'"]').val()) ){
+		    			if ( !isNaN(vacCu)  ){
+		    				if( vacCu <= parseInt($('[name="'+vacAbi+'"]').val()) && !isNaN(parseInt($('[name="'+vacAbi+'"]').val()))  ){
 			    				if (vacCu >= parseInt($('[name="'+vacHom+'"').val()) ){
 			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 			    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
@@ -473,26 +488,25 @@
 		    			    	}
 		    					
 		    				}else{
-		    					$('[name="'+vacCub+'"').val('0');
+		    					//$('[name="'+vacCub+'"').val('0');
 		    					$('[name="'+vacHom+'"').val('0');
 		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 		    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 
 		    					$(this).parent().parent().addClass('text-danger');
 								$(this).css('border',"1px solid" + color);
-								$(this).parent().append('<span class="text-info">Debe ingresar un valor menor o igual al numero de vacantes abiertas</span>');
-		    					//alert('Debe ingresar un valor menor o igual al numero de vacantes abiertas');
+								$(this).parent().parent().append('<span>Debe ingresar un valor menor o igual al numero de vacantes abiertas</span>');
 		    				}
 		    				
 			    		}else{
-			    			$('[name="'+vacCub+'"').val('0');
-	    					$('[name="'+vacHom+'"').val('0');
+			    			//$('[name="'+vacCub+'"').val('0');
+	    					//$('[name="'+vacHom+'"').val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 			    		
@@ -508,15 +522,15 @@
 		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
 		    					$(this).parent().parent().addClass('text-danger');
 								$(this).css('border',"1px solid" + color);
-								$(this).parent().append('<span class="text-danger">Debe ingresar un valor menor o igual al numero de vacantes cubiertas</span>');
+								$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor menor o igual al numero de vacantes cubiertas</span>');
 		    					//alert('Debe ingresar un valor menor o igual al numero de vacantes cubiertas');
 		    				}
 			    		}else{
-			    			$(this).val('0');
+			    			//$(this).val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($(this).val()) );
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 	    				
@@ -534,8 +548,12 @@
 						if($(this).val() == ''){
 							$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
-							//if ($(this).type())
-							$(this).parent().append('<span class="text-danger">Debe ingresar un valor numerico en el campo</span>');
+							if ($(this).is('select')){
+								$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion</span>');
+							}else{
+								$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
+							}
+							
 						}
 						
 					}
@@ -593,14 +611,14 @@
 */			
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
- 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
+ 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
- 				<?php //echo '<br/> consulta de datos: '; print_r($row); ?>
+ 				<?php //echo '<br/> consulta de datos: '; print_r($_SESSION); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
  		<div class="container text-justify" style="font-size: 12px">
- 			<h4>Este m&oacute;dulo  determina la cantidad de vacantes durante el "I trimestre del año <?php echo $vig;?>" e  identifica sus caracter&iacute;sticas.s</h4>
+ 			<h4>Este m&oacute;dulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus caracter&iacute;sticas.</h4>
 		 	
  		</div>
 
@@ -647,7 +665,7 @@
 					</legend>
 					<div class="container-fluid">
 						<div class="col-xs-12 col-sm-12">
-							<label for="">Este módulo  determina la cantidad de vacantes durante el "I trimestre del año 2016" e  identifica sus características.</label>
+							<label for="">Este módulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus características.</label>
 						</div>
 						<div id="contenido" class="col-xs-12 col-sm-12">
 							<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
@@ -733,7 +751,7 @@
 																<option value="3" <?php echo ($dispc['i1r2c3'] == 3) ? 'selected' : '';  ?> >Educación media   (10° - 13°)</option>
 																<option value="4" <?php echo ($dispc['i1r2c3'] == 4) ? 'selected' : '';  ?> >Técnico laboral</option>
 																<option value="5" <?php echo ($dispc['i1r2c3'] == 5) ? 'selected' : '';  ?> >Técnico profesional</option>
-																<option value="6" <?php echo ($dispc['i1r2c3'] == 6) ? 'selected' : '';  ?> >Tecnológo</option>
+																<option value="6" <?php echo ($dispc['i1r2c3'] == 6) ? 'selected' : '';  ?> >Tecnólogo</option>
 																<option value="7" <?php echo ($dispc['i1r2c3'] == 7) ? 'selected' : '';  ?> >Estudiante universitario</option>
 																<option value="8" <?php echo ($dispc['i1r2c3'] == 8) ? 'selected' : '';  ?> >Profesional universitario</option>
 																<option value="9" <?php echo ($dispc['i1r2c3'] == 9) ? 'selected' : '';  ?> >Especialización </option>
@@ -892,7 +910,7 @@
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
-							3. Para  las <?php echo $row['i1r1c2']; ?> vacantes mencionadas en el numeral 1, Seleccione  el (los) medio(s) de publicación utilizado(s):
+							3. Para  las vacantes mencionadas en el numeral 1, Seleccione  el (los) medio(s) de publicación utilizado(s):
 						</b></h5>
 					</legend>
 					<div id="ii3contenido" class="container-fluid hidden">
@@ -986,7 +1004,7 @@
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
-							4. De las <?php echo $row['i1r1c2']; ?> vacantes mencionadas en el numeral 1.
+							4. De las vacantes mencionadas en el numeral 1.
 						</b></h5>
 					</legend>
 					
@@ -1047,7 +1065,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Cantidad de vacantes abiertas</label>
 					<div class='small'>
-						<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name='i1r2c' value = "0" maxlength="9"  required/>
+						<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name='i1r2c' value = "0" maxlength="3"  required/>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
@@ -1077,7 +1095,7 @@
 							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Educación media   (10° - 13°)</option>
 							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Técnico laboral</option>
 							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Técnico profesional</option>
-							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Tecnológo</option>
+							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Tecnólogo</option>
 							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Estudiante universitario</option>
 							<option value="8" <?php //echo ($row['i1r2c'] == 8) ? 'checked' : '';  ?> >Profesional universitario</option>
 							<option value="9" <?php //echo ($row['i1r2c'] == 9) ? 'checked' : '';  ?> >Especialización </option>
@@ -1134,7 +1152,8 @@
 			<div class="container-fluid">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Salario u honorarios mensuales</label>
-					<div class='small'>
+					<div class='input-group input-group-sm'>
+						<span class="input-group-addon" id="sizing-addon1">$</span>
 						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' maxlength="9" value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
 					</div>
 				</div>
