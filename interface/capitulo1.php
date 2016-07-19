@@ -84,14 +84,15 @@
 				if ($('[name="i1r1c1"]:checked').val() == 1){ /* Valor del radiobutton en si */
 					for (i=0; i<inputText.length; i++) {
 						if ($('[name="'+ inputText[i] +'"]').val() == ''){
-							$('[name="'+ inputText[i] +'"]').parent().addClass('text-danger');
+							$('[name="'+ inputText[i] +'"]').parent().parent().parent().addClass('text-danger');
 							retorno += 1;
 						}
 					}
 
 					if($('[name="i1r3c8"]').is(':checked')){
 						if ($('[name="i1r3c9"]').val() == ''){
-							$('[name="i1r3c9"]').parent().addClass('text-danger');
+							$('[name="i1r3c9"]').parent().parent().addClass('text-danger');
+							$('[name="i1r3c9"]').parent().parent().append('<span class="">El campo no puede estar vacio</span>');
 							retorno += 1;
 						}
 					}
@@ -108,37 +109,6 @@
 					}else{
 					  $('#ii3contenido').addClass('hidden');
 					}
-
-// 					validacion de los campos dinamicos si son requeridos */
-// 	 				$('#listDisForm').children().each(function(){
-// 		 				var pnal = $(this).attr('id').substring(4);
-// 						var vacNoCub = 'i1r2c' + pnal + '11';
-// 						var vacNoCubCa = 'i1r2c' + pnal + '12';
-// 		    			var cual = 'i1r2c' + pnal + '13';
-// 						$(this).find(':input,select').each(function(){
-// 							switch($(this).attr('name')){
-// 								case vacNoCubCa:{
-// 									var vnc = parseInt($('[name="'+ vacNoCub +'"]').val());
-// 									if ( vnc > 0){
-// 										if( $(this).val() == '' ){
-// 											retorno += 1;
-// 										}
-// 									}
-// 								}break;
-								
-// 								case cual:{
-// 									if( $(this).val() == '' ){
-										
-// 									}
-// 								}break;
-								
-// 								default: {}break;
-// 							}
-	
-// 							console.log('campo '+ $(this).attr('name') +': ' + $(this).val());   
-// 						}); 
-// 					});
-						
 				}
 
 				// cantidad de disponibilidades agregadas
@@ -283,10 +253,12 @@
 							$(this).remove();
 						});
 
+						// retiramos las caracterizaciones existentes
 						conte.children().each(function(){ 
 							$(this).remove();
 						});
-						
+
+						// desabilitamos todos los campos del formulario 
 						$(':input,select', $fr).each(function(){
 							$(this).prop('disabled', true);
 						});
@@ -309,6 +281,7 @@
 				
 				
 				$('[type="checkbox"]').change(function(){
+					$('#msCheck').children('label').remove();
 					var item = $(this);
 					if(item.is(':checked')){
 						item.val(1);
@@ -319,35 +292,66 @@
 						item.val(0);
 						if(item.attr('name') ==  'i1r3c8'){
 							$('[name="i1r3c9"]').val('');
+							$('[name="i1r3c9"]').parent().parent().removeClass('text-danger');
+							$('[name="i1r3c9"]').parent().parent().removeClass('has-error');
+							$('[name="i1r3c9"]').css('border',"");
+							$('[name="i1r3c9"]').parent().parent().children('span').remove();
 							$('[name="i1r3c9"]').prop('disabled', true);
 						} 
 					}
+
+					if (!valChackbox()){
+						$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno 1 de las opciones</label>');
+					}
 				});
+				
+				$('#idi1r3c9').on('blur', function(){
+					debugger;
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().parent().removeClass('has-error');
+					$(this).css('border',"");
+					$(this).parent().parent().children('span').remove();
+					
+					if ( $(this).val() == '' ){
+						$(this).parent().parent().addClass('text-danger');
+						$(this).css('border',"1px solid "+color);
+						$(this).parent().parent().append('<span> Debe diligenciar el campo</span>');
+					}
+				});
+
+				function valChackbox(){
+					var ct = 0;
+					$('[type="checkbox"]').each(function(){ if($(this).prop('checked')){  ct ++; } });
+					return (ct>0)?true:false;
+				}
 
 				if ($('[name="i1r3c8"]').is(':checked')){
 					$('input[name="i1r3c9"]').prop('disabled', false);
 				}else{
-					$('input[name="i1r3c9"]').val('');
-					$('input[name="i1r3c9"]').prop('disabled', true);
+					$('[name="i1r3c9"]').val('');
+					$('[name="i1r3c9"]').parent().parent().removeClass('text-danger');
+					$('[name="i1r3c9"]').parent().parent().children('span').remove();
+					$('[name="i1r3c9"]').prop('disabled', true);
 				}
 
-				$('#idi1r4c1').on('change', function(){
+				$('#idi1r4c1').on('blur', function(){
+					debugger;
 					$(this).css('border',"");
-					$(this).parent().removeClass('text-danger');
-					$(this).parent().children('span').remove();
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().parent().children('span').remove();
 					var val = parseInt($(this).val());
 					var vac = parseInt($('#idi1r2ctv').val());
 					if ( !isNaN(val) ){
 						if( val > vac ){
-							$(this).css('border',"");
-							$(this).parent().addClass('text-danger');
-							$(this).parent().append('<span class="text-danger">El valor del campo no puede ser mayor al total de vacantes</span>');
+							$(this).css('border',"solid 0.5px "+color);
+							$(this).parent().parent().addClass('text-danger');
+							$(this).parent().parent().append('<span class="">El valor del campo no puede ser mayor al total de vacantes</span>');
 							//alert('El valor del campo no puede ser mayor al total de vacantes');
 						}
 					}else{
-						$(this).css('border',"");
-						$(this).parent().addClass('text-danger');
-						$(this).parent().append('<span class="text-danger">El valor del campo deber ser numerico</span>');
+						$(this).css('border',"solid 1px "+color);
+						$(this).parent().parent().addClass('text-danger');
+						$(this).parent().parent().append('<span class="">Debe ingresar un valor de 0 - 999 en el campo</span>');
 						//alert('El valor del campo deber ser numerico');
 					}
 				})
@@ -418,55 +422,70 @@
 					$(this).parent().parent().children('span').remove();
 					
 				    var $ele = $('#listDisForm');
-				    //console.log($(this, $ele).parents('div .active').attr('id'));
 					var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
 		    		var vacAbi = 'i1r2c' + pnal + '0';
+		    		
 	    			var vacCub = 'i1r2c' + pnal + '8';
 	    			var vacHom = 'i1r2c' + pnal + '9';
 	    			var vacMuj = 'i1r2c' + pnal + '10';
 	    			var vacNoCub = 'i1r2c' + pnal + '11';
 	    			var vacNoCubCa = 'i1r2c' + pnal + '12';
+	    			var edad = 'i1r2c' + pnal + '4';
+	    			var sal = 'i1r2c' + pnal + '6';
 	    			var cual = 'i1r2c' + pnal + '13';
-	    			//var tvac = ($('#idi1r2ctv').val()!='') ? parseInt($('#idi1r2ctv').val()):0;
-	    			//var tvac = subVacantes();
-					
+	    			
 	    			if( $(this).attr('name') === vacAbi){ /** interaccion con el total de vacantes por disponibilidad */
 	    				var vac = parseInt($(this).val());
 		    			
 		    			if ( !isNaN(vac) && vac > 0 ){
-		    				//if (tvac <= parseInt($('[name="i1r1c2"]').val())){
-		    					if ( vac < parseInt($('[name="'+vacCub+'"').val()) ){
-			    					$('[name="'+vacCub+'"').val('0');
-			    					$('[name="'+vacHom+'"').val('0');
-			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
-			    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-			    				}else{
-			    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
-			    					$('[name="'+vacNoCub+'"').val( vac - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-	
-				    			}
-		    					
-		    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){ // validacion para activar la seleccion de vacantes no cubiertas
-		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
-		    		    		}else{
-		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
-		    			    	}
+	    					if ( vac < parseInt($('[name="'+vacCub+'"').val()) ){
+		    					$('[name="'+vacCub+'"').val('0');
+		    					$('[name="'+vacHom+'"').val('0');
+		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+		    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+		    				}else{
+		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
+		    					$('[name="'+vacNoCub+'"').val( vac - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 
-// 		    				}else{
-// 		    					$('[name="'+vacAbi+'"').val('0');
-// 		    					alert('La cantidad de vacantes debe ser menor a la cantidad de vacantes totales registradas');
-// 		    				}
-	    					//$('[name="'+vacAbi+'"').val('0');
+			    			}
+	    					
+	    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){ // validacion para activar la seleccion de vacantes no cubiertas
+	    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+	    		    		}else{
+	    		    			$('[name="'+vacNoCubCa+'"]').val('');
+	    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
+	    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
+	    		    			$('[name="'+vacNoCubCa+'"]').css('border',"");
+	    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+	    		    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+				    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
+				    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+				    			$('[name="'+cual+'"]').css('border',"");
+				    			$('[name="'+cual+'"]').prop('required', false);
+				    			$('[name="'+cual+'"]').prop('disabled', true);
+	    			    	}
 		    			}else{
 		    				//$('[name="'+vacAbi+'"').val('0');
 // 		    				$('[name="'+vacCub+'"').val('0');
 // 	    					$('[name="'+vacHom+'"').val('0');
 // 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 // 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
+
+	    					$('[name="'+vacNoCubCa+'"]').val('');
+	    					$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
+	    					$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
+	    					$('[name="'+vacNoCubCa+'"]').css('border',"");
+    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+    		    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+			    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
+			    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+			    			$('[name="'+cual+'"]').css('border',"");
+			    			$('[name="'+cual+'"]').prop('required', false);
+			    			$('[name="'+cual+'"]').prop('disabled', true);
+			    			
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
 							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 1 - 999 en el campo</span>');
-	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 	    			}else if ( $(this).attr('name') === vacCub ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
 		    			var vacCu = parseInt($(this).val());
@@ -484,7 +503,17 @@
 		    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
 		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
 		    		    		}else{
+		    		    			$('[name="'+vacNoCubCa+'"]').val('');
+		    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
+		    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
+		    		    			$('[name="'+vacNoCubCa+'"]').css('border',"");
 		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+		    		    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+					    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
+					    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+					    			$('[name="'+cual+'"]').css('border',"");
+					    			$('[name="'+cual+'"]').prop('required', false);
+					    			$('[name="'+cual+'"]').prop('disabled', true);
 		    			    	}
 		    					
 		    				}else{
@@ -493,6 +522,18 @@
 		    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 		    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 
+		    					$('[name="'+vacNoCubCa+'"]').val('');
+		    					$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
+		    					$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
+		    					$('[name="'+vacNoCubCa+'"]').css('border',"");
+	    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+	    		    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+				    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
+				    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+				    			$('[name="'+cual+'"]').css('border',"");
+				    			$('[name="'+cual+'"]').prop('required', false);
+				    			$('[name="'+cual+'"]').prop('disabled', true);
+				    			
 		    					$(this).parent().parent().addClass('text-danger');
 								$(this).css('border',"1px solid" + color);
 								$(this).parent().parent().append('<span>Debe ingresar un valor menor o igual al numero de vacantes abiertas</span>');
@@ -503,11 +544,11 @@
 	    					//$('[name="'+vacHom+'"').val('0');
 	    					$('[name="'+vacMuj+'"').val( parseInt( $('[name="'+vacCub+'"').val()) - parseInt($('[name="'+vacHom+'"').val()) );
 	    					$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
-
+	    					$('[name="'+cual+'"]').prop('disabled', true);
+	    					$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
 							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
-	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 			    		
 	    				
@@ -523,7 +564,6 @@
 		    					$(this).parent().parent().addClass('text-danger');
 								$(this).css('border',"1px solid" + color);
 								$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor menor o igual al numero de vacantes cubiertas</span>');
-		    					//alert('Debe ingresar un valor menor o igual al numero de vacantes cubiertas');
 		    				}
 			    		}else{
 			    			//$(this).val('0');
@@ -531,31 +571,36 @@
 	    					$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
 							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
-	    					//alert('Debe ingresar un valor numerico en el campo');
 				    	}
 	    				
 	    					
-	    			}else if( $(this).attr('name') === vacNoCubCa  ){
+	    			}else if( $(this).attr('name') === vacNoCubCa && $(this).val() != ''){
 						if ($('[name="'+vacNoCubCa+'"').val() == '7'){
 			    			$('[name="'+cual+'"]').prop('disabled', false);
 			    			$('[name="'+cual+'"]').prop('required', true);
 			    		} else {
-			    			$('[name="'+cual+'"]').prop('disabled', true);
+			    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+			    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
+			    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+			    			$('[name="'+cual+'"]').css('border',"");
 			    			$('[name="'+cual+'"]').prop('required', false);
+			    			$('[name="'+cual+'"]').prop('disabled', true);
 				    	}
 					}else{
-						//debugger;
 						if($(this).val() == ''){
 							$(this).parent().parent().addClass('text-danger');
 							$(this).css('border',"1px solid" + color);
+
 							if ($(this).is('select')){
 								$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion</span>');
-							}else{
+							}else if( $(this).attr('name') == edad ){
 								$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
-							}
-							
-						}
-						
+							}else if( $(this).attr('name') == sal ){
+								$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 0 - 999999999 en el campo</span>');
+							}else if( $(this).attr('name') == cual ){
+								$(this).parent().parent().append('<span class="text-danger">El campo no puede estar vacio</span>');
+							}	
+						}	
 					}
 
 					validar_totales();
@@ -579,7 +624,7 @@
 		    		var vacantes = 'i1r2c' + pnal + '0';
 	    			var vacCubiertas = 'i1r2c' + pnal + '8';
 	    			var vacNoCubiertas = 'i1r2c' + pnal + '11';
-		    		$(this).find(':input,select').each(function(){
+		    		$(this).find(':input').each(function(){
 		    			if ($(this).attr('name') == vacantes && $(this).val() != '' ){
 		    				sumTotVac += parseInt($(this).val());
 		    			}
@@ -613,7 +658,7 @@
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
  			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
- 				<?php //echo '<br/> consulta de datos: '; print_r($_SESSION); ?>
+ 				<?php //echo '<br/> consulta de datos: '; print_r($row); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
@@ -639,7 +684,7 @@
 						<label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
 						<div class="col-xs-12 col-sm-2 ">
 							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> required > Si
+							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> required > Si
 							</label>
 							<label class="radio-inline">
 							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?>  > No
@@ -721,7 +766,7 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">Cantidad de vacantes abiertas</label>
 														<div class='small'>
-															<input type='text' class='form-control input-sm text-right subVac validar' id='' name="<?php echo $ncam; ?>0" value = "<?php echo $dispc['i1r2c1'];?>" maxlength="9"  required/>
+															<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name="<?php echo $ncam; ?>0" value = "<?php echo $dispc['i1r2c1'];?>" maxlength="3"  required/>
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-1"></div>
@@ -785,7 +830,7 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">Experiencia en meses</label>
 														<div class='small'>
-															<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>4' value = "<?php echo $dispc['i1r2c5']?>" maxlength="9" required />
+															<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>4' value = "<?php echo $dispc['i1r2c5']?>" maxlength="3" required />
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-1"></div>
@@ -804,11 +849,12 @@
 													</div>
 												</div>
 			
-												<div class="container-fluid">
+												<div class="container-fluid small">
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">Salario u honorarios mensuales</label>
-														<div class='small'>
-															<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
+														<div class='input-group input-group-sm'>
+															<span class="input-group-addon" id="sizing-addon1">$</span>
+															<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-1"></div>
@@ -840,7 +886,7 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 														<div class='small'>
-															<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
+															<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
 														</div>
 													</div>
 												</div>
@@ -856,14 +902,14 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 														<div class='small'>
-															<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
+															<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
 														</div>
 													</div>
 													<div class="col-xs-12 col-sm-1"></div>
 													<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 														<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 														<div class='small'>
-															<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
+															<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
 														</div>
 													</div>
 													
@@ -888,7 +934,9 @@
 													<div class="col-xs-12 col-sm-1"></div>
 													<div class="form-group form-group-sm col-xs-12 col-sm-7">
 														<label class="">Cual?</label>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+														<div>
+															<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+														</div>
 													</div>
 												</div>
 											</div>
@@ -916,6 +964,7 @@
 					<div id="ii3contenido" class="container-fluid hidden">
 						<div class="col-sx-12 text-danger"> <h4>Debe seleccionar alguno de los valores </h4> </div>
 					</div>
+					<div id="msCheck" class="container-fluid text-danger text-center"></div>
 					<div class="container-fluid">
 						<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 							<div class="checkbox">
@@ -995,12 +1044,14 @@
 						<div class="col-xs-12 col-sm-1"></div>
 						<div class="form-group form-group-sm col-xs-12 col-sm-12">
 							<label class="">Cual?</label>
-							<input type='text' class='form-control input-sm' id='idir3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="9" />
+							<div>
+								<input type='text' class='form-control input-sm' id='idi1r3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="50" required/>
+							</div>
 						</div>
 					</div>
 				</fieldset>
 				
-				<fieldset style='border-style: solid; border-width: 1px' id="ii3" class="<?php //echo $estadoII3; ?>" >
+				<fieldset style='border-style: solid; border-width: 1px' id="" class="<?php //echo $estadoII3; ?>" >
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?> 
@@ -1011,7 +1062,9 @@
 					<div class="container-fluid">
 						<div class="form-group form-group-sm col-xs-12">
 							<label class="">¿Cuántas requerían de una competencia certificada?</label>
-							<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="9" required />
+							<div>
+								<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="3" required />
+							</div>
 						</div>
 					</div>
 				</fieldset>
@@ -1234,7 +1287,9 @@
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-7">
 					<label class="">Cual?</label>
-					<input type='text' class='form-control input-sm text-right validar' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="9" disabled />
+					<div>
+						<input type='text' class='form-control input-sm validar' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="50" disabled />
+					</div>
 				</div>
 			</div>
 		</div>
