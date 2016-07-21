@@ -1,5 +1,6 @@
 <?php
 if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){ //validamos que la peticion sea ajax
+	$jsondata = array();
 	if (session_id() == "") {
 		session_start();
 	}
@@ -67,27 +68,27 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$qCapitulo->execute(array(':idNumero'=>$numero, ':periodo'=>$vig));
 	$row = $qCapitulo->fetch(PDO::FETCH_BOTH);
 	
-	for($i=1; $i<count($nombres); $i++) {
-		//$nomvar = strtoupper($nombres[$i]);		// OJO VERIFICAR COINCIDENCIA DE LOS ARREGLOS
-		$nomvar = $nombres[$i];		// OJO VERIFICAR COINCIDENCIA DE LOS ARREGLOS
-//		echo $nombres[$i] . " - " . $nomvar . " - " . $valores[$i] . " - " . $row[$nomvar] . "\n";
-		//if ($valores[$i] != $row[$nomvar]) {
-		if ($valores[$i] != $row[$nombres[$i]]) {
-			if (substr($nombres[$i], 0,4) != 'i1r2' ){ // retirar condicion para agregar caracterizaciones 
-				$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
-					tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
-				$creaLog->execute(array(':numero'=>$numero,
-					':tipo'=>$_SESSION['tipou'],
-					':usuario'=>$_SESSION['idusu'],
-					':fecha'=>date("Y-m-d"),
-					':hora'=>date("h:i:sa"),
-					':variable'=>$nombres[$i],
-					':anterior'=>$row[$nomvar],
-					':actual'=>$valores[$i],
-					':tabla'=>$tabla));
-			}
-		}
-	}
+// 	for($i=1; $i<count($nombres); $i++) {
+// 		//$nomvar = strtoupper($nombres[$i]);		// OJO VERIFICAR COINCIDENCIA DE LOS ARREGLOS
+// 		$nomvar = $nombres[$i];		// OJO VERIFICAR COINCIDENCIA DE LOS ARREGLOS
+// //		echo $nombres[$i] . " - " . $nomvar . " - " . $valores[$i] . " - " . $row[$nomvar] . "\n";
+// 		//if ($valores[$i] != $row[$nomvar]) {
+// 		if ($valores[$i] != $row[$nombres[$i]]) {
+// 			if (substr($nombres[$i], 0,4) != 'i1r2' ){ // retirar condicion para agregar caracterizaciones 
+// 				$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
+// 					tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
+// 				$creaLog->execute(array(':numero'=>$numero,
+// 					':tipo'=>$_SESSION['tipou'],
+// 					':usuario'=>$_SESSION['idusu'],
+// 					':fecha'=>date("Y-m-d"),
+// 					':hora'=>date("h:i:sa"),
+// 					':variable'=>$nombres[$i],
+// 					':anterior'=>$row[$nomvar],
+// 					':actual'=>$valores[$i],
+// 					':tabla'=>$tabla));
+// 			}
+// 		}
+// 	}
 	
 	$lineaMOD = 'UPDATE ' . $tabla . ' SET ';
 	for ($i=1; $i<count($nombres); $i++) {
@@ -390,9 +391,14 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 		$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
 		
-		$actcapi = $conn->exec($lineaINS);
+		if ($pnl > 0){
+			$actcapi = $conn->exec($lineaINS);
+		}
 	}
-	
+	$jsondata['cap_i_act'] = $lineaINS;
+	$jsondata['success'] = true;
+	header('Content-type: application/json; charset=utf-8');
+	echo json_encode($jsondata);
 	
 //	print_r($lineaMOD);
 /*	

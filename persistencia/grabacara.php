@@ -82,8 +82,8 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 	$conn->query("delete from actiemp where nordemp = ".$numero."");
 	$activi = $conn->exec(rtrim($actemp,', '));
-	$jsondata['actividades'] = $activi;
-	$jsondata['actividades_sql'] = $actemp;
+	//$jsondata['actividades'] = $activi;
+	//$jsondata['actividades_sql'] = $actemp;
 	$jsondata['success'] = true;
 
 	header('Content-type: application/json; charset=utf-8');
