@@ -152,12 +152,15 @@
 					    url: "cambioperiodo.php",
 					    type: "POST",
 					    dataType: "json",
-					    //beforeSend: validaFormOther(),
 					    data: {"newPer" : $(this).val()},
 					    success: function(dato) {
+						    debugger;
 							if (dato.success){
 								location.reload();
 							}
+						},
+						error: function(xhr, status, erroThrown){
+							debugger;
 						}
 					});
 				});
@@ -188,7 +191,7 @@
 						</select>
 						
 					</div>
-					<h4>Periodo <?php echo $_SESSION['vigencia']; ?> - Periodo activo <?php echo $_SESSION['periodoAct']; ?></h4>
+					<h4><?php echo $_SESSION['nomPeri']; ?> - Periodo activo <?php echo $_SESSION['nomPeriAct']; ?></h4>
 				</div>
 		</div>
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">

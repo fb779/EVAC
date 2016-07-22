@@ -8,7 +8,7 @@
 	$tipousu = $_SESSION['tipou'];
 	$page='cap1';
 	$vig=$_SESSION['vigencia'];
-	$nomPeriodo = $_SESSION['nomPeriAct'];
+	$nomPeriodo = $_SESSION['nomPeri'];
 	$estadObs = ($tipousu != "FU" ? "readonly" : "");
 	$consLog = ($region == 99 ? true : false);
 	

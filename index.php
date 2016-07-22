@@ -26,6 +26,7 @@
 				$_SESSION['region'] = $row['region'];
 				//$_SESSION['vigencia'] = $vigencia;
 				$_SESSION['vigencia'] = $qPeriodoac['id'];
+				$_SESSION['nomPeri'] = $qPeriodoac['nomperiodo'];
 				$_SESSION['periodoAct'] = $qPeriodoac['id'];
 				$_SESSION['nomPeriAct'] = $qPeriodoac['nomperiodo'];
 			}

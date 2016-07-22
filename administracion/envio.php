@@ -21,21 +21,29 @@
 // 		$m6 = $rowCtl['m6'];
 	}
 	
+// 	if ($region == 99) {
+// 		$envioOK = true;
+// 	} else {
+// 		//if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+// 		if ($tipousu == "FU" AND $m1 == 2) {
+// 			$envioOK = true;
+// 		}
+// 		else {
+// // 			if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
+// 			if ($tipousu == "CR" AND $m1 == 3) {
+// 				$envioOK = true;
+// 			}
+// 		}
+// 	}
+
 	if ($region == 99) {
 		$envioOK = true;
+	} else if ($tipousu == "FU" AND $m1 == 2) { //if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
+		$envioOK = true;
+	}  else if ($tipousu == "CR" AND $m1 == 3) { //if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
+		$envioOK = true;
 	}
-	else {
-		//if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
-		if ($tipousu == "FU" AND $m1 == 2) {
-			$envioOK = true;
-		}
-		else {
-// 			if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
-			if ($tipousu == "CR" AND $m1 == 3) {
-				$envioOK = true;
-			}
-		}
-	}
+	
 	$qDevol = $conn->query("SELECT * FROM devoluciones WHERE nordemp = $numero AND vigencia = $vig");
 	if ($qDevol->rowCount() > 0) {
 		$reenv = true;
@@ -136,7 +144,12 @@
 	</head>
 	<body>
 		<div class="well well-sm text-center" style="font-weight: bold; padding-top: 60px">
- 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACI�N
+			<div class="col-xs-12">
+				<?php print_r($rowCtl);?>
+				</br>
+				<?php print_r($_SESSION);?>
+			</div>
+ 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
  		</div>
 		<div class="container">
@@ -147,7 +160,7 @@
 						if ($region != 99) {
 							if ($envioOK) {
 								if (!$reenv) {
-									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACI�N";
+									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIÓN";
 									echo "<div class='form-group' style='padding-top: 60px'>";
 									echo "<button type='submit' class='btn btn-primary btn-lg' id='enviof'>ENVIAR FORMULARIO</button>";
 									echo "&nbsp;";

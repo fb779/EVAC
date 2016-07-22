@@ -44,6 +44,7 @@
 			}
 		}
 	}
+	
 	if (isset($_POST['capitulo'])) {
 		$modulo = $_POST['modulo'];
 		if ($tipousu == "CR") {
