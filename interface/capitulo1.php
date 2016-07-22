@@ -54,12 +54,13 @@
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/cargaDato.js"></script>
-	 	<script type="text/javascript" src="../js/valida1.js"></script>
+	 	<!--script type="text/javascript" src="../js/valida1.js"></script-->
 		<script type="text/javascript" src="../js/validaForm1.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
+		<script type="text/javascript" src="../js/notSubmit.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<style>
 			.modal-width {
@@ -73,7 +74,6 @@
 			var retorno = 0;
 			var inputText = ['i1r1c2', 'i1r4c1']
 			function validaFormOther() {
-				retorno = 0;
 				var cont = 0;
 				/**Validar radio buttons vacantes */
 				if (!$('input[name="i1r1c1"]').is(':checked')) {
@@ -118,50 +118,48 @@
 			}
 			
 			$(document).ready(function() {
-				
-				$("#capitulo1").submit(function(event) {
+				$("#capitulo1").on('submit', function(event) {
 					event.preventDefault();
 					$('#C1_numdisp').val( $('#listDisForm').children().length);
-		                $.ajax({
-		                    url: "../persistencia/grabacapi.php",
-		                    type: "POST",
-						    dataType: "json",
-		                    //beforeSend: validaFormOther(),
-		                    data: $(this).serialize(),
-		                    success: function(dato) {
-								if (dato.success) {
-									$("#btn_cont").show();
-									$("#idmsg").show();
-									$(function() {
-										$.ajax({
+	                $.ajax({
+	                    url: "../persistencia/grabacapi.php",
+	                    type: "POST",
+					    dataType: "json",
+	                    //beforeSend: validaFormOther,
+	                    data: $(this).serialize(),
+	                    success: function(dato) {
+							if (dato.success) {
+								$("#btn_cont").show();
+								$("#idmsg").show();
+								$(function() {
+									$.ajax({
+									url: "../persistencia/grabactl.php",
+									type: "POST",
+									data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
+									success: function(dato) {
+									}
+								});
+								});
+								if ($("#idTipo").val() == "CR") {
+									$("#idObs1").modal('show');
+								}
+							}
+							else {
+								//retorno = "id"+retorno;
+								//$("[name='" + retorno + "']").focus();
+								//document.getElementById(retorno).focus();
+								$(function() {
+									$.ajax({
 										url: "../persistencia/grabactl.php",
 										type: "POST",
-										data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
+										data: {modulo: "m1", estado: "1", numero: $("#numero").val(), capitulo: "C1"},
 										success: function(dato) {
 										}
 									});
-									});
-									if ($("#idTipo").val() == "CR") {
-										$("#idObs1").modal('show');
-									}
-								}
-								else {
-									//retorno = "id"+retorno;
-									//$("[name='" + retorno + "']").focus();
-									//document.getElementById(retorno).focus();
-									$(function() {
-										$.ajax({
-											url: "../persistencia/grabactl.php",
-											type: "POST",
-											data: {modulo: "m1", estado: "1", numero: $("#numero").val(), capitulo: "C1"},
-											success: function(dato) {
-											}
-										});
-									});
-								}
+								});
 							}
-		                });
-// 	                }
+						}
+	                });
 	            });
 			});
 			
@@ -430,6 +428,7 @@
 			    		this.value = (this.value + '').replace(/[^0-9]/g, '');
 					}
 				});
+				
 			    $('#listDisForm').on('change, blur', '.validar', function(){
 			    	$(this).css('border',"");
 					$(this).parent().parent().removeClass('text-danger');
@@ -624,6 +623,8 @@
 					validar_totales();
 			    });
 			}); //$(document).ready()
+
+			
 			
 			function validar_totales(){
 		    	/** Actualizacion de total de vacantes */
@@ -674,7 +675,7 @@
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
  			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
- 				<?php echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
+ 				<?php //echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		

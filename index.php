@@ -40,7 +40,6 @@
 			$mensaje = "Identificación/Clave Incorrectos";
 		}
 	} else {
-		echo '<h2>vinculo de otro lugar</h2>';
 		session_unset();
 		session_destroy();
 	}
@@ -61,7 +60,8 @@
 		<link href="bootstrap/css/sticky-footer.css" rel="stylesheet">		
 		<script src="bootstrap/js/jquery.js"></script>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
-                <script src="js/prueba.js"></script>
+		<script type="text/javascript" src="js/notSubmit.js"></script>
+        <script src="js/prueba.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

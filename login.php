@@ -24,7 +24,7 @@
 			    			<button type="submit" id="btnIngresar" name="btnIngresar" class="btn btn-danger btn-block">Ingresar</button>
 			    			<br/>
 			    			<?php if (isset($mensaje)) {
-			    				echo '<label class="text-center">' . $mensaje .'</label>';
+			    				echo '<label class="text-center text-danger">' . $mensaje .'</label>';
 			    				
 							}?>
 			    			

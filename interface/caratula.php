@@ -101,6 +101,7 @@ if ($tipousu != "FU") {
 <script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 <script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="../js/anytime.5.1.2.js"></script>
+<script type="text/javascript" src="../js/notSubmit.js"></script>
 <style type="text/css">
 p {
 	font-size: 13px !important;
@@ -181,7 +182,7 @@ p {
 			var retorno = "";
 			$(function() {
                 $("#idcara").submit(function(event) {
-                    debugger;
+                    
                     event.preventDefault();
  					var $items = $(this).serialize();
                     $.ajax({
@@ -192,7 +193,7 @@ p {
                         //data: $(this).serialize(),
                         data: $items,
                         success: function(dato) {
-                            debugger;
+                            
                             if (dato.success){
                             	$("#idmsg").show();
                             }
@@ -203,8 +204,9 @@ p {
 								document.getElementById(retorno).focus();
 							}
                         },
-                        error: function(data, xhr, status){
-                            debugger;
+                        error: function(xhr, status, errorthrown){
+							
+                            console.log(xhr);
                         }
                     });
                 });
@@ -608,64 +610,59 @@ p {
 						$(this).parent().append('<span class="text-danger">Debe espeficicar alguna organización</span>');
 					}
 				});
-				
-				/** Validacion para capital nacional publico y privado */
-				$('#idnalpub, #idnalpr').on('change',function(){
-					var npu = parseInt($('#idnalpub').val());
-					var npr = parseInt($('#idnalpr').val());
-
-					if (npu > 0 && npr > 0 && (npu + npr) >= 100){
-						alert('La suma de el capital naciona publico y privado no puede sumar 100%');
-						$(this).val('');
-					}
-				});
-
-				/** validacion para la suma del capital nacional privado y extranjero publico*/
-				$('#idnalpr, #idexpub').on('change',function(){
-					var npr = parseInt($('#idnalpr').val());
-					var epu = parseInt($('#idexpub').val());
-
-					if ( npr > 0 && epu > 0 && (npr + epu) >= 100){
-						alert('La suma de el capital naciona privado y extranjero publico no puede sumar 100%');
-						$(this).val('0');
-					}
-				});
-
-				/** validacion para la suma del capital extranjero publico y privado*/
-				$('#idexpub, #idexpr').on('change',function(){
-					var epu = parseInt($('#idexpub').val());
-					var epr = parseInt($('#idexpr').val());
-
-					if ( epu > 0 && epr > 0 && (epu + epr) >= 100){
-						alert('La suma de el capital extranjer publico y privado no puede sumar 100%');
-						$(this).val('0');
-					}
-				});
 
 				/** Validacion para la composicion del capital social */
-				$('#idnalpub, #idnalpr, #idexpub, #idexpr').on('change', function(){
-					var msj = $('#msjCo');
+				$('#idnalpub, #idnalpr, #idexpub, #idexpr').on('blur', function(){
+					var $item = $(this);
+					var $msj = $('#msjCo');
+					var $msj1 = $('#msjCo1');
 					var npu = parseInt($('#idnalpub').val());
 					var npr = parseInt($('#idnalpr').val());
 					var epu = parseInt($('#idexpub').val());
 					var epr = parseInt($('#idexpr').val());
 					
-					$(this).parent().css('border',"");
-					$(this).parent().parent().removeClass('text-danger');
-					$(this).parent().parent().children('div span').remove()
-					msj.children('span').remove();
+					$item.parent().parent().removeClass('has-error');
+					$item.parent().parent().children('div span').remove()
+					$msj.children('span').remove();
+					$msj1.children('span').remove();
 
-					if ($(this).val() == '' ){
-						$(this).parent().parent().addClass('text-danger');
-						//$(this).parent().css('border',"1px solid" + color);
-						$(this).parent().parent().append('<span class="text-danger">El dato debe se numerico de 0-100 </span>');
-					}
-					
-					if ((npu + npr + epu + epr) != 100){
-						msj.append('<span class="text-danger">La suma de la composición social debe ser 100%</span>');
+					if ($item.val() == '' || parseInt($item.val()) > 100){
+						clError($item);
+					}else{
+
+	 					if (!isNaN(npu) && !isNaN(npr) && npu > 0 && npr > 0 && (npu + npr) >= 100){
+							$msj1.append('<span><p>La suma de el capital nacional publico y privado no puede sumar 100%</p></span>');
+							clError($item);
+							npu = parseInt($('#idnalpub').val());
+							npr = parseInt($('#idnalpr').val());
+						}
+
+						if (!isNaN(npr) && !isNaN(epu) && npr > 0 && epu > 0 && (npr + epu) >= 100){
+							$msj1.append('<span><p>La suma de el capital nacional privado y extranjero publico no puede sumar 100%</p></span>');
+							clError($item);
+							npr = parseInt($('#idnalpr').val());
+							epu = parseInt($('#idexpub').val());
+						}
+	
+						if (!isNaN(epu) && !isNaN(epr) && epu > 0 && epr > 0 && (epu + epr) >= 100){
+							$msj1.append('<span><p>La suma de el capital extranjer publico y privado no puede sumar 100%</p></span>');
+							clError($item);
+							epu = parseInt($('#idexpub').val());
+							epr = parseInt($('#idexpr').val());
+						}
+
+						if (!isNaN(npu) && !isNaN(npr) && !isNaN(epu) && !isNaN(epr) && (npu + npr + epu + epr) != 100){
+							$msj.append('<span"><p>La suma de la composición social debe ser 100%</p></span>');
+							clError($item);
+							//$(this).val('');
+						} else if (sumaCampos() > 100){
+							$msj.append('<span"><p>La suma de la composición social debe ser 100%</p></span>');
+							clError($item);
+							//$(this).val('');
+						}
 					}					
 				});
-
+				
 				/** Validacion para el campo estado y activacion de la casilla adicional */
 				$('#idestado').on('change', function(){
 					var v = parseInt($(this).val());
@@ -705,23 +702,23 @@ p {
 						v.css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Debe digitar un valor entre 0-999</span>');
 					}
-				});
-
-
-				
-				
-// 				$('#datetimepicker6').datetimepicker();
-// 		        $('#datetimepicker7').datetimepicker({
-// 		            useCurrent: false //Important! See issue #1075
-// 		        });
-// 		        $("#datetimepicker6").on("dp.change", function (e) {
-// 		            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-// 		        });
-// 		        $("#datetimepicker7").on("dp.change", function (e) {
-// 		            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-// 		        });
-				
+				});				
 			});
+
+			function clError($this){
+				$this.parent().parent().addClass('has-error');
+				$this.parent().parent().append('<span class="text-danger">El dato debe ser numerico de 0-100</span>');
+				$this.val('');
+			}
+
+			function sumaCampos(){
+				var suma = 0;
+				$('#cocaso input').each(function(){
+					var num = parseInt($(this).val());
+					if (!isNaN(num)){  suma += num; }
+				});
+				return suma;
+			}
 		</script>
 </head>
 <body>
@@ -1107,8 +1104,9 @@ p {
 					<div ><h6 > Nota: La sigiente información esta representada en porcentaje %, la sumatoria de todos los campos debe representar el 100% </h6></div>
 				</legend>
 				
-				<div class="container-fluid small text-center">
-					<div class="col-xs-12" id="msjCo"></div>
+				<div id="cocaso" class="container-fluid small text-center">
+					<div class="col-xs-12 text-danger" id="msjCo"></div>
+					<div class="col-xs-12 text-danger" id="msjCo1"></div>
 					<div class="col-xs-1"></div>
 					<div class="form-group col-xs-2">
 						<label class='control-label' for='idnalpub'>Nacional P&uacute;blico:</label>

@@ -60,11 +60,12 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 	$lineaMOD = 'UPDATE caratula SET ';
 	$actemp = 'INSERT INTO actiemp (nordemp, actividad) VALUES ';
-	
+	$conAct=FALSE;
 	for ($i=1; $i<count($nombres); $i++) {
 		if (in_array($nombres[$i], $textos)) {
 			$lineaMOD .= $nombres[$i] . '= "' . $valores[$i] . '", ';
 		}elseif (in_array($nombres[$i], $codigos)) { /** Validacion de codigos de actividad */
+			$conAct = TRUE;
 			$actemp .= "('" . $numero . "', '" . $nombres[$i] . "'),";
 		}
 	}
@@ -81,9 +82,13 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$jsondata['caratula_sql'] = $lineaMOD;
 	
 	$conn->query("delete from actiemp where nordemp = ".$numero."");
-	$activi = $conn->exec(rtrim($actemp,', '));
-	//$jsondata['actividades'] = $activi;
-	//$jsondata['actividades_sql'] = $actemp;
+	if ($conAct){
+		$activi = $conn->exec(rtrim($actemp,', '));
+		$jsondata['actividades'] = $activi;
+	}
+	
+	
+	$jsondata['actividades_sql'] = $actemp;
 	$jsondata['success'] = true;
 
 	header('Content-type: application/json; charset=utf-8');
