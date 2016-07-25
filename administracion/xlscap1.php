@@ -6,7 +6,7 @@
 	ini_set('default_charset', 'UTF-8');
 	 
 	if (!isset($_SESSION['tipou'])) {
-		echo "<h2 style='text-align: center; font-family: arial'>SESIÓN HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
+		echo "<h2 style='text-align: center; font-family: arial'>SESI&Oacute;N HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
 	}	
 	include '../conecta.php';

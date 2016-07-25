@@ -80,7 +80,7 @@
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 	
 	/** Consulta de periodos creados */
-	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoActivo");
+	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoActivo order by id desc");
 	/** Consulta de periodos creados */
 ?>
 <!DOCTYPE html>
@@ -154,13 +154,12 @@
 					    dataType: "json",
 					    data: {"newPer" : $(this).val()},
 					    success: function(dato) {
-						    debugger;
-							if (dato.success){
+						    if (dato.success){
 								location.reload();
 							}
 						},
 						error: function(xhr, status, erroThrown){
-							debugger;
+								
 						}
 					});
 				});
@@ -175,25 +174,52 @@
 			}
 			
 		?>
-		<br><br><br>
+		<br/>
+		<div class="container">
+			<div class="row col-xs-12 ">
+				<div class="col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">Sesiones</div>
+						<div class="panel-body">
+							Sesiones: <?php echo  print_r($_SESSION); ?>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<br />
 		<div class="container">
 			<div class="row col-xs-12">
-					<div class="input-group">
+					<div class="form-group col-xs-3">
 						<label for="">Seleccione el periodo</label>
 						<select class='form-control' id="periodo" name="periodo">
 							<option value="">Periodo</option>
 							<?php foreach ($qPerac as $per){?>
 								<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
 							<?php } ?>
-							<!--option value="2015" <?php //echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >2015</option>
-							<option value="2016" <?php //echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >2016</option>
-							<option value="2017" <?php //echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >2017</option-->
 						</select>
-						
 					</div>
-					<h4><?php echo $_SESSION['nomPeri']; ?> - Periodo activo <?php echo $_SESSION['nomPeriAct']; ?></h4>
+					<div class="col-xs-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">Periodo Activo</div>
+							<div class="panel-body">
+								<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-1">&nbsp;</div>
+					<div class="col-xs-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">Periodo actual</div>
+							<div class="panel-body">
+								<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
+							</div>
+						</div>
+					</div>
 				</div>
 		</div>
+		<br/>
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">
 			<div class="container">
 				<div class="row col-sm-3">

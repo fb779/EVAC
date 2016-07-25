@@ -278,7 +278,7 @@
 				});
 
 				/** Validacion de los checkbox con la carga de la pagina */
-				var $chk = $('#medPub [type="checkbox"]');
+				var $chk = $('#medPub .chkbx [type="checkbox"]');
 				if (!valChackbox()){
 					$chk.prop('required',true);
 					//$chk.parent().parent().parent().parent().addClass('has-error');
@@ -286,17 +286,16 @@
 				}else{$chk.prop('required',false);}
 
 				/** Validacion de los checkbox con el cambio de alguno de ellos */
-				$('#medPub').on('change', '[type="checkbox"]', function(){
-					
+				$('#medPub').on('change', '.chkbx', function(){
 					$('#msCheck').children('label').remove();
 					var item = $(this);
-					if(item.is(':checked')){
+					if(item.prop(':checked')){
 						item.val(1);
 						if(item.attr('name') ==  'i1r3c8'){
 							$('[name="i1r3c9"]').prop('disabled', false);
 						}
 					}else{ 
-						item.val(0);
+						item.val('');
 						if(item.attr('name') ==  'i1r3c8'){
 							$('[name="i1r3c9"]').val('');
 							$('[name="i1r3c9"]').parent().parent().removeClass('text-danger');
@@ -312,7 +311,12 @@
 						$chk.prop('required',true);
 						$chk.parent().parent().parent().parent().addClass('has-error');
 						$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
-					}else{$chk.parent().parent().parent().parent().removeClass('has-error'); $chk.prop('required',false);}
+					}else{
+						$chk.parent().parent().parent().parent().removeClass('has-error');
+						$chk.parent().parent().parent().removeClass('has-error'); 
+						$chk.prop('required',false);
+					}
+					
 				});
 
 				$('#idi1r3c9').on('blur', function(){
@@ -399,6 +403,7 @@
 			    	$('#disp' + x).append(item);
 			    	
 			    	if (lista.length > 0 && conte.length > 0){
+				    	$('#btnGuardar').addClass('disabled');
 			    		$('#removeDisp').prop('disabled', false); 
 			    		lista.removeClass('hidden');
 			    	}
@@ -463,6 +468,7 @@
 	    					
 	    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){ // validacion para activar la seleccion de vacantes no cubiertas
 	    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+	    		    			$('[name="'+vacNoCubCa+'"]').prop('required', true);
 	    		    		}else{
 	    		    			$('[name="'+vacNoCubCa+'"]').val('');
 	    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
@@ -514,12 +520,14 @@
 
 		    					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
 		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('required', true);
+		    		    			
 		    		    		}else{
 		    		    			$('[name="'+vacNoCubCa+'"]').val('');
 		    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
 		    		    			$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
 		    		    			$('[name="'+vacNoCubCa+'"]').css('border',"");
-		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+		    		    			$('[name="'+vacNoCubCa+'"]').prop('disabled', true);		    		    			
 		    		    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 					    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
 					    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
@@ -561,9 +569,6 @@
 							$(this).css('border',"1px solid" + color);
 							$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 				    	}
-			    		
-	    				
-	    				
 	    			}else if( $(this).attr('name') === vacHom ){ /** interaccion con el total de vacantes cubiertas por disponibilidad */
 	    				var vacHo = parseInt($(this).val());
 		    			if ( !isNaN(vacHo) ){
@@ -590,6 +595,7 @@
 			    			$('[name="'+cual+'"]').prop('disabled', false);
 			    			$('[name="'+cual+'"]').prop('required', true);
 			    		} else {
+			    			$('[name="'+cual+'"]').val('');
 			    			$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 			    			$('[name="'+cual+'"]').parent().parent().children('span').remove();
 			    			$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
@@ -622,6 +628,17 @@
 
 					validar_totales();
 			    });
+
+
+			    $('#saveDisp').on('click', function(){
+					debugger;
+					var $datos = $('#listDisForm');
+
+					var $campos = $(':input,select', $datos)
+					
+					if ($datos.children().length > 0)
+						console.log($campos.serializeArray());
+				});
 			}); //$(document).ready()
 
 			
@@ -654,8 +671,12 @@
 			function valChackbox(){
 				/** Metodo para verificar si almeno uno de los checkbox ha sido seleccionado */
 				var ct = 0;
-				$('#medPub [type="checkbox"]').each(function(){ if($(this).prop('checked')){  ct ++; } });
-				return (ct>0)?true:false;
+				$('#medPub [type="checkbox"]').each(function(){ 
+					if($(this).prop('checked')){  
+						ct ++; 
+					}
+				});
+				return (ct>0) ? true:false;
 			}
 		</script>
 	</head>
@@ -673,7 +694,7 @@
 */			
 		?>
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
- 			<?php echo $numero . "-" . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
+ 			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
  				<?php //echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
  			<!-- Informacion de prueba BORRAR  -->
@@ -732,6 +753,10 @@
 						<div id="contenido" class="col-xs-12 col-sm-12">
 							<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button>
+							
+							<button id="saveDisp" type="button" class="btn btn-default" aria-label="Left Align">
+								<span class="glyphicon glyphicon-save text-primary" aria-hidden="true"></span> Guardado parcial
 							</button>
 							
 							<button id="removeDisp" type="button" class="btn btn-danger" aria-label="Left Align">
@@ -987,7 +1012,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c1" name="i1r3c1" value="<?php echo $row['i1r3c1']?>" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c1" class="chkbx" name="i1r3c1" value="<?php echo $row['i1r3c1']?>" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
 								    Medios de comunicación (prensa,radio,tv)
 								  </label>
 								</div>
@@ -996,7 +1021,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c2" name="i1r3c2" value="<?php echo $row['i1r3c2']?>" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c2" class="chkbx" name="i1r3c2" value="<?php echo $row['i1r3c2']?>" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
 								    Servicio Público de Empleo
 								  </label>
 								</div>
@@ -1005,7 +1030,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c3" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
 								    Portales laborales WEB
 								  </label>
 								</div>
@@ -1014,7 +1039,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c4" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c4" class="chkbx" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
 								    Agencias / bolsas de empleo / headhunters / firmas cazatalentos
 								  </label>
 								</div>
@@ -1025,7 +1050,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox" >
 								  <label>
-								    <input type="checkbox" id="idi1r3c5" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c5" class="chkbx" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
 								    Universidades  e  instituciones educativas (oficinas de egresados)
 								  </label>
 								</div>
@@ -1034,7 +1059,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c6" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c6" class="chkbx" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
 								     Contactos no  formales (colegas, amigos, empleados)
 								  </label>
 								</div>
@@ -1043,7 +1068,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c7" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c7" class="chkbx" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
 								    Redes sociales o aplicaciones
 								  </label>
 								</div>
@@ -1052,7 +1077,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c8" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c8" class="chkbx" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
 								    Otra no mencionada anteriormente
 								  </label>
 								</div>

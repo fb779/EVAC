@@ -399,7 +399,7 @@ p {
 				var contenedor	= $("#actividades"); //ID del contenedor
 			    var actividad	= $("#listActividad"); // ID div.body modal 
 
-			    contenedor.css('z-index', -100);
+			    contenedor.css('z-index', 0);
 			  	//interaccion para agregar el div de la acividad del modal a la pagina
 			    $(actividad).on("click", ".addAct", function(e) {
 			    	$(this).children().removeClass("glyphicon-plus");
@@ -740,25 +740,17 @@ p {
 		<div class='container'>
 			<?php if ($tipousu == "FU") { ?>
 			<div class='row'>
-			<span class='pull-right'> <select class='form-control input-sm'
-				onChange='window.location.href=this.value;'>
+			<span class='pull-right'> <select class='form-control input-sm' onChange='window.location.href=this.value;'>
 					<option value=''>Descarga Documentos</option>
-					<option value='../documentos/FormularioEDITSVBorrador.pdf'>Formulario
-						Borrador</option>
-					<option
-						value='../documentos/MANUALDEDILIGENCIAMIENTO_EDIT_SERVICIOS_2016.pdf'>Maual
-						de Diligenciamiento</option>
-					<option
-						value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario
-						de T&eacute;rminos</option>
+					<option value='../documentos/FormularioEDITSVBorrador.pdf'>Formulario Borrador</option>
+					<option value='../documentos/MANUALDEDILIGENCIAMIENTO_EDIT_SERVICIOS_2016.pdf'>Maual de Diligenciamiento</option>
+					<option value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario de T&eacute;rminos</option>
 			</select>
 			</span>
 		</div>
 			<?php } ?>
-			<form class='form-horizontal' role='form' data-toggle='validator'
-			name="formcara" id="idcara">
-			<input type="hidden" name="numero" id="numero"
-				value="<?php echo $numero ?>" />
+			<form class='form-horizontal' role='form' data-toggle='validator' name="formcara" id="idcara">
+			<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
 					<h4 style='font-family: arial'>Car&aacute;tula &Uacute;nica - Numero de orden: <?php echo $row['nordemp'] . $txtEstado ?></h4>

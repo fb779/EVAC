@@ -2,7 +2,7 @@
 	$estadoMenu = "";
 	$color1=""; $color2=""; $color3=""; $color4=""; $color5=""; $color6="";
 	$icono1=""; $icono2=""; $icono3=""; $icono4=""; $icono5=""; $icono6="";
-	$muestrapys = false;
+// 	$muestrapys = false;
 	if ($rowCtl['m1']==2) {
 		$color1 = "OK";
 		$icono1 = "SI";
@@ -30,12 +30,20 @@
 	$txtColor = "style='color: green'";
 	$icono = "<span class='glyphicon glyphicon-ok' style='color: green'></span>";
 	
-	$qCtl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig");
-	foreach($qCtl AS $lCtl) {
-		$estado = $lCtl['estado'];
-	}
-	if ($estado>4) {
-		$muestrapys = true;
+// 	$qCtl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig");
+// 	foreach($qCtl AS $lCtl) {
+// 		$estado = $lCtl['estado'];
+// 	}
+
+// 	if ($estado>4) {
+// 		$muestrapys = true;
+// 	}
+
+	$qCtl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig")->fetch(PDO::FETCH_ASSOC);
+	if (count($qCtl) > 0){
+		$estado = $qCtl['estado'];
+	}else{
+		$estado = 0;
 	}
 ?>
 <nav class="navbar navbar-default navbar-fixed-top small">
@@ -46,7 +54,7 @@
     				echo "<span class='navbar-brand small' style='font-size: 12px'>EVAC - DISPONIBILIDAD LABORAL</span>";
     			} 
     			else {
-    				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>EDIT - SERVICIOS</a></span>";
+    				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>EVAC - DISPONIBILIDAD LABORAL</a></span>";
     			}
     		?>
         </div>
@@ -61,7 +69,8 @@
             	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li-->
 				<?php
-					if ($muestrapys) {
+// 					if ($muestrapys) {
+					if($estado>4){
 						echo "<li><a href='../administracion/registro.php?numord=" . $numero . "'>PAZ Y SALVO</a></li>";
 					}
 				?>

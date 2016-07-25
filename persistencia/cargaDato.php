@@ -16,9 +16,6 @@
 			case "capitulo_i":
 				$llave = "C1_nordemp";
 				break;
-			case "capitulo_i_other":
-				$llave = "C1_nordemp";
-				break;
 // 			case "capitulo_ii":
 // 				$llave = "C2_nordemp";
 // 				break;
