@@ -55,7 +55,7 @@
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/cargaDato.js"></script>
 	 	<!--script type="text/javascript" src="../js/valida1.js"></script-->
-		<script type="text/javascript" src="../js/validaForm1.js"></script>
+		<!--script type="text/javascript" src="../js/validaForm1.js"></script-->
 		<script type="text/javascript" src="../js/validator.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
@@ -287,9 +287,10 @@
 
 				/** Validacion de los checkbox con el cambio de alguno de ellos */
 				$('#medPub').on('change', '.chkbx', function(){
+					
 					$('#msCheck').children('label').remove();
 					var item = $(this);
-					if(item.prop(':checked')){
+					if(item.prop('checked')){
 						item.val(1);
 						if(item.attr('name') ==  'i1r3c8'){
 							$('[name="i1r3c9"]').prop('disabled', false);
@@ -305,16 +306,17 @@
 							$('[name="i1r3c9"]').prop('disabled', true);
 						} 
 					}
-					
-					var $chk = $('#medPub [type="checkbox"]');
+// 					debugger;
+					var $chk = $('[type="checkbox"]', '#medPub ');
 					if (!valChackbox()){	
 						$chk.prop('required',true);
 						$chk.parent().parent().parent().parent().addClass('has-error');
 						$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
 					}else{
+						$chk.prop('required',false);
 						$chk.parent().parent().parent().parent().removeClass('has-error');
 						$chk.parent().parent().parent().removeClass('has-error'); 
-						$chk.prop('required',false);
+						
 					}
 					
 				});
@@ -420,6 +422,7 @@
 			    	
 			    	if (lista.children().length == 0 && conte.children().length == 0){
 			    		//$('#removeDisp').addClass('disabled');
+			    		$('#btnGuardar').removeClass('disabled');
 			    		$('#removeDisp').prop('disabled', true);
 			    		lista.addClass('hidden');
 			    	}
@@ -630,14 +633,44 @@
 			    });
 
 
-			    $('#saveDisp').on('click', function(){
+			    $('#saveDisp').on('click', function(e){
+			    	e.preventDefault();
 					debugger;
 					var $datos = $('#listDisForm');
+					var $dtAct = $('#listDisForm').children('.active')
 
 					var $campos = $(':input,select', $datos)
 					
-					if ($datos.children().length > 0)
-						console.log($campos.serializeArray());
+					var $cmps = [];  
+					$datos.children().each(function(){
+						var $cm = $(':input,select',$(this));
+						$cmps.push( $cm.serializeArray() );
+					})
+					
+					
+// 					$datos.children().each(function(){ console.log($(this).attr('id')) })
+// 					var con = 0; $campos.each(function(){   if ( $(this).val() == ''){ con ++; } });   console.log( (con>0)?true:false );
+					
+					if ($datos.children().length > 0){
+						$.ajax({
+						    url: "../persistencia/parcial.php",
+						    type: "POST",
+						    dataType: "json",
+// 						    data: {'C1': $('#numero').val(), 'vig':$('#vig').val(), 'panl': $datos.children().length,'dtSe': JSON.stringify($campos.serializeArray())},
+						    data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
+						    success: function(dato) {
+							    debugger;
+							    if (dato.success){
+									location.reload();
+								}
+							},
+							error: function(xhr, status, erroThrown){
+								debugger;
+									
+							}
+						});
+					}
+// 					console.log($campos.serializeArray());
 				});
 			}); //$(document).ready()
 
@@ -696,7 +729,7 @@
 		<div class="well well-sm" style="font-size: 12px; padding-top: 60px; z-index: 1;" id="wc2">
  			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?> 
  			<!-- Informacion de prueba BORRAR  --> 			
- 				<?php //echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
+ 			<?php //echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
  		
@@ -1338,6 +1371,6 @@
 			</div>
 		</div>
 		<!-- Contenedor de la caracterizacion -->
-		
+		<input type="hidden" name="C1_vig" id="vig" value="<?php echo $vig ?>" />
  	</body>
  </html> 

@@ -6,7 +6,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		session_start();
 	}
 	include '../conecta.php';
-	$nombres = Array(); $Valores = Array();
+	$nombres = Array(); $valores = Array();
 	$textos = array("tipodoc","numdoc","dv","ciiu3","registmat", "camara", "numero", "depto", "mpio", "depnotific", "munnotific", 
 					"capsocinpu", "capsocinpr", "capsociepu", "capsociepr", "estagrop", "estminero", "estind", "estservpub",
 					"estconst", "estcom", "estreshot", "esttrans", "estcomunic", "estfinanc", "estservcom", "uniaux", "teler",

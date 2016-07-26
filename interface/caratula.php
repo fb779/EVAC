@@ -94,7 +94,7 @@ if ($tipousu != "FU") {
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="../js/cargaDato.js"></script>
-<script type="text/javascript" src="../js/validaCara.js"></script>
+<!--script type="text/javascript" src="../js/validaCara.js"></script-->
 <script type="text/javascript" src="../js/validator.js"></script>
 <script type="text/javascript" src="../js/html5shiv.js"></script>
 <script type="text/javascript" src="../js/respond.js"></script>

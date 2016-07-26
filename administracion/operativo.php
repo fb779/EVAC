@@ -104,6 +104,7 @@
 		<script type="text/javascript" src="../charts/amcharts/amcharts.js"></script>
 		<script type="text/javascript" src="../charts/amcharts/serial.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
+		<script type="text/javascript" src="../js/periodo.js"></script>
 		<script type="text/javascript">
 			function reloadOpe(regsel)
 			{
@@ -144,26 +145,7 @@
 				$('[data-toggle="tooltip"]').tooltip();   
 			});
 
-			$(document).ready(function(){
-				$('#periodo').on('change', function(e){
-					e.preventDefault();
-				
-					$.ajax({ 
-					    url: "cambioperiodo.php",
-					    type: "POST",
-					    dataType: "json",
-					    data: {"newPer" : $(this).val()},
-					    success: function(dato) {
-						    if (dato.success){
-								location.reload();
-							}
-						},
-						error: function(xhr, status, erroThrown){
-								
-						}
-					});
-				});
-			});
+			
 		</script>
 	</head>
 	<body>
