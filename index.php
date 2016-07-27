@@ -5,13 +5,12 @@
 	include 'conecta.php';
 	ini_set('default_charset', 'UTF-8');
 	if (isset($_POST['btnIngresar'])) {
-		$qVigencia = $conn->query("SELECT vigencia FROM control LIMIT 1");
-		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
-		//$perAct = $qPeriodoac['id'];
+// 		$qVigencia = $conn->query("SELECT vigencia FROM control LIMIT 1");
+// 		foreach($qVigencia AS $lVigencia) {
+// 			$vigencia = $lVigencia['vigencia'];
+// 		}
 		
-		foreach($qVigencia AS $lVigencia) {
-			$vigencia = $lVigencia['vigencia'];
-		}
+		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
 		
 		$qUsuario = $conn->prepare('SELECT * FROM usuarios WHERE ident LIKE BINARY :idUsu AND clave LIKE BINARY :pwdUsu');
 		$qUsuario->execute(array('idUsu' => $_POST['inputLogin'], 'pwdUsu' => $_POST['inputPassword']));

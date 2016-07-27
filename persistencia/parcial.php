@@ -8,32 +8,25 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	include '../conecta.php';
 	$vig = $_SESSION['vigencia'];
 	
-	try {
-		//
+	if (isset($_POST['C1']) && isset($_POST['dtSe'])){
 		$emp = $_POST['C1'];
-// 		$data = json_decode(stripslashes($_POST['dtSe']));
+		// 		$data = json_decode(stripslashes($_POST['dtSe']));
 		$data = json_decode($_POST['dtSe']);
 		$sv = count($data);
 		$tvab = 0;
 		$tvcb = 0;
 		$tvnc = 0;
-
+		
 		$sqlInsert = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14) values ';
 		$tem = '';
-		//print_r($data);
 		foreach ($data as $key=>$dt){
-			//$tem .= "('" . $emp . "','" . $vig . "',";
 			$tem1 = "('" . $emp . "','" . $vig . "',";
 			for ($j=0; $j<14; $j++){
 				//$nc = 'i1r2c' . ($key+1). $j;
 				if (isset($dt[$j]) && $dt[$j]->value != ''){
 					$tem1 .= "'" . $dt[$j]->value . "',";
-// 					$nombres[] = $dt[$j]->name;
-// 					$valores[] = $dt[$j]->value;
 				}else{
 					$tem1 .= "NULL,";
-// 					$nombres[] = $nc;
-// 					$valores[] = 'NULL';
 					if ($j < 12){
 						$sv--;
 						$j = 14;
@@ -41,7 +34,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					}
 				}
 			}
-			
+				
 			if ($tem1 != ''){
 				$tvab += $dt[0]->value;
 				$tvcb += $dt[8]->value;
@@ -61,59 +54,14 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$jsondata['success'] = true;
 		}else{
 			$jsondata['message'] = 'No hay datos para guardar';
-			$jsondata['success'] = true;
+			$jsondata['success'] = false;
 		}
-		
-// 		try {
-// 			$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$emp."' and vigencia = '".$vig."' ;");
-// 			$actcapi = $conn->exec($lineaINS);
-// 			$jsondata['success'] = true;
-// 		} catch (Exception $e) {
-// 			$jsondata['sqlError'] = $e->getMessage();
-// 			$jsondata['success'] = false;
-// 		}
-		
-		
-// 		$jsondata['emp'] = $emp;
-// 		$jsondata['vig'] = $vig;
-// 		$jsondata['numpanel'] = $panl;
-// 		$jsondata['campos'] = (isset($data))?implode(' - ', $data):'No llegaron nombres';
-// 		$jsondata['nombres'] = (isset($nombres))?implode(' - ', $nombres):'No llegaron nombres';
-// 		$jsondata['valores'] = (isset($valores))?implode(' - ', $valores):'No llegaron valores';
-// 		$jsondata['success'] = true;
-	} catch (Exception $e) {
+	}else{
+		$jsondata['message'] = 'Error en los datos enviados No llegaron';
 		$jsondata['error'] = $e->getMessage();
 		$jsondata['success'] = false;
 	}
 	
-	
-	//$jsondata['dtextra'] = 'si es ajax';
-// 	try {
-// 		if( isset($_POST['newPer']) ) {
-		
-// 			$newPer = $_POST['newPer'];
-		
-// 			if (session_id() == "") {
-// 				session_start();
-// 			}
-// 			include '../conecta.php';
-// 			$qPeriodoac = $conn->query("SELECT nomperiodo FROM periodoactivo where id = ". $newPer . " ;")->fetch(PDO::FETCH_ASSOC);
-			
-// 			$_SESSION['vigencia'] = $newPer;
-// 			$_SESSION['nomPeri'] = $qPeriodoac['nomperiodo'];
-		
-// 			$jsondata['success'] = true;
-// 			$jsondata['message'] = 'Cambio de periodo correcto.';
-		
-// 		}else{
-// 			$jsondata['success'] = false;
-// 			$jsondata['message'] = 'Error al cambiar el periodo.';
-// 		}
-// 	} catch (Exception $e) {
-// 		$jsondata['errorMessage'] = $e->getMessage();
-// 	}
-
-	//Aunque el content-type no sea un problema en la mayoría de casos, es recomendable especificarlo
 	header('Content-type: application/json; charset=utf-8');
 	echo json_encode($jsondata);
 	exit();

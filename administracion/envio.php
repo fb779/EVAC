@@ -10,16 +10,17 @@
 	$envioOK = false; $reenv = false;
 	$anterior = $vig-1;
 	$numero = $_GET['numord']; $nombre = $_GET['nombre'];
-	$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
+	//$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 	
-	foreach($qControl AS $rowCtl) {
-		$m1 = $rowCtl['m1'];
-// 		$m2 = $rowCtl['m2'];
-// 		$m3 = $rowCtl['m3'];
-// 		$m4 = $rowCtl['m4'];
-// 		$m5 = $rowCtl['m5'];
-// 		$m6 = $rowCtl['m6'];
-	}
+	
+// 	foreach($qControl AS $rowCtl) {
+// 		$m1 = $rowCtl['m1'];
+// // 		$m2 = $rowCtl['m2'];
+// // 		$m3 = $rowCtl['m3'];
+// // 		$m4 = $rowCtl['m4'];
+// // 		$m5 = $rowCtl['m5'];
+// // 		$m6 = $rowCtl['m6'];
+// 	}
 	
 // 	if ($region == 99) {
 // 		$envioOK = true;
@@ -35,7 +36,9 @@
 // 			}
 // 		}
 // 	}
-
+	$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig")->fetch(PDO::FETCH_ASSOC);
+	$m1 = $qControl['m1'];
+	$est = $qControl['estado'];
 	if ($region == 99) {
 		$envioOK = true;
 	} else if ($tipousu == "FU" AND $m1 == 2) { //if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
@@ -145,7 +148,7 @@
 	<body>
 		<div class="well well-sm text-center" style="font-weight: bold; padding-top: 60px">
 			<div class="col-xs-12">
-				<?php print_r($rowCtl);?>
+				<?php //print_r($rowCtl);?>
 				</br>
 				<?php print_r($_SESSION);?>
 			</div>
@@ -160,7 +163,7 @@
 						if ($region != 99) {
 							if ($envioOK) {
 								if (!$reenv) {
-									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACIÓN";
+									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENV&Iacute;O DE INFORMACI&Oacute;N";
 									echo "<div class='form-group' style='padding-top: 60px'>";
 									echo "<button type='submit' class='btn btn-primary btn-lg' id='enviof'>ENVIAR FORMULARIO</button>";
 									echo "&nbsp;";
@@ -176,7 +179,7 @@
 									echo "</div>";
 								}
 								else {
-									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENVIO DE INFORMACI�N";
+									echo "FORMULARIO FINALIZADO PUEDE REALIZAR EL ENV&Iacute;O DE INFORMACI&Oacute;N";
 									echo "<div class='form-group' style='padding-top: 60px'>";
 									echo "<button type='button' id='reenvio' class='btn btn-primary btn-lg'>REENVIAR FORMULARIO</button>";
 									echo "&nbsp;";
@@ -186,7 +189,7 @@
 								}
 							}
 							else {
-								echo "EXISTEN CAP�TULOS SIN TERMINAR DEBE TERMINARLOS PARA REALIZAR EL ENV�O DE INFORMACI�N";
+								echo "EXISTEN CAP&Iacute;TULOS SIN TERMINAR DEBE TERMINARLOS PARA REALIZAR EL ENV&Iacute;O DE INFORMACI&Oacute;N";
 								echo "<div class='form-group' style='padding-top: 60px'>";
 								echo "<a href='../interface/capitulo1.php?numord=$numero&nombre=$nombre' class='btn btn-primary btn-lg'>VOLVER AL FORMULARIO</a>";
 								echo "</div>";

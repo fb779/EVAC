@@ -35,12 +35,12 @@
 			if ($tipousu != "FU") {
 				$lineaCTL = $conn->prepare("UPDATE control SET estado = 5, acceso = 'DC', fecacept = curdate() WHERE nordemp = $numero AND vigencia = $vig");
 				$lineaCTL->execute();
-				echo "FORMULARIO ENVIADO";
+				echo "FORMULARIO ENVIADO CRITICO";
 			}
 			else {
 				$lineaCTL = $conn->prepare("UPDATE control SET estado = 4, acceso = 'CR', novedad = $novactu, fecrev = curdate() WHERE nordemp = $numero AND vigencia = $vig");
 				$lineaCTL->execute();
-				echo "FORMULARIO ENVIADO";
+				echo "FORMULARIO ENVIADO FUENTE";
 			}
 		}
 	}
@@ -124,6 +124,12 @@
 			$insObs = $conn->prepare("INSERT INTO observaciones (vigencia,nordemp,usuario,capitulo,observacion,fecha) VALUES
 				($vig,$numero,'$idusuario',$capi,'$observa',curdate())");
 			$insObs->execute();
+			
+			$jsondata['message'] = 'Guardado de la observacion';
+			$jsondata['success'] = true;
+			header('Content-type: application/json; charset=utf-8');
+			echo json_encode($jsondata);
+			
 		}
 	}
 ?>
