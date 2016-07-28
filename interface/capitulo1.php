@@ -141,7 +141,22 @@
 								});
 								});
 								if ($("#idTipo").val() == "CR") {
+									
 									$("#idObs1").modal('show');
+									$("#idObs1").on('shown.bs.modal', function () {
+										$('#crObser').on('click', function(){
+											debugger;
+											$.ajax({
+												url: "../persistencia/grabactl.php",
+												type: "POST",
+												data: {obser: "obs", numero: $("#numero").val(), capit: "1", observa: $("#obscrit").val()},
+												success: function(dato) {
+													debugger;
+												}
+											});
+											
+										});
+							    	});
 								}
 							}
 							else {
@@ -167,17 +182,19 @@
 	    		$('[data-toggle="tooltip"]').tooltip();   
 			});
 			
-			$(window).on('hidden.bs.modal', function() {
-				debugger;
-				$.ajax({
-					url: "../persistencia/grabactl.php",
-					type: "POST",
-					data: {obser: "obs", numero: $("#numero").val(), capit: "1", observa: $("#obscrit").val()},
-					success: function(dato) {
-						debugger;
-					}
-				});
-			});
+// 			$(window).on('hidden.bs.modal', function() {
+// 				debugger;
+// 				$.ajax({
+// 					url: "../persistencia/grabactl.php",
+// 					type: "POST",
+// 					data: {obser: "obs", numero: $("#numero").val(), capit: "1", observa: $("#obscrit").val()},
+// 					success: function(dato) {
+// 						debugger;
+// 					}
+// 				});
+// 			});
+
+			
 			
 			$(function() {
 				$("#wc1").affix({
@@ -810,19 +827,21 @@
 						<div class="col-xs-12 col-sm-12">
 							<label for="">Este módulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus características.</label>
 						</div>
-						<div id="contenido" class="col-xs-12 col-sm-12">
-							<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
-								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-							</button>
-							
-							<button id="saveDisp" type="button" class="btn btn-default" aria-label="Left Align">
-								<span class="glyphicon glyphicon-save text-primary" aria-hidden="true"></span> Guardado parcial
-							</button>
-							
-							<button id="removeDisp" type="button" class="btn btn-danger" aria-label="Left Align">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							</button>
-						</div>
+						<?php if ($grabaOK) { ?>
+							<div id="contenido" class="col-xs-12 col-sm-12">
+								<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+								
+								<button id="saveDisp" type="button" class="btn btn-default" aria-label="Left Align">
+									<span class="glyphicon glyphicon-save text-primary" aria-hidden="true"></span> Guardado parcial
+								</button>
+								
+								<button id="removeDisp" type="button" class="btn btn-danger" aria-label="Left Align">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+								</button>
+							</div>
+						<?php } ?>
 						<div id="totales" class="col-xs-12 col-sm-12">
 							<p> 
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">

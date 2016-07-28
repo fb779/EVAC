@@ -740,15 +740,16 @@ p {
 		<div class='container'>
 			<?php if ($tipousu == "FU") { ?>
 			<div class='row'>
-			<span class='pull-right'> <select class='form-control input-sm' onChange='window.location.href=this.value;'>
+				<span class='pull-right'> <select class='form-control input-sm' onChange='window.location.href=this.value;'>
 					<option value=''>Descarga Documentos</option>
 					<option value='../documentos/FormularioEDITSVBorrador.pdf'>Formulario Borrador</option>
 					<option value='../documentos/MANUALDEDILIGENCIAMIENTO_EDIT_SERVICIOS_2016.pdf'>Maual de Diligenciamiento</option>
 					<option value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario de T&eacute;rminos</option>
-			</select>
-			</span>
-		</div>
+				</select>
+				</span>
+			</div>
 			<?php } ?>
+			
 			<form class='form-horizontal' role='form' data-toggle='validator' name="formcara" id="idcara">
 			<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
 			<fieldset style='border-style: solid; border-width: 1px'>
@@ -761,13 +762,13 @@ p {
 							<label for="">Identificación</label>
 							<div class="form-group form-group-sm col">
 								<label class='radio-inline'>
-									<input type='radio' id='rnit' name='tipodoc' value='1' <?php echo ($row['tipodoc'] == 1) ? 'checked' : ''?> />Nit.
+									<input type='radio' id='rnit' name='tipodoc' value='1' <?php echo ($row['tipodoc'] == 1 || ($row['tipodoc']!=2 && $row['tipodoc']!=3)) ? 'checked' : ''?> required />Nit.
 								</label>
 								<label class='radio-inline'>
-									<input type='radio' id='rcc' name='tipodoc' value='2' <?php echo ($row['tipodoc'] == 2) ? 'checked' : ''?> />C.C.
+									<input type='radio' id='rcc' name='tipodoc' value='2' <?php echo ($row['tipodoc'] == 2) ? 'checked' : ''?> required/>C.C.
 								</label>
 								<label class='radio-inline'>
-									<input type='radio' id='rce' name='tipodoc' value='3' <?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> />C.E.
+									<input type='radio' id='rce' name='tipodoc' value='3' <?php echo ($row['tipodoc'] == 3) ? 'checked' : ''?> required/>C.E.
 								</label>
 							</div>
 						</div>
@@ -789,10 +790,10 @@ p {
 							<label for="">Inscrip/Matricula/Renovaci&oacute;n</label>
 							<div class="from-group form-group-sm">
 								<label class='radio-inline'>
-									<input type='radio' id='mat1' name='registmat' value='1' <?php echo ($row['registmat'] == 1) ? 'checked' : ''?> disabled />Inscrip./Matr.
+									<input type='radio' id='mat1' name='registmat' value='1' <?php echo ($row['registmat'] == 1 || $row['registmat'] != 2) ? 'checked' : ''?> required />Inscrip./Matr.
 								</label>
 								<label class='radio-inline'>
-									<input type='radio' id='mat2' name='registmat' value='2' <?php echo ($row['registmat'] == 2) ? 'checked' : ''?> disabled/>Renovaci&oacute;n
+									<input type='radio' id='mat2' name='registmat' value='2' <?php echo ($row['registmat'] == 2) ? 'checked' : ''?> required/>Renovaci&oacute;n
 								</label>
 							</div>
 						</div>
@@ -802,13 +803,13 @@ p {
 						<div class="col-xs-12 col-sm-3">
 							<label for="">C&aacute;mara</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm' id="cam" name="camara" value="<?php echo $row['camara'] ?>" readonly />
+								<input type="text" class='form-control input-sm solo-numero' id="cam" name="camara" value="<?php echo $row['camara'] ?>" maxlength="3" />
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-3">
 							<label for="">Inscripci&oacute;n/Matricula</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm' id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" readonly />
+								<input type="text" class='form-control input-sm solo-numero' id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" maxlength="11" />
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-3">
@@ -828,12 +829,14 @@ p {
 								<!-- input type="text" class='form-control input-sm' style="width: 100px" id="ciiu" name="ciiu3" value="<?php echo $row['ciiu3']; ?>" /-->
 							</div>
 						</div>
+						<?php if ($tipousu != "FU") { ?>
 						<div class="col-xs-12 col-sm-3">
 							<label for="">Novedad</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm' id="novedad" name="novedad" maxlength='2' value="<?php echo $row['novedad']; ?>" readonly />
+								<input type="text" class='form-control input-sm' id="novedad" name="novedad" maxlength='2' value="<?php echo $rowCtl['novedad']; ?>" readonly />
 							</div>
 						</div>
+						<?php } ?>
 						<div class="col-xs-12">&nbsp;</div>					
 					</div>
 				</div>
@@ -1345,43 +1348,41 @@ p {
 					</div>
 				</div>
 			</fieldset>
-				<?php
-				if ($tipousu == "CO" and $rowCtl ['estado'] == 0) {
-					echo "<fieldset style='border-style: solid; border-width: 1px'>";
-					echo "<legend><h4 style='font-family: arial'>Fecha de Distribuci&oacuten</h4></legend>";
-					echo "<div class='form-group form-group-sm'>";
-					echo "<div class='col-sm-2 col-sm-offset-2'>";
-					echo "<div class='input-group input-append date' id='idFechaD'>";
-					echo "<input type='text' class='form-control col-xs-1' name='fechadist' id='idfechad' value=" . date ( 'Y-m-d' ) . " />";
-					echo "<span class='input-group-addon add-on'>";
-					echo "<button type='button' id='btnFecha' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-calendar'></button></span></span>";
-					echo "</div>";
-					echo "</div>";
-					echo "<button type='button' id='asigFecha' class='btn btn-default btn-sm'>Asignar Fecha</button>";
-					echo "</div>";
-					echo "</fieldset>";
-				}
-				?>
-				<div class='form-group form-group-sm'>
+			<?php if ($tipousu == "CO" and $rowCtl ['estado'] == 0) { ?>
+				<fieldset style='border-style: solid; border-width: 1px'>
+					<legend>
+						<h4 style='font-family: arial'>Fecha de Distribuci&oacuten</h4>
+					</legend>
+					<div class='form-group form-group-sm'>
+						<div class='col-sm-2 col-sm-offset-2'>
+							<div class='input-group input-append date' id='idFechaD'>
+								<input type='text' class='form-control col-xs-1' name='fechadist' id='idfechad' value=" . date ( 'Y-m-d' ) . " />
+								<span class='input-group-addon add-on'>
+									<button type='button' id='btnFecha' class='btn btn-default btn-xs'>
+										<span class='glyphicon glyphicon-calendar'></span>
+									</button>
+								</span>
+							</div>
+						</div>
+						<button type='button' id='asigFecha' class='btn btn-default btn-sm'>Asignar Fecha</button>
+					</div>
+				</fieldset>
+			<?php } ?>
+				
+			<div class='form-group form-group-sm'>
 				<div class='col-md-8'>
-					<p class='bg-success text-center text-uppercase'
-						style='display: none' id='idmsg'>Car&aacute;tula Actualizada
-						Correctamente</p>
+					<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Car&aacute;tula Actualizada Correctamente</p>
 				</div>
 				<div class='col-sm-1 small pull-right'>
-					<a
-						href='capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>'
-						class='btn btn-default' data-toggle='tooltip'
-						title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
+					<a href='capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
 				</div>
 				<div class='col-sm-1 small pull-right'>
-					<button type='submit' class='btn btn-primary btn-md'
-						data-toggle='tooltip'
-						title='Actualizar informaci&oacute;n Car&aacute;tula &uacute;nica'>Grabar</button>
+					<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Car&aacute;tula &uacute;nica'>Grabar</button>
 				</div>
 			</div>
 		</form>
 	</div>
+	
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">

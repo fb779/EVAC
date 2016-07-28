@@ -367,31 +367,47 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 		if (isset($dt['C1_numdisp'])){
 			$pnl = $valores[1];
+			$sv = $valores[1];
+			$tvab = 0;
+			$tvcb = 0;
+			$tvnc = 0;
 		}else{
 			$pnl = 0;
 		}
 			
 		$tem = '';
 		for ($i=1; $i<= $pnl; $i++){
-			$tem .= "('" . $numero . "','" . $vig . "',";
+			//$tem .= "('" . $numero . "','" . $vig . "',";
+			$tem1 = "('" . $numero . "','" . $vig . "',";
+			$nct = 'i1r2c' . $i;
 			for ($j=0; $j<14; $j++){
-				$nc = 'i1r2c' . $i . $j;
+				$nc = 'i1r2c' . $i . $j;				
 				$c1n2[] = $nc;
-				//echo $nc . ' - ';
 				if (isset($dt[$nc]) && $dt[$nc] != ''){
-					$tem .= "'" . $dt[$nc] . "',";
+					$tem1 .= "'" . $dt[$nc] . "',";
 				}else{
-					$tem .= "NULL,";
+					$tem1 .= "NULL,";
+					if ($j < 12){
+						$sv--;
+						$j = 14;
+						$tem1 = '';
+					}
 				}
 			}
-			$tem = rtrim($tem, ",") .  '),';
+			
+			if ($tem1 != ''){
+				$tvab += $dt[ $nct .'0'];
+				$tvcb += $dt[ $nct .'8'];
+				$tvnc += $dt[ $nct .'11'];
+				$tem .= rtrim($tem1, ",") .  '),';
+			}
 		}
 		
 		$lineaINS .= rtrim($tem, ",");
 		
-		$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
-		
-		if ($pnl > 0){
+		if ($pnl > 0 && $sv > 0){
+			//echo 'si grabamos disponibilidades laborales';
+			$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
 			$actcapi = $conn->exec($lineaINS);
 		}
 	}

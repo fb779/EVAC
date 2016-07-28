@@ -15,7 +15,9 @@
 	$idusuario = $_SESSION['idusu'];
 	$numero = $_POST['numero'];
 	$vig = $_SESSION['vigencia'];
+	
 	echo "REGIONAL " . $region;
+	
 	if (isset($_POST['envio'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -84,6 +86,7 @@
 		}
 		$lineaCTL->execute();
 	}
+	
 	if (isset($_POST['devol'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -98,6 +101,7 @@
 		$estadoDev->execute();
 		echo "FORMULARIO DEVUELTO";
 	}
+	
 	if (isset($_POST['reenv'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -116,6 +120,7 @@
 		$estadoRev->execute();
 		echo "FORMULARIO REENVIADO";
 	}
+	
 	if (isset($_POST['obser'])) {
 		$numero = $_POST['numero'];
 		$capi = $_POST['capit'];

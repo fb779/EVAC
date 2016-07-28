@@ -39,6 +39,7 @@
 	$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig")->fetch(PDO::FETCH_ASSOC);
 	$m1 = $qControl['m1'];
 	$est = $qControl['estado'];
+	
 	if ($region == 99) {
 		$envioOK = true;
 	} else if ($tipousu == "FU" AND $m1 == 2) { //if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
@@ -147,11 +148,14 @@
 	</head>
 	<body>
 		<div class="well well-sm text-center" style="font-weight: bold; padding-top: 60px">
-			<div class="col-xs-12">
-				<?php //print_r($rowCtl);?>
-				</br>
-				<?php print_r($_SESSION);?>
-			</div>
+			<!-- div class="col-xs-12">
+				<?php //print_r($qControl);?>
+				
+				<?php //print_r($_SESSION);?>
+				
+				<?php //print_r($qDevol->rowCount());?>
+				
+			</div-->
  			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
  		</div>
@@ -185,7 +189,7 @@
 									echo "&nbsp;";
 									echo "<a href='../administracion/operativo.php' class='btn btn-default btn-lg' data-toggle='tooltip' title='Volver a Inicio'>Volver</a>";
 									echo "</div>";
-									echo "<div class='row' style='color: #F00'>NO olvide registrar las observaciones en los respectivos cap�tulos</div>";
+									echo "<div class='row' style='color: #F00'>NO olvide registrar las observaciones en los respectivos cap&iacute;tulos</div>";
 								}
 							}
 							else {
