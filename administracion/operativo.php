@@ -157,7 +157,7 @@
 			
 		?>
 		<br/>
-		<div class="container">
+		<!--div class="container">
 			<div class="row col-xs-12 ">
 				<div class="col-xs-12">
 					<div class="panel panel-default">
@@ -169,7 +169,8 @@
 				</div>
 				
 			</div>
-		</div>
+		</div-->
+		<br />
 		<br />
 		<div class="container">
 			<div class="row col-xs-12">

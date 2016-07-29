@@ -145,13 +145,13 @@
 									$("#idObs1").modal('show');
 									$("#idObs1").on('shown.bs.modal', function () {
 										$('#crObser').on('click', function(){
-											debugger;
+											
 											$.ajax({
 												url: "../persistencia/grabactl.php",
 												type: "POST",
 												data: {obser: "obs", numero: $("#numero").val(), capit: "1", observa: $("#obscrit").val()},
 												success: function(dato) {
-													debugger;
+													
 												}
 											});
 											
@@ -183,13 +183,13 @@
 			});
 			
 // 			$(window).on('hidden.bs.modal', function() {
-// 				debugger;
+// 				
 // 				$.ajax({
 // 					url: "../persistencia/grabactl.php",
 // 					type: "POST",
 // 					data: {obser: "obs", numero: $("#numero").val(), capit: "1", observa: $("#obscrit").val()},
 // 					success: function(dato) {
-// 						debugger;
+// 						
 // 					}
 // 				});
 // 			});
@@ -240,12 +240,13 @@
 				
 				var $fr = $('#capitulo1');
 				var color = '#a94442';
+				var $btnGuardar = $('#btnGuardar');
 				
 				if ($('[name="i1r1c1"]:checked').val() == 2){
 					$(':input,select', $fr ).each(function(){
 						$(this).prop('disabled', true);
 					});
-					$('#btnGuardar').prop('disabled', false);
+					$btnGuardar.prop('disabled', false);
 					$('#idTipo').prop('disabled', false);
 					$('#numero').prop('disabled', false);
 					$('[name="i1r1c1"]').prop('disabled', false);
@@ -260,7 +261,7 @@
 			    /** Variables para el manejo de las caracterizaciones dinamicas */
 
 
-				
+				/** Funcion que valida el cambio del radio button */
 				$('[name="i1r1c1"]').on('change',function(){
 					if ( parseInt($(this).val()) == 2 ){
 						
@@ -274,22 +275,23 @@
 							$(this).remove();
 						});
 
-						// desabilitamos todos los campos del formulario 
+						// deshabilitamos todos los campos del formulario 
 						$(':input,select', $fr).each(function(){
 							$(this).prop('disabled', true);
 						});
 						
 						validar_totales();
 					}else{
+						// habilitamos todos los campos del formulario
 						$(':input,select', $fr ).each(function(){
 							$(this).prop('disabled', false);
 						});
+						
 						$('#removeDisp').prop('disabled', true);
 						$('#idir3c9').prop('disabled', true);
 					}
-
 					
-					$('#btnGuardar').prop('disabled', false);
+					$btnGuardar.prop('disabled', false);
 					$('#idTipo').prop('disabled', false);
 					$('#numero').prop('disabled', false);
 					$('[name="i1r1c1"]').prop('disabled', false);
@@ -300,8 +302,6 @@
 				var $chk = $('#medPub .chkbx [type="checkbox"]');
 				if (!valChackbox()){
 					$chk.prop('required',true);
-					//$chk.parent().parent().parent().parent().addClass('has-error');
-					//$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
 				}else{$chk.prop('required',false);}
 
 				/** Validacion de los checkbox con el cambio de alguno de ellos */
@@ -331,15 +331,18 @@
 						$chk.prop('required',true);
 						$chk.parent().parent().parent().parent().addClass('has-error');
 						$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
+						
 					}else{
 						$chk.prop('required',false);
 						$chk.parent().parent().parent().parent().removeClass('has-error');
-						$chk.parent().parent().parent().removeClass('has-error'); 
+						$chk.parent().parent().parent().removeClass('has-error');
+						 
 						
 					}
 					
 				});
 
+				/** */
 				$('#idi1r3c9').on('blur', function(){
 					$(this).parent().parent().removeClass('text-danger');
 					$(this).parent().parent().removeClass('has-error');
@@ -350,17 +353,19 @@
 						$(this).parent().parent().addClass('text-danger');
 						$(this).css('border',"1px solid "+color);
 						$(this).parent().parent().append('<span> Debe diligenciar el campo</span>');
-					}					
+					}
 				});
 
 				/** Validacion del campo Certificacion y adicional validacion de los checkbox */
 				if ($('[name="i1r3c8"]').is(':checked')){
 					$('input[name="i1r3c9"]').prop('disabled', false);
+					$btnGuardar.prop('disabled',true);
 				}else{
 					$('[name="i1r3c9"]').val('');
 					$('[name="i1r3c9"]').parent().parent().removeClass('text-danger');
 					$('[name="i1r3c9"]').parent().parent().children('span').remove();
 					$('[name="i1r3c9"]').prop('disabled', true);
+					$btnGuardar.prop('disabled',false)
 				}
 
 				$('#idi1r4c1').on('blur', function(){
@@ -394,7 +399,7 @@
 					}//else{$chk.parent().parent().parent().parent().removeClass('has-error'); $chk.prop('required',false);}
 				});
 
-			/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
+				/** Funcionalidad paran el maenjo de las caracterizaciones dinamicas **/
 				
 			    /** Habilita o deshabilita el boton de eliminar caracterizaciones */
 			    if (lista.children().length > 0 && conte.children().length > 0){
@@ -407,28 +412,30 @@
 
 				/** Boton para agregar caracterizacion nueva */
 			    $('#addDisp').click(function(){
-			    	var x = lista.children().length + 1;
-			    	var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Disp '+ x +'</a></li>';
-			    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
-			    	
-			    	lista.append(vinculo);
-			    	conte.append(panel)
-			    	
-			    	var item = carac.clone();
-			    	item.removeClass('hidden');
-			    	item.attr('id', 'caracteriza' + x);
-			    	item.find('input, select').each(function(index, element){
-			    		//$(element).addClass('validar');
-			    		$(element).attr('name', $(element).attr('name') + x + index);
-			    	});
-			    	$('#disp' + x).append(item);
-			    	
-			    	if (lista.length > 0 && conte.length > 0){
-				    	$('#btnGuardar').addClass('disabled');
-			    		$('#removeDisp').prop('disabled', false); 
-			    		lista.removeClass('hidden');
-			    	}
-			    	validar_totales();
+				    if (validar_disponibilidad()){
+				    	var x = lista.children().length + 1;
+				    	var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Disp '+ x +'</a></li>';
+				    	var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
+				    	
+				    	lista.append(vinculo);
+				    	conte.append(panel)
+				    	
+				    	var item = carac.clone();
+				    	item.removeClass('hidden');
+				    	item.attr('id', 'caracteriza' + x);
+				    	item.find('input, select').each(function(index, element){
+				    		//$(element).addClass('validar');
+				    		$(element).attr('name', $(element).attr('name') + x + index);
+				    	});
+				    	$('#disp' + x).append(item);
+				    	
+				    	if (lista.length > 0 && conte.length > 0){
+				    		$btnGuardar.prop('disabled', true);
+				    		$('#removeDisp').prop('disabled', false);
+				    		lista.removeClass('hidden');
+				    	}
+				    	validar_totales();
+				    }
 			    	
 				});
 
@@ -441,12 +448,12 @@
 			    	
 			    	if (lista.children().length == 0 && conte.children().length == 0){
 			    		//$('#removeDisp').addClass('disabled');
-			    		$('#btnGuardar').removeClass('disabled');
 			    		$('#removeDisp').prop('disabled', true);
 			    		lista.addClass('hidden');
 			    	}
 
 			    	validar_totales();
+			    	validar_disponibilidad();
 			    });
 
 			    /** Funciona para validar los cambios y comportamientos de cada input */
@@ -649,21 +656,23 @@
 					}
 
 					validar_totales();
+					validar_disponibilidad();
 			    });
 
 				/** Funcion que lanza un modal de confirmacion para el guardado parcial de la información */
-			    $('#saveDisp').on('click', function(e){
-			    	e.preventDefault();
+			    $('#saveDisp').on('click', function(){
+// 			    	e.preventDefault();
 			    	var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
-			        var ct = ['<p>Las disponibilidades que no esten completas no seran guardadas</p>','<p>Desea guardar las disponibilidades creadas hasta el momento ?</p>'];
+			        var ct = ['<p><h4 class="text-danger">Las disponibilidades que no esten completas no seran guardadas</h4></p>','<p><h4>Desea guardar las disponibilidades creadas hasta el momento ?<h4></p>'];
 			        $('#mHeader').append(hd);
 			        $('#mContent').append(ct[0],ct[1]);
-			        $("#mNotificacion").modal({backdrop: "static"});
+			        $("#mNotificacion").modal();
 				});
-			    
-			    $("#mSave").click(function(){
+
+			    /** Realiza el guardado parcial de las disponibilidades completamente diligenciadas */
+			    $("#mSave").click(function(e){
 			        //$("#mNotificacion").modal('hide');
-			        //e.preventDefault();
+			        e.preventDefault();
 					var $datos = $('#listDisForm');
 					var $dtAct = $('#listDisForm').children('.active')
 
@@ -695,30 +704,96 @@
 									$('#mNoti').addClass('alert-danger');
 							        $('#mNoti').append(ct[1]);
 							        $('#mNoti').removeClass('hidden');
-							        //$("#mNotificacion").modal({backdrop: "static"});
+							        $("#mSave").addClass('hidden');
 								}
-							    $("#mNotificacion").modal({backdrop: "static"},'show');
+							    
 							},
-							error: function(xhr, status, erroThrown){
-								debugger;
+// 							error: function(xhr, status, erroThrown){
+								
 									
-							}
+// 							}
 						});
-						
 					}
 			    });
 
-			    $("#mNotificacion").on('hide.bs.modal', function () {
-// 			        $('#mHeader').children().remove();
-// 			        $('#mNoti').children().remove();
-// 			        $('#mContent').children().remove();
-			        location.reload();
+				/** Evento de cierre del modal para la grabacion parcial */
+			    $("#mNotificacion").on('hidden.bs.modal', function () {
+			        $('#mHeader').children().remove();
+			        $('#mNoti').children().remove();
+			        $('#mContent').children().remove();
+			        $('#mNoti').addClass('hidden');
+			        $("#mSave").removeClass('hidden');
+// 					location.reload();
 			    });
-				
-			   
-			}); //$(document).ready()
 
-			
+				
+			    $('#capitulo1').find(':input, checkbox').not('.validar, [type="hidden"]').on('change', function(){
+			    	var $c = 0
+			    	
+			    	if ( $('#idi1r3c9').val() == '' && $('#idir3c8').prop('checked') ){ $c++; }
+			    	if ( $('#idi1r4c1').val() == '' ){ $c++; }
+			    	if (!valChackbox()){ $c++; }
+					if (!validar_disponibilidad()) { $c++;}
+
+			    	if ($c > 0){ $btnGuardar.prop('disabled', true); }
+			    	else { $btnGuardar.prop('disabled', false); }
+				})
+
+				/** Funcion que valida todos los campos para las disponibilidades creadas */
+				function validar_disponibilidad(){
+					/** Valida todos los campos de las disponibilidades actuales */
+			    	var $diNoMsj = $('#diNoMensaje');
+			    	$diNoMsj.children('p').remove();
+			    	$('#listDisForm').children().each(function(){
+				    	
+						var $item = $(this);
+						var con = 0;
+
+			    		var pnal = $item.attr('id').substring(4);
+			    		var vacantes = 'i1r2c' + pnal + '0';	    			
+		    			var vacNoCubiertas = 'i1r2c' + pnal + '11';
+		    			var vacCausa = 'i1r2c' + pnal + '12';
+		    			var vacCual = 'i1r2c' + pnal + '13';
+		    			
+		    			var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
+		    			var $vacCaus = $('[name="'+vacCausa+'"]');
+		    			var $vacCual = $('[name="'+vacCual+'"]');
+
+		    			
+			    		$item.find(':input').each(function(){
+				    		var $input = $(this);
+				    		var re = false;
+				    		
+							if ($input.val()==''){
+								if ($input.attr('name') == vacCausa && parseInt($vacNoCu.val()) > 0){
+									con++;
+								}else if ($input.attr('name') == vacCual && parseInt($vacCaus.val()) == 7){
+									con++;
+								}else if ($input.attr('name') != vacCausa && $input.attr('name') != vacCual){
+									con++;
+								}
+							}
+//	 			    		console.log($input.attr('name') + ' - ' + $input.val());
+			    		});
+
+			    		/** Agregar que panel tiene datos faltantes */
+			    		if (con > 0){
+//	 		    			$diNoMsj.append('<p id="msj'+pnal+'" class="col-xs-3">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
+			    			$diNoMsj.append('<p id="msj'+pnal+'">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
+				    	}
+			    	});
+					
+			    	if ($diNoMsj.children().length > 0){
+			    		$diNoMsj.parent().removeClass('hidden');
+			    		$btnGuardar.prop('disabled', true);
+			    		return false;
+				    }else{
+				    	$diNoMsj.parent().addClass('hidden');
+				    	$btnGuardar.prop('disabled', false);
+				    	return true;
+					}
+				}
+			}); //$(document).ready()
 			
 			function validar_totales(){
 		    	/** Actualizacion de total de vacantes */
@@ -745,6 +820,8 @@
 		    	$('#idi1r2ctvnocb').val(sumTotVacNoCub);
 			}
 
+			
+			
 			function valChackbox(){
 				/** Metodo para verificar si almeno uno de los checkbox ha sido seleccionado */
 				var ct = 0;
@@ -783,7 +860,7 @@
  		</div>
 
 		<input type="hidden" name="tipousu" id="idTipo" value="<?php echo $tipousu ?>" />
-		<form class='form-horizontal' role='form' data-toggle='validator' name="capitulo1" id="capitulo1" method="post" disabled>
+		<form class='form-horizontal' role='form'  name="capitulo1" id="capitulo1" method="post" disabled>
 			<div class='container'>
 				<input type="hidden" name="C1_nordemp" id="numero" value="<?php echo $numero ?>" />
 				<input type="hidden" name="C1_numdisp" id="C1_numdisp" value="" />
@@ -827,6 +904,15 @@
 						<div class="col-xs-12 col-sm-12">
 							<label for="">Este módulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus características.</label>
 						</div>
+						
+						<div class="col-xs-12">
+							<div id="disNoti" class="alert alert-warning text-center hidden" role="alert">
+								<!-- button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button-->
+								<div id="diNoMensaje" class="row">
+								
+								</div>
+							</div>
+						</div>
 						<?php if ($grabaOK) { ?>
 							<div id="contenido" class="col-xs-12 col-sm-12">
 								<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
@@ -842,6 +928,7 @@
 								</button>
 							</div>
 						<?php } ?>
+						
 						<div id="totales" class="col-xs-12 col-sm-12">
 							<p> 
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -1183,7 +1270,7 @@
 						<div class="form-group form-group-sm col-xs-12">
 							<label class="">¿Cuántas requerían de una competencia certificada?</label>
 							<div>
-								<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']?>" maxlength="3" required />
+								<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']; ?>" maxlength="3" required />
 							</div>
 						</div>
 					</div>
@@ -1246,7 +1333,6 @@
 						<div class="row">
 							<div class="col-xs-12 text-center">
 								<div id="mNoti" class="alert alert-dismissible hidden" role="alert">
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
 								</div>
 								<div id="mContent"></div>
 							</div>

@@ -404,10 +404,10 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		}
 		
 		$lineaINS .= rtrim($tem, ",");
-		
+		$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
 		if ($pnl > 0 && $sv > 0){
 			//echo 'si grabamos disponibilidades laborales';
-			$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
+			//$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$numero."' and vigencia = '".$vig."' ;");
 			$actcapi = $conn->exec($lineaINS);
 		}
 	}

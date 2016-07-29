@@ -462,6 +462,7 @@ p {
 				  
 				var color = '#a94442';
 				var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+				
 				/** Validacion campo ndoc Numero documento */
 				$('#ndoc').on('blur', function() {
 					$(this).css('border',"");
@@ -492,6 +493,56 @@ p {
 					if ($(this).val() == ''){
 						$(this).parent().parent().addClass('text-danger');
 						$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+					}
+				});
+
+				/** Validacion campo Camara */
+				$('#cam').on('blur', function() {
+					$(this).css('border',"");
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().parent().removeClass('has-error');
+					$(this).parent().children('span').remove();
+					
+					var v = parseInt($(this).val());
+					if (!isNaN(v)){
+						if (v <= 0){
+							$(this).val('');
+							$(this).parent().parent().addClass('text-danger');
+							$(this).parent().parent().addClass('has-error');
+							//$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
+							
+						}
+					}else{
+						$(this).parent().parent().addClass('text-danger');
+						$(this).parent().parent().addClass('has-error');
+						//$(this).css('border',"1px solid" + color);
+						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+					}
+				});
+
+				/** Validacion campo Matricula */
+				$('#reg').on('blur', function() {
+					$(this).css('border',"");
+					$(this).parent().parent().removeClass('text-danger');
+					$(this).parent().parent().removeClass('has-error');
+					$(this).parent().children('span').remove();
+					
+					var v = parseInt($(this).val());
+					if (!isNaN(v)){
+						if (v <= 0){
+							$(this).val('');
+							$(this).parent().parent().addClass('text-danger');
+							$(this).parent().parent().addClass('has-error');
+							//$(this).css('border',"1px solid" + color);
+							$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
+							
+						}
+					}else{
+						$(this).parent().parent().addClass('text-danger');
+						$(this).parent().parent().addClass('has-error');
+						//$(this).css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
 					}
 				});
