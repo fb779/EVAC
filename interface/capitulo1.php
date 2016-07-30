@@ -57,6 +57,7 @@
 	 	<!--script type="text/javascript" src="../js/valida1.js"></script-->
 		<!--script type="text/javascript" src="../js/validaForm1.js"></script-->
 		<script type="text/javascript" src="../js/validator.js"></script>
+		<script type="text/javascript" src="../js/capitulo1.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
@@ -70,7 +71,7 @@
 				font-weight: bold;
 			}
 		</style>
-		<script type="text/javascript">
+		<!--script type="text/javascript">
 			var retorno = 0;
 			var inputText = ['i1r1c2', 'i1r4c1']
 			function validaFormOther() {
@@ -832,7 +833,7 @@
 				});
 				return (ct>0) ? true:false;
 			}
-		</script>
+		</script-->
 	</head>
 	<?php
 			include 'menuFuente.php';
