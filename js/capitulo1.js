@@ -62,7 +62,7 @@ $(document).ready(function(){
 
 	/** Validacion de los checkbox de medios de publicacion i1r3c1-9 */
 		/** Validacion de los checkbox con la carga de la pagina */
-		if (!valChackbox()){ $chk.prop('required',true); }
+		if (!valCheckbox()){ $chk.prop('required',true); }
 		else{ $chk.prop('required',false); }
 
 		/** Validacion de los checkbox con el cambio de alguno de ellos */
@@ -86,7 +86,7 @@ $(document).ready(function(){
 				}
 			}
 			var $chk = $('[type="checkbox"]', '#medPub ');
-			if (!valChackbox()){	
+			if (!valCheckbox()){	
 				$chk.prop('required',true);
 				$chk.parent().parent().parent().parent().addClass('has-error');
 				$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
@@ -144,7 +144,7 @@ $(document).ready(function(){
 			}
 			
 			var $chk = $('#medPub [type="checkbox"]');
-			if (!valChackbox()){
+			if (!valCheckbox()){
 				$chk.prop('required',true);
 				$chk.parent().parent().parent().parent().addClass('has-error');
 				$('#msCheck').children('label').remove();
@@ -201,10 +201,26 @@ $(document).ready(function(){
 				//$('#removeDisp').addClass('disabled');
 				$('#removeDisp').prop('disabled', true);
 				lista.addClass('hidden');
+
 			}
 
 			validar_totales();
-			validar_disponibilidad();
+
+			
+			var val = parseInt($('#idi1r4c1').val());
+			var vac = parseInt($('#idi1r2ctv').val());
+			if ( !isNaN(val) ){
+				if( val > vac ){
+					$('#idi1r4c1').val('');
+					$('#idi1r4c1').css('border',"solid 0.5px "+color);
+					$('#idi1r4c1').parent().parent().addClass('text-danger');
+					$('#idi1r4c1').parent().parent().append('<span class="">El valor del campo no puede ser mayor al total de vacantes</span>');
+				}
+			}
+
+			//validar_disponibilidad();
+			valida_todo();
+			
 		});
 
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
@@ -571,11 +587,20 @@ $(document).ready(function(){
 
 	/** Funciones de validaciones */
 		/** Metodo para validar la seleccion de uno de los checkbox */
-		function valChackbox(){
+		function valCheckbox(){
 			var ct = 0;
-			$('#medPub [type="checkbox"]').each(function(){ 
+			var $ch = $('#medPub [type="checkbox"]');
+			$ch.each(function(){ 
 				if($(this).prop('checked')){ ct ++; }
 			});
+
+			if (ct > 0){
+				$ch.prop('required', false);
+			}else{ 
+				$ch.prop('required', true);
+			}
+
+			
 			return (ct>0) ? true:false;
 		}
 
@@ -663,7 +688,8 @@ $(document).ready(function(){
 			var $c = 0;
 			if ( $('#idi1r3c9').val() === '' && $('#idir3c8').prop('checked') ){ $c++; }
 			if ( $('#idi1r4c1').val() === '' ){ $c++; }
-			if (!valChackbox()){ $c++; }
+			//if ( $('#idi1r4c1').val() !== '' && parseInt($('#idi1r4c1').val()) > parseInt($('#idi1r2ctv').val()) ) { $('#idi1r4c1').val(''); $c++; }
+			if (!valCheckbox()){ $c++; }
 			if (!validar_disponibilidad()) { $c++;}
 			if ($c > 0){ $btnGuardar.prop('disabled', true); }
 			else { $btnGuardar.prop('disabled', false); }

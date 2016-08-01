@@ -4,7 +4,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$jsondata = array();
 	//$jsondata['dtextra'] = 'si es ajax';
 	try {
-		if( isset($_POST['newPer']) ) {
+		if( isset($_POST['newPer'])) {
 		
 			$newPer = $_POST['newPer'];
 		
