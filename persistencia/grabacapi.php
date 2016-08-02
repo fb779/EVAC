@@ -356,8 +356,11 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 // 	}
 	$lineaMOD = rtrim($lineaMOD, ", ");
 	
-	$lineaMOD .= ' WHERE ' . $nombres[0] . ' = ' . $valores[0];
+	$lineaMOD .= ' WHERE ' . $nombres[0] . ' = ' . $valores[0] . ' AND vigencia = \''. $vig . '\';';
+	
+	//echo $lineaMOD;
 //	print_r($lineaMOD)."<br>";
+	//echo $lineaMOD;
 	$actucapi = $conn->exec($lineaMOD);
 	
 	

@@ -43,6 +43,8 @@ $(document).ready(function(){
 					$(this).prop('disabled', true);
 				});
 				
+				$('#obsfte').val('');
+				$('#idi1r4c1').val('');
 				validar_totales();
 			}else if ( parseInt($(this).val()) == 1 ) {
 				/** habilitamos todos los campos del formulario */

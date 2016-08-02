@@ -37,26 +37,26 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 	//print_r($nombres);
 
-// 	for($i=1; $i<=count($nombres); $i++) {
-// 		$nomvar = $nombres[$i];
-// 		if ( isset($nomvar) ){
-// 		if ($valores[$i] != $row[$nomvar]) {
-// 			$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
-// 				tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
-			
-// 			$creaLog->execute(array(':numero'=>$numero,
-// 				':tipo'=>$_SESSION['tipou'],
-// 				':usuario'=>$_SESSION['idusu'],
-// 				':fecha'=>date("Y-m-d"),
-// 				'hora'=>date("h:i:sa"),
-// 				':variable'=>$nombres[$i],
-// 				':anterior'=>$row[$nomvar],
-// 				':actual'=>$valores[$i],
-// 				':tabla'=>"caratula"));
-// 		}
-// 		$jsondata['auditoria'][] = $creaLog;
-// 		}
-// 	}
+	for($i=1; $i<=count($nombres); $i++) {
+		$nomvar = $nombres[$i];
+		if ( isset($nomvar) ){
+			if ($valores[$i] != $row[$nomvar]) {
+				$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual,
+					tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
+				
+				$creaLog->execute(array(':numero'=>$numero,
+					':tipo'=>$_SESSION['tipou'],
+					':usuario'=>$_SESSION['idusu'],
+					':fecha'=>date("Y-m-d"),
+					'hora'=>date("h:i:sa"),
+					':variable'=>$nombres[$i],
+					':anterior'=>$row[$nomvar],
+					':actual'=>$valores[$i],
+					':tabla'=>"caratula"));
+			}
+			$jsondata['auditoria'][] = $creaLog;
+		}
+	}
 	
 	$lineaMOD = 'UPDATE caratula SET ';
 	$actemp = 'INSERT INTO actiemp (nordemp, actividad) VALUES ';

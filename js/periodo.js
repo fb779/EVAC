@@ -2,7 +2,7 @@ $(document).ready(function(){
 	$('#periodo').on('change', function(e){
 		e.preventDefault();
 		$.ajax({
-		    url: "cambioperiodo.php",
+		    url: "../persistencia/cambioperiodo.php",
 		    type: "POST",
 		    dataType: "json",
 		    data: {"newPer" : $(this).val()},

@@ -14,7 +14,6 @@ if ($_SESSION ['tipou'] == "FU") {
 	$numero = $_SESSION ['numero'];
 } else {
 	$numero = $_GET ['numero'];
-	// Busqueda por nombre o numero
 }
 $qCaratula = $conn->prepare ( "SELECT * FROM caratula WHERE nordemp= :idNumero" );
 $qCaratula->execute ( array ('idNumero' => $numero) );
@@ -63,6 +62,13 @@ foreach ( $qActividad as $lActividad ) {
 	$codCiiu = $lActividad ['CODIGO'];
 	$descripCiiu = $lActividad ['DESCRIP'];
 }
+
+try {
+	$qPerac = $conn->query("SELECT * from control as ct inner join periodoactivo as pa on ct.vigencia = pa.id where ct.nordemp = '". $numero ."' order by ct.vigencia desc");
+} catch (Exception $e) {
+	echo 'mensaje - ' .$e->getMessage();
+}
+
 if ($tipousu != "FU") {
 	$txtEstado = " estado - " . $rowCtl ['desc_estado'];
 	$txtActividad = $codCiiu . $descripCiiu;
@@ -102,6 +108,7 @@ if ($tipousu != "FU") {
 <script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="../js/anytime.5.1.2.js"></script>
 <script type="text/javascript" src="../js/notSubmit.js"></script>
+<script type="text/javascript" src="../js/periodo.js"></script>
 <style type="text/css">
 p {
 	font-size: 13px !important;
@@ -787,6 +794,43 @@ p {
 				echo "<a href='../administracion/novedades.php?numero=" . $numero . "'>Asignar Novedad</a> | ";
 			}
 		?>
+		
+		
+		<div class="container">
+			<div class="row col-xs-12">
+				<?php if ( $tipousu == 'FU'){ ?>
+				<div class="form-group col-xs-3">
+					<label for="">Seleccione el periodo</label>
+					<select class='form-control' id="periodo" name="periodo">
+						<option value="">Periodo</option>
+						<?php foreach ($qPerac as $per){?>
+							<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<?php } ?>
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">Periodo Activo</div>
+						<div class="panel-body">
+							<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
+							<span for=""><?php echo print_r($_SESSION); ?> </span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-1">&nbsp;</div>
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">Periodo actual</div>
+						<div class="panel-body">
+							<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
 		</div>
 		<div class='container'>
 			<?php if ($tipousu == "FU") { ?>

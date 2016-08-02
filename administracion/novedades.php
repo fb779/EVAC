@@ -18,6 +18,8 @@
 	$qCaratula->execute(array(':idNumero'=>$numero));
 	$row = $qCaratula->fetch(PDO::FETCH_ASSOC);
 	
+	//$rowRegion = $conn->query('select nombre')
+
 	if ($row['novedad'] != 99 AND $row['novedad'] != 5) {
 		$qObserva = $conn->prepare("SELECT * FROM observaciones WHERE nordemp = :idNumero AND capitulo = 99 ORDER BY fecha DESC LIMIT 1");
 		$qObserva->execute(array(':idNumero'=>$numero));

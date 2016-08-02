@@ -156,8 +156,8 @@
 			}
 			
 		?>
-		<br/>
-		<!--div class="container">
+		<br/><br/><br/><br/>
+		<div class="container">
 			<div class="row col-xs-12 ">
 				<div class="col-xs-12">
 					<div class="panel panel-default">
@@ -169,38 +169,38 @@
 				</div>
 				
 			</div>
-		</div-->
+		</div>
 		<br />
 		<br />
 		<div class="container">
 			<div class="row col-xs-12">
-					<div class="form-group col-xs-3">
-						<label for="">Seleccione el periodo</label>
-						<select class='form-control' id="periodo" name="periodo">
-							<option value="">Periodo</option>
-							<?php foreach ($qPerac as $per){?>
-								<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
-							<?php } ?>
-						</select>
-					</div>
-					<div class="col-xs-4">
-						<div class="panel panel-default">
-							<div class="panel-heading">Periodo Activo</div>
-							<div class="panel-body">
-								<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-1">&nbsp;</div>
-					<div class="col-xs-4">
-						<div class="panel panel-default">
-							<div class="panel-heading">Periodo actual</div>
-							<div class="panel-body">
-								<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
-							</div>
+				<div class="form-group col-xs-3">
+					<label for="">Seleccione el periodo</label>
+					<select class='form-control' id="periodo" name="periodo">
+						<option value="">Periodo</option>
+						<?php foreach ($qPerac as $per){?>
+							<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">Periodo Activo</div>
+						<div class="panel-body">
+							<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
 						</div>
 					</div>
 				</div>
+				<div class="col-xs-1">&nbsp;</div>
+				<div class="col-xs-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">Periodo actual</div>
+						<div class="panel-body">
+							<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<br/>
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">
