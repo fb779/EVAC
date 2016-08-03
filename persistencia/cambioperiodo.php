@@ -11,15 +11,22 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			if (session_id() == "") {
 				session_start();
 			}
-			include '../conecta.php';
-			$qPeriodoac = $conn->query("SELECT nomperiodo FROM periodoactivo where id = ". $newPer . " ;")->fetch(PDO::FETCH_ASSOC);
+
+			$perAct = $_SESSION['vigencia'];
+
+			if ($newPer != $perAct ){
+				include '../conecta.php';
+				$qPeriodoac = $conn->query("SELECT nomperiodo FROM periodoactivo where id = ". $newPer . " ;")->fetch(PDO::FETCH_ASSOC);
+				
+				$_SESSION['vigencia'] = $newPer;
+				$_SESSION['nomPeri'] = $qPeriodoac['nomperiodo'];
 			
-			$_SESSION['vigencia'] = $newPer;
-			$_SESSION['nomPeri'] = $qPeriodoac['nomperiodo'];
-		
-			$jsondata['success'] = true;
-			$jsondata['message'] = 'Cambio de periodo correcto.';
-		
+				$jsondata['success'] = true;
+				$jsondata['message'] = 'Cambio de periodo correcto.';	
+			}else{
+				$jsondata['success'] = true;
+				$jsondata['message'] = 'El periodo es el mismo.';
+			}
 		}else{
 			$jsondata['success'] = false;
 			$jsondata['message'] = 'Error al cambiar el periodo.';

@@ -1,6 +1,7 @@
 <?php
 	if (session_id() == "") {
 		session_start();
+
 	}
 	include 'conecta.php';
 	ini_set('default_charset', 'UTF-8');
@@ -10,8 +11,17 @@
 // 			$vigencia = $lVigencia['vigencia'];
 // 		}
 		
-		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac' LIMIT 1;")->fetch(PDO::FETCH_ASSOC);
-		
+		// $qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac';")->fetch(PDO::FETCH_ASSOC);
+		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac';");
+		if ($qPeriodoac->rowCount() > 0 ){
+			$qPeriodoac = $qPeriodoac->fetch(PDO::FETCH_ASSOC);
+			$vigActiva = $qPeriodoac['id'];
+			$namVigAct = $qPeriodoac['nomperiodo'];
+		} else{
+			$vigActiva = 0;
+			$namVigAct = '';
+		}
+
 		$qUsuario = $conn->prepare('SELECT * FROM usuarios WHERE ident LIKE BINARY :idUsu AND clave LIKE BINARY :pwdUsu');
 		$qUsuario->execute(array('idUsu' => $_POST['inputLogin'], 'pwdUsu' => $_POST['inputPassword']));
 	
@@ -24,11 +34,12 @@
 				$_SESSION['numero'] = $row['numemp'];
 				$_SESSION['region'] = $row['region'];
 				//$_SESSION['vigencia'] = $vigencia;
-				$_SESSION['vigencia'] = $qPeriodoac['id'];
-				$_SESSION['nomPeri'] = $qPeriodoac['nomperiodo'];
-				$_SESSION['periodoAct'] = $qPeriodoac['id'];
-				$_SESSION['nomPeriAct'] = $qPeriodoac['nomperiodo'];
+				$_SESSION['vigencia'] = $vigActiva;
+				$_SESSION['nomPeri'] = $namVigAct;
+				$_SESSION['periodoAct'] = $vigActiva;
+				$_SESSION['nomPeriAct'] = $namVigAct;
 			}
+
 			if ($row['tipo'] == 'FU') {
 				header("location: interface/caratula.php");
 			}

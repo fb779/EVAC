@@ -11,9 +11,10 @@
 		            	<li><a href="repproc.php">Reporte Procesos</a></li>
 		            	<li><a href="repaudit.php">Control Cambios</a></li>
 		            	<!--li><a href="casos.php">Mantenimiento Casos</a></li-->
+		            	<li><a href="periodos.php">Admin Periodos</a></li>
 	            	<?php } ?>
 	            	
-	            	<li><a href="#">Admin Periodos</a></li>
+	            	
 	            	
 	          	</ul>
 	       </div><!--/.nav-collapse -->

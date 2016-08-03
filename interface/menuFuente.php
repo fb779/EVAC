@@ -29,15 +29,6 @@
 	}
 	$txtColor = "style='color: green'";
 	$icono = "<span class='glyphicon glyphicon-ok' style='color: green'></span>";
-	
-// 	$qCtl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig");
-// 	foreach($qCtl AS $lCtl) {
-// 		$estado = $lCtl['estado'];
-// 	}
-
-// 	if ($estado>4) {
-// 		$muestrapys = true;
-// 	}
 
 	$qCtl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig")->fetch(PDO::FETCH_ASSOC);
 	if (count($qCtl) > 0){
@@ -68,13 +59,11 @@
             	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li-->
+				
 				<?php
-// 					if ($muestrapys) {
 					if($estado>4){
 						echo "<li><a href='../administracion/registro.php?numord=" . $numero . "'>PAZ Y SALVO</a></li>";
 					}
-				?>
-            	<?php 
             		if ($tipousu != "FU") {
 						if ($page!="cara") {
 							//echo "<li><a href='#' data-toggle='modal' data-target='#idediteas'>EDIT-EAS</a></li>";
@@ -85,7 +74,7 @@
           	</ul>
           	<ul class="nav navbar-nav navbar-right">
           		<?php if ($estado>3) { ?>
-          		<li><a href="formDili.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Form. Diligenciado</a></li>
+          			<li><a href="formDili.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Form. Diligenciado</a></li>
           		<?php } ?>
             	<li><a href="../administracion/cambioclave.php">Cambiar Clave</a></li>
             	<li><a href="../index.php">Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a></li>

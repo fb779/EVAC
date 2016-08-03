@@ -37,7 +37,6 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
-		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
@@ -105,88 +104,87 @@
 		<?php 
 			include 'menuRet.php';
 		?>
-			<div class="container" style="padding-top: 80px">
-				<form role='form' id="novedad" data-toggle="validator">
-					<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
-					<p>Fuente: <?php echo "<b>  " . $row['nordemp'] . " - " . $row['nombre'] . "</b>"?></p>
-					<fieldset>
-						<div class='form-group form-group-sm'>
-							<div class='col-sm-2 small text-right'>
-								<label class='control-label' for='listareg'>Asignar novedad:</label>
-							</div>
-							<div class='col-sm-5 small'>
-								<select class='form-control' id='listanov' name = 'sede'>
-									<option value='0'>Seleccione una novedad...</option>";
-									<?php
-										foreach($qNovedad AS $lNovedad) {
-											if ($lNovedad['idnovedades'] == $row['novedad']) {
-												echo "<option value='" . $lNovedad['idnovedades'] . "' selected>" . $lNovedad['desc_novedad'] . "</option>";
-											}
-											else {
-												echo "<option value='" . $lNovedad['idnovedades'] . "'>" . $lNovedad['desc_novedad'] . "</option>";
-											}
-										} 
-									?>
-								</select>
-							</div>
-						</div>
-					</fieldset>
-					<fieldset style='padding-top: 10px'>
+		<div class="container" style="padding-top: 80px">
+			<form role='form' id="novedad" data-toggle="validator">
+				<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
+				<p>Fuente: <?php echo "<b>  " . $row['nordemp'] . " - " . $row['nombre'] . "</b>"?></p>
+				<fieldset>
+					<div class='form-group form-group-sm'>
 						<div class='col-sm-2 small text-right'>
-							<label class='control-label' for='obsnov'>Observaci&oacute;n:</label>
+							<label class='control-label' for='listareg'>Asignar novedad:</label>
 						</div>
 						<div class='col-sm-5 small'>
-							<textarea class="form-control" id="idObsN" rows="3" required ><?php echo $txtObserva ?></textarea>
-						</div>
-					</fieldset>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-1 small'>
-							<button type='submit' class='btn btn-primary btn-md'>Asignar Novedad</button>
+							<select class='form-control' id='listanov' name = 'sede'>
+								<option value='0'>Seleccione una novedad...</option>";
+								<?php
+									foreach($qNovedad AS $lNovedad) {
+										if ($lNovedad['idnovedades'] == $row['novedad']) {
+											echo "<option value='" . $lNovedad['idnovedades'] . "' selected>" . $lNovedad['desc_novedad'] . "</option>";
+										}
+										else {
+											echo "<option value='" . $lNovedad['idnovedades'] . "'>" . $lNovedad['desc_novedad'] . "</option>";
+										}
+									} 
+								?>
+							</select>
 						</div>
 					</div>
-				</form>
-			</div>
-			<div class="container" id="detallest">
-				<form enctype="multipart/form-data" method="post" action="soporteNov.php?opcion_soporte=3" onSubmit="return comprobarArchivo();">
-					<input type = 'hidden' name='numero' value='<?php echo $numero?>'/>
-					<fieldset>
-						<legend><b>Soportes Novedad</b></legend>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-2 small">
-								<label class="control-label" for="archivo">Seleccionar Archivo:</label>
-							</div>
-							<div class='col-sm-4 small'>
-								<input type="file" name="archivo" id="archivo" size="30">
-							</div>
-							<div class='col-sm-1 small'>
-								<input type="submit" name="submit" value="Subir archivo">
-							</div>
-							<div class='col-sm-4 small'>
-								Tipos Soportados: JPG, GIF, PNG, PDF -- Tama&ntilde;o Max. 2MB.
-							</div>
+				</fieldset>
+				<fieldset style='padding-top: 10px'>
+					<div class='col-sm-2 small text-right'>
+						<label class='control-label' for='obsnov'>Observaci&oacute;n:</label>
+					</div>
+					<div class='col-sm-5 small'>
+						<textarea class="form-control" id="idObsN" rows="3" required ><?php echo $txtObserva ?></textarea>
+					</div>
+				</fieldset>
+				<div class='form-group form-group-sm'>
+					<div class='col-sm-1 small'>
+						<button type='submit' class='btn btn-primary btn-md'>Asignar Novedad</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="container" id="detallest">
+			<form enctype="multipart/form-data" method="post" action="soporteNov.php?opcion_soporte=3" onSubmit="return comprobarArchivo();">
+				<input type = 'hidden' name='numero' value='<?php echo $numero?>'/>
+				<fieldset>
+					<legend><b>Soportes Novedad</b></legend>
+					<div class="form-group form-group-sm">
+						<div class="col-sm-2 small">
+							<label class="control-label" for="archivo">Seleccionar Archivo:</label>
 						</div>
-					</fieldset> 
-				</form>
-				<?php
-					$sql = $conn->query("SELECT id,numemp,soporte_nombre,soporte_tipo,soporte_peso FROM soportes WHERE numemp='$numero'");
-					if ($sql->rowCount()>0) {
-						echo "<div class='container'>";
-						echo "<table class='table table-condensed table-hover table-bordered' style='font-size: 11px'>";
-						foreach($sql AS $lSoporte) {
-							$idDoc = $lSoporte['id'];
-							echo "<tr>";
-							echo "<td style='text-align: center'><a href='soporteNov.php?id=".$idDoc."&opcion_soporte=1&numero=$numero' target='_blank' title='Ver imagen'><span class='glyphicon glyphicon-eye-open'></span></a></td>";
-//							echo "<td style='text-align: center'><a href='soporteNov.php?id=".$idDoc."&opcion_soporte=2&numero=$numero' title='Eliminar imagen'><span class='glyphicon glyphicon-remove' style='color: red'></span></a></td>";
-							echo "<td style='text-align: center'><a href='#' onClick='borraSoporte(" . $idDoc . ", " . $numero . ", \"" . $lSoporte['soporte_nombre'] . "\");' title='Eliminar imagen'><span class='glyphicon glyphicon-remove' style='color: red'></span></a></td>";
-							echo "<td>".$lSoporte['soporte_nombre']."</td>";
-							echo "<td>".$lSoporte['soporte_tipo']."</td>";
-							echo "<td>".$lSoporte['soporte_peso']."</td>"; 
-							echo "</tr>";
-						}
-						echo "</table>";
-						echo "</div>";
+						<div class='col-sm-4 small'>
+							<input type="file" name="archivo" id="archivo" size="30">
+						</div>
+						<div class='col-sm-1 small'>
+							<input type="submit" name="submit" value="Subir archivo">
+						</div>
+						<div class='col-sm-4 small'>
+							Tipos Soportados: JPG, GIF, PNG, PDF -- Tama&ntilde;o Max. 2MB.
+						</div>
+					</div>
+				</fieldset> 
+			</form>
+			<?php
+				$sql = $conn->query("SELECT id,numemp,soporte_nombre,soporte_tipo,soporte_peso FROM soportes WHERE numemp='$numero'");
+				if ($sql->rowCount()>0) {
+					echo "<div class='container'>";
+					echo "<table class='table table-condensed table-hover table-bordered' style='font-size: 11px'>";
+					foreach($sql AS $lSoporte) {
+						$idDoc = $lSoporte['id'];
+						echo "<tr>";
+						echo "<td style='text-align: center'><a href='soporteNov.php?id=".$idDoc."&opcion_soporte=1&numero=$numero' target='_blank' title='Ver imagen'><span class='glyphicon glyphicon-eye-open'></span></a></td>";
+						echo "<td style='text-align: center'><a href='#' onClick='borraSoporte(" . $idDoc . ", " . $numero . ", \"" . $lSoporte['soporte_nombre'] . "\");' title='Eliminar imagen'><span class='glyphicon glyphicon-remove' style='color: red'></span></a></td>";
+						echo "<td>".$lSoporte['soporte_nombre']."</td>";
+						echo "<td>".$lSoporte['soporte_tipo']."</td>";
+						echo "<td>".$lSoporte['soporte_peso']."</td>"; 
+						echo "</tr>";
 					}
-				?>
-			</div>			
+					echo "</table>";
+					echo "</div>";
+				}
+			?>
+		</div>
  	</body>
- </html> 
+</html>

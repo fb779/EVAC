@@ -33,8 +33,7 @@
 	<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
 	<script src="../bootstrap/js/jquery.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
-	<!-- <script src="../js/crearPeriodo.js" type="text/javascript"></script> -->
-	<script src="crearPeriodo.js" type="text/javascript"></script>
+	<script src="../js/crearPeriodo.js" type="text/javascript"></script>
 
 
 	<style type="text/css">
@@ -88,6 +87,7 @@
 			</div>
 		</div>
 		
+		<?php if ($id_usu == 'CO' && $tipousu == 99) { ?>
 		<div class="row">
 			<div class="col-xs-12">
 				<button id="newPeriodo" type="button" class="btn btn-default" aria-label="Left Align">
@@ -95,6 +95,7 @@
 				</button>
 			</div>
 		</div>
+		<?php } ?>
 		
 		<div class="row small">
 			<div class="col-xs-12">

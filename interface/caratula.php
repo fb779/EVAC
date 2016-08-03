@@ -446,27 +446,27 @@ p {
 				/** Evitar caracteres especiales */
 				$('.no-especiales').on('keyup', function() {
 					var regex = new RegExp("^[. 0-9a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
-				    var _this = this;
-				    
-				    var texto = $(_this).val();
-			        if(!regex.test(texto)) {
-				        $(_this).val(texto.substring(0, (texto.length-1)))
+					var _this = this;
+
+					var texto = $(_this).val();
+					if(!regex.test(texto)) {
+						$(_this).val(texto.substring(0, (texto.length-1)))
 					}
 				});
 
 				/** Evitar caracteres especiales */
 				$('.solo-letras').on('keyup', function() {
 					var regex = new RegExp("^[ a-zA-ZáéíóúñÁÉÍÓÚ\b]+$");
-				    var _this = this;
-				    
-				    var texto = $(_this).val();
-			        if(!regex.test(texto)) {
-				        $(_this).val(texto.substring(0, (texto.length-1)))
+					var _this = this;
+
+					var texto = $(_this).val();
+					if(!regex.test(texto)) {
+						$(_this).val(texto.substring(0, (texto.length-1)))
 					}
 				});
 
 				
-				  
+
 				var color = '#a94442';
 				var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 				
@@ -597,15 +597,15 @@ p {
 				    // Se utiliza la funcion test() nativa de JavaScript
 				    if ($(this).val() != ''){
 				    	if (!regex.test($(this).val().trim()) ) {
-					    	$(this).parent().parent().addClass('text-danger');
-					    	$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">Correo invalido</span>');
-					    }   
-					}else{
-						$(this).parent().parent().addClass('text-danger');
+				    		$(this).parent().parent().addClass('text-danger');
+				    		$(this).css('border',"1px solid" + color);
+				    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+				    	}   
+				    }else{
+				    	$(this).parent().parent().addClass('text-danger');
 				    	$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
-					}
+				    	$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
+				    }
 				    
 				});
 
@@ -618,8 +618,8 @@ p {
 				    if ($(this).val() == ''){
 				    	$(this).parent().parent().addClass('text-danger');
 				    	$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Falta dirección de notificación</span>');
-					}
+				    	$(this).parent().append('<span class="text-danger">Falta dirección de notificación</span>');
+				    }
 				});
 
 				/** Validacion email notificacion */
@@ -630,15 +630,15 @@ p {
 				    // Se utiliza la funcion test() nativa de JavaScript
 				    if ($(this).val() != ''){
 				    	if (!regex.test($(this).val().trim()) ) {
-					    	$(this).parent().parent().addClass('text-danger');
-					    	$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">Correo invalido</span>');
-					    }   
-					}else{
-						$(this).parent().parent().addClass('text-danger');
+				    		$(this).parent().parent().addClass('text-danger');
+				    		$(this).css('border',"1px solid" + color);
+				    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+				    	}   
+				    }else{
+				    	$(this).parent().parent().addClass('text-danger');
 				    	$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
-					}
+				    	$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
+				    }
 				    
 				});
 
@@ -661,10 +661,10 @@ p {
 					//$(this).parent().removeClass('text-danger');
 					$(this).css('border',"");
 					$(this).parent().children('span').remove();
-				    // Se utiliza la funcion test() nativa de JavaScript
-				    if ($(this).val() == ''){
-				    	$(this).parent().addClass('text-danger');
-				    	$(this).css('border',"1px solid" + color);
+					// Se utiliza la funcion test() nativa de JavaScript
+					if ($(this).val() == ''){
+						$(this).parent().addClass('text-danger');
+						$(this).css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Debe espeficicar alguna organización</span>');
 					}
 				});
@@ -688,7 +688,7 @@ p {
 						clError($item);
 					}else{
 
-	 					if (!isNaN(npu) && !isNaN(npr) && npu > 0 && npr > 0 && (npu + npr) >= 100){
+						if (!isNaN(npu) && !isNaN(npr) && npu > 0 && npr > 0 && (npu + npr) >= 100){
 							$msj1.append('<span><p>La suma de el capital nacional publico y privado no puede sumar 100%</p></span>');
 							clError($item);
 							npu = parseInt($('#idnalpub').val());
@@ -701,7 +701,7 @@ p {
 							npr = parseInt($('#idnalpr').val());
 							epu = parseInt($('#idexpub').val());
 						}
-	
+
 						if (!isNaN(epu) && !isNaN(epr) && epu > 0 && epr > 0 && (epu + epr) >= 100){
 							$msj1.append('<span><p>La suma de el capital extranjer publico y privado no puede sumar 100%</p></span>');
 							clError($item);
@@ -744,7 +744,7 @@ p {
 					$(this).parent().children('span').remove();
 					if ( $(this).val() == '' ){
 						$(this).parent().parent().addClass('text-danger');
-				    	$(this).css('border',"1px solid" + color);
+						$(this).css('border',"1px solid" + color);
 						$(this).parent().append('<span class="text-danger">Describa cual es el otro estado actual de la empresa</span>');
 					}
 				});
@@ -799,30 +799,31 @@ p {
 		<div class="container">
 			<div class="row col-xs-12">
 				<?php if ( $tipousu == 'FU'){ ?>
-				<div class="form-group col-xs-3">
+				<div class="form-group form-group-sm col-xs-3">
 					<label for="">Seleccione el periodo</label>
 					<select class='form-control' id="periodo" name="periodo">
 						<option value="">Periodo</option>
 						<?php foreach ($qPerac as $per){?>
-							<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
+							<option value="<?php echo $per['id']; ?>"><?php echo $per['nomperiodo']; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 				<?php } ?>
-				<div class="col-xs-4">
+				<!--div class="col-xs-4">
 					<div class="panel panel-default">
 						<div class="panel-heading">Periodo Activo</div>
 						<div class="panel-body">
-							<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
-							<span for=""><?php echo print_r($_SESSION); ?> </span>
+							<span for=""><?php /*echo $_SESSION['nomPeriAct'] . '<br>';*/ ?> </span>
+							<span for=""><?php /*echo print_r($_SESSION);*/ ?> </span>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-1">&nbsp;</div>
+				<div class="col-xs-1">&nbsp;</div-->
 				<div class="col-xs-4">
 					<div class="panel panel-default">
-						<div class="panel-heading">Periodo actual</div>
+						<!--div class="panel-heading">Periodo actual</div-->
 						<div class="panel-body">
+							<label>Periodo actual: </label>
 							<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
 						</div>
 					</div>

@@ -11,7 +11,7 @@
 	$tipousu = $_SESSION['tipou'];
 	$nombre = $_SESSION['nombreu'];
 	$devoluciones = false;
-	$vig=$_SESSION['vigencia']; $anterior = $vig - 1; $nuevas=9; $deuda = 5; $novedades = "(1,2,3,4,6,10,12,13,97,41,19) "; $rinden = "(99,5)";
+	$vig=$_SESSION['vigencia']; $anterior = $vig - 1; $nuevas=9; $deuda = 5; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)"; $rinden = "(99,5)";
 	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $porce = false; $valorBase = 0;
 	if (isset($_GET['nreg']) AND $_GET['nreg'] > 0) {
 		$regOpe = $_GET['nreg'];
@@ -156,7 +156,7 @@
 			}
 			
 		?>
-		<br/><br/><br/><br/>
+		<!--br/><br/><br/><br/>
 		<div class="container">
 			<div class="row col-xs-12 ">
 				<div class="col-xs-12">
@@ -169,24 +169,24 @@
 				</div>
 				
 			</div>
-		</div>
-		<br />
-		<br />
+		</div-->
+		<br/><br/><br/>
 		<div class="container">
-			<div class="row col-xs-12">
-				<div class="form-group col-xs-3">
+			<div class="row col-xs-12 small">
+				<div class="form-group form-group-sm col-xs-3">
 					<label for="">Seleccione el periodo</label>
 					<select class='form-control' id="periodo" name="periodo">
 						<option value="">Periodo</option>
 						<?php foreach ($qPerac as $per){?>
-							<option value="<?php echo $per['id']; ?>" <?php //echo ($per['estperiodo'] == 'ac') ? 'selected' : '';  ?> ><?php echo $per['nomperiodo']; ?></option>
+							<option value="<?php echo $per['id']; ?>"><?php echo $per['nomperiodo']; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 				<div class="col-xs-4">
 					<div class="panel panel-default">
-						<div class="panel-heading">Periodo Activo</div>
+						<!--div class="panel-heading">Periodo Activo</div-->
 						<div class="panel-body">
+							<label>Periodo Activo: </label>
 							<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
 						</div>
 					</div>
@@ -194,8 +194,9 @@
 				<div class="col-xs-1">&nbsp;</div>
 				<div class="col-xs-4">
 					<div class="panel panel-default">
-						<div class="panel-heading">Periodo actual</div>
+						<!--div class="panel-heading">Periodo actual</div-->
 						<div class="panel-body">
+							<label>Periodo actual: </label>
 							<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
 						</div>
 					</div>
@@ -368,7 +369,7 @@
 									}
 								}
 								if ($valor == 6) {
-//									$query .= " AND novedad = :noved GROUP BY prio2 WITH ROLLUP";
+									/*/ $query .= " AND novedad = :noved GROUP BY prio2 WITH ROLLUP";*/
 									$query .= " AND novedad NOT IN $novedades AND (estado = 1 OR estado = 0) GROUP BY prio2 WITH ROLLUP";
 									$linea = $conn->prepare($query);
 									if (($tipousu == "CO" OR $tipousu == "TE" OR $tipousu == "AT") AND $regOpe == 99) {
@@ -605,31 +606,31 @@
 									"valor": <?php echo $data_chart['NOV']?>
 								}],
 								"valueAxes": [{
-							        "gridColor":"#575555",
+									"gridColor":"#575555",
 									"gridAlpha": 0.2,
 									"dashLength": 0
-							    }],
-							    "graphs": [{
-							        "balloonText": "[[category]]: <b>[[value]]</b>",
-							        "fillAlphas": 0.5,
-							        "lineAlpha": 0.8,
-							        "bullet": "round",
-							        "type": "column",
-							        "valueField": "valor"
-							    }],
-							    "chartCursor": {
-							        "categoryBalloonEnabled": false,
-							        "cursorAlpha": 0,
-							        "zoomable": false
-							    },
-							    "categoryField": "estado",
-							    "categoryAxis": {
-							        "gridPosition": "start",
-							        "gridAlpha": 0,
-							         "tickPosition":"start",
-							         "tickLength":20,
-									 "labelRotation":45,
-							    }
+								}],
+								"graphs": [{
+									"balloonText": "[[category]]: <b>[[value]]</b>",
+									"fillAlphas": 0.5,
+									"lineAlpha": 0.8,
+									"bullet": "round",
+									"type": "column",
+									"valueField": "valor"
+								}],
+								"chartCursor": {
+									"categoryBalloonEnabled": false,
+									"cursorAlpha": 0,
+									"zoomable": false
+								},
+								"categoryField": "estado",
+								"categoryAxis": {
+									"gridPosition": "start",
+									"gridAlpha": 0,
+									"tickPosition":"start",
+									"tickLength":20,
+									"labelRotation":45,
+								}
 							});
 						</script>
 					</tbody>
