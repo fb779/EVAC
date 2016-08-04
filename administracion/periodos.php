@@ -3,16 +3,18 @@
 		session_start();
 	}
 	include '../conecta.php';
-	
+
 	ini_set('default_charset', 'UTF-8');
-	
+
 	$id_usu = $_SESSION['idusu'];
 	$id_region = $_SESSION['region'];
 	$tipousu = $_SESSION['tipou'];
+	$region = $_SESSION['region'];
 	$nombre = $_SESSION['nombreu'];
 	$devoluciones = false;
 	$vig=$_SESSION['vigencia'];
 
+	$rowRegion = $conn->query("SELECT nombre FROM regionales WHERE codis = $region")->fetch(PDO::FETCH_ASSOC);
 	$qPeriodos = $conn->query('select * from periodoactivo order by id desc');
 ?>
 
@@ -30,7 +32,7 @@
 	<!-- Bootstrap -->
 	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="../bootstrap/css/custom.css" rel="stylesheet">
-	<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+	<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 	<script src="../bootstrap/js/jquery.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	<script src="../js/crearPeriodo.js" type="text/javascript"></script>
@@ -49,7 +51,7 @@
 		if ($tipousu == "CO") {
 			include 'menuCO.php';
 		}
-		
+
 	?>
 	<div class="container">
 		<!-- <div class="row">
@@ -58,6 +60,7 @@
 					<div class="panel-heading">Datos perdidos</div>
 					<div class="panel-body">
 						<?php $fecActual = getdate(); echo $fecActual['year'] ; ?>
+						<?php echo print_r($_SESSION); ?>
 					</div>
 				</div>
 			</div>
@@ -66,7 +69,7 @@
 		<div class="row">
 			<div class="col-xs-12 text-center"><h3>Administracion de periodos</h3></div>
 		</div>
-		
+
 		<div class="row small">
 			<div class="col-xs-6">
 				<div class="panel panel-default">
@@ -76,7 +79,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-xs-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">Periodo actual</div>
@@ -86,8 +89,8 @@
 				</div>
 			</div>
 		</div>
-		
-		<?php if ($id_usu == 'CO' && $tipousu == 99) { ?>
+
+		<?php if ($tipousu == 'CO' && $region == 99) { ?>
 		<div class="row">
 			<div class="col-xs-12">
 				<button id="newPeriodo" type="button" class="btn btn-default" aria-label="Left Align">
@@ -96,7 +99,7 @@
 			</div>
 		</div>
 		<?php } ?>
-		
+
 		<div class="row small">
 			<div class="col-xs-12">
 				<?php if ($qPeriodos->rowCount() > 0) { ?>
@@ -109,7 +112,7 @@
 									<td>A&ntilde;o Periodo</td>
 									<td>estado periodo</td>
 									<td>Fecha Creacion</td>
-									
+
 								</tr>
 							</thead>
 							<tbody>
@@ -120,7 +123,7 @@
 										<td> <?php echo $value['anioperiodo'] ?> </td>
 										<td> <?php echo $value['estperiodo'] ?> </td>
 										<td> <?php echo $value['feccreacion'] ?> </td>
-									</tr>	
+									</tr>
 								<?php } ?>
 							</tbody>
 						</table>
@@ -134,8 +137,8 @@
 						</div>
 					</div>
 				<?php } ?>
-			</div>	
-		</div>		
+			</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -3,9 +3,9 @@
 		session_start();
 	}
 	include '../conecta.php';
-	
+
 	ini_set('default_charset', 'UTF-8');
-	
+
 	$id_usu = $_SESSION['idusu'];
 	$id_region = $_SESSION['region'];
 	$tipousu = $_SESSION['tipou'];
@@ -27,9 +27,9 @@
 	else {
 		$campoUsu = "usuarioss";
 	}
-	
+
 	$data_chart = array("AR"=>0, "SD"=>0, "DIST"=>0, "END"=>0, "DIG"=>0, "CRIT"=>0, "ENV"=>0, "ACEP"=>0, "NOV"=>0);
-	
+
 	$lineas = array("Directorio Base"=>1,
 		 "Nuevos"=>2,
 		 "Total a Recolectar"=>3,
@@ -78,7 +78,7 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$regOpe));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
-	
+
 	/** Consulta de periodos creados */
 	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoActivo order by id desc");
 	/** Consulta de periodos creados */
@@ -94,7 +94,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
@@ -140,12 +140,12 @@
 					}
 				});
 			});
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 
-			
+
 		</script>
 	</head>
 	<body>
@@ -154,7 +154,7 @@
 			if ($tipousu == "CO") {
 				include 'menuCO.php';
 			}
-			
+
 		?>
 		<!--br/><br/><br/><br/>
 		<div class="container">
@@ -167,7 +167,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div-->
 		<br/><br/><br/>
@@ -207,7 +207,7 @@
 		<form class='form-horizontal' role='form' name="opera" id="idopera" method="post">
 			<div class="container">
 				<div class="row col-sm-3">
-					<?php 
+					<?php
 						if ($lista) {
 							echo "<select class='form-control' id='listareg' onChange='reloadOpe(this.value);'>";
 							echo "<option value='0'>Seleccione una sede....</option>";
@@ -541,7 +541,7 @@
 								$lineaOp = armaLinea($valor1,$valor2,$valor3,$valor4, $valorBase, $parametro, $porce);
 								echo $lineaOp;
 								echo "</tr>";
-								
+
 								switch ($valor) {
 									case 3:
 										$data_chart['AR']=$valor4;
@@ -636,12 +636,12 @@
 					</tbody>
 				</table>
 			</div>
-  			
+
  			<div id="divchart" class="col-md-7" style = 'position: absolute; left: 50%; width:45%; height:400px; border: solid 1px #000; margin-top: 20px; padding: 10px'>
 			</div>
 		</div>
 
-		<?php 
+		<?php
 			function armaLinea($v1,$v2,$v3,$v4,$base,$params,$pr) {
 				$lineaOp = "";
 				if ($v1 > 0) {
@@ -676,7 +676,7 @@
 					$lineaOp .= "<td style='text-align: right'>&nbsp;</td>";
 				}
 				return $lineaOp;
-			}	
+			}
 		?>
  	</body>
- </html> 
+ </html>

@@ -8,17 +8,18 @@
 	$tipousu = $_SESSION['tipou'];
 	$nombre = $_SESSION['nombreu'];
 	$pagina = "LISTA - ";
+
 	if (isset($_GET['sede'])) {
 		$id_region = $_GET['sede'];
 	}
 	else {
 		$id_region = $_SESSION['region'];
 	}
-	
+
 	if (!isset($_GET['noved']) AND !isset($_GET['estado']) AND !isset($_GET['bNom'])) {
 		$pagina .= " TOTAL A RECOLECTAR";
 	}
-	
+
 	if (isset($_GET['noved'])) {
 		switch ($_GET['noved']) {
 			case "No9":
@@ -35,7 +36,7 @@
 				break;
 		}
 	}
-	
+
 	if (isset($_GET['estado'])) {
 		switch ($_GET['estado']) {
 			case "0":
@@ -61,17 +62,32 @@
 				break;
 		}
 	}
-	
-	$vig=$_SESSION['vigencia']; $anterior = $vig - 1; $nuevas=9; $deuda = 5; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)"; $rinden = "(99,5)";
-	$sind = 0; $dist = 1; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $porce = false; $valorBase = 0;
-	
+
+	$vig=$_SESSION['vigencia'];
+	$anterior = $vig - 1;
+	$nuevas=9;
+	$deuda = 5;
+	$novedades = "(1,2,3,4,6,10,12,13,97,41,19)";
+	$rinden = "(99,5)";
+
+	$sind = 0;
+	$dist = 1;
+	$digi = 2;
+	$digit = 3;
+	$crit = 4;
+	$verif = 5;
+	$acepta = 6;
+	$porce = false;
+	$valorBase = 0;
+
 	$campoUsu = ($_SESSION['region'] == 99 ? "usuario" : "usuarioss");
 
 	$condiN = ""; $condiP = ""; $condiE = "";
 	if (!isset($_GET['bNom'])) {
 		if (isset($_GET['noved'])) {
 			if($_GET['noved'] == "todo") {
-				$condiN .= " AND a.novedad IN (1,2,3,4,6,10,12,13,97,41,19)";
+				// $condiN .= " AND a.novedad IN (1,2,3,4,6,10,12,13,97,41,19)";
+				$condiN .= " AND a.novedad IN $novedades";
 			}
 //			if ($_GET['noved'] == 5) {
 //				$condiN .= " AND a.novedad = 5";
@@ -100,7 +116,7 @@
 			}
 		}
 	}
-	
+
 	$lineas = array("Directorio Base"=>1,
 		 "Nuevos"=>2,
 		 "Total a Recolectar"=>3,
@@ -117,7 +133,7 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$id_region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
-	
+
 	if ($tipousu == "CO" OR $tipousu == "TE" OR $tipousu == "AT") {
 		$query = "SELECT a.nordemp, b.nombre, c.desc_novedad, d.nombre AS sede FROM control a, caratula b, novedades c, regionales d WHERE a.vigencia = :periodo
 			AND a.novedad = c.idnovedades AND a.codsede = d.codis";
@@ -147,7 +163,7 @@
 			$lista->execute(array(':periodo'=>$vig));
 		}
 	}
-	
+
 	if ($tipousu == "CR") {
 		$query = "SELECT a.nordemp, b.nombre, c.desc_novedad, d.nombre AS sede FROM control a, caratula b, novedades c, regionales d WHERE vigencia = :periodo AND $campoUsu = :idUsuario
 			AND a.novedad = c.idnovedades AND a.codsede = d.codis";
@@ -189,7 +205,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -198,7 +214,7 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<br><br><br>
@@ -231,4 +247,5 @@
 				</div>
 			</div>
  	</body>
- </html> 
+ </html>
+

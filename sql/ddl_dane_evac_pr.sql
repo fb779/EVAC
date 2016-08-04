@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-07-2016 a las 22:43:00
+-- Tiempo de generación: 04-08-2016 a las 16:54:03
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -117,8 +117,8 @@ CREATE TABLE `caratula` (
   `numdoc` bigint(12) UNSIGNED NOT NULL,
   `dv` tinyint(1) UNSIGNED NOT NULL,
   `registmat` tinyint(1) UNSIGNED NOT NULL,
-  `camara` mediumint(8) UNSIGNED NOT NULL,
-  `numeroreg` char(14) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `camara` mediumint(8) UNSIGNED DEFAULT NULL,
+  `numeroreg` char(14) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
   `nompropie` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `sigla` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
@@ -658,7 +658,9 @@ CREATE TABLE `periodoactivo` (
   `estperiodo` varchar(45) NOT NULL,
   `nomperiodo` varchar(45) NOT NULL,
   `numperiodo` int(11) NOT NULL,
-  `anioperiodo` varchar(45) NOT NULL
+  `anioperiodo` varchar(45) NOT NULL,
+  `feccreacion` date NOT NULL,
+  `fecmodificacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -920,37 +922,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2080134;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `capitulo_i_displab`
 --
 ALTER TABLE `capitulo_i_displab`
-  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=260;
+  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos';
 --
 -- AUTO_INCREMENT de la tabla `periodoactivo`
 --
 ALTER TABLE `periodoactivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `soportes`
 --
 ALTER TABLE `soportes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4733;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `soportesb`
 --
 ALTER TABLE `soportesb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1744;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tipoperiodo`
 --
 ALTER TABLE `tipoperiodo`
-  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

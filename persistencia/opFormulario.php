@@ -8,7 +8,7 @@
 	$tipousu = $_SESSION['tipou'];
 	$region = $_SESSION['region'];
 	$numero = $_POST['numero'];
-	
+
 	switch ($region) {
 		case 1:
 			$sedes = "(1,9,12,16,23,24)";
@@ -29,14 +29,15 @@
 			$sedes = "(6)";
 			break;
 	}
-	
+
 	if ($_POST['accion'] == "limpiar") {
-		$qLimpiaC1 = $conn->query("DELETE FROM capitulo_i WHERE C1_nordemp = $numero");
-		$qLimpiaC2 = $conn->query("DELETE FROM capitulo_ii WHERE C2_nordemp = $numero");
-		$qLimpiaC3 = $conn->query("DELETE FROM capitulo_iii WHERE C3_nordemp = $numero");
-		$qLimpiaC4 = $conn->query("DELETE FROM capitulo_iv WHERE C4_nordemp = $numero");
-		$qLimpiaC5 = $conn->query("DELETE FROM capitulo_v WHERE C5_nordemp = $numero");
-		$qLimpiaC6 = $conn->query("DELETE FROM capitulo_vi WHERE C6_nordemp = $numero");
+		$qLimpiaC1 = $conn->query("DELETE FROM capitulo_i WHERE C1_nordemp = $numero and vigencia = $vig");
+		$qLimpiaC1Dis = $conn->query("DELETE FROM capitulo_i_displab WHERE C1_nordemp = $numero and vigencia = $vig");
+		// $qLimpiaC2 = $conn->query("DELETE FROM capitulo_ii WHERE C2_nordemp = $numero");
+		// $qLimpiaC3 = $conn->query("DELETE FROM capitulo_iii WHERE C3_nordemp = $numero");
+		// $qLimpiaC4 = $conn->query("DELETE FROM capitulo_iv WHERE C4_nordemp = $numero");
+		// $qLimpiaC5 = $conn->query("DELETE FROM capitulo_v WHERE C5_nordemp = $numero");
+		// $qLimpiaC6 = $conn->query("DELETE FROM capitulo_vi WHERE C6_nordemp = $numero");
 		$qlimCtl = $conn->query("UPDATE control SET estado = 1, acceso = 'FU', novedad = 5,m1=0,m2=0,m3=0,m4=0,m5=0,m6=0 WHERE nordemp = $numero AND vigencia = $vig");
 	}
 	if ($_POST['accion'] == "traslado") {
@@ -110,7 +111,7 @@
 			$qAsigna = $conn->query("UPDATE control SET fecdist = '$fecha', estado = 1 WHERE nordemp = $numero AND vigencia = $vig");
 		}
 	}
-	
+
 	if ($_POST['accion'] == "cestado") {
 		$nvoestado = $_POST['nvoestado'];
 		if ($nvoestado < 4) {

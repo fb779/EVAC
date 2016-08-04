@@ -1,6 +1,6 @@
 <?php
 	//validamos que la peticion sea ajax
-	if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){ 
+	if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
 		$jsondata = array();
 		if (session_id() == "") {
 			session_start();
@@ -16,10 +16,10 @@
 			/** pendiente de evaluacion si envian el periodo por la interfaz solo se verifica el dato para que cumpla con la condicion de periodo */
 			// $periodosActivo = $conn->query("SELECT id,codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo from periodoactivo where estperiodo = 'ac'")->fetch(PDO::FETCH_ASSOC);
 			$periodosActivo = $conn->query("SELECT id,codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo from periodoactivo where estperiodo = 'ac'");
-			
+
 			if ($periodosActivo->rowCount() > 0 ){
 				$periodoactivo = $periodosActivo->fetch(PDO::FETCH_ASSOC);
-				$numPeriodo = $periodosActivo['numperiodo']+1;
+				$numPeriodo = $periodoactivo['numperiodo']+1;
 				if ($numPeriodo > 4){
 					$numPeriodo = 1;
 					$fecActual['year'] = $fecActual['year'] + 1;
@@ -32,7 +32,7 @@
 			/* Crear el nuevo periodo activo */
 			$qNewPeriodo = $conn->query("INSERT into periodoactivo (codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo,feccreacion,fecmodificacion) value ((select codPeriodo from tipoperiodo where codPeriodo = 02),'". $estPeriodo['ac'] ."','" . $namePeriodo[$numPeriodo] . " " . $fecActual['year'] ."'," . $numPeriodo .",". $fecActual['year'] .",CURDATE(),'0000-00-00')");
 
-			$qNewControl = $conn->query("INSERT into control (nordemp,vigencia,estado,usuario,usuariodt,usuarioss,ciiu3,m1, m2,m3,m4,m5,m6,m7,rese,prioridad,novedad,codsede,fecdist,fecdig,fecrev,fecacept,aceptadc,prio2,acceso) (SELECT nordemp, (SELECT id from periodoactivo where estperiodo = 'ac'),0,'','','',ciiu3,0,0,0,0,0,0,0,0,0,5,regional,'0000-00-00','0000-00-00','0000-00-00','0000-00-00','0000-00-00',0,'FU' from caratula order by nordemp desc)");		
+			$qNewControl = $conn->query("INSERT into control (nordemp,vigencia,estado,usuario,usuariodt,usuarioss,ciiu3,m1, m2,m3,m4,m5,m6,m7,rese,prioridad,novedad,codsede,fecdist,fecdig,fecrev,fecacept,aceptadc,prio2,acceso) (SELECT nordemp, (SELECT id from periodoactivo where estperiodo = 'ac'),0,'','','',ciiu3,0,0,0,0,0,0,0,0,0,5,regional,'0000-00-00','0000-00-00','0000-00-00','0000-00-00','0000-00-00',0,'FU' from caratula order by nordemp desc)");
 
 
 			$verificaPeriodosActivo = $conn->query("SELECT id,codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo from periodoactivo where estperiodo = 'ac'")->fetch(PDO::FETCH_ASSOC);
@@ -60,5 +60,5 @@
 		exit();
 	}
 
-	
+
 ?>

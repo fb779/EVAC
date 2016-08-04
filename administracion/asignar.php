@@ -10,17 +10,16 @@
 	$region = $_SESSION['region'];
 	$pagina = "ASIGNACI&Oacute;N DE FUENTES";
 	$vig = $_SESSION['vigencia'];
+
 	if ($region == 99) {
-		$qActividad = $conn->prepare("SELECT a.ciiu3, b.descrip, COUNT( a.ciiu3 ) AS asignar FROM control a, ciiu3 b WHERE a.vigencia =:periodo AND
-			usuario = ''  AND a.ciiu3 = b.codigo GROUP BY a.ciiu3");
+		$qActividad = $conn->prepare("SELECT a.ciiu3, b.descrip, COUNT( a.ciiu3 ) AS asignar FROM control a, ciiu3 b WHERE a.vigencia =:periodo AND usuario = ''  AND a.ciiu3 = b.codigo GROUP BY a.ciiu3");
 		$qActividad->execute(array(':periodo'=>$vig));
 	}
 	else {
-		$qActividad = $conn->prepare("SELECT a.ciiu3, b.descrip, COUNT( a.ciiu3 ) AS asignar FROM control a, ciiu3 b WHERE a.vigencia =:periodo AND
-			usuarioss = ''  AND a.ciiu3 = b.codigo AND a.codsede = :region GROUP BY a.ciiu3");
+		$qActividad = $conn->prepare("SELECT a.ciiu3, b.descrip, COUNT( a.ciiu3 ) AS asignar FROM control a, ciiu3 b WHERE a.vigencia =:periodo AND usuarioss = ''  AND a.ciiu3 = b.codigo AND a.codsede = :region GROUP BY a.ciiu3");
 			$qActividad->execute(array(':periodo'=>$vig, ':region'=>$region));
 	}
-	
+
 /*
 	CODIGO PARA CASOS
 	$input = "I1R1C1 <= I1R2C1";
@@ -42,12 +41,12 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovación Tecnológica - Formulario Electrónico</title>
+		<title>Encuesta de Desarrollo e InnovaciÃ³n TecnolÃ³gica - Formulario ElectrÃ³nico</title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -57,17 +56,18 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
+			echo '<br><br><br><br>' . $region;
 		?>
 		<div class="container" style="padding-top:60px">
 			<h4 class="text-center" style="font-family: arial"><?php echo $_GET['ident'] . " - " . $_GET['nombre'] ?></h4>
-				<?php 
+				<?php
 					while ($rowActividad = $qActividad->fetch(PDO::FETCH_ASSOC)) {
 						echo "<div class='row'>";
 						echo "<div class='col-md-8' style='font-size: 12px'>";
@@ -86,4 +86,4 @@
 				?>
 		</div>
  	</body>
- </html> 
+ </html>
