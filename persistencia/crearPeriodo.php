@@ -12,6 +12,9 @@
 		$fecActual = getdate();
 		//$numPeriodo = $_POS['var'];
 
+		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$conn->beginTransaction();
+
 		try {
 			/** pendiente de evaluacion si envian el periodo por la interfaz solo se verifica el dato para que cumpla con la condicion de periodo */
 			// $periodosActivo = $conn->query("SELECT id,codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo from periodoactivo where estperiodo = 'ac'")->fetch(PDO::FETCH_ASSOC);
@@ -30,9 +33,11 @@
 			/** cambiamos el periodo activo para crear el nuevo periodo */
 			$cabmiarPeriodos = $conn->query("UPDATE periodoactivo set estperiodo = 'cr', fecmodificacion = curdate() where estperiodo = 'ac'") ;
 			/* Crear el nuevo periodo activo */
-			$qNewPeriodo = $conn->query("INSERT into periodoactivo (codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo,feccreacion,fecmodificacion) value ((select codPeriodo from tipoperiodo where codPeriodo = 02),'". $estPeriodo['ac'] ."','" . $namePeriodo[$numPeriodo] . " " . $fecActual['year'] ."'," . $numPeriodo .",". $fecActual['year'] .",CURDATE(),'0000-00-00')");
+			// $qNewPeriodo = $conn->query("INSERT into periodoactivo (codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo,feccreacion,fecmodificacion) value ((select codPeriodo from tipoperiodo where codPeriodo = 02),'". $estPeriodo['ac'] ."','" . $namePeriodo[$numPeriodo] . " " . $fecActual['year'] ."'," . $numPeriodo .",". $fecActual['year'] .",CURDATE(),'0000-00-01')");
 
-			$qNewControl = $conn->query("INSERT into control (nordemp,vigencia,estado,usuario,usuariodt,usuarioss,ciiu3,m1, m2,m3,m4,m5,m6,m7,rese,prioridad,novedad,codsede,fecdist,fecdig,fecrev,fecacept,aceptadc,prio2,acceso) (SELECT nordemp, (SELECT id from periodoactivo where estperiodo = 'ac'),0,'','','',ciiu3,0,0,0,0,0,0,0,0,0,5,regional,'0000-00-00','0000-00-00','0000-00-00','0000-00-00','0000-00-00',0,'FU' from caratula order by nordemp desc)");
+			$qNewPeriodo = $conn->query("INSERT into periodoactivo (codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo,feccreacion) value ((select codPeriodo from tipoperiodo where codPeriodo = 02),'". $estPeriodo['ac'] ."','" . $namePeriodo[$numPeriodo] . " " . $fecActual['year'] ."'," . $numPeriodo .",". $fecActual['year'] .",CURDATE())");
+
+			$qNewControl = $conn->query("INSERT into control (nordemp,vigencia,estado,usuario,usuariodt,usuarioss,ciiu3,m1, m2,m3,m4,m5,m6,m7,rese,prioridad,novedad,codsede,fecdist,fecdig,fecrev,fecacept,aceptadc,prio2,acceso) (SELECT nordemp, (SELECT id from periodoactivo where estperiodo = 'ac'),0,'','','',ciiu3,0,0,0,0,0,0,0,0,0,5,regional,'01-01-01','01-01-01','01-01-01','01-01-01','01-01-01',0,'FU' from caratula order by nordemp desc)");
 
 
 			$verificaPeriodosActivo = $conn->query("SELECT id,codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo from periodoactivo where estperiodo = 'ac'")->fetch(PDO::FETCH_ASSOC);
@@ -44,8 +49,10 @@
 
 			$jsondata['message'] = 'termino correctamente';
 			$jsondata['success'] = true;
-
+			$conn->commit();
 		} catch (Exception $e) {
+			$conn->rollBack();
+			$jsondata['message_exception'] = $e->getMessage();
 			$jsondata['message'] = 'Se presentaron dificultades tecnicas....';
 			$jsondata['success'] = false;
 		}

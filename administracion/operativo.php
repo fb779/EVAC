@@ -80,7 +80,9 @@
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 
 	/** Consulta de periodos creados */
-	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoActivo order by id desc");
+
+
+	$qPerac = $conn->query("SELECT id, estperiodo, nomperiodo, anioperiodo FROM periodoactivo order by id desc");
 	/** Consulta de periodos creados */
 ?>
 <!DOCTYPE html>
