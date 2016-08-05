@@ -81,11 +81,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica -
 	Formulario Electr&oacute;nico</title>
-<link href="../bootstrap/img/favicon.ico" rel="shortcut icon"
-	type="image/vnd.microsoft.icon">
+<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 <!-- Bootstrap -->
-<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet"
-	media="screen">
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="../bootstrap/css/custom.css" rel="stylesheet">
 <link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 <link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
