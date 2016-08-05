@@ -13,28 +13,29 @@
 	$tipousu = $_SESSION['tipou'];
 	$nombre = $_SESSION['nombreu'];
 	$region = $_SESSION['region'];
+	$vig = $_SESSION['vigencia'];
 	$pagina = "ADMINISTRACI&Oacute;N USUARIOS";
-	
+
 	if ($region != 99) {
 		$campoUsuario = "b.usuarioss";
 	}
 	else {
 		$campoUsuario = "b.usuario";
 	}
-	
+
 	if ($region != 99) {
-		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' 
-			WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario
-			WHERE a.region = :idRegion AND a.tipo != 'FU' GROUP BY a.ident");
-		$qUsuario->execute(array(':idRegion'=>$region));
+		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico'
+			WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario /*RIGHT OUTER JOIN periodoactivo p on b.vigencia = p.id*/
+			WHERE a.region = :idRegion /*AND b.vigencia = :vigencia*/ AND a.tipo != 'FU' GROUP BY a.ident");
+		$qUsuario->execute(array(':idRegion'=>$region, ':vigencia'=>$vig));
 	}
 	else {
-		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' 
+		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico'
 			WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario
 			WHERE a.tipo != 'FU' GROUP BY a.ident");
 		$qUsuario->execute();
 	}
-	
+
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
@@ -51,7 +52,7 @@
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
-		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">		
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -86,11 +87,11 @@
 					}]
 				});
 			}
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
-			
+
 			function generaClave() {
 				$.ajax({
 					url: "genfuente.php",
@@ -103,7 +104,7 @@
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 			<div class="container" style="padding-top: 80px">
@@ -135,10 +136,10 @@
 									echo "<tr><td>" . $row['ident'] . "</td>";
 									echo "<td>" . $row['nombre'] . "</td>";
 									echo "<td>" . $row['nivel'] . "</td>";
-									
+
 									if($row['fuentes']==0){
 										echo "<td class='text-center'>" . $row['fuentes'] . "</td>";
-									}else{	
+									}else{
 										echo "<td class='text-center'><a href='verFuentesAsignadas.php?ident=".$row['ident']. "&accion=MOD' data-toggle='tooltip' title='Ver fuentes asignadas'>". $row['fuentes'] ."</a></td>";
 									}
 									echo "<td ><a href='musuarios.php?ident=" . $row['ident'] . "&accion=MOD' data-toggle='tooltip' title='Modificar Usuario'><span class='glyphicon glyphicon-pencil'></span></a></td>";
@@ -153,4 +154,4 @@
 				</div>
 			</div>
  	</body>
- </html> 
+ </html>

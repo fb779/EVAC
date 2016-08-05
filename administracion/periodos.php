@@ -49,6 +49,7 @@
 	<?php
 		include 'menuCOCR.php';
 		if ($tipousu == "CO") {
+			echo "<br><br>";
 			include 'menuCO.php';
 		}
 
@@ -59,8 +60,8 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Datos perdidos</div>
 					<div class="panel-body">
-						<?php $fecActual = getdate(); echo $fecActual['year'] ; ?>
-						<?php echo print_r($_SESSION); ?>
+						<?php /*$fecActual = getdate(); echo $fecActual['year'] ;*/ ?>
+						<?php //echo print_r($_SESSION); ?>
 					</div>
 				</div>
 			</div>

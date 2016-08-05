@@ -10,7 +10,7 @@
 	$vig = $_SESSION['vigencia'];
 	$pagina = "MANTENIMIENTO USUARIOS";
 	$niveles = array("AT"=>"Asistente T&eacute;cnico", "CO"=>"Coordinador", "CR"=>"Cr&iacute;tico");
-	
+
 	if ($_GET['accion'] == "MOD") {
 		$qUsuario = $conn->prepare("SELECT * FROM usuarios WHERE ident = :idUsuario");
 		$qUsuario->execute(array(':idUsuario'=>$_GET['ident']));
@@ -51,7 +51,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
@@ -61,7 +61,7 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 
 			$(function() {

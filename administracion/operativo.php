@@ -172,7 +172,7 @@
 
 			</div>
 		</div-->
-		<br/><br/><br/>
+
 		<div class="container">
 			<div class="row col-xs-12 small">
 				<div class="form-group form-group-sm col-xs-3">

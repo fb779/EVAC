@@ -2,15 +2,15 @@
 	 if (session_id() == "") {
 		session_start();
 	 }
-	 
+
 	$ident_usu = $_SESSION['idusu'];
 	$region = $_SESSION['region'];
 	$nombre = $_SESSION['nombreu'];
 	$pagina = "REPORTE NOTIFICACIONES";
 	$vig = $_SESSION['vigencia'];
-	
+
 	include '../conecta.php';
-	
+
 	if ($region == 99) {
 		$qCorreo = $conn->query("SELECT COUNT(CASE WHEN envcorr = 0 THEN 1 END) AS pendientes,
 			COUNT(CASE WHEN envcorr = 1 THEN 1 END) AS enviados,
@@ -41,7 +41,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -61,14 +61,14 @@
 		                    });
 				});
 			});
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 	<body>
@@ -137,4 +137,4 @@
 			</div>
 		</div>
  	</body>
- </html> 
+ </html>

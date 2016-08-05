@@ -63,7 +63,6 @@
 	<body>
 		<?php
 			include 'menuRet.php';
-			echo '<br><br><br><br>' . $region;
 		?>
 		<div class="container" style="padding-top:60px">
 			<h4 class="text-center" style="font-family: arial"><?php echo $_GET['ident'] . " - " . $_GET['nombre'] ?></h4>

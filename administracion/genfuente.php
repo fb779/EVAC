@@ -32,7 +32,7 @@
 			$nombreFte = "'" . $nombre . "'";
 			$nivel = "FU";
 			$email = "'" . $lNumero['emailnotif'] . "'";
-			
+
 			$cadenains = $conn->prepare("INSERT INTO usuarios (ident, nombre, tipo, numemp, clave, fcrea, fexpi, primera, region, ciiu3, email)
 				VALUES (:idUsu, :nombre, :nivel, :numFte, :passw, 'CURDATE()', 'DATE_ADD(CURDATE(), INTERVAL 1 YEAR)', '0','0','0', :email)");
 			$cadenains->execute(array(':idUsu'=>$id_usuario,
@@ -45,4 +45,4 @@
 		}
 	}
 	echo "CLAVES GENERADAS: " . $cuenta;
-?>			
+?>

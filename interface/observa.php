@@ -54,7 +54,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -66,7 +66,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top small">
 			<div class="container-fluid">
 			    	<div class="navbar-header">
-			        	<span class="navbar-brand">EDIT Servicios - OBSERVACIONES CRITICA</span>
+			        	<span class="navbar-brand">EVAC - OBSERVACIONES CRITICA</span>
 			        </div>
 			</div>
 		</nav>
@@ -107,4 +107,4 @@
 			</div>
 		</div>
  	</body>
- </html> 
+ </html>

@@ -11,17 +11,17 @@
 	$region = $_SESSION['region'];
 	$pagina = "CONSULTA PROCESOS";
 	$numero = $_GET['numero'];
-	
+
 	$qControl = $conn->query("SELECT a.nordemp, a.ciiu3, b.nombre, c.desc_estado, IFNULL(d.nombre, 'No asignado') AS ususede, e.desc_novedad,
 		f.nombre AS sede, a.fecdist, a.fecdig, a.fecrev, a.fecacept, a.aceptadc FROM control a LEFT JOIN caratula b ON a.nordemp = b.nordemp
 		LEFT JOIN estados c ON a.estado = c.idestados
 		LEFT JOIN usuarios d ON a.usuarioss = d.ident
 		LEFT JOIN novedades e ON a.novedad = e.idnovedades
 		LEFT JOIN regionales f ON a.codsede = f.codis
-		WHERE a.nordemp LIKE '$numero' 
+		WHERE a.nordemp LIKE '$numero'
 		ORDER BY a.nordemp
 		");
-	
+
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -72,14 +72,14 @@
 					}
 				});
 			});
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<form class='form-horizontal' role='form' name="opera" id="idopera">
@@ -94,7 +94,7 @@
 							</span>
 						</div>
 				</div>
-			</div>				
+			</div>
 			<table class='table table-condensed table-hover table-bordered' style='font-size: 11px; margin-top: 15px;'>
 				<thead>
 					<tr>
@@ -135,4 +135,4 @@
 	</div>
 </form>
  	</body>
- </html> 
+ </html>

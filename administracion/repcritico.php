@@ -24,7 +24,7 @@
 	else {
 		$campoUsu = "usuarioss";
 	}
-	
+
 	$cols = array(
 		 "Sin Distribuir"=>0,
 		 "Distribuidos"=>1,
@@ -35,9 +35,9 @@
 		 "Verificados"=>6,
 		 "Aceptados"=>7,
 		 "Novedades"=>8);
-	
+
 	$qUsuarios = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
-	
+
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
@@ -53,7 +53,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
@@ -65,7 +65,7 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</head>
@@ -98,7 +98,7 @@
 								$usurep = $lUsuarios['ident'];
 								$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep'
 									AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
-									
+
 								$valor1 =0; $valor2 =0; $valor3 =0; $valor4 =0; $valor5 =0; $valor6 =0; $valor7 =0; $valor8 =0; $valnov =0; $distri =0;
 								foreach($qControl AS $lControl) {
 									switch ($lControl['estado']) {
@@ -217,4 +217,4 @@
 			</div>
 		</div>
  	</body>
- </html> 
+ </html>
