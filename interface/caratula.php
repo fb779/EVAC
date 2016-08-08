@@ -183,19 +183,18 @@ p {
 	var retorno = "";
 	$(function() {
 		$("#idcara").submit(function(event) {
-
 			event.preventDefault();
-
-			var $items = $(this).serialize();
-			// var $items = $(this).find(':input').not('#actividades :input').serializeArray();
-			// var $activ = $('#actividades :input').serializeArray();
+			// var $items = $(this).serialize();
+			var $items = $(this).find(':input').not('#numero ,#actividades :input').serializeArray();
+			var $activ = $('#actividades :input').serializeArray();
+			debugger;
 			$.ajax({
 				url: "../persistencia/grabacara.php",
 				type: "POST",
 				dataType: "json",
 				//beforeSend: validaCara,
-                data: $items,
-                // data: {'dtForm': $items, 'dtActi': $activ},
+                // data: $items,
+                data: {'emp': $('#numero').val() ,'dtForm': JSON.stringify($items), 'dtActi': JSON.stringify($activ)},
                 success: function(dato) {
 
                 	if (dato.success){

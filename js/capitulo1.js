@@ -464,11 +464,10 @@ $(document).ready(function(){
 							$('#mNoti').removeClass('hidden');
 							$("#mSave").addClass('hidden');
 						}
-
 					},
 					// error: function(xhr, status, erroThrown){
 					// },
-			});
+				});
 			}
 		});
 
