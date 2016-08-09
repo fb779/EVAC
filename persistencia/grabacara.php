@@ -46,18 +46,39 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	/* PENDIENTE TERMINAR GUARDADO DE DATOS DE ACTIVIDADES ciiu PARA CARATULA */
 
-	$qActiEmpre = $conn->query('SELECT * FROM actiemp WHERE nordemp = ' . $emp)->fetch(PDO::FETCH_ASSOC);
+	// $qActiEmpre = $conn->query('SELECT * FROM actiemp WHERE nordemp = ' . $emp)->fetch(PDO::FETCH_ASSOC);
+	$qActiEmpre = $conn->query('SELECT actividad FROM actiemp WHERE nordemp = ' . $emp);
 	if (isset($_POST['dtActi']) && $_POST['dtActi']!='' ) {
 		$dtActi = json_decode($_POST['dtActi']);
+		// print_r($dtActi);
 	}
-
+	$qAct = array();
+	foreach ($qActiEmpre as $actiEmpre) {
+		// echo $actiEmpre['actividad'];
+		$qAct[] = $actiEmpre['actividad'];
+	}
+	print_r( key($qAct));
 	$lineaINS = 'INSERT INTO actiemp (nordemp, actividad) VALUES ';
 	$inse = '';
-	// foreach ($dtActi as $dt) {
-	// 	$inse = .= "('" . $emp . "', '" . $dt->value . "'),";
+	// foreach ($qActiEmpre as $dt) {
+	// 	echo json_encode($dt['actividad']);
+	// 	if (array_key_exists($dt['actividad'], $dtActi)){
+	// 		echo "Estamos en la lista de la consulta";
+	// 		$inse .= "('" . $emp . "', '" . $dt->value . "'),";
+	// 	}
 	// }
-	print_r($qActiEmpre);
+
+	if ($inse != ''){
+		$lineaINS .= trim($inse);
+	}
+
+	// foreach ($dtActi as $dt) {
+	// 	$inse .= "('" . $emp . "', '" . $dt->value . "'),";
+	// }
+
 	$jsondata['qInsert'] = $lineaINS;
+
+
 
 
 

@@ -1,4 +1,4 @@
-<nav class="navbar small"  style="padding-top: 50px">
+<nav class="navbar small">
 	<div class="container">
 		<div class="row col-xs-12">
 	        <div id="navbar" class="navbar-collapse navbar-default collapse">
@@ -13,9 +13,6 @@
 		            	<!--li><a href="casos.php">Mantenimiento Casos</a></li-->
 		            	<li><a href="periodos.php">Admin Periodos</a></li>
 	            	<?php } ?>
-	            	
-	            	
-	            	
 	          	</ul>
 	       </div><!--/.nav-collapse -->
        </div>

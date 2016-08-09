@@ -150,7 +150,7 @@
 
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuCOCR.php';
 			if ($tipousu == "CO") {

@@ -674,13 +674,13 @@ $(document).ready(function(){
 		var npr = parseInt($('#idnalpr').val());
 		var epu = parseInt($('#idexpub').val());
 		var epr = parseInt($('#idexpr').val());
-
+		debugger;
 		$item.parent().parent().removeClass('has-error');
 		$item.parent().parent().children('div span').remove()
 		$msj.children('span').remove();
 		$msj1.children('span').remove();
 
-		if ($item.val() == '' || parseInt($item.val()) > 100){
+		if ($item.val() === '' || parseInt($item.val()) > 100){
 			clError($item);
 		}else{
 
@@ -706,16 +706,17 @@ $(document).ready(function(){
 			}
 
 			if (!isNaN(npu) && !isNaN(npr) && !isNaN(epu) && !isNaN(epr) && (npu + npr + epu + epr) != 100){
-				$msj.append('<span"><p>La suma de la composición social debe ser 100%</p></span>');
+				debugger;
+				$msj.append('<span><p>La suma de la composición social debe ser 100%</p></span>');
 				clError($item);
 							//$(this).val('');
-						} else if (sumaCampos() > 100){
-							$msj.append('<span"><p>La suma de la composición social debe ser 100%</p></span>');
-							clError($item);
-							//$(this).val('');
-						}
-					}
-				});
+			} else if (sumaCampos() > 100){
+				$msj.append('<span><p>La suma de la composición social debe ser 100%</p></span>');
+				clError($item);
+				//$(this).val('');
+			}
+		}
+	});
 
 	/** Validacion para el campo estado y activacion de la casilla adicional */
 	$('#idestado').on('change', function(){
