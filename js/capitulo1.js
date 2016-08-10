@@ -434,8 +434,8 @@ $(document).ready(function(){
 			//$("#mNotificacion").modal('hide');
 			e.preventDefault();
 			var $datos = $('#listDisForm');
-			var $dtAct = $('#listDisForm').children('.active');
-			var $campos = $(':input,select', $datos);
+			// var $dtAct = $('#listDisForm').children('.active');
+			// var $campos = $(':input,select', $datos);
 			var $cmps = [];
 
 			$datos.children().each(function(){
@@ -492,12 +492,27 @@ $(document).ready(function(){
 		$("#capitulo1").on('submit', function(event) {
 			event.preventDefault();
 			$('#C1_numdisp').val( $('#listDisForm').children().length);
+
+			/* nuevo envio de informacion para el manejo de auditoria */
+			var $dtForm = $('#capitulo1').find(':input, checkbox').not('.validar, [type="hidden"]').serializeArray();
+
+			var $dtDisp = $('#listDisForm');
+			var $cmps = [];
+
+			$dtDisp.children().each(function(){
+				var $cm = $(':input,select',$(this));
+				$cmps.push( $cm.serializeArray() );
+			});
+			/* fin auditoria */
+
+
 			$.ajax({
 				url: "../persistencia/grabacapi.php",
 				type: "POST",
 				dataType: "json",
 				//beforeSend: validaFormOther,
-				data: $(this).serialize(),
+				// data: $(this).serialize(),
+				data: {'MD': 0 ,'CP': $('#numero').val(),'dtForm': JSON.stringify($dtForm), 'dtDisp':JSON.stringify($cmps)},
 				success: function(dato) {
 					if (dato.success) {
 						$("#btn_cont").show();

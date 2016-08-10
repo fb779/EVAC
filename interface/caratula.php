@@ -196,7 +196,7 @@ p {
                 // data: $items,
                 data: {'emp': $('#numero').val() ,'dtForm': JSON.stringify($items), 'dtActi': JSON.stringify($activ)},
                 success: function(dato) {
-
+                	debugger;
                 	if (dato.success){
                 		$("#idmsg").show();
                 	}
@@ -208,7 +208,7 @@ p {
                 	}
                 },
                 error: function(xhr, status, errorthrown){
-
+                	debugger;
                 	console.log(xhr);
                 }
             });

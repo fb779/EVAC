@@ -2,22 +2,22 @@
 	if(session_id()  == "") {
 		session_start();
 	}
-	
+
 	if (!isset($_SESSION['tipou'])) {
 		echo "<h2 style='text-align: center; font-family: arial'>SESI�N HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
 	}
-	
+
 	include '../conecta.php';
-	
+
 	$region = $_SESSION['region'];
 	$tipousu = $_SESSION['tipou'];
 	$idusuario = $_SESSION['idusu'];
 	$numero = $_POST['numero'];
 	$vig = $_SESSION['vigencia'];
-	
-	echo "REGIONAL " . $region;
-	
+
+	// echo "REGIONAL " . $region;
+
 	if (isset($_POST['envio'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -46,7 +46,7 @@
 			}
 		}
 	}
-	
+
 	if (isset($_POST['capitulo'])) {
 		$modulo = $_POST['modulo'];
 		if ($tipousu == "CR") {
@@ -86,7 +86,7 @@
 		}
 		$lineaCTL->execute();
 	}
-	
+
 	if (isset($_POST['devol'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -101,7 +101,7 @@
 		$estadoDev->execute();
 		echo "FORMULARIO DEVUELTO";
 	}
-	
+
 	if (isset($_POST['reenv'])) {
 		$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
 		foreach($qControl AS $rowCtl) {
@@ -109,18 +109,18 @@
 			$sede = $rowCtl['codsede'];
 		}
 		//$txtObser = $_POST['observa'];
-		$creaRev = $conn->prepare("INSERT INTO devoluciones (vigencia,nordemp,observa,codsede,tipo,coddev,codcrit,fecha) VALUES 
+		$creaRev = $conn->prepare("INSERT INTO devoluciones (vigencia,nordemp,observa,codsede,tipo,coddev,codcrit,fecha) VALUES
 			($vig,$numero,'',$sede,'RV','$coddev','$idusuario',curdate())");
 		$creaRev->execute();
-		
+
 		$estadoDev = $conn->prepare("UPDATE devoluciones SET tipo = 'DVR' WHERE nordemp = $numero AND vigencia = $vig AND tipo = 'DEV'");
 		$estadoDev->execute();
-		
+
 		$estadoRev = $conn->prepare("UPDATE control SET estado = 5, acceso = 'DC' WHERE nordemp = $numero AND vigencia = $vig");
 		$estadoRev->execute();
 		echo "FORMULARIO REENVIADO";
 	}
-	
+
 	if (isset($_POST['obser'])) {
 		$numero = $_POST['numero'];
 		$capi = $_POST['capit'];
@@ -129,12 +129,12 @@
 			$insObs = $conn->prepare("INSERT INTO observaciones (vigencia,nordemp,usuario,capitulo,observacion,fecha) VALUES
 				($vig,$numero,'$idusuario',$capi,'$observa',curdate())");
 			$insObs->execute();
-			
+
 			$jsondata['message'] = 'Guardado de la observacion';
 			$jsondata['success'] = true;
 			header('Content-type: application/json; charset=utf-8');
 			echo json_encode($jsondata);
-			
+
 		}
 	}
 ?>

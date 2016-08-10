@@ -24,12 +24,10 @@
 
 
 /**########################**/
-	// verificacion para la carga de informacion de l formulario y creacion de registros para la informacion
+	// verificacion para la carga de informacion del formulario y creacion de registros para la informacion
 	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
 	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-
-
 /**########################**/
 
 	if ($tipousu != "FU") {

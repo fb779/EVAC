@@ -10,7 +10,7 @@
 // 		foreach($qVigencia AS $lVigencia) {
 // 			$vigencia = $lVigencia['vigencia'];
 // 		}
-		
+
 		// $qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac';")->fetch(PDO::FETCH_ASSOC);
 		$qPeriodoac = $conn->query("SELECT id, codPeriodo, anioperiodo, nomperiodo FROM periodoactivo where estperiodo = 'ac';");
 		if ($qPeriodoac->rowCount() > 0 ){
@@ -24,7 +24,7 @@
 
 		$qUsuario = $conn->prepare('SELECT * FROM usuarios WHERE ident LIKE BINARY :idUsu AND clave LIKE BINARY :pwdUsu');
 		$qUsuario->execute(array('idUsu' => $_POST['inputLogin'], 'pwdUsu' => $_POST['inputPassword']));
-	
+
 		$rUsuario = $qUsuario->fetchAll();
 		if (count($rUsuario)) {
 			foreach ($rUsuario as $row) {
@@ -67,8 +67,8 @@
 		<link href="bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="bootstrap/css/custom.css" rel="stylesheet">	
-		<link href="bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="bootstrap/css/custom.css" rel="stylesheet">
+		<link href="bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="bootstrap/js/jquery.js"></script>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/notSubmit.js"></script>
@@ -97,7 +97,7 @@
 					<div class="clearfix"></div>
 
 					<div class="hidden-xs hidden-sm" id="redes">
-						<div class="col-md-11">							
+						<div class="col-md-11">
 							<a href="http://www.youtube.com/DaneColombia" target="_blank"><div id="icon-net" class="yt"></div></a>
 							<a href="https://www.facebook.com/DANEColombia" target="_blank"><div id="icon-net" class="fb"></div></a>
 							<a href="https://twitter.com/DANE_Colombia" target="_blank"><div id="icon-net" class="tw"></div></a>
@@ -124,7 +124,7 @@
 							</div>
 						</div>
 						<div class="row hidden-xs col-md-3 pull-left" id="redes">
-							<div class="">							
+							<div class="">
 								<div id="icon-net" class="yt"></div>
 								<div id="icon-net" class="fb"></div>
 								<div id="icon-net" class="tw"></div>
@@ -156,7 +156,7 @@
 		</div>
 		<div class="container">
 		<?php
-			include 'login.php'; 
+			include 'login.php';
 		?>
 		</div>
 		<footer class="footer">
@@ -171,12 +171,12 @@
 							<img class="img-responsive" src="bootstrap/img/bt_contactenos.png">
 						</div>
 						<div class="col-md-9">
-						
+
 						<?php
 						//var_dump($_SESSION);
-						
+
 						?>
-						
+
 							<h6>Call Center</h6>
 							(57 1) 595 3525 • 01 8000 952525<br>
 							Conmutador: (571) 597 8300<br>
@@ -192,10 +192,10 @@
 								<a href="#"><img src="bootstrap/img/arrow_003.png'; ?>"> PQR  </a>
 								</li>
 							</ul>
-						</div> 
+						</div>
 						<div class="clearfix">
 						</div>
-					</div>    
+					</div>
       			</div>
 			</div>
 			<div class="col-sm-4 col-md-7" id="footer_alterno">
@@ -210,7 +210,7 @@
 						<br>
 						Apartado A&eacute;reo 80043
 						<br>
-						Bogot&aacute; D.C., Colombia - Suram&eacute;rica 
+						Bogot&aacute; D.C., Colombia - Suram&eacute;rica
 					</address>
 				</div>
 				<div class="col-md-6">
@@ -227,7 +227,7 @@
 				</div>
 			</div>
       </div>
-    </footer>		
-				
+    </footer>
+
 	</body>
 </html>
