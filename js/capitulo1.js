@@ -505,14 +505,14 @@ $(document).ready(function(){
 			});
 			/* fin auditoria */
 
-
+			debugger;
 			$.ajax({
 				url: "../persistencia/grabacapi.php",
 				type: "POST",
 				dataType: "json",
 				//beforeSend: validaFormOther,
 				// data: $(this).serialize(),
-				data: {'MD': 0 ,'CP': $('#numero').val(),'dtForm': JSON.stringify($dtForm), 'dtDisp':JSON.stringify($cmps)},
+				data: {'mod': 'C1_nordemp' ,'emp': $('#numero').val(),'dtForm': JSON.stringify($dtForm),'dtDisp': JSON.stringify($cmps)},
 				success: function(dato) {
 					if (dato.success) {
 						$("#btn_cont").show();

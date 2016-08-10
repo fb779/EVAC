@@ -1,6 +1,9 @@
 <?php
 if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
 	$jsondata = array();
+	$erAud = 0; $erMOD = 0; $erINS = 0; $erDEL = 0;
+	$errors = array(); $mensajes = array();
+
 	if (session_id() == "") {
 		session_start();
 	}
@@ -9,11 +12,54 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$tipousu = $_SESSION['tipou'];
 	$region = $_SESSION['region'];
 
-	echo isset($_POST['C1']);
-	// if (isset($_POST['C1']) && isset($_POST['dtForm'])){
-	// 	$dtFomr = $_POST['dtForm'];
-	// }
+	$mod = $_POST['mod'];
+	$emp = $_POST['emp'];
+	$dtForm = json_decode($_POST['dtForm']);
+	$dtDisp =  json_decode($_POST['dtDisp']);
 
+	switch (substr($mod,0,2)) {
+		case 'C1':
+			$tabla = "capitulo_i";
+			$modulo = "m1";
+			break;
+	}
+	$qCap1 = $conn->query('SELECT * from '. $tabla .' where '. $mod .' = ' . $emp . ' AND vigencia = ' . $vig )->fetch(PDO::FETCH_ASSOC);
+
+	$lineaMOD = 'UPDATE '. $tabla .' SET ';
+	$sets = '';
+
+	foreach ($dtForm as $dt) {
+		if (array_key_exists($dt->name, $qCap1) && $dt->value != $qCap1[$dt->name]  ){
+			$variab = $dt->name;
+			$valAnt = $qCap1[$dt->name];
+			$valAct = $dt->value;
+
+			try {
+				/* Crear la auditoria de los campos que cambiaron de la caratula */
+				$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual, tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
+				// $creaLog->execute(array(':numero'=>$emp, ':tipo'=>$_SESSION['tipou'], ':usuario'=>$_SESSION['idusu'], ':fecha'=>date("Y-m-d"), 	'hora'=>date("h:i:sa"), ':variable'=>$variab, ':anterior'=>$valAnt, ':actual'=>$valAct, ':tabla'=>$tabla));
+				/* Creamos el set para la modificacion de los campos */
+				$sets .= $variab ." = '" . $valAct . "', ";
+			} catch (Exception $e) {
+				$erAud ++;
+				$jsondata['errors']['auditoria'] = true;
+			}
+		}
+	} /*end FOR */
+
+	if ($sets != '' && $erAud == 0) {
+		$lineaMOD .= trim($sets, ', ');
+		try {
+			$jsondata['qMOD'] = $lineaMOD;
+			// $qUpdate = $conn->query($lineaMOD);
+		} catch (Exception $e) {
+			$erMOD ++;
+		}
+	}
+
+	header('Content-type: application/json; charset=utf-8');
+	echo json_encode($jsondata);
+	exit();
 } else {
 	exit();
 }

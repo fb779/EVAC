@@ -12,7 +12,8 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$emp = $_POST['emp'];
 	$dtForm = json_decode($_POST['dtForm']);
 
-	$qEmpresa = $conn->query("SELECT * FROM caratula WHERE nordemp = " . $emp)->fetch(PDO::FETCH_BOTH) ;
+	$qEmpresa = $conn->query("SELECT * FROM caratula WHERE nordemp = " . $emp)->fetch(PDO::FETCH_BOTH);
+	// $qEmpresa = $conn->query("SELECT * FROM caratula WHERE nordemp = " . $emp)->fetch(PDO::FETCH_ASSOC);
 
 	$lineaMOD = 'UPDATE caratula SET ';
 	$sets = '';
@@ -36,7 +37,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		}
 	} /*end FOR */
 
-	if ($sets != '' $erAud == 0) {
+	if ($sets != '' && $erAud == 0) {
 		$lineaMOD .= trim($sets, ',');
 		try {
 			$qUpdate = $conn->query($lineaMOD);
