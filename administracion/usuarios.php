@@ -17,23 +17,34 @@
 	$pagina = "ADMINISTRACI&Oacute;N USUARIOS";
 
 	if ($region != 99) {
-		$campoUsuario = "b.usuarioss";
+		// $campoUsuario = "b.usuarioss";
+		$campoUsuario = "ct.usuarioss";
+
 	}
 	else {
-		$campoUsuario = "b.usuario";
+		// $campoUsuario = "b.usuario";
+		$campoUsuario = "ct.usuario";
 	}
 
 	if ($region != 99) {
-		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico'
-			WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario /*RIGHT OUTER JOIN periodoactivo p on b.vigencia = p.id*/
-			WHERE a.region = :idRegion /*AND b.vigencia = :vigencia*/ AND a.tipo != 'FU' GROUP BY a.ident");
-		$qUsuario->execute(array(':idRegion'=>$region, ':vigencia'=>$vig));
+		//$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario /*RIGHT OUTER JOIN periodoactivo p on b.vigencia = p.id*/ WHERE a.region = :idRegion /*AND b.vigencia = :vigencia*/ AND a.tipo != 'FU' GROUP BY a.ident");
+
+		$qUsuario = $conn->prepare("SELECT us.ident, us.nombre,
+			(CASE us.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END) AS nivel,
+			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE ct.usuarioss = us.ident and pa.id = :vigencia ) AS fuentes
+			FROM usuarios AS us where us.tipo NOT IN ('FU','CO') AND us.region = :idRegion");
+
+		$qUsuario->execute(array(':vigencia'=>$vig, ':idRegion'=>$region));
 	}
 	else {
-		$qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico'
-			WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario
-			WHERE a.tipo != 'FU' GROUP BY a.ident");
-		$qUsuario->execute();
+		// $qUsuario = $conn->prepare("SELECT a.ident, a.nombre, CASE a.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END AS nivel, COUNT( $campoUsuario) AS fuentes FROM usuarios a LEFT OUTER JOIN control b ON a.ident = $campoUsuario WHERE a.tipo != 'FU' GROUP BY a.ident");
+
+		$qUsuario = $conn->prepare("SELECT us.ident, us.nombre,
+			(CASE us.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END) AS nivel,
+			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE ct.usuarioss = us.ident and pa.id = :vigencia ) AS fuentes
+			FROM usuarios AS us where us.tipo NOT IN ('FU') order by us.ident");
+
+		$qUsuario->execute(array(':vigencia'=>$vig));
 	}
 
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");

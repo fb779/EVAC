@@ -12,12 +12,13 @@
 	$numero = $_GET['numero'];
 	$vig = $_SESSION['vigencia'];
 	$pagina = "ASIGNAR NOVEDAD";
+	$nombre = $_SESSION['nombreu'];
 	$txtObserva = "";
-	
+
 	$qCaratula = $conn->prepare("SELECT a.nordemp, a.nombre, b.novedad FROM caratula a, control b WHERE a.nordemp= :idNumero AND a.nordemp = b.nordemp");
 	$qCaratula->execute(array(':idNumero'=>$numero));
 	$row = $qCaratula->fetch(PDO::FETCH_ASSOC);
-	
+
 	//$rowRegion = $conn->query('select nombre')
 
 	if ($row['novedad'] != 99 AND $row['novedad'] != 5) {
@@ -26,8 +27,11 @@
 		$rowObs = $qObserva->fetch(PDO::FETCH_ASSOC);
 		$txtObserva = $rowObs['observacion'];
 	}
-	
+
 	$qNovedad = $conn->query("SELECT * FROM novedades WHERE idnovedades NOT IN (9, 99,98)");
+	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
+	$qNregion->execute(array(':nRegion'=>$regOpe));
+	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +44,7 @@
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
-		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">		
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -52,7 +56,7 @@
 			$(function() {
 	            $("#novedad").submit(function(event) {
 	                event.preventDefault();
-	
+
 	                $.ajax({
 	                    url: "../persistencia/opFormulario.php",
 	                    type: "POST",
@@ -101,7 +105,7 @@
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<div class="container" style="padding-top: 80px">
@@ -124,7 +128,7 @@
 										else {
 											echo "<option value='" . $lNovedad['idnovedades'] . "'>" . $lNovedad['desc_novedad'] . "</option>";
 										}
-									} 
+									}
 								?>
 							</select>
 						</div>
@@ -164,7 +168,7 @@
 							Tipos Soportados: JPG, GIF, PNG, PDF -- Tama&ntilde;o Max. 2MB.
 						</div>
 					</div>
-				</fieldset> 
+				</fieldset>
 			</form>
 			<?php
 				$sql = $conn->query("SELECT id,numemp,soporte_nombre,soporte_tipo,soporte_peso FROM soportes WHERE numemp='$numero'");
@@ -178,7 +182,7 @@
 						echo "<td style='text-align: center'><a href='#' onClick='borraSoporte(" . $idDoc . ", " . $numero . ", \"" . $lSoporte['soporte_nombre'] . "\");' title='Eliminar imagen'><span class='glyphicon glyphicon-remove' style='color: red'></span></a></td>";
 						echo "<td>".$lSoporte['soporte_nombre']."</td>";
 						echo "<td>".$lSoporte['soporte_tipo']."</td>";
-						echo "<td>".$lSoporte['soporte_peso']."</td>"; 
+						echo "<td>".$lSoporte['soporte_peso']."</td>";
 						echo "</tr>";
 					}
 					echo "</table>";

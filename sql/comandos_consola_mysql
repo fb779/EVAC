@@ -1,0 +1,8 @@
+conectarce a mysql
+
+mysql -h 127.0.0.1 -u root -p bas_de_datos
+
+Importar archivo sql desde consola
+source disco:/ruta/archvo.sql
+
+
