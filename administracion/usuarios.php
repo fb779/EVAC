@@ -155,7 +155,9 @@
 									}
 									echo "<td ><a href='musuarios.php?ident=" . $row['ident'] . "&accion=MOD' data-toggle='tooltip' title='Modificar Usuario'><span class='glyphicon glyphicon-pencil'></span></a></td>";
 									echo "<td><a href='#' id='" . $row['ident'] . "' data-toggle='tooltip' title='Eliminar Usuario' onClick='confirmar(this.id,\"" . $row['nombre'] . "\");'><span class='glyphicon glyphicon-remove' style='color: red'></span></a></td>";
-									if (substr($row['ident'], 0, 2) == "CR") {
+									if (substr($row['ident'], 0, 2) == "CO" and $region == '99') {
+										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
+									}elseif (substr($row['ident'], 0, 2) == "CR" and $region != '99') {
 										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
 									}
 								}
