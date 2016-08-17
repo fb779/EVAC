@@ -79,8 +79,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica -
-	Formulario Electr&oacute;nico</title>
+<title> <?php echo $_SESSION['titulo'] . 'Caratula unica'; ?> </title>
 <link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 <!-- Bootstrap -->
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -805,17 +804,7 @@ function sumaCampos(){
 						<?php } ?>
 					</select>
 				</div>
-				<?php } ?>
-				<!--div class="col-xs-4">
-					<div class="panel panel-default">
-						<div class="panel-heading">Periodo Activo</div>
-						<div class="panel-body">
-							<span for=""><?php /*echo $_SESSION['nomPeriAct'] . '<br>';*/ ?> </span>
-							<span for=""><?php /*echo print_r($_SESSION);*/ ?> </span>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-1">&nbsp;</div-->
+
 				<div class="col-xs-4">
 					<div class="panel panel-default">
 						<!--div class="panel-heading">Periodo actual</div-->
@@ -825,6 +814,7 @@ function sumaCampos(){
 						</div>
 					</div>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
 

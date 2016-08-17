@@ -74,3 +74,9 @@ database/
 .sass-cache/
 *.css.map
 
+### libreria dompdf
+dompdf/lib/fonts/DejaVuSans.ufm.php
+dompdf/lib/fonts/Helvetica.afm.php
+dompdf/lib/fonts/Times-Bold.afm.php
+dompdf/lib/fonts/Times-Roman.afm.php
+dompdf/lib/fonts/log.htm

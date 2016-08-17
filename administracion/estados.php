@@ -2,7 +2,7 @@
 	if(session_id() == "") {
 		session_start();
 	}
-	
+
 	$mensaje = "";
 	if (!isset($_SESSION['tipou'])) {
 		echo "<h2 style='text-align: center; font-family: arial'>SESI&Oacute;N HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
@@ -10,16 +10,21 @@
 	}
 	include '../conecta.php';
 	ini_set('default_charset', 'UTF-8');
+	$nombre = $_SESSION['nombreu'];
 	$numero = $_GET['numero'];
 	$pagina = "CAMBIO DE ESTADO";
-	
+
 	$qCtl = $conn->query("SELECT a.nordemp, b.nombre, c.desc_estado FROM control a, caratula b, estados c WHERE a.nordemp = $numero AND
 		a.nordemp = b.nordemp AND a.estado = c.idestados");
 	foreach ($qCtl AS $lCtl) {
 		$a=1;
 	}
-	
+
 	$qEstados = $conn->query("SELECT * FROM estados ORDER BY idestados");
+
+	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
+	$qNregion->execute(array(':nRegion'=>$regOpe));
+	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,13 +32,13 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Cambio de estado'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
-		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">		
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -45,7 +50,7 @@
 			$(function() {
 	            $("#estados").submit(function(event) {
 	                event.preventDefault();
-	
+
 	                $.ajax({
 	                    url: "../persistencia/opFormulario.php",
 	                    type: "POST",
@@ -60,7 +65,7 @@
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 			<div class="container" style="padding-top: 80px">
@@ -79,7 +84,7 @@
 									<?php
 										foreach($qEstados AS $lEstados) {
 											echo "<option value='" . $lEstados['idestados'] . "'>" . $lEstados['desc_estado'] . "</option>";
-										} 
+										}
 									?>
 								</select>
 							</div>
@@ -93,4 +98,4 @@
 				</form>
 			</div>
  	</body>
- </html> 
+ </html>

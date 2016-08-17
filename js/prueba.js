@@ -5,7 +5,6 @@
  */
 
 $(document).ready(function() {
-	debugger;
 	redirectBrowser();
 });
 

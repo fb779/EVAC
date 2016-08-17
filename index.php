@@ -38,6 +38,7 @@
 				$_SESSION['nomPeri'] = $namVigAct;
 				$_SESSION['periodoAct'] = $vigActiva;
 				$_SESSION['nomPeriAct'] = $namVigAct;
+				$_SESSION['titulo'] = 'DANE EVAC - ';
 			}
 
 			if ($row['tipo'] == 'FU') {
@@ -48,7 +49,7 @@
 			}
 		}
 		else {
-			$mensaje = "Identificación/Clave Incorrectos";
+			$mensaje = "Usuario y/o Contraseña Errónea";
 		}
 	} else {
 		session_unset();

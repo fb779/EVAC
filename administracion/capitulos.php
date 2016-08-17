@@ -21,7 +21,7 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovación Tecnológica - Formulario Electrónico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Descargas de archivos'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">

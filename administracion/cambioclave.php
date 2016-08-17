@@ -17,12 +17,12 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovación Tecnológica - Formulario Electrónico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Cambio CLave'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
@@ -32,7 +32,7 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 
 			$(function() {

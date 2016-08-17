@@ -10,13 +10,13 @@
 	$region = $_SESSION['region'];
 	$pagina = "CONSULTA LOG DE MODIFICACIONES";
 	$numero = $_GET['numero'];
-	
-	$qLog = $conn->query("SELECT a.*, b.nombre 
-						  FROM auditoria a, usuarios b 
-						  WHERE a.usuario = b.ident 
+
+	$qLog = $conn->query("SELECT a.*, b.nombre
+						  FROM auditoria a, usuarios b
+						  WHERE a.usuario = b.ident
 						  AND a.numemp LIKE '$numero'
 						  ORDER BY a.numemp, a.fec_mod, hora_mod, tabla");
-	
+
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
@@ -27,12 +27,12 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Reporte auditoria'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -67,14 +67,14 @@
 					}
 				});
 			});
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<form class='form-horizontal' role='form' name="opera" id="idopera">
@@ -124,4 +124,4 @@
 		</div>
 	 </form>
  	</body>
- </html> 
+ </html>

@@ -1,4 +1,4 @@
-<?<?php 
+<?<?php
 	require_once "../dompdf/dompdf_config.inc.php";
 	ob_start();
 ?>
@@ -7,28 +7,21 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
 	<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 	<!-- Bootstrap -->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="../bootstrap/css/custom.css" rel="stylesheet">
-	<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
-	<script src="../bootstrap/js/jquery.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <script src="../bootstrap/js/jquery.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script> -->
 
 	<style type="text/css"> p {font-size: 13px !important;}</style>
 	<style type="text/css" media="screen">
-		
+
 		fieldset {
 			border: solid 0.5px black;
 			margin-bottom: 5px;
 		}
-		
+
 		legend{
 			font-size: 1em;
 		}
@@ -36,19 +29,32 @@
 		div {
 			margin-bottom: 10px;
 		}
-			
-		
+
+
 	</style>
 	<title></title>
-	<link rel="stylesheet" href="">		
+	<link rel="stylesheet" href="">
 </head>
 <body>
 	<div class="container">
 		<fieldset  class="container-fluid">
 			<legend>1. Durante el periodo de referencia</legend>
 			<div class="row">
+				<table>
+					<tr>
+						<td>¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</td>
+						<td>
+							<label class="radio-inline">
+							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php //echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> disabled > Si
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php //echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?>  > No
+							</label>
+						</td>
+					</tr>
+				</table>
 				<div class="col-xs-6 col-xs-offset-2">
-					¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?
+
 				</div>
 				<div class="col-xs-2">
 					<label class="radio-inline">
@@ -60,18 +66,18 @@
 				</div>
 			</div>
 		</fieldset>
-		
+
 		<fieldset class="container-fluid">
 			<legend>2 Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: <br>
 						&Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad:</legend>
 			<div class="row">
 				<div class="col-xs-12">
-					Este módulo  determina la cantidad de vacantes durante el "<?php //echo $nomPeriodo;?> - " e  identifica sus características.		
+					Este módulo  determina la cantidad de vacantes durante el "<?php //echo $nomPeriodo;?> - " e  identifica sus características.
 				</div>
 			</div>
-			
+
 			<div class="col-xs-12 col-sm-12 text-center">
-			
+
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Total Vacantes</label>
 					<div class=''>
@@ -93,7 +99,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="row">
 
 				<div class="col-xs-12">
@@ -121,7 +127,7 @@
 											<option value="5" <?php //echo ($dispc['i1r2c2'] == 5) ? 'selected' : '';  ?> >Área de contabilidad y finanzas</option>
 											<option value="6" <?php //echo ($dispc['i1r2c2'] == 6) ? 'selected' : '';  ?> >Personal de Investigación y desarrollo</option>
 											<option value="7" <?php //echo ($dispc['i1r2c2'] == 7) ? 'selected' : '';  ?> >Personal de apoyo</option>
-										</select>								
+										</select>
 									</div>
 								</div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -215,7 +221,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
@@ -242,7 +248,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 									<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
@@ -296,7 +302,7 @@
 											<option value="5" <?php //echo ($dispc['i1r2c2'] == 5) ? 'selected' : '';  ?> >Área de contabilidad y finanzas</option>
 											<option value="6" <?php //echo ($dispc['i1r2c2'] == 6) ? 'selected' : '';  ?> >Personal de Investigación y desarrollo</option>
 											<option value="7" <?php //echo ($dispc['i1r2c2'] == 7) ? 'selected' : '';  ?> >Personal de apoyo</option>
-										</select>								
+										</select>
 									</div>
 								</div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -390,7 +396,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
@@ -417,7 +423,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 									<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
@@ -563,7 +569,7 @@
 <?php
 	$html = ob_get_clean();
 	$dompdf = new DOMPDF();
-	$dompdf->set_base_path('editsv/bootstrap/css/');
+	$dompdf->set_base_path('evac/bootstrap/css/');
 	$dompdf->load_html($html);
 	$dompdf->render();
 	$dompdf->stream($nombrefor);

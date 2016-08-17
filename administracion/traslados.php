@@ -9,15 +9,20 @@
 	}
 	include '../conecta.php';
 	ini_set('default_charset', 'UTF-8');
+	$nombre = $_SESSION['nombreu'];
 	$numero = $_GET['numero'];
 	$pagina = "TRASLADO DE SEDE";
-	
+
 	$qCaratula = $conn->prepare("SELECT a.nordemp, a.regional, a.nombre, b.nombre AS nomsede FROM caratula a, regionales b WHERE a.nordemp= :idNumero AND a.regional = b.codis");
 	$qCaratula->execute(array(':idNumero'=>$numero));
 	$row = $qCaratula->fetch(PDO::FETCH_ASSOC);
 	$codSede = $row['regional'];
-	
+
 	$qSedes = $conn->query("SELECT codis, nombre FROM regionales WHERE codis != $codSede");
+
+	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
+	$qNregion->execute(array(':nRegion'=>$regOpe));
+	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,13 +30,13 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Traslados'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
-		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">		
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -43,7 +48,7 @@
 			$(function() {
 	            $("#traslado").submit(function(event) {
 	                event.preventDefault();
-	
+
 	                $.ajax({
 	                    url: "../persistencia/opFormulario.php",
 	                    type: "POST",
@@ -57,7 +62,7 @@
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 			<div class="container" style="padding-top: 80px">
@@ -76,7 +81,7 @@
 									<?php
 										foreach($qSedes AS $lSedes) {
 											echo "<option value='" . $lSedes['codis'] . "'>" . $lSedes['nombre'] . "</option>";
-										} 
+										}
 									?>
 								</select>
 							</div>
@@ -90,4 +95,4 @@
 				</form>
 			</div>
  	</body>
- </html> 
+ </html>
