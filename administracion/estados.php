@@ -12,6 +12,7 @@
 	ini_set('default_charset', 'UTF-8');
 	$nombre = $_SESSION['nombreu'];
 	$numero = $_GET['numero'];
+	$regOpe = $_SESSION['region'];
 	$pagina = "CAMBIO DE ESTADO";
 
 	$qCtl = $conn->query("SELECT a.nordemp, b.nombre, c.desc_estado FROM control a, caratula b, estados c WHERE a.nordemp = $numero AND
@@ -45,10 +46,27 @@
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
-		<style type="text/css"> p {font-size: 13px !important;}</style>
+		<style type="text/css"> p {font-size: 13px !important;}
+		body { padding-top: 60px; }
+		</style>
 		<script type="text/javascript">
-			$(function() {
-	            $("#estados").submit(function(event) {
+			$(document).ready(function() {
+
+				if ($('#listaestados').val() == 0){
+					var $btn = $('#idcambio');
+					$btn.addClass('disabled');
+				}
+				$('#listaestados').on('change', function(){
+					var $item = $(this);
+					var $btn = $('#idcambio');
+					if ( $item.val() == 0 ){
+						$btn.addClass('disabled');
+					} else {
+						$btn.removeClass('disabled');
+					}
+				});
+
+				$("#estados").submit(function(event) {
 	                event.preventDefault();
 
 	                $.ajax({
@@ -56,8 +74,10 @@
 	                    type: "POST",
 	                    data: {accion: "cestado", numero: $("#numero").val(), nvoestado: $("#listaestados").val()},
 	                    success: function(dato) {
-	                    	$("#idcambio").text("Estado modificado");
-							$("#idcambio").prop("disabled", true);
+	                    	alert('Estado modificado');
+	                    	//$("#idcambio").text("");
+							// $("#idcambio").prop("disabled", true);
+							location.reload();
 						}
 					});
 				});
@@ -71,15 +91,24 @@
 			<div class="container" style="padding-top: 80px">
 				<form role='form' id="estados">
 					<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
-					<p>Cambiar Estado: <?php echo "<b>  " . $lCtl['nordemp'] . " - " . $lCtl['nombre'] . "</b>"?></p>
-					<p>Estado Actual: <?php echo "<b>  " . $lCtl['desc_estado'] . "</b>"?></p>
-					<fieldset>
-						<div class='form-group form-group-sm'>
-							<div class='col-sm-2 small text-right'>
-								<label class='control-label' for='listareg'>Cambiar a:</label>
-							</div>
-							<div class='col-sm-5 small'>
-								<select class='form-control' id='listaestados' name = 'nvoestado'>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<span class="panel-title">Cambiar Estado: <?php echo "<b>  " . $lCtl['nordemp'] . " - " . $lCtl['nombre'] . "</b>"?></span class="panel-title">
+						</div>
+						<div class="panel-body">
+							<div class="row small">
+								<div class="col-xs-12">
+									<span for="">
+										Estado Actual: <?php echo "<b>  " . $lCtl['desc_estado'] . "</b>"?>
+									</span>
+								</div>
+
+								<div class='col-xs-12 text-center '>
+									<label class='control-label' for='listaestados'>Cambiar a:</label>
+								</div>
+
+								<div class='col-sm-12'>
+									<select class='form-control' id='listaestados' name = 'nvoestado'>
 									<option value='0'>Seleccione estado...</option>";
 									<?php
 										foreach($qEstados AS $lEstados) {
@@ -87,12 +116,17 @@
 										}
 									?>
 								</select>
+								</div>
 							</div>
 						</div>
-					</fieldset>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-1 small'>
-							<button type='submit' class='btn btn-primary btn-md' id = 'idcambio'>Confirma Cambio</button>
+
+						<div class="panel-footer">
+							<div class="row ">
+								<div class="col-xs-2 col-xs-offset-5">
+									<button id ="idcambio" type='submit' class='btn btn-primary btn-md'>Confirma Cambio</button>
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</form>

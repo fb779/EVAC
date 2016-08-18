@@ -43,7 +43,7 @@
     		<?php
     			if ($tipousu == "FU") {
     				echo "<span class='navbar-brand small' style='font-size: 12px'>EVAC - DISPONIBILIDAD LABORAL</span>";
-    			} 
+    			}
     			else {
     				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>EVAC - DISPONIBILIDAD LABORAL</a></span>";
     			}
@@ -59,7 +59,7 @@
             	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li-->
-				
+
 				<?php
 					if($estado>4){
 						echo "<li><a href='../administracion/registro.php?numord=" . $numero . "'>PAZ Y SALVO</a></li>";
@@ -90,5 +90,5 @@
 		echo "$('#avisoCrit').modal('show');";
 		echo "});});";
 		echo "</script>";
-	} 
+	}
 ?>

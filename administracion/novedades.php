@@ -13,6 +13,7 @@
 	$vig = $_SESSION['vigencia'];
 	$pagina = "ASIGNAR NOVEDAD";
 	$nombre = $_SESSION['nombreu'];
+	$regOpe = $_SESSION['region'];
 	$txtObserva = "";
 
 	$qCaratula = $conn->prepare("SELECT a.nordemp, a.nombre, b.novedad FROM caratula a, control b WHERE a.nordemp= :idNumero AND a.nordemp = b.nordemp");
@@ -53,7 +54,22 @@
 		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
-			$(function() {
+			$(document).ready(function() {
+
+				if ($('#listaestados').val() == 0){
+					var $btn = $('#idcambio');
+					$btn.addClass('disabled');
+				}
+				$('#listaestados').on('change', function(){
+					var $item = $(this);
+					var $btn = $('#idcambio');
+					if ( $item.val() == 0 ){
+						$btn.addClass('disabled');
+					} else {
+						$btn.removeClass('disabled');
+					}
+				});
+
 	            $("#novedad").submit(function(event) {
 	                event.preventDefault();
 
@@ -66,42 +82,44 @@
 						}
 					});
 				});
+
+				function comprobarArchivo() {
+					var val = document.getElementById('archivo').value;
+					if (val == '') {
+						alert("Seleccione un archivo primero: ");
+						return false;
+					}
+					return true;
+				}
+
+				function borraSoporte(id, numero, nombre) {
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_WARNING,
+						title: 'Eliminar Soporte',
+						message: numero+' - '+nombre,
+						buttons: [{
+							label: 'Confirmar',
+								action: function(borra) {
+									$.ajax({
+										url: "soporteNov.php",
+										type: "GET",
+										data: {id: id, numero: numero, opcion_soporte: 2},
+										success: function(dato) {
+											borra.setMessage(numero+' - '+nombre+' SOPORTE ELIMINADO');
+										}
+									});
+								}
+						}, {
+							label: 'Cancelar',
+								action: function(cerrar) {
+								cerrar.close();
+							}
+						}]
+					});
+				}
 			});
 
-			function comprobarArchivo() {
-				var val = document.getElementById('archivo').value;
-				if (val == '') {
-					alert("Seleccione un archivo primero: ");
-					return false;
-				}
-				return true;
-			}
 
-			function borraSoporte(id, numero, nombre) {
-				BootstrapDialog.show({
-					type: BootstrapDialog.TYPE_WARNING,
-					title: 'Eliminar Soporte',
-					message: numero+' - '+nombre,
-					buttons: [{
-						label: 'Confirmar',
-							action: function(borra) {
-								$.ajax({
-									url: "soporteNov.php",
-									type: "GET",
-									data: {id: id, numero: numero, opcion_soporte: 2},
-									success: function(dato) {
-										borra.setMessage(numero+' - '+nombre+' SOPORTE ELIMINADO');
-									}
-								});
-							}
-					}, {
-						label: 'Cancelar',
-							action: function(cerrar) {
-							cerrar.close();
-						}
-					}]
-				});
-			}
 		</script>
 	</head>
 	<body>
@@ -111,42 +129,47 @@
 		<div class="container" style="padding-top: 80px">
 			<form role='form' id="novedad" data-toggle="validator">
 				<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
-				<p>Fuente: <?php echo "<b>  " . $row['nordemp'] . " - " . $row['nombre'] . "</b>"?></p>
-				<fieldset>
-					<div class='form-group form-group-sm'>
-						<div class='col-sm-2 small text-right'>
-							<label class='control-label' for='listareg'>Asignar novedad:</label>
+
+				<div class="panel panel-default">
+						<div class="panel-heading">
+							<span class="panel-title">Fuente: <?php echo "<b>  " . $row['nordemp'] . " - " . $row['nombre'] . "</b>"?></span class="panel-title">
 						</div>
-						<div class='col-sm-5 small'>
-							<select class='form-control' id='listanov' name = 'sede'>
-								<option value='0'>Seleccione una novedad...</option>";
-								<?php
-									foreach($qNovedad AS $lNovedad) {
-										if ($lNovedad['idnovedades'] == $row['novedad']) {
-											echo "<option value='" . $lNovedad['idnovedades'] . "' selected>" . $lNovedad['desc_novedad'] . "</option>";
-										}
-										else {
-											echo "<option value='" . $lNovedad['idnovedades'] . "'>" . $lNovedad['desc_novedad'] . "</option>";
-										}
-									}
-								?>
-							</select>
+						<div class="panel-body">
+							<div class="row small">
+								<div class='form-group form-group-sm col-xs-12'>
+									<label class='control-label' for='listareg'>Asignar novedad:</label>
+									<select class='form-control' id='listanov' name = 'sede'>
+										<option value='0'>Seleccione una novedad...</option>";
+										<?php
+											foreach($qNovedad AS $lNovedad) {
+												if ($lNovedad['idnovedades'] == $row['novedad']) {
+													echo "<option value='" . $lNovedad['idnovedades'] . "' selected>" . $lNovedad['desc_novedad'] . "</option>";
+												}
+												else {
+													echo "<option value='" . $lNovedad['idnovedades'] . "'>" . $lNovedad['desc_novedad'] . "</option>";
+												}
+											}
+										?>
+									</select>
+								</div>
+							</div>
+							<div class="row small">
+								<div class="form-group col-xs-12">
+										<label class='control-label' for='obsnov'>Observaci&oacute;n:</label>
+										<textarea class="form-control" id="idObsN" rows="3" required ><?php echo $txtObserva ?></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel-footer">
+							<div class="row ">
+								<div class="col-xs-2 col-xs-offset-5">
+									<button type='submit' class='btn btn-primary btn-md'>Asignar Novedad</button>
+								</div>
+							</div>
+
 						</div>
 					</div>
-				</fieldset>
-				<fieldset style='padding-top: 10px'>
-					<div class='col-sm-2 small text-right'>
-						<label class='control-label' for='obsnov'>Observaci&oacute;n:</label>
-					</div>
-					<div class='col-sm-5 small'>
-						<textarea class="form-control" id="idObsN" rows="3" required ><?php echo $txtObserva ?></textarea>
-					</div>
-				</fieldset>
-				<div class='form-group form-group-sm'>
-					<div class='col-sm-1 small'>
-						<button type='submit' class='btn btn-primary btn-md'>Asignar Novedad</button>
-					</div>
-				</div>
 			</form>
 		</div>
 		<div class="container" id="detallest">
@@ -170,6 +193,9 @@
 					</div>
 				</fieldset>
 			</form>
+
+
+
 			<?php
 				$sql = $conn->query("SELECT id,numemp,soporte_nombre,soporte_tipo,soporte_peso FROM soportes WHERE numemp='$numero'");
 				if ($sql->rowCount()>0) {

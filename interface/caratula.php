@@ -103,6 +103,9 @@
 <script type="text/javascript" src="../js/notSubmit.js"></script>
 <script type="text/javascript" src="../js/periodo.js"></script>
 <style type="text/css">
+body {
+	padding-top: 50px;
+}
 p {
 	font-size: 13px !important;
 }
@@ -779,7 +782,7 @@ function sumaCampos(){
 		<?php
 		include 'menuFuente.php';
 		?>
-		<div class='well well-sm' style='font-size: 12px; padding-top: 60px; z-index: 1;' id='wcara'>
+		<div class='well well-sm' style='font-size: 12px; /*padding-top: 60px;*/ z-index: 1;' id='wcara'>
 		<?php
 			if ($tipousu == "CO" and $region == 99) {
 				echo "<a href='#' onClick='confBorra(" . $numero . ", \"" . $nombre . "\");'>Limpiar Formulario</a> | ";
