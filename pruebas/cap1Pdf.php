@@ -1,6 +1,6 @@
-<?<?php
-	require_once "../dompdf/dompdf_config.inc.php";
-	ob_start();
+<?php
+	/*require_once "../dompdf/dompdf_config.inc.php";
+	ob_start();*/
 ?>
 
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
-	<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+	<!-- <link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"> -->
 	<!-- Bootstrap -->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 	<!-- <script src="../bootstrap/js/jquery.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script> -->
 
@@ -37,78 +37,65 @@
 </head>
 <body>
 	<div class="container">
-		<fieldset  class="container-fluid">
+		<fieldset>
 			<legend>1. Durante el periodo de referencia</legend>
-			<div class="row">
+			<div>
 				<table>
 					<tr>
 						<td>¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</td>
 						<td>
-							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php //echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> disabled > Si
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php //echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?>  > No
-							</label>
+							<?php
+								if ($row['i1r1c1'] == 1){ echo 'Si';}
+								elseif ($row['i1r1c1'] == 2){ echo 'No';}
+							?>
 						</td>
 					</tr>
 				</table>
-				<div class="col-xs-6 col-xs-offset-2">
-
-				</div>
-				<div class="col-xs-2">
-					<label class="radio-inline">
-					  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php //echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> disabled > Si
-					</label>
-					<label class="radio-inline">
-					  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php //echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?>  > No
-					</label>
-				</div>
 			</div>
 		</fieldset>
 
-		<fieldset class="container-fluid">
+		<fieldset>
 			<legend>2 Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: <br>
 						&Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad:</legend>
-			<div class="row">
+			<div>
+				<br>
 				<div class="col-xs-12">
 					Este módulo  determina la cantidad de vacantes durante el "<?php //echo $nomPeriodo;?> - " e  identifica sus características.
 				</div>
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<label class="">Total Vacantes</label>
+							<div class=''>
+								<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r1c2' value = "<?php //echo $row['i1r1c2']; //echo $row['i1r2ctvc']?>" disabled  />
+							</div>
+						</td>
+						<td>
+							<label class="">Total Vacantes Cubiertas</label>
+							<div class=''>
+								<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r1c3' value = "<?php //echo $row['i1r1c3']; //echo $row['i1r2ctvc']?>" disabled  />
+							</div>
+						</td>
+						<td>
+							<label class="">Total Vacantes No Cubiertas</label>
+							<div class=''>
+								<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r1c4' value = "<?php //echo $row['i1r1c4']; //echo $row['i1r2ctvc']?>" disabled  />
+							</div>
+						</td>
+					</tr>
+				</table>
+
+
 			</div>
 
-			<div class="col-xs-12 col-sm-12 text-center">
-
-				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-					<label class="">Total Vacantes</label>
-					<div class=''>
-						<input type='text' class='form-control input-sm text-right' id='idi1r2ctv' name='i1r1c2' value = "<?php //echo $row['i1r1c2']; //echo $row['i1r2ctvc']?>" disabled  />
-					</div>
-				</div>
-				<div class="col-xs-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-3">
-					<label class="">Total Vacantes Cubiertas</label>
-					<div class=''>
-						<input type='text' class='form-control input-sm text-right' id='idi1r2ctvcb' name='i1r1c3' value = "<?php //echo $row['i1r1c3']; //echo $row['i1r2ctvc']?>" disabled  />
-					</div>
-				</div>
-				<div class="col-xs-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-3">
-					<label class="">Total Vacantes No Cubiertas</label>
-					<div class=''>
-						<input type='text' class='form-control input-sm text-right' id='idi1r2ctvnocb' name='i1r1c4' value = "<?php //echo $row['i1r1c4']; //echo $row['i1r2ctvc']?>" disabled  />
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-
+			<div>
 				<div class="col-xs-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">Disponibilidad 1</h3>
 						</div>
 						<div class="panel-body text-center">
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">Cantidad de vacantes abiertas</label>
 									<div class='small'>
@@ -169,7 +156,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">Experiencia en meses</label>
 									<div class='small'>
@@ -222,7 +209,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 									<div class='small'>
@@ -249,7 +236,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 									<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 									<div class="small">
@@ -283,7 +270,7 @@
 							<h3 class="panel-title">Disponibilidad 1</h3>
 						</div>
 						<div class="panel-body text-center">
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">Cantidad de vacantes abiertas</label>
 									<div class='small'>
@@ -344,7 +331,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">Experiencia en meses</label>
 									<div class='small'>
@@ -397,7 +384,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 									<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 									<div class='small'>
@@ -424,7 +411,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div>
 								<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 									<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 									<div class="small">
@@ -549,16 +536,16 @@
 
 		</fieldset>
 
-		<fieldset class="container-fluid">
+		<fieldset>
 			<legend>2</legend>
-			<div class="row">
+			<div>
 				<div class="col-xs-12">Contenido para filas de prueba 2</div>
 			</div>
 		</fieldset>
 
-		<fieldset class="container-fluid">
+		<fieldset>
 			<legend>3</legend>
-			<div class="row">
+			<div>
 				<div class="col-xs-12">Contenido para filas de prueba 3</div>
 			</div>
 		</fieldset>
@@ -567,10 +554,10 @@
 </body>
 </html>
 <?php
-	$html = ob_get_clean();
+	/*$html = ob_get_clean();
 	$dompdf = new DOMPDF();
 	$dompdf->set_base_path('evac/bootstrap/css/');
 	$dompdf->load_html($html);
 	$dompdf->render();
-	$dompdf->stream($nombrefor);
+	$dompdf->stream($nombrefor);*/
 ?>
