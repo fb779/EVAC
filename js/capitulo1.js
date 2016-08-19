@@ -228,6 +228,7 @@ $(document).ready(function(){
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 		$('#listDisForm').on('change, blur', '.validar', function(){
 			$(this).css('border',"");
+			$(this).parent().parent().removeClass('has-error');
 			$(this).parent().parent().removeClass('text-danger');
 			$(this).parent().parent().children('span').remove();
 
@@ -392,16 +393,22 @@ $(document).ready(function(){
 					$('[name="'+cual+'"]').prop('required', false);
 					$('[name="'+cual+'"]').prop('disabled', true);
 				}
-			}else{
+			} else if( $(this).attr('name') == sal && $(this).val() === '0' ){
+				$(this).parent().parent().addClass('text-danger');
+				$(this).parent().parent().addClass('has-error');
+				$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
+				$(this).val('');
+			} else{
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
 					$(this).css('border',"1px solid" + color);
 					if ($(this).is('select')){
 						$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion</span>');
 					}else if( $(this).attr('name') == edad ){
 						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 					}else if( $(this).attr('name') == sal ){
-						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 0 - 999999999 en el campo</span>');
+						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
 					}else if( $(this).attr('name') == cual ){
 						$(this).parent().parent().append('<span class="text-danger">El campo no puede estar vacio</span>');
 					}else if( $(this).attr('name') == vacMuj ){

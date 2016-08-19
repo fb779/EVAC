@@ -7,7 +7,6 @@
 	require_once "../dompdf/dompdf_config.inc.php";
 	$region = $_SESSION['region'];
 	$vig=$_SESSION['vigencia'];
-	$nomPeriodo = $_SESSION['nomPeri'];
 	$anterior = $vig-1;
 	$numero = $_GET['numord']; $nombre = $_GET['nombre'];
 	$qCtl = $conn->query("SELECT fecrev FROM control WHERE vigencia = $vig AND nordemp = $numero");
@@ -15,9 +14,9 @@
 		$fecha_env = $rowCtl['fecrev'];
 	}
 	$nombrefor = "Frm" . $numero . "EDIT" . $vig . ".pdf";
-	// $gradoI = array("1"=>"ALTO", "2"=>"MEDIO", "3"=>"BAJO", ""=>'N/A', "0"=>"N/A");
-	// $c3n5 = array("1"=>"Obtuvo beneficios tributarios", "2"=>"Solicit&oacute; beneficios tributarios, pero no los obtuvo", "3"=>"Tuvo la intenci&oacute;n de solicitar beneficios tributarios, pero no lo hizo", "4"=>"No quiso solicitar beneficios tributarios", "0"=>"N/A", ""=>"N/A");
-	// ob_start();
+	$gradoI = array("1"=>"ALTO", "2"=>"MEDIO", "3"=>"BAJO", ""=>'N/A', "0"=>"N/A");
+	$c3n5 = array("1"=>"Obtuvo beneficios tributarios", "2"=>"Solicit&oacute; beneficios tributarios, pero no los obtuvo", "3"=>"Tuvo la intenci&oacute;n de solicitar beneficios tributarios, pero no lo hizo", "4"=>"No quiso solicitar beneficios tributarios", "0"=>"N/A", ""=>"N/A");
+	ob_start();
 ?>
 <!DOCTYPE html>
 	<html>
@@ -26,30 +25,12 @@
 		    <meta name="viewport" content="width=device-width, initial-scale=1">
 			<title>Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - Formulario Electr&oacute;nico</title>
 			<!-- Bootstrap -->
-			<!-- <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+			<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 			<link href="../bootstrap/css/custom.css" rel="stylesheet">
 			<script type="text/javascript" src="../js/html5shiv.js"></script>
 			<script type="text/javascript" src="../js/respond.js"></script>
-			<script type="text/javascript" src="../js/css3-mediaqueries.js"></script> -->
+			<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 			<style>
-				body {
-					font-family: (arial);
-					font-size: 14x;
-				}
-				fieldset {
-					margin: auto;
-					margin-bottom: 10px;
-				}
-				table {
-					margin: auto;
-					width: 50%;
-					text-align: center;
-					background: #ccc;
-				}
-				input {
-					text-align: center;
-				}
-
 				.nvapag {
 					page-break-after: always;
 				}
@@ -81,8 +62,11 @@
 		<body>
 			<div id="header">
 				Departamento Administrativo Nacional de Estad&iacute;stica - DANE<br>
-				Encuesta de Disponibilidad Laboral - EVAC - <?php echo $nomPeriodo; ?><br>
+				Encuesta de Desarrollo e Innovaci&oacute;n Tecnol&oacute;gica - EDIT - <?php echo $anterior . " - " . $vig ?><br>
 	 			<?php echo $numero . "-" . $nombre?>
+	 		</div>
+	 		<div id="footer">
+	 			<?php echo "Fecha de Env&iacute;o: " . $fecha_env; ?>
 	 		</div>
 			<?php
 				include 'capi1PDF.php';
@@ -92,16 +76,13 @@
 				// include 'capi5PDF.php';
 				// include 'capi6PDF.php';
 			?>
-	 		<div id="footer">
-	 			<?php echo "Fecha de Env&iacute;o: " . $fecha_env; ?>
-	 		</div>
 		</body>
 	</html>
-// <?php
-// 	$html = ob_get_clean();
-// 	$dompdf = new DOMPDF();
-// 	//$dompdf->set_base_path('evac/bootstrap/css/');
-// 	$dompdf->load_html($html);
-// 	$dompdf->render();
-// 	$dompdf->stream($nombrefor);
+<?php
+	$html = ob_get_clean();
+	$dompdf = new DOMPDF();
+	$dompdf->set_base_path('evac/bootstrap/css/');
+	$dompdf->load_html($html);
+	$dompdf->render();
+	$dompdf->stream($nombrefor);
 ?>

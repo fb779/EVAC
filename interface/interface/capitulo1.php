@@ -384,7 +384,7 @@
 								</div>
 							</p>
 						</div>
-					</fieldset>
+				</fieldset>
 				<fieldset style='border-style: solid; border-width: 1px' id="" class="<?php //echo $estadoII3; ?>" >
 					<legend>
 						<h5 style='font-family: arial'><b>

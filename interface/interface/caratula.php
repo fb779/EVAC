@@ -1477,7 +1477,7 @@ function sumaCampos(){
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Actividades Economicas CIIU</h4>
+					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 				</div>
 				<div id="listActividad" class="modal-body">
 					<!-- Listado de actividades consultadas -->
