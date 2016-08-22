@@ -42,10 +42,10 @@
     	<div class="navbar-header">
     		<?php
     			if ($tipousu == "FU") {
-    				echo "<span class='navbar-brand small' style='font-size: 12px'>EVAC - DISPONIBILIDAD LABORAL</span>";
+    				echo "<span class='navbar-brand small' style='font-size: 12px'>ENCUESTA DE VACANTES - EVAC </span>";
     			}
     			else {
-    				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>EVAC - DISPONIBILIDAD LABORAL</a></span>";
+    				echo "<span class='navbar-brand small' style='font-size: 12px'><a href='../administracion/operativo.php'>ENCUESTA DE VACANTES - EVAC </a></span>";
     			}
     		?>
         </div>

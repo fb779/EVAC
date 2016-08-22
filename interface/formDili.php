@@ -14,9 +14,7 @@
 	foreach ($qCtl AS $rowCtl) {
 		$fecha_env = $rowCtl['fecrev'];
 	}
-	$nombrefor = "Frm" . $numero . "EVAC" . $vig . ".pdf";
-	// $gradoI = array("1"=>"ALTO", "2"=>"MEDIO", "3"=>"BAJO", ""=>'N/A', "0"=>"N/A");
-	// $c3n5 = array("1"=>"Obtuvo beneficios tributarios", "2"=>"Solicit&oacute; beneficios tributarios, pero no los obtuvo", "3"=>"Tuvo la intenci&oacute;n de solicitar beneficios tributarios, pero no lo hizo", "4"=>"No quiso solicitar beneficios tributarios", "0"=>"N/A", ""=>"N/A");
+	$nombrefor = "Frm" . $numero . "EVAC" . $nomPeriodo . ".pdf";
 	ob_start();
 ?>
 <!DOCTYPE html>
@@ -37,19 +35,43 @@
 					font-size: 14x;
 				}
 				fieldset {
+					-moz-box-sizing: border-box;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
 					margin: auto;
 					margin-bottom: 10px;
+					padding: 5px 10px;
+					width: 100%;
 				}
+
+				fieldset div {
+					margin: auto;
+					margin-bottom: 5px;
+				}
+
 				table {
+					-moz-box-sizing: border-box;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+					font-size: 12px;
 					margin: auto;
 					margin-top: 20px;
 					margin-bottom: 20px;
 					/*width: 80%;*/
 					text-align: center;
-					background: #ccc;
 				}
+				table td {
+					padding: 5px;
+				}
+
 				input {
+					-webkit-border-radius: 3px;
+					-moz-border-radius: 3px;
+					border-radius: 3px;
+					font-size: 12px;
+					padding: 5px;
 					text-align: center;
+					width: 100%;
 				}
 
 				table#medios td {
@@ -67,6 +89,7 @@
 					font-family: arial;
 					font-size: 10px;
 					border-bottom: solid; 0.5px; #000;
+					margin-bottom: 10px;
 				}
 				#footer {
 					position: fixed;
@@ -92,11 +115,6 @@
 	 		</div>
 			<?php
 				include 'capi1PDF.php';
-				// include 'capi2PDF.php';
-				// include 'capi3PDF.php';
-				// include 'capi4PDF.php';
-				// include 'capi5PDF.php';
-				// include 'capi6PDF.php';
 			?>
 	 		<div id="footer">
 	 			<?php echo "Fecha de Env&iacute;o: " . $fecha_env; ?>

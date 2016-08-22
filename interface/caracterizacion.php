@@ -20,7 +20,7 @@
 							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Área de contabilidad y finanzas</option>
 							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Personal de Investigación y desarrollo</option>
 							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Personal de apoyo</option>
-						</select>								
+						</select>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
@@ -44,9 +44,9 @@
 						</select>
 					</div>
 				</div>
-				
+
 			</div>
-			
+
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Área de Formación</label>
@@ -87,7 +87,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Salario u honorarios mensuales</label>
@@ -129,7 +129,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
@@ -151,9 +151,9 @@
 						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' value = "0" maxlength="3" readonly required />
 					</div>
 				</div>
-				
+
 			</div>
-			
+
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>

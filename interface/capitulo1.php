@@ -90,7 +90,7 @@
 		<div class="well well-sm" style="font-size: 12px; /*padding-top: 60px;*/ z-index: 1;" id="wc2">
  			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?>
  			<!-- Informacion de prueba BORRAR  -->
- 			<?php //echo '<br/> consulta de datos: '; print_r($rowCtl); ?>
+ 			<?php echo $rowDisCont->rowCount(); ?>
  			<!-- Informacion de prueba BORRAR  -->
  		</div>
 
@@ -210,14 +210,14 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Cantidad de vacantes abiertas</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name="<?php echo $ncam; ?>0" value = "<?php echo $dispc['i1r2c1'];?>" maxlength="3" required/>
+														<input type='text' class='form-control input-sm text-right subVac solo-numero validar' id='' name="<?php echo $ncam; ?>_0" value = "<?php echo $dispc['i1r2c1'];?>" maxlength="3" required/>
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">&Aacute;rea funcional</label>
 													<div class='small'>
-														<select class='form-control input-sm validar' name="<?php echo $ncam ?>1" required>
+														<select class='form-control input-sm validar' name="<?php echo $ncam ?>_1" required>
 															<option value=""> Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c2'] == 1) ? 'selected' : '';  ?> >Área de dirección general</option>
 															<option value="2" <?php echo ($dispc['i1r2c2'] == 2) ? 'selected' : '';  ?> >Área de administración</option>
@@ -233,7 +233,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Mínimo nivel educativo requerido</label>
 													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>2" required>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_2" required>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c3'] == 1) ? 'selected' : '';  ?> >No bachiller</option>
 															<option value="2" <?php echo ($dispc['i1r2c3'] == 2) ? 'selected' : '';  ?> >Educación básica secundaria (6° - 9°)</option>
@@ -255,7 +255,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Área de Formación</label>
 													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>3" required>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_3" required>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c4'] == 1) ? 'selected' : '';  ?> >Economía, Administración y Contaduría</option>
 															<option value="2" <?php echo ($dispc['i1r2c4'] == 2) ? 'selected' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
@@ -273,14 +273,14 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Experiencia en meses</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>4' value = "<?php echo $dispc['i1r2c5']?>" maxlength="3" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_4' value = "<?php echo $dispc['i1r2c5']?>" maxlength="3" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Modalidad de Contratación</label>
 													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>5" required>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_5" required>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c6'] == 1) ? 'selected' : '';  ?> >Término Indefinido</option>
 															<option value="2" <?php echo ($dispc['i1r2c6'] == 2) ? 'selected' : '';  ?> >Término  Fijo</option>
@@ -296,14 +296,14 @@
 													<label class="">Salario u honorarios mensuales</label>
 													<div class='input-group input-group-sm'>
 														<span class="input-group-addon" id="sizing-addon1">$</span>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Edad</label>
 													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>7" required>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_7" required>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c8'] == 1) ? 'selected' : '';  ?> >15 - 20</option>
 															<option value="2" <?php echo ($dispc['i1r2c8'] == 2) ? 'selected' : '';  ?> >20 - 25</option>
@@ -328,7 +328,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
 													</div>
 												</div>
 											</div>
@@ -336,21 +336,21 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>_9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 											</div>
@@ -358,7 +358,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 													<div class="small">
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
 															<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
@@ -374,7 +374,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-7">
 													<label class="">Cual?</label>
 													<div>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
 													</div>
 												</div>
 											</div>

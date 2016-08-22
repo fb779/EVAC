@@ -38,7 +38,7 @@
 				$_SESSION['nomPeri'] = $namVigAct;
 				$_SESSION['periodoAct'] = $vigActiva;
 				$_SESSION['nomPeriAct'] = $namVigAct;
-				$_SESSION['titulo'] = 'DANE EVAC - ';
+				$_SESSION['titulo'] = 'ENCUESTA DE VACANTES - EVAC - ';
 			}
 
 			if ($row['tipo'] == 'FU') {

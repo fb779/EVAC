@@ -180,7 +180,8 @@ $(document).ready(function(){
 				item.attr('id', 'caracteriza' + x);
 				item.find('input, select').each(function(index, element){
 					//$(element).addClass('validar');
-					$(element).attr('name', $(element).attr('name') + x + index);
+
+					$(element).attr('name', $(element).attr('name') + x + '_' + index);
 				});
 				$('#disp' + x).append(item);
 
@@ -234,15 +235,15 @@ $(document).ready(function(){
 
 			var $ele = $('#listDisForm');
 			var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
-			var vacAbi = 'i1r2c' + pnal + '0';
-			var vacCub = 'i1r2c' + pnal + '8';
-			var vacHom = 'i1r2c' + pnal + '9';
-			var vacMuj = 'i1r2c' + pnal + '10';
-			var vacNoCub = 'i1r2c' + pnal + '11';
-			var vacNoCubCa = 'i1r2c' + pnal + '12';
-			var edad = 'i1r2c' + pnal + '4';
-			var sal = 'i1r2c' + pnal + '6';
-			var cual = 'i1r2c' + pnal + '13';
+			var vacAbi = 'i1r2c' + pnal + '_0';
+			var vacCub = 'i1r2c' + pnal + '_8';
+			var vacHom = 'i1r2c' + pnal + '_9';
+			var vacMuj = 'i1r2c' + pnal + '_10';
+			var vacNoCub = 'i1r2c' + pnal + '_11';
+			var vacNoCubCa = 'i1r2c' + pnal + '_12';
+			var edad = 'i1r2c' + pnal + '_4';
+			var sal = 'i1r2c' + pnal + '_6';
+			var cual = 'i1r2c' + pnal + '_13';
 
 			if( $(this).attr('name') === vacAbi){
 				/** interaccion con el total de vacantes abiertas por disponibilidad */
@@ -513,7 +514,7 @@ $(document).ready(function(){
 			});
 			/* fin auditoria */
 
-			debugger;
+
 			$.ajax({
 				url: "../persistencia/grabacapi.php",
 				type: "POST",
@@ -633,9 +634,9 @@ $(document).ready(function(){
 			var sumTotVac = 0, sumTotVacCub = 0, sumTotVacNoCub = 0;
 			$('#listDisForm').children().each(function(){
 				var pnal = $(this).attr('id').substring(4);
-				var vacantes = 'i1r2c' + pnal + '0';
-				var vacCubiertas = 'i1r2c' + pnal + '8';
-				var vacNoCubiertas = 'i1r2c' + pnal + '11';
+				var vacantes = 'i1r2c' + pnal + '_0';
+				var vacCubiertas = 'i1r2c' + pnal + '_8';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
 				$(this).find(':input').each(function(){
 					if ($(this).attr('name') == vacantes && $(this).val() !== '' ){
 						sumTotVac += parseInt($(this).val());
@@ -661,10 +662,10 @@ $(document).ready(function(){
 				var $item = $(this);
 				var con = 0;
 				var pnal = $item.attr('id').substring(4);
-				var vacantes = 'i1r2c' + pnal + '0';
-				var vacNoCubiertas = 'i1r2c' + pnal + '11';
-				var vacCausa = 'i1r2c' + pnal + '12';
-				var vacCual = 'i1r2c' + pnal + '13';
+				var vacantes = 'i1r2c' + pnal + '_0';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
+				var vacCausa = 'i1r2c' + pnal + '_12';
+				var vacCual = 'i1r2c' + pnal + '_13';
 				var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
