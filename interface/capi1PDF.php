@@ -1,20 +1,21 @@
 <?php
-	$qCap = $conn->query("SELECT * FROM capitulo_i WHERE vigencia = $vig AND C1_nordemp = $numero");
-	foreach ($qCap AS $row) {
-		$a=1;
-	}
+	// echo "string";
+	// $qCap = $conn->query("SELECT * FROM capitulo_i WHERE vigencia = $vig AND C1_nordemp = $numero");
+	// foreach ($qCap AS $row) {
+	// 	$a=1;
+	// }
 
 	$tipousu = $_SESSION['tipou'];
 	$estadObs = ($tipousu != "FU" ? "readonly" : "");
 
-	$qCapitulo = $conn->prepare("SELECT * FROM capitulo_i WHERE C1_nordemp = :nFuente AND vigencia = :periodo");
-	$qCapitulo->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
+	// $qCapitulo = $conn->prepare("SELECT * FROM capitulo_i WHERE C1_nordemp = :nFuente AND vigencia = :periodo");
+	// $qCapitulo->execute(array('nFuente'=>$numero, 'periodo'=>$vig));
+	$qCapitulo = $conn->query("SELECT * FROM capitulo_i WHERE C1_nordemp = $numero AND vigencia = $vig");
 	$row = $qCapitulo->fetch(PDO::FETCH_ASSOC);
 
-	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
+	// $rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
 	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
 
-	// print_r($row);
 ?>
 
 
@@ -25,7 +26,6 @@
 	<fieldset style='border-style: solid; border-width: 1px'>
 		<legend>
 			<h5 style='font-family: arial'><b>
-				<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
 				1. Durante el periodo de referencia
 			</b></h5>
 		</legend>
@@ -67,13 +67,13 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='text' value = "<?php echo $row['i1r1c2'];?>" readonly />
+							<input type='text' value = "<?php echo $row['i1r1c2'];?>" />
 						</td>
 						<td>
-							<input type='text' value = "<?php echo $row['i1r1c3']; ?>" readonly  />
+							<input type='text' value = "<?php echo $row['i1r1c3']; ?>"  />
 						</td>
 						<td>
-							<input type='text' value = "<?php echo $row['i1r1c4']; ?>" readonly  />
+							<input type='text' value = "<?php echo $row['i1r1c4']; ?>"  />
 						</td>
 					</tr>
 				</table>
@@ -86,28 +86,27 @@
 			</div>
 			<div class="col-xs-12">
 				<div id="disNoti" class="alert alert-warning text-center hidden" role="alert">
-					<!-- button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button-->
 					<div id="diNoMensaje" class="row">
 					</div>
 				</div>
 			</div>
-			<?php foreach ($rowDisCont as $dispc){  ?>
+			<?php $c=0; foreach ($rowDisCont as $dispc){ $c++; ?>
 				<div>
-					<table border="">
+					<table>
 						<tr>
 							<td colspan="4">
-								Disp <?php //echo $c;?>
+								Disp <?php echo $c;?>
 							</td>
 						</tr>
 						<tr>
 							<td> <label class="">Cantidad de vacantes abiertas</label> </td>
 							<td> <label class="">&Aacute;rea funcional</label> </td>
 							<td> <label class="">Mínimo nivel educativo requerido</label> </td>
-							<td></td>
+							<td> <label class="">Área de Formación</label> </td>
 						</tr>
 						<tr>
 							<td>
-								<input type='text' value = "<?php //echo $dispc['i1r2c1'];?>" required/>
+								<input type='text' value = "<?php echo $dispc['i1r2c1'];?>" required/>
 							</td>
 							<td>
 								<?php
@@ -138,195 +137,115 @@
 								?>
 								<input type="text" value="<?php echo $dtnivelEducaivo; ?>">
 							</td>
-							<td></td>
+							<td>
+								<?php
+									if ( $dispc['i1r2c4'] == 1 ) { $dtAreaFun = 'Economía, Administración y Contaduría';}
+									elseif ( $dispc['i1r2c4'] == 2 ) { $dtAreaFun = 'Ingeniería, Arquitectura Urbanismo y afines';}
+									elseif ( $dispc['i1r2c4'] == 3 ) { $dtAreaFun = 'Ciencias Sociales y humanas';}
+									elseif ( $dispc['i1r2c4'] == 4 ) { $dtAreaFun = 'Ciencias de la educación';}
+									elseif ( $dispc['i1r2c4'] == 5 ) { $dtAreaFun = 'Ciencias de la salud';}
+									elseif ( $dispc['i1r2c4'] == 6 ) { $dtAreaFun = 'Bellas artes';}
+									elseif ( $dispc['i1r2c4'] == 7 ) { $dtAreaFun = 'Agronomía, Veterinaria';}
+									elseif ( $dispc['i1r2c4'] == 8 ) { $dtAreaFun = 'Matemáticas y ciencias naturales';}
+									elseif ( $dispc['i1r2c4'] == 9 ) { $dtAreaFun = 'No aplica';}
+								?>
+								<input type="text" value="<?php echo $dtAreaFun; ?>">
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td> <label class="">Experiencia en meses</label> </td>
+							<td> <label class="">Modalidad de Contratación</label> </td>
+							<td> <label class="">Salario u honorarios mensuales</label> </td>
+							<td> <label class="">Edad</label> </td>
 						</tr>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type='text' value = "<?php echo $dispc['i1r2c5']?>" maxlength="3" required />
+							</td>
+							<td>
+								<?php
+									if ($dispc['i1r2c6'] == 1) { $dtModaContra = 'Término Indefinido'; }
+									elseif ($dispc['i1r2c6'] == 2) { $dtModaContra = 'Término  Fijo'; }
+									elseif ($dispc['i1r2c6'] == 3) { $dtModaContra = 'Prestación de servicios'; }
+									elseif ($dispc['i1r2c6'] == 4) { $dtModaContra = 'Por  obra  o  labor  contratada'; }
+									elseif ($dispc['i1r2c6'] == 5) { $dtModaContra = 'Ocasional ó Transitorio'; }
+								?>
+								<input type="text" value="<?php echo $dtModaContra; ?>">
+							</td>
+							<td>
+								<input type='text' value = "<?php echo $dispc['i1r2c7']; ?>" />
+							</td>
+							<td>
+								<?php
+									if ($dispc['i1r2c8'] == 1) { $dtEdad = '15 - 20'; }
+									elseif ($dispc['i1r2c8'] == 2) { $dtEdad = '20 - 25'; }
+									elseif ($dispc['i1r2c8'] == 3) { $dtEdad = '25 - 30'; }
+									elseif ($dispc['i1r2c8'] == 4) { $dtEdad = '30 - 35'; }
+									elseif ($dispc['i1r2c8'] == 5) { $dtEdad = '35 - 40'; }
+									elseif ($dispc['i1r2c8'] == 6) { $dtEdad = '40 - 45'; }
+									elseif ($dispc['i1r2c8'] == 7) { $dtEdad = '45 - 50'; }
+									elseif ($dispc['i1r2c8'] == 8) { $dtEdad = '50 - 55'; }
+									elseif ($dispc['i1r2c8'] == 9) { $dtEdad = '55 - 60'; }
+									elseif ($dispc['i1r2c8'] == 10) { $dtEdad = '60 - 65'; }
+									elseif ($dispc['i1r2c8'] == 11) { $dtEdad = '65 - 70'; }
+									elseif ($dispc['i1r2c8'] == 12) { $dtEdad = '70 - 75'; }
+									elseif ($dispc['i1r2c8'] == 13) { $dtEdad = '75 - 80'; }
+									elseif ($dispc['i1r2c8'] == 14) { $dtEdad = '80 - 85'; }
+									elseif ($dispc['i1r2c8'] == 15) { $dtEdad = '85 - 90'; }
+									elseif ($dispc['i1r2c8'] == 16) { $dtEdad = 'Indiferente'; }
+								?>
+								<input type="text" value="<?php echo $dtEdad; ?>">
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td> <label class="">De las vacantes ¿Cuántas logró cubrir?</label> </td>
+							<td> <label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label> </td>
+							<td> <label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label> </td>
+							<td> <label class="">De las vacantes ¿Cuántas NO logró cubrir? </label> </td>
 						</tr>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type='text' value = "<?php echo $dispc['i1r2c9']?>"/>
+							</td>
+							<td>
+								<input type='text' value = "<?php echo $dispc['i1r2c10']?>" />
+							</td>
+							<td>
+
+								<input type='text' value = "<?php echo $dispc['i1r2c11']?>" />
+							</td>
+							<td>
+								<input type='text' value = "<?php echo $dispc['i1r2c12']?>" />
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td colspan="3"></td>
+							<td> <label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label> </td>
+							<td colspan="3"> <label class="">Cual?</label> </td>
 						</tr>
 						<tr>
-							<td ></td>
-							<td colspan="3"></td>
+							<td >
+								<?php
+									if ($dispc['i1r2c13'] == 1) { $dtNoCubiertas = 'La remuneración ofrecida era insuficiente';}
+									elseif ($dispc['i1r2c13'] == 2) { $dtNoCubiertas = 'Postulantes sub-calificados';}
+									elseif ($dispc['i1r2c13'] == 3) { $dtNoCubiertas = 'Postulantes sobre-calificados';}
+									elseif ($dispc['i1r2c13'] == 4) { $dtNoCubiertas = 'Falta de experiencia o conocimiento específico';}
+									elseif ($dispc['i1r2c13'] == 5) { $dtNoCubiertas = 'Los postulantes no dominaban otros idiomas';}
+									elseif ($dispc['i1r2c13'] == 6) { $dtNoCubiertas = 'Pocos postulantes';}
+									elseif ($dispc['i1r2c13'] == 7) { $dtNoCubiertas = 'Otra';}
+									else { $dtNoCubiertas = 'No aplica'; }
+								?>
+								<input type="text" value="<?php echo $dtNoCubiertas	; ?>">
+							</td>
+							<td colspan="3">
+								<input type='text' value="<?php echo $dispc['i1r2c14']?>" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4"> &nbsp; </td>
 						</tr>
 					</table>
 				</div>
 			<?php } ?>
-
-			<div class="col-xs-12 col-sm-12">
-				<p>
-					<ul id="listDisTab" class="nav nav-tabs" >
-						<?php $c = 1; foreach ($rowDisLink as $displ){  ?>
-						<li class="<?php echo ($c==1)?'active':''; ?>"><a href="#disp<?php echo $c;?>" data-toggle="tab">Disp <?php echo $c;?></a></li>
-						<?php $c++; } ?>
-					</ul>
-				</p>
-				<p>
-					<div id="listDisForm" class="tab-content">
-						<?php $z = 1; ?>
-						<?php foreach ($rowDisCont as $dispc){  ?>
-						<?php $ncam = 'i1r2c' . $z; ?>
-						<div class="tab-pane <?php echo ($z==1)?'active':''; ?>" id="disp<?php echo $z; ?>">
-							<div class="col-xs-12">
-								<h4 class="text-danger">Todos los campos son obligatorios</h4>
-							</div>
-							<div id="carateriza<?php echo $z; ?>" class="text-center">
-								<div class="container-fluid small">
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">Área de Formación</label>
-										<div class='small'>
-											<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>3" required>
-												<option value="" > Seleccione una opción</option>
-												<option value="1" <?php echo ($dispc['i1r2c4'] == 1) ? 'selected' : '';  ?> >Economía, Administración y Contaduría</option>
-												<option value="2" <?php echo ($dispc['i1r2c4'] == 2) ? 'selected' : '';  ?> >Ingeniería, Arquitectura Urbanismo y afines</option>
-												<option value="3" <?php echo ($dispc['i1r2c4'] == 3) ? 'selected' : '';  ?> >Ciencias Sociales y humanas</option>
-												<option value="4" <?php echo ($dispc['i1r2c4'] == 4) ? 'selected' : '';  ?> >Ciencias de la educación</option>
-												<option value="5" <?php echo ($dispc['i1r2c4'] == 5) ? 'selected' : '';  ?> >Ciencias de la salud</option>
-												<option value="6" <?php echo ($dispc['i1r2c4'] == 6) ? 'selected' : '';  ?> >Bellas artes</option>
-												<option value="7" <?php echo ($dispc['i1r2c4'] == 7) ? 'selected' : '';  ?> >Agronomía, Veterinaria</option>
-												<option value="8" <?php echo ($dispc['i1r2c4'] == 8) ? 'selected' : '';  ?> >Matemáticas y ciencias naturales</option>
-												<option value="9" <?php echo ($dispc['i1r2c4'] == 9) ? 'selected' : '';  ?> >No aplica</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">Experiencia en meses</label>
-										<div class='small'>
-											<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>4' value = "<?php echo $dispc['i1r2c5']?>" maxlength="3" required />
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">Modalidad de Contratación</label>
-										<div class='small'>
-											<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>5" required>
-												<option value="" > Seleccione una opción</option>
-												<option value="1" <?php echo ($dispc['i1r2c6'] == 1) ? 'selected' : '';  ?> >Término Indefinido</option>
-												<option value="2" <?php echo ($dispc['i1r2c6'] == 2) ? 'selected' : '';  ?> >Término  Fijo</option>
-												<option value="3" <?php echo ($dispc['i1r2c6'] == 3) ? 'selected' : '';  ?> >Prestación de servicios</option>
-												<option value="4" <?php echo ($dispc['i1r2c6'] == 4) ? 'selected' : '';  ?> >Por  obra  o  labor  contratada</option>
-												<option value="5" <?php echo ($dispc['i1r2c6'] == 5) ? 'selected' : '';  ?> >Ocasional ó Transitorio</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="container-fluid small">
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">Salario u honorarios mensuales</label>
-										<div class='input-group input-group-sm'>
-											<span class="input-group-addon" id="sizing-addon1">$</span>
-											<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">Edad</label>
-										<div class='small'>
-											<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>7" required>
-												<option value="" > Seleccione una opción</option>
-												<option value="1" <?php echo ($dispc['i1r2c8'] == 1) ? 'selected' : '';  ?> >15 - 20</option>
-												<option value="2" <?php echo ($dispc['i1r2c8'] == 2) ? 'selected' : '';  ?> >20 - 25</option>
-												<option value="3" <?php echo ($dispc['i1r2c8'] == 3) ? 'selected' : '';  ?> >25 - 30</option>
-												<option value="4" <?php echo ($dispc['i1r2c8'] == 4) ? 'selected' : '';  ?> >30 - 35</option>
-												<option value="5" <?php echo ($dispc['i1r2c8'] == 5) ? 'selected' : '';  ?> >35 - 40</option>
-												<option value="6" <?php echo ($dispc['i1r2c8'] == 6) ? 'selected' : '';  ?> >40 - 45</option>
-												<option value="7" <?php echo ($dispc['i1r2c8'] == 7) ? 'selected' : '';  ?> >45 - 50</option>
-												<option value="8" <?php echo ($dispc['i1r2c8'] == 8) ? 'selected' : '';  ?> >50 - 55</option>
-												<option value="9" <?php echo ($dispc['i1r2c8'] == 9) ? 'selected' : '';  ?> >55 - 60</option>
-												<option value="10" <?php echo ($dispc['i1r2c8'] == 10) ? 'selected' : '';  ?> >60 - 65</option>
-												<option value="11" <?php echo ($dispc['i1r2c8'] == 11) ? 'selected' : '';  ?> >65 - 70</option>
-												<option value="12" <?php echo ($dispc['i1r2c8'] == 12) ? 'selected' : '';  ?> >70 - 75</option>
-												<option value="13" <?php echo ($dispc['i1r2c8'] == 13) ? 'selected' : '';  ?> >75 - 80</option>
-												<option value="14" <?php echo ($dispc['i1r2c8'] == 14) ? 'selected' : '';  ?> >80 - 85</option>
-												<option value="15" <?php echo ($dispc['i1r2c8'] == 15) ? 'selected' : '';  ?> >85 - 90</option>
-												<option value="16" <?php echo ($dispc['i1r2c8'] == 16) ? 'selected' : '';  ?> >Indiferente</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
-										<div class='small'>
-											<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
-										</div>
-									</div>
-								</div>
-								<div class="container-fluid small">
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
-										<div class='small'>
-											<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
-										<div class='small'>
-											<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
-										<div class='small'>
-											<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
-										</div>
-									</div>
-								</div>
-								<div class="container-fluid small">
-									<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-										<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-										<div class="small">
-											<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
-												<option value="" > Seleccione una opción</option>
-												<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-												<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
-												<option value="3" <?php echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >Postulantes sobre-calificados</option>
-												<option value="4" <?php echo ($dispc['i1r2c13'] == 4) ? 'selected' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-												<option value="5" <?php echo ($dispc['i1r2c13'] == 5) ? 'selected' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-												<option value="6" <?php echo ($dispc['i1r2c13'] == 6) ? 'selected' : '';  ?> >Pocos postulantes</option>
-												<option value="7" <?php echo ($dispc['i1r2c13'] == 7) ? 'selected' : '';  ?> >Otra</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-1"></div>
-									<div class="form-group form-group-sm col-xs-12 col-sm-7">
-										<label class="">Cual?</label>
-										<div>
-											<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<?php $z++; } ?>
-					</div>
-				</p>
-			</div>
 	</fieldset>
 	<fieldset style='border-style: solid; border-width: 1px' id="">
 		<legend>
@@ -336,93 +255,69 @@
 		</legend>
 		<div id="ii3contenido" class="container-fluid hidden">
 			<div class="col-sx-12 text-danger"> <h4>Debe seleccionar alguno de los valores </h4> </div>
-		</div>
-		<div id="msCheck" class="container-fluid text-danger text-center"></div>
-		<div id="medPub">
-			<div class="container-fluid">
-				<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c1" class="chkbx" name="i1r3c1" value="<?php echo $row['i1r3c1']?>" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
-							Medios de comunicación (prensa,radio,tv)
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c2" class="chkbx" name="i1r3c2" value="<?php echo $row['i1r3c2']?>" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
-							Servicio Público de Empleo
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
-							Portales laborales WEB
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c4" class="chkbx" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
-							Agencias / bolsas de empleo / headhunters / firmas cazatalentos
-						</label>
-					</div>
-				</div>
-			</div>
-			<div class="container-fluid">
-				<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-					<div class="checkbox" >
-						<label>
-							<input type="checkbox" id="idi1r3c5" class="chkbx" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
-							Universidades  e  instituciones educativas (oficinas de egresados)
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c6" class="chkbx" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
-							Contactos no  formales (colegas, amigos, empleados)
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c7" class="chkbx" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
-							Redes sociales o aplicaciones
-						</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-2">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="idi1r3c8" class="chkbx" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
-							Otra no mencionada anteriormente
-						</label>
-					</div>
-				</div>
-			</div>
-			<div class="container-fluid">
-				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-12">
+		</div  >
+		<table id="medios">
+			<tr>
+				<td>
+					<label>
+						<input type="checkbox" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
+						Medios de comunicación (prensa,radio,tv)
+					</label>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
+						Servicio Público de Empleo
+					</label>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
+						Portales laborales WEB
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>
+						<input type="checkbox" id="idi1r3c4" class="chkbx" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
+						Agencias / bolsas de empleo / headhunters / firmas cazatalentos
+					</label>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" id="idi1r3c5" class="chkbx" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
+						Universidades  e  instituciones educativas (oficinas de egresados)
+					</label>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" id="idi1r3c6" class="chkbx" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
+						Contactos no  formales (colegas, amigos, empleados)
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>
+						<input type="checkbox" id="idi1r3c7" class="chkbx" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
+						Redes sociales o aplicaciones
+					</label>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" id="idi1r3c8" class="chkbx" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
+						Otra no mencionada anteriormente
+					</label>
+				</td>
+				<td>
 					<label class="">Cual?</label>
 					<div>
 						<input type='text' class='form-control input-sm' id='idi1r3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="50" required/>
 					</div>
-				</div>
-			</div>
-		</div>
+				</td>
+			</tr>
+		</table>
 	</fieldset>
 
 	<fieldset style='border-style: solid; border-width: 1px' id="" class="<?php //echo $estadoII3; ?>" >

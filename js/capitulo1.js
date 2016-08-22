@@ -423,6 +423,7 @@ $(document).ready(function(){
 
 			validar_totales();
 			validar_disponibilidad();
+			valida_todo();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 

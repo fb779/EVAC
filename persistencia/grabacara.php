@@ -1,6 +1,7 @@
 <?php
 if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){ //validamos que la peticion sea ajax
 	$jsondata = array();
+	$jsondata['errors'] = array();
 	$erAud = 0; $erMOD = 0; $erINS = 0; $erDEL = 0;
 	$errors = array(); $mensajes = array();
 
@@ -27,12 +28,12 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			try {
 				/* Crear la auditoria de los campos que cambiaron de la caratula */
 				$creaLog = $conn->prepare('INSERT INTO auditoria (numemp, tipo_usuario, usuario, fec_mod, hora_mod, nom_var, valor_anterior, valor_actual, tabla) VALUES (:numero, :tipo, :usuario, :fecha, :hora, :variable, :anterior, :actual, :tabla)');
-				$creaLog->execute(array(':numero'=>$emp, ':tipo'=>$_SESSION['tipou'], ':usuario'=>$_SESSION['idusu'], ':fecha'=>date("Y-m-d"), 	'hora'=>date("h:i:sa"), ':variable'=>$variab, ':anterior'=>$valAnt, ':actual'=>$valAct, ':tabla'=>"caratula"));
+				// $creaLog->execute(array(':numero'=>$emp, ':tipo'=>$_SESSION['tipou'], ':usuario'=>$_SESSION['idusu'], ':fecha'=>date("Y-m-d"), 	'hora'=> "'".date("h:i:sa")."'", ':variable'=>$variab, ':anterior'=>$valAnt, ':actual'=>$valAct, ':tabla'=>"caratula"));
 				/* Creamos el set para la modificacion de los campos */
 				$sets .= $variab ." = '" . $valAct . "',";
 			} catch (Exception $e) {
 				$erAud ++;
-				$jsondata['errors']['auditoria'] = true;
+				$jsondata['errors'][$erAud] = $e->getMessage();
 			}
 		}
 	} /*end FOR */
@@ -107,6 +108,9 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$jsondata['success'] = false;
 	}
 
+	$jsondata['erAud'] = $erAud;
+	$jsondata['erMOD'] = $erMOD;
+	$jsondata['erINS'] = $erINS;
 	header('Content-type: application/json; charset=utf-8');
 	echo json_encode($jsondata);
 	exit();

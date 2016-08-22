@@ -14,10 +14,10 @@
 	foreach ($qCtl AS $rowCtl) {
 		$fecha_env = $rowCtl['fecrev'];
 	}
-	$nombrefor = "Frm" . $numero . "EDIT" . $vig . ".pdf";
+	$nombrefor = "Frm" . $numero . "EVAC" . $vig . ".pdf";
 	// $gradoI = array("1"=>"ALTO", "2"=>"MEDIO", "3"=>"BAJO", ""=>'N/A', "0"=>"N/A");
 	// $c3n5 = array("1"=>"Obtuvo beneficios tributarios", "2"=>"Solicit&oacute; beneficios tributarios, pero no los obtuvo", "3"=>"Tuvo la intenci&oacute;n de solicitar beneficios tributarios, pero no lo hizo", "4"=>"No quiso solicitar beneficios tributarios", "0"=>"N/A", ""=>"N/A");
-	// ob_start();
+	ob_start();
 ?>
 <!DOCTYPE html>
 	<html>
@@ -42,7 +42,9 @@
 				}
 				table {
 					margin: auto;
-					width: 50%;
+					margin-top: 20px;
+					margin-bottom: 20px;
+					/*width: 80%;*/
 					text-align: center;
 					background: #ccc;
 				}
@@ -50,6 +52,10 @@
 					text-align: center;
 				}
 
+				table#medios td {
+					text-align: left;
+
+				}
 				.nvapag {
 					page-break-after: always;
 				}
@@ -82,7 +88,7 @@
 			<div id="header">
 				Departamento Administrativo Nacional de Estad&iacute;stica - DANE<br>
 				Encuesta de Disponibilidad Laboral - EVAC - <?php echo $nomPeriodo; ?><br>
-	 			<?php echo $numero . "-" . $nombre?>
+	 			<?php echo $numero . "-" . $nombre; ?>
 	 		</div>
 			<?php
 				include 'capi1PDF.php';
@@ -97,11 +103,11 @@
 	 		</div>
 		</body>
 	</html>
-// <?php
-// 	$html = ob_get_clean();
-// 	$dompdf = new DOMPDF();
-// 	//$dompdf->set_base_path('evac/bootstrap/css/');
-// 	$dompdf->load_html($html);
-// 	$dompdf->render();
-// 	$dompdf->stream($nombrefor);
+ <?php
+	$html = ob_get_clean();
+	$dompdf = new DOMPDF();
+	// $dompdf->set_base_path('evac/bootstrap/css/');
+	$dompdf->load_html($html);
+	$dompdf->render();
+	$dompdf->stream($nombrefor);
 ?>

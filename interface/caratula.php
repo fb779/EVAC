@@ -119,64 +119,63 @@ p {
 
 <script type="text/javascript">
 	$(function(){
-				$("#idfechai, #idfechah, #idfecdil").attr("tabindex","-1"); //Deshabilito cambiar foco.
+		$("#idfechai, #idfechah, #idfecdil").attr("tabindex","-1"); //Deshabilito cambiar foco.
 
-				//Permitir solo caracteres numericos en la caja de texto del numero NIT.
-				$("#ndoc, #ntele, #ntelen, #nfax, #nfaxn, #idteldil").keyup(function(){
-					if ($(this).val() != "") {
-						$(this).val( $(this).val().replace(/[^0-9]/g, '') );
-					}
-				});
+		//Permitir solo caracteres numericos en la caja de texto del numero NIT.
+		$("#ndoc, #ntele, #ntelen, #nfax, #nfaxn, #idteldil").keyup(function(){
+			if ($(this).val() != "") {
+				$(this).val( $(this).val().replace(/[^0-9]/g, '') );
+			}
+		});
 
-				//Validar que la fecha del acta de constitucion sea una fecha valida
-				$("#idfechai, #idfechah").bind("keypress",function(event){
-					if ($(this).val().length >= 10){
-						if ((event.which == 8)||(event.which == 0)||(event.which == 45)){
-							return true;
-						}
-						return false;
-					}
-					else{
-						if ((event.which == 8)||(event.which == 0)||(event.which == 45)){
-							return true;
-						}
-						else if ((event.which >=48)&&(event.which <=57)){
-							return true;
-						}
-						else{
-							return false;
-						}
-					}
-				});
+		//Validar que la fecha del acta de constitucion sea una fecha valida
+		$("#idfechai, #idfechah").bind("keypress",function(event){
+			if ($(this).val().length >= 10){
+				if ((event.which == 8)||(event.which == 0)||(event.which == 45)){
+					return true;
+				}
+				return false;
+			}
+			else{
+				if ((event.which == 8)||(event.which == 0)||(event.which == 45)){
+					return true;
+				}
+				else if ((event.which >=48)&&(event.which <=57)){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+		});
+
+		$("#idfechai, #idfechah").bind("blur",function(){
+			var fechaf = $(this).val().split("-");
+			if (fechaf.length < 2){
+				alert("Formato de Fecha Inv\xE1lido");
+				$(this).css("border", "1px solid #FF0000");
+				return false;
+			}
+			else{
+				var year = fechaf[0];
+				var month = fechaf[1];
+				var day = fechaf[2];
+				if (parseInt(month)<0 || parseInt(month)>12){
+					alert("Fecha No V\xE1lida");
+					$(this).css("border", "1px solid #FF0000");
+					return false;
+				}
+				else if (parseInt(day)<0 || parseInt(day)>31){
+					alert("Fecha No V\xE1lida");
+					$(this).css("border", "1px solid #FF0000");
+					return false;
+				}
+			}
+			$(this).css("border", "1px solid #DFDFDF");
+		});
 
 
-				$("#idfechai, #idfechah").bind("blur",function(){
-					var fechaf = $(this).val().split("-");
-					if (fechaf.length < 2){
-						alert("Formato de Fecha Inv\xE1lido");
-						$(this).css("border", "1px solid #FF0000");
-						return false;
-					}
-					else{
-						var year = fechaf[0];
-						var month = fechaf[1];
-						var day = fechaf[2];
-						if (parseInt(month)<0 || parseInt(month)>12){
-							alert("Fecha No V\xE1lida");
-							$(this).css("border", "1px solid #FF0000");
-							return false;
-						}
-						else if (parseInt(day)<0 || parseInt(day)>31){
-							alert("Fecha No V\xE1lida");
-							$(this).css("border", "1px solid #FF0000");
-							return false;
-						}
-					}
-					$(this).css("border", "1px solid #DFDFDF");
-				});
-
-
-			});
+	});
 
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();
@@ -202,11 +201,9 @@ p {
                 	if (dato.success){
                 		$("#idmsg").show();
                 	}
-                	if (retorno == "") {
-                		$("#idmsg").show();
-                	}
                 	else {
-                		document.getElementById(retorno).focus();
+                		// document.getElementById(retorno).focus();
+                		alert('Hubo problemas - ' );
                 	}
                 },
                 error: function(xhr, status, errorthrown){
@@ -245,138 +242,138 @@ p {
 	}
 
 	$(document).ready(function() {
-				var oneDay = 24*60*60*1000; // Valor de 1 dia
-				var oneMonth = 31*oneDay; // Valor de 1 mes
-				var oneYear = 365*oneDay; // Valor de 1 año
-				var Formato = "%Y-%m-%d"; // Formato de trabajo para las fechas
-				var Convertidor = new AnyTime.Converter({format:Formato}); // Objeto para la conversion o parseo de fechas
+		var oneDay = 24*60*60*1000; // Valor de 1 dia
+		var oneMonth = 31*oneDay; // Valor de 1 mes
+		var oneYear = 365*oneDay; // Valor de 1 año
+		var Formato = "%Y-%m-%d"; // Formato de trabajo para las fechas
+		var Convertidor = new AnyTime.Converter({format:Formato}); // Objeto para la conversion o parseo de fechas
 
-				$("#idfechai").AnyTime_picker({
-					format: Formato,
-					labelTitle: "FECHA",
-					labelYear: "A\xF1o",
-					labelMonth: "Mes",
-					labelDayOfMonth: "Día del Mes",
-					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-					baseYear: "1800",
-					earliest: new Date(2000,0,1,0,0,0),
-					latest: new Date(2099,11,31,23,59,59)
-				});
+		$("#idfechai").AnyTime_picker({
+			format: Formato,
+			labelTitle: "FECHA",
+			labelYear: "A\xF1o",
+			labelMonth: "Mes",
+			labelDayOfMonth: "Día del Mes",
+			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+			baseYear: "1800",
+			earliest: new Date(2000,0,1,0,0,0),
+			latest: new Date(2099,11,31,23,59,59)
+		});
 
-				$("#idfechaf").AnyTime_picker({
-					format: Formato,
-					labelTitle: "FECHA",
-					labelYear: "A\xF1o",
-					labelMonth: "Mes",
-					labelDayOfMonth: "Dia del Mes",
-					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-					minYear: 1800,
-					//earliest: new Date(2000,0,1,0,0,0),
-					earliest: new Date(Convertidor.parse($('#idfechai').val()).getTime()+oneDay),
-					latest: new Date(2099,11,31,23,59,59)
-				});
+		$("#idfechaf").AnyTime_picker({
+			format: Formato,
+			labelTitle: "FECHA",
+			labelYear: "A\xF1o",
+			labelMonth: "Mes",
+			labelDayOfMonth: "Dia del Mes",
+			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+			minYear: 1800,
+			//earliest: new Date(2000,0,1,0,0,0),
+			earliest: new Date(Convertidor.parse($('#idfechai').val()).getTime()+oneDay),
+			latest: new Date(2099,11,31,23,59,59)
+		});
 
 
-				$("#idfecdil").AnyTime_picker({
-					format: Formato,
-					labelTitle: "FECHA",
-					labelYear: "A\xF1o",
-					labelMonth: "Mes",
-					labelDayOfMonth: "Día del Mes",
-					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-					baseYear: "1800",
-					//earliest: new Date(2001,0,1,0,0,0),
-					earliest: new Date(),
-					latest: new Date(2099,11,31,23,59,59)
-				});
+		$("#idfecdil").AnyTime_picker({
+			format: Formato,
+			labelTitle: "FECHA",
+			labelYear: "A\xF1o",
+			labelMonth: "Mes",
+			labelDayOfMonth: "Día del Mes",
+			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+			baseYear: "1800",
+			//earliest: new Date(2001,0,1,0,0,0),
+			earliest: new Date(),
+			latest: new Date(2099,11,31,23,59,59)
+		});
 
-				$("#idfechad").AnyTime_picker({
-					format: Formato,
-					labelTitle: "FECHA",
-					labelYear: "A\xF1o",
-					labelMonth: "Mes",
-					labelDayOfMonth: "Dia del Mes",
-					dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-					monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
-				});
+		$("#idfechad").AnyTime_picker({
+			format: Formato,
+			labelTitle: "FECHA",
+			labelYear: "A\xF1o",
+			labelMonth: "Mes",
+			labelDayOfMonth: "Dia del Mes",
+			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
+		});
 
-				$("#btnFecha").click(function() {
-					$("#idfechad").focus();
-				});
+		$("#btnFecha").click(function() {
+			$("#idfechad").focus();
+		});
 
-				$("#btnFechaDesde").click(function() {
-					$("#idfechai").focus();
-				});
+		$("#btnFechaDesde").click(function() {
+			$("#idfechai").focus();
+		});
 
-				$("#btnFechaHasta").click(function() {
-					$("#idfechaf").focus();
-				});
+		$("#btnFechaHasta").click(function() {
+			$("#idfechaf").focus();
+		});
 
-				$("#btnFechaDili").click(function() {
-					$("#idfecdil").focus();
-				});
+		$("#btnFechaDili").click(function() {
+			$("#idfecdil").focus();
+		});
 
-				$("#idfechai").on('change',function(){
-					var item = $(this);
-					var feci = Convertidor.parse($('#idfechai').val()).getTime();
-					var fecf = Convertidor.parse($('#idfechaf').val()).getTime();
+		$("#idfechai").on('change',function(){
+			var item = $(this);
+			var feci = Convertidor.parse($('#idfechai').val()).getTime();
+			var fecf = Convertidor.parse($('#idfechaf').val()).getTime();
 
-					if (item.attr('id') == 'idfechai'){
+			if (item.attr('id') == 'idfechai'){
 
-						if (parseInt( $('#idfechai').val().replace(/-/g,'') ) > parseInt( $('#idfechaf').val().replace(/-/g,''))){
-							var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia
-							dayLater.setHours(0,0,0,0);
-							var moreDaysLater = new Date(feci+(2*oneYear)); // a la fecha seleccionada se le agrega 2 meses
-							moreDaysLater.setHours(23,59,59,999)
+				if (parseInt( $('#idfechai').val().replace(/-/g,'') ) > parseInt( $('#idfechaf').val().replace(/-/g,''))){
+					var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia
+					dayLater.setHours(0,0,0,0);
+					var moreDaysLater = new Date(feci+(2*oneYear)); // a la fecha seleccionada se le agrega 2 meses
+					moreDaysLater.setHours(23,59,59,999)
 
-							$('#idfechaf').
-							AnyTime_noPicker().
-							removeAttr("disabled").
-							val(Convertidor.format(dayLater)).
-							AnyTime_picker( {
-								format: Formato,
-								labelTitle: "FECHA",
-								labelYear: "A\xF1o",
-								labelMonth: "Mes",
-								labelDayOfMonth: "Dia del Mes",
-								dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-								monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-								earliest: dayLater,
-								//latest: moreDaysLater
-							});
-						}else{
-							var day = new Date(fecf);
-							day.setHours(0,0,0,0);
-							var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia
-							dayLater.setHours(0,0,0,0);
+					$('#idfechaf').
+					AnyTime_noPicker().
+					removeAttr("disabled").
+					val(Convertidor.format(dayLater)).
+					AnyTime_picker( {
+						format: Formato,
+						labelTitle: "FECHA",
+						labelYear: "A\xF1o",
+						labelMonth: "Mes",
+						labelDayOfMonth: "Dia del Mes",
+						dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+						monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+						earliest: dayLater,
+						//latest: moreDaysLater
+					});
+				}else{
+					var day = new Date(fecf);
+					day.setHours(0,0,0,0);
+					var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia
+					dayLater.setHours(0,0,0,0);
 
-							$('#idfechaf').
-							AnyTime_noPicker().
-							removeAttr("disabled").
-							val(Convertidor.format(day)).
-							AnyTime_picker( {
-								format: Formato,
-								labelTitle: "FECHA",
-								labelYear: "A\xF1o",
-								labelMonth: "Mes",
-								labelDayOfMonth: "Dia del Mes",
-								dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-								monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-								earliest: dayLater
-								//latest: moreDaysLater
-							});
-						}
-					}
+					$('#idfechaf').
+					AnyTime_noPicker().
+					removeAttr("disabled").
+					val(Convertidor.format(day)).
+					AnyTime_picker( {
+						format: Formato,
+						labelTitle: "FECHA",
+						labelYear: "A\xF1o",
+						labelMonth: "Mes",
+						labelDayOfMonth: "Dia del Mes",
+						dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+						monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+						earliest: dayLater
+						//latest: moreDaysLater
+					});
+				}
+			}
 
-					// if (item.attr('id') == 'idfechaf'){
-					// 	//console.log('Fecha final.');
-					// }
-				});
+			// if (item.attr('id') == 'idfechaf'){
+			// 	//console.log('Fecha final.');
+			// }
+		});
 
-			});
+	});
 
 
 
@@ -401,30 +398,30 @@ $(function() {
 
 /* Funciones para campos dimamicos */
 $(document).ready(function() {
-				var contenedor	= $("#actividades"); //ID del contenedor
-			    var actividad	= $("#listActividad"); // ID div.body modal
+	var contenedor	= $("#actividades"); //ID del contenedor
+    var actividad	= $("#listActividad"); // ID div.body modal
 
-			    contenedor.css('z-index', 0);
-			  	//interaccion para agregar el div de la acividad del modal a la pagina
-			  	$(actividad).on("click", ".addAct", function(e) {
-			  		$(this).children().removeClass("glyphicon-plus");
-			  		$(this).children().addClass("glyphicon-remove");
-					$(this).removeClass("addAct"); // agregar clase eliminar al div.
-					$(this).addClass("eliminar"); // agregar clase eliminar al div.
-					$(contenedor).append($(this).parent().parent().parent())
-				});
+    contenedor.css('z-index', 0);
+  	//interaccion para agregar el div de la acividad del modal a la pagina
+  	$(actividad).on("click", ".addAct", function(e) {
+  		$(this).children().removeClass("glyphicon-plus");
+  		$(this).children().addClass("glyphicon-remove");
+		$(this).removeClass("addAct"); // agregar clase eliminar al div.
+		$(this).addClass("eliminar"); // agregar clase eliminar al div.
+		$(contenedor).append($(this).parent().parent().parent())
+	});
 
-			    // interaccion para remover el item de el listado de la pagina y regresarlo al modal
-			    $(contenedor).on("click", ".eliminar", function(e) {
-			    	var $that = $(this);
-			    	$that.children().removeClass("glyphicon-remove");
-			    	$that.children().addClass("glyphicon-plus");
-			    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
-			    	$that.addClass("addAct"); // agregar clase eliminar al div.
-			    	$(actividad).append($(this).parent().parent().parent())
-			    	//$(actividad).append($(this).parents(".form-group"));
-			    });
-			});
+    // interaccion para remover el item de el listado de la pagina y regresarlo al modal
+    $(contenedor).on("click", ".eliminar", function(e) {
+    	var $that = $(this);
+    	$that.children().removeClass("glyphicon-remove");
+    	$that.children().addClass("glyphicon-plus");
+    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
+    	$that.addClass("addAct"); // agregar clase eliminar al div.
+    	$(actividad).append($(this).parent().parent().parent())
+    	//$(actividad).append($(this).parents(".form-group"));
+    });
+});
 /* Fin funcion campos dinamicos */
 
 /** Validaciones de los campos de la caratula unica */
@@ -433,7 +430,6 @@ $(document).ready(function(){
 	$('.mayusculas').on('keyup', function(){
 		var v = $(this);
 		v.val( v.val().toUpperCase());
-
 	});
 
 	/** Permitir solo numeros en los campos */
@@ -515,17 +511,16 @@ $(document).ready(function(){
 				$(this).val('');
 				$(this).parent().parent().addClass('text-danger');
 				$(this).parent().parent().addClass('has-error');
-							//$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
-
-						}
-					}else{
-						$(this).parent().parent().addClass('text-danger');
-						$(this).parent().parent().addClass('has-error');
-						//$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
-					}
-				});
+				//$(this).css('border',"1px solid" + color);
+				$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
+			}
+		}else{
+			$(this).parent().parent().addClass('text-danger');
+			$(this).parent().parent().addClass('has-error');
+			//$(this).css('border',"1px solid" + color);
+			$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+		}
+	});
 
 	/** Validacion campo Matricula */
 	$('#reg').on('blur', function() {
@@ -540,17 +535,16 @@ $(document).ready(function(){
 				$(this).val('');
 				$(this).parent().parent().addClass('text-danger');
 				$(this).parent().parent().addClass('has-error');
-							//$(this).css('border',"1px solid" + color);
-							$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
-
-						}
-					}else{
-						$(this).parent().parent().addClass('text-danger');
-						$(this).parent().parent().addClass('has-error');
-						//$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
-					}
-				});
+				//$(this).css('border',"1px solid" + color);
+				$(this).parent().append('<span class="text-danger">El valor no puede ser 0</span>');
+			}
+		}else{
+			$(this).parent().parent().addClass('text-danger');
+			$(this).parent().parent().addClass('has-error');
+			//$(this).css('border',"1px solid" + color);
+			$(this).parent().append('<span class="text-danger">Campo obligatorio</span>');
+		}
+	});
 
 	/** Validacion campo Razon social */
 	$('#rs').on('blur', function() {
@@ -592,53 +586,52 @@ $(document).ready(function(){
 		$(this).parent().parent().removeClass('text-danger');
 		$(this).css('border',"");
 		$(this).parent().children('span').remove();
-				    // Se utiliza la funcion test() nativa de JavaScript
-				    if ($(this).val() != ''){
-				    	if (!regex.test($(this).val().trim()) ) {
-				    		$(this).parent().parent().addClass('text-danger');
-				    		$(this).css('border',"1px solid" + color);
-				    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
-				    	}
-				    }else{
-				    	$(this).parent().parent().addClass('text-danger');
-				    	$(this).css('border',"1px solid" + color);
-				    	$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
-				    }
-
-				});
+		// Se utiliza la funcion test() nativa de JavaScript
+		if ($(this).val() != ''){
+			if (!regex.test($(this).val().trim()) ) {
+				$(this).parent().parent().addClass('text-danger');
+				$(this).css('border',"1px solid" + color);
+				$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+			}
+		}else{
+			$(this).parent().parent().addClass('text-danger');
+			$(this).css('border',"1px solid" + color);
+			$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
+		}
+	});
 
 	/** Validacion direccion de notificacion */
 	$('#dirn').on('blur', function() {
 		$(this).parent().parent().removeClass('text-danger');
 		$(this).css('border',"");
 		$(this).parent().children('span').remove();
-				    // Se utiliza la funcion test() nativa de JavaScript
-				    if ($(this).val() == ''){
-				    	$(this).parent().parent().addClass('text-danger');
-				    	$(this).css('border',"1px solid" + color);
-				    	$(this).parent().append('<span class="text-danger">Falta dirección de notificación</span>');
-				    }
-				});
+	    // Se utiliza la funcion test() nativa de JavaScript
+	    if ($(this).val() == ''){
+	    	$(this).parent().parent().addClass('text-danger');
+	    	$(this).css('border',"1px solid" + color);
+	    	$(this).parent().append('<span class="text-danger">Falta dirección de notificación</span>');
+	    }
+	});
 
 	/** Validacion email notificacion */
 	$('#idmailn').on('blur', function() {
 		$(this).parent().parent().removeClass('text-danger');
 		$(this).css('border',"");
 		$(this).parent().children('span').remove();
-				    // Se utiliza la funcion test() nativa de JavaScript
-				    if ($(this).val() != ''){
-				    	if (!regex.test($(this).val().trim()) ) {
-				    		$(this).parent().parent().addClass('text-danger');
-				    		$(this).css('border',"1px solid" + color);
-				    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
-				    	}
-				    }else{
-				    	$(this).parent().parent().addClass('text-danger');
-				    	$(this).css('border',"1px solid" + color);
-				    	$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
-				    }
+	    // Se utiliza la funcion test() nativa de JavaScript
+	    if ($(this).val() != ''){
+	    	if (!regex.test($(this).val().trim()) ) {
+	    		$(this).parent().parent().addClass('text-danger');
+	    		$(this).css('border',"1px solid" + color);
+	    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+	    	}
+	    }else{
+	    	$(this).parent().parent().addClass('text-danger');
+	    	$(this).css('border',"1px solid" + color);
+	    	$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
+	    }
 
-				});
+	});
 
 	/** Activacion del campo para una organización no existente */
 	$('#idorg').on('change', function(){

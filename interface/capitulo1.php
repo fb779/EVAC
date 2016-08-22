@@ -127,7 +127,7 @@
 					<!--div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1 ">
 						<label class="col-xs-12 col-sm-4">Indique la  cantidad total  de  vacantes abiertas</label>
 						<div class='col-xs-12 col-sm-3 small'>
-							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php echo $row['i1r1c2']; ?>" maxlength="9" required />
+							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php //echo $row['i1r1c2']; ?>" maxlength="9" required />
 						</div>
 					</div-->
 				</fieldset>
