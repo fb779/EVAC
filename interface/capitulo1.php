@@ -504,7 +504,7 @@
 				<fieldset style='border-style: solid; border-width: 1px'>
 					<legend><h4 style='font-family: arial'>Observaciones</h4></legend>
 					<div class='col-sm-6' style='padding-bottom: 10px'>
-						<textarea class='form-control' rows='2' name='observaciones' id='obsfte' <?php echo $estadObs ?>><?php echo $row['OBSERVACIONES'] ?></textarea>
+						<textarea class='form-control' rows='2' name='OBSERVACIONES' id='obsfte' <?php echo $estadObs ?>><?php echo $row['OBSERVACIONES'] ?></textarea>
 					</div>
 				</fieldset>
 				<?php if ($grabaOK) { ?>
@@ -566,8 +566,8 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="mSave" class="btn btn-default">Save</button>
-						<button type="button" id="mClose" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" id="mSave" class="btn btn-default">Guardar</button>
+						<button type="button" id="mClose" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 					</div>
 				</div>
 			</div>

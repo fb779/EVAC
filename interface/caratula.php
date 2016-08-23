@@ -119,6 +119,8 @@ p {
 
 <script type="text/javascript">
 	$(function(){
+
+
 		$("#idfechai, #idfechah, #idfecdil").attr("tabindex","-1"); //Deshabilito cambiar foco.
 
 		//Permitir solo caracteres numericos en la caja de texto del numero NIT.
@@ -185,30 +187,21 @@ p {
 	$(function() {
 		$("#idcara").submit(function(event) {
 			event.preventDefault();
-			// var $items = $(this).serialize();
 			var $items = $(this).find(':input').not('#numero ,#actividades :input').serializeArray();
 			var $activ = $('#actividades :input').serializeArray();
-			debugger;
 			$.ajax({
 				url: "../persistencia/grabacara.php",
 				type: "POST",
 				dataType: "json",
 				//beforeSend: validaCara,
-                // data: $items,
                 data: {'emp': $('#numero').val() ,'dtForm': JSON.stringify($items), 'dtActi': JSON.stringify($activ)},
                 success: function(dato) {
-                	debugger;
                 	if (dato.success){
                 		$("#idmsg").show();
-                	}
-                	else {
+                	} else {
                 		// document.getElementById(retorno).focus();
-                		alert('Hubo problemas - ' );
+                		alert('Dificultades al guardado, debe revisar los campos requeridos ' );
                 	}
-                },
-                error: function(xhr, status, errorthrown){
-                	debugger;
-                	console.log(xhr);
                 }
             });
 		});
@@ -367,12 +360,7 @@ p {
 					});
 				}
 			}
-
-			// if (item.attr('id') == 'idfechaf'){
-			// 	//console.log('Fecha final.');
-			// }
 		});
-
 	});
 
 
@@ -462,7 +450,8 @@ $(document).ready(function(){
 
 
 	var color = '#a94442';
-	var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+	// var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+	var regexEmail = new RegExp(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/);
 
 	/** Validacion campo ndoc Numero documento */
 	$('#ndoc').on('blur', function() {
@@ -588,7 +577,8 @@ $(document).ready(function(){
 		$(this).parent().children('span').remove();
 		// Se utiliza la funcion test() nativa de JavaScript
 		if ($(this).val() != ''){
-			if (!regex.test($(this).val().trim()) ) {
+			// if (!regex.test($(this).val().trim()) ) {
+			if (!regexEmail.test($(this).val().trim()) ) {
 				$(this).parent().parent().addClass('text-danger');
 				$(this).css('border',"1px solid" + color);
 				$(this).parent().append('<span class="text-danger">Correo invalido</span>');
@@ -605,7 +595,6 @@ $(document).ready(function(){
 		$(this).parent().parent().removeClass('text-danger');
 		$(this).css('border',"");
 		$(this).parent().children('span').remove();
-	    // Se utiliza la funcion test() nativa de JavaScript
 	    if ($(this).val() == ''){
 	    	$(this).parent().parent().addClass('text-danger');
 	    	$(this).css('border',"1px solid" + color);
@@ -620,7 +609,7 @@ $(document).ready(function(){
 		$(this).parent().children('span').remove();
 	    // Se utiliza la funcion test() nativa de JavaScript
 	    if ($(this).val() != ''){
-	    	if (!regex.test($(this).val().trim()) ) {
+	    	if (!regexEmail.test($(this).val().trim()) ) {
 	    		$(this).parent().parent().addClass('text-danger');
 	    		$(this).css('border',"1px solid" + color);
 	    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
@@ -669,7 +658,6 @@ $(document).ready(function(){
 		var npr = parseInt($('#idnalpr').val());
 		var epu = parseInt($('#idexpub').val());
 		var epr = parseInt($('#idexpr').val());
-		debugger;
 		$item.parent().parent().removeClass('has-error');
 		$item.parent().parent().children('div span').remove()
 		$msj.children('span').remove();
@@ -701,7 +689,6 @@ $(document).ready(function(){
 			}
 
 			if (!isNaN(npu) && !isNaN(npr) && !isNaN(epu) && !isNaN(epr) && (npu + npr + epu + epr) != 100){
-				debugger;
 				$msj.append('<span><p>La suma de la composición social debe ser 100%</p></span>');
 				clError($item);
 							//$(this).val('');
@@ -747,28 +734,54 @@ $(document).ready(function(){
 		v.css('border',"");
 		$(this).parent().children('span').remove();
 		if (v.val() == ''){
-						//v.val('0');
-						v.parent().addClass('text-danger');
-						v.css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Debe digitar un valor entre 0-999</span>');
-					}
-				});
+			//v.val('0');
+			v.parent().addClass('text-danger');
+			v.css('border',"1px solid" + color);
+			$(this).parent().append('<span class="text-danger">Debe digitar un valor entre 0-999</span>');
+		}
+	});
+
+	$('#idcadil').on('blur', function(){
+		var v = $(this);
+		if (v.val() !== ''){
+			v.parent().parent().removeClass('has-error');
+			v.parent().parent().removeClass('text-danger');
+		}
+	});
+
+	valTodos();
+
+	function valTodos(){
+		$('form').find('input').not('#nfax, #nfaxn, #idweb, #idwebn').each(function(){
+			$item = $(this);
+			$item.parent().parent().removeClass('has-error');
+			$item.parent().parent().removeClass('text-danger');
+			if ($item.val() === '' && $item.prop('required')){
+				// debugger;
+				$item.parent().parent().addClass('has-error');
+				$item.parent().parent().addClass('text-danger');
+			}
+		});
+	}
+
+	function clError($this){
+		$this.parent().parent().addClass('has-error');
+		$this.parent().parent().append('<span class="text-danger">El dato debe ser numerico de 0-100</span>');
+		$this.val('');
+	}
+
+	function sumaCampos(){
+		var suma = 0;
+		$('#cocaso input').each(function(){
+			var num = parseInt($(this).val());
+			if (!isNaN(num)){  suma += num; }
+		});
+		return suma;
+	}
+
 });
 
-function clError($this){
-	$this.parent().parent().addClass('has-error');
-	$this.parent().parent().append('<span class="text-danger">El dato debe ser numerico de 0-100</span>');
-	$this.val('');
-}
 
-function sumaCampos(){
-	var suma = 0;
-	$('#cocaso input').each(function(){
-		var num = parseInt($(this).val());
-		if (!isNaN(num)){  suma += num; }
-	});
-	return suma;
-}
 </script>
 </head>
 <body>
@@ -882,19 +895,19 @@ function sumaCampos(){
 						<div class="col-xs-12 col-sm-3">
 							<label for="">C&aacute;mara</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm solo-numero' id="cam" name="camara" value="<?php echo $row['camara'] ?>" maxlength="3" />
+								<input type="text" class='form-control input-sm solo-numero' id="cam" name="camara" value="<?php echo $row['camara'] ?>" maxlength="3" required/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-3">
 							<label for="">Inscripci&oacute;n/Matricula</label>
 							<div class="from-group form-group-sm">
-								<input type="text" class='form-control input-sm solo-numero' id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" maxlength="11" />
+								<input type="text" class='form-control input-sm solo-numero' id="reg" name="numeroreg" value="<?php echo $row['numeroreg'] ?>" maxlength="11" required />
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-3">
 							<label for="">CIIU</label>
 							<div class="from-group form-group-sm">
-								<select class='form-control' id='listadep' name='ciiu3'>
+								<select class='form-control' id='listadep' name='ciiu3' required>
 									<?php
 										foreach ( $qCIIU3 as $ciiu3 ) {
 											if ($ciiu3 ['CODIGO'] == $row ['ciiu3']) {
@@ -905,7 +918,6 @@ function sumaCampos(){
 										}
 									?>
 								</select>
-								<!-- input type="text" class='form-control input-sm' style="width: 100px" id="ciiu" name="ciiu3" value="<?php echo $row['ciiu3']; ?>" /-->
 							</div>
 						</div>
 						<?php if ($tipousu != "FU") { ?>
@@ -965,7 +977,7 @@ function sumaCampos(){
 					<div class="form-group form-group-sm col-xs-3">
 						<label class='' for='listadep'>Departamento</label>
 						<div class='small'>
-							<select class='form-control' id='listadep' name='depto' onChange='cargaMuni(this.value, "cntMuni", "listamuni", "mpio")'>
+							<select class='form-control' id='listadep' name='depto' onChange='cargaMuni(this.value, "cntMuni", "listamuni", "mpio")' required>
 								<?php
 								foreach ( $qDpto as $lDpto ) {
 									if ($lDpto ['dpto'] == $row ['depto']) {
@@ -982,7 +994,7 @@ function sumaCampos(){
 					<div class="form-group form-group-sm col-xs-3">
 						<label class='' for='listamuni'>Municipio</label>
 						<div class='small' id='cntMuni'>
-							<select class='form-control' name='mpio' id='listamuni'>
+							<select class='form-control' name='mpio' id='listamuni' required>
 								<?php
 								foreach ( $qMpio as $lMpio ) {
 									if ($lMpio ['muni'] == $row ['mpio']) {
@@ -1046,7 +1058,7 @@ function sumaCampos(){
 					<div class="form-group form-group-sm col-xs-3">
 						<label class='' for='ldepn'>Departamento Notificación</label>
 						<div class='small'>
-							<select class='form-control' id='ldepn' name='depnotific' onChange='cargaMuni(this.value, "cntMuniN", "lmunin", "munnotific")'>
+							<select class='form-control' id='ldepn' name='depnotific' onChange='cargaMuni(this.value, "cntMuniN", "lmunin", "munnotific")' required>
 								<?php
 									foreach ( $qDptoN as $lDptoN ) {
 										if ($lDptoN ['dpto'] == $row ['depnotific']) {
@@ -1063,7 +1075,7 @@ function sumaCampos(){
 					<div class="form-group form-group-sm col-xs-3">
 						<label class='' for='lmunin'>Municipio Notificación</label>
 						<div class='small' id='cntMuniN'>
-							<select class='form-control' name='munnotific' id='lmunin'>
+							<select class='form-control' name='munnotific' id='lmunin' required>
 								<?php
 								foreach ( $qMpioN as $lMpioN ) {
 									if ($lMpioN ['muni'] == $row ['munnotific']) {
@@ -1121,7 +1133,7 @@ function sumaCampos(){
 					<div class="form group form-group-sm col-xs-6">
 						<label class='' for='idorg'>Tipo de organizaci&oacute;n Jur&iacute;dica:</label>
 						<div class='' id='cntOrga'>
-							<select class='form-control' name='orgju' id='idorg'>
+							<select class='form-control' name='orgju' id='idorg' required>
 								<?php
 									foreach ( $qOrganiza as $lOrganiza ) {
 										$algo = (substr($lOrganiza['codigo'],0,2) =='12') ? $lOrganiza['codigo']." - " : '';

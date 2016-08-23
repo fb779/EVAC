@@ -2,23 +2,23 @@
 	if (session_id() == "") {
 		session_start();
 	 }
-	 
+
 	ini_set('default_charset', 'UTF-8');
-	 
+
 	if (!isset($_SESSION['tipou'])) {
 		echo "<h2 style='text-align: center; font-family: arial'>SESI&Oacute;N HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
-	}	
+	}
 	include '../conecta.php';
 	$vig = $_SESSION['vigencia'];
 	$select = $conn->prepare("SELECT a.* FROM capitulo_i a WHERE a.C1_nordemp IN (SELECT b.nordemp FROM control b WHERE b.vigencia = $vig AND b.estado IN (4,5,6))");
 	$select->execute();
-	
+
 	header("Content-Type: application/vnd.ms-excel");
 	header("Content-Disposition: attachment; filename=capitulo_I.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
-	
+
 	$cabeza = false;
 	while ($tabla = $select->fetch(PDO::FETCH_ASSOC)) {
 		if (!$cabeza) {

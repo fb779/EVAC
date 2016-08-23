@@ -29,6 +29,7 @@ $(document).ready(function(){
 
 		/** Funcion que valida el cambio del radio button */
 		$('[name="i1r1c1"]').on('change',function(){
+			var $chk = $('#medPub [type="checkbox"]');
 			if ( parseInt($(this).val()) == 2 ){
 				/** retiramos los vicculos de la caracterización */
 				lista.children().each(function(){
@@ -39,9 +40,14 @@ $(document).ready(function(){
 					$(this).remove();
 				});
 				/**deshabilitamos todos los campos del formulario */
+				$chk.prop('checked', false);
+				// $chk.prop('required', false);
+				$chk.val('0');
+
 				$(':input,select', $fr).each(function(){
 					$(this).prop('disabled', true);
 				});
+
 
 				$('#obsfte').val('');
 				$('#idi1r4c1').val('');
@@ -51,6 +57,7 @@ $(document).ready(function(){
 				$(':input,select', $fr ).each(function(){
 					$(this).prop('disabled', false);
 				});
+				// $chk.prop('required', true);
 				$('#removeDisp').prop('disabled', true);
 				$('#idi1r3c9').prop('disabled', true);
 			}
@@ -431,11 +438,20 @@ $(document).ready(function(){
 		/** Funcion que lanza un modal de confirmacion para el guardado parcial de la información */
 		$('#saveDisp').on('click', function(){
 			// e.preventDefault();
-			var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
-			var ct = ['<p><h4 class="text-danger">Las disponibilidades que no esten completas no seran guardadas</h4></p>','<p><h4>Desea guardar las disponibilidades creadas hasta el momento ?<h4></p>'];
-			$('#mHeader').append(hd);
-			$('#mContent').append(ct[0],ct[1]);
-			$("#mNotificacion").modal();
+			var $datos = $('#listDisForm');
+			if ($datos.children().length > 0){
+				var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
+				var ct = ['<p><h4 class="text-danger">Las disponibilidades que no esten completas no seran guardadas</h4></p>','<p><h4>Desea guardar las disponibilidades creadas hasta el momento ?<h4></p>'];
+				$('#mHeader').append(hd);
+				$('#mContent').append(ct[0],ct[1]);
+				$("#mNotificacion").modal();
+			}else{
+				var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
+				var ct = ['<p><h4 class="text-danger">Desea eliminar las disponibilidades creadas hasta el momento ?</h4></p>'];
+				$('#mHeader').append(hd);
+				$('#mContent').append(ct[0]);
+				$("#mNotificacion").modal();
+			}
 		});
 
 		/** Realiza el guardado parcial de las disponibilidades completamente diligenciadas */
@@ -451,7 +467,6 @@ $(document).ready(function(){
 				var $cm = $(':input,select',$(this));
 				$cmps.push( $cm.serializeArray() );
 			});
-
 			if ($datos.children().length > 0){
 				$.ajax({
 					url: "../persistencia/parcial.php",
@@ -459,7 +474,34 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
 					success: function(dato) {
+						debugger;
 						var ct = ['<p>La informacion se guardo con éxito</p>','<p>La informacion no se guardo con éxito</p>'];
+						if (dato.success){
+							//location.reload();
+							$('#mNoti').addClass('alert-success');
+							$('#mNoti').append(ct[0]);
+							$('#mNoti').removeClass('hidden');
+							$("#mSave").addClass('hidden');
+
+						}else{
+							$('#mNoti').addClass('alert-danger');
+							$('#mNoti').append(ct[1]);
+							$('#mNoti').removeClass('hidden');
+							$("#mSave").addClass('hidden');
+						}
+					},
+					// error: function(xhr, status, erroThrown){
+					// },
+				});
+			} else if($datos.children().length == 0) {
+				$.ajax({
+					url: "../persistencia/parcial.php",
+					type: "POST",
+					dataType: "json",
+					data: {'C1': $('#numero').val(),'dtDel': '1'},
+					success: function(dato) {
+						debugger;
+						var ct = ['<p>La informacion se elimino con éxito</p>','<p>La informacion no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
 							$('#mNoti').addClass('alert-success');
