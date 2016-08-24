@@ -222,7 +222,7 @@
 					</div>
 					<ul class="list-inline">
 						<li>
-							<a href="http://www.dane.gov.co/geoportal/web/guest/sedes-dane" target="_blank"><img src="bootstrap/img/arrow_003.png"> Sedes y subsedes Dane</a>
+							<a href="http://geoportal.dane.gov.co/v2/index.php?page=elementoSedesSubsedes" target="_blank"><img src="bootstrap/img/arrow_003.png"> Sedes y subsedes Dane</a>
 						</li>
 					</ul>
 				</div>

@@ -115,6 +115,7 @@
 	 		</div>
 			<?php
 				include 'capi1PDF.php';
+				// include 'capi1PDF_BT.php'
 			?>
 	 		<div id="footer">
 	 			<?php echo "Fecha de Env&iacute;o: " . $fecha_env; ?>

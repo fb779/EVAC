@@ -108,4 +108,12 @@
     'italic' => DOMPDF_FONT_DIR . 'DejaVuSerifCondensed-Italic',
     'normal' => DOMPDF_FONT_DIR . 'DejaVuSerifCondensed',
   ),
+  'open sans' => 
+  array (
+    'normal' => DOMPDF_FONT_DIR . '07a38c97a60541426bb2ea8d94c86f92',
+  ),
+  'roboto slab' => 
+  array (
+    'normal' => DOMPDF_FONT_DIR . 'ba83f0dc47bb0a072b434ab8ea686ada',
+  ),
 ) ?>

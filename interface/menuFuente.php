@@ -73,6 +73,7 @@
             	?>
           	</ul>
           	<ul class="nav navbar-nav navbar-right">
+          			<li><a href="aPDF.php?numord=<?php echo $numero ; ?>">APDF</a></li>
           		<?php if ($estado>3) { ?>
           			<li><a href="formDili.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Form. Diligenciado</a></li>
           		<?php } ?>
