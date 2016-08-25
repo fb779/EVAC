@@ -53,13 +53,12 @@ function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='
         $path!='' ? $path .='.pdf' : $path = crearNombre(10);
 
         //Las opciones del papel del PDF. Si no existen se asignan las siguientes:[*]
-        if( $paper_1=='' ) $paper_1='A4';
+        if( $paper_1=='' ) $paper_1='letter';
         if( $paper_2=='' ) $paper_2='portrait';
 
         $dompdf =  new DOMPDF();
         $dompdf -> set_paper($paper_1,$paper_2);
-        // $dompdf -> load_html(utf8_encode($content));
-        $dompdf -> load_html(utf8_decode($content));
+        $dompdf -> load_html(utf8_encode($content));
         ini_set("memory_limit","64M"); //opcional
         $dompdf -> render();
 

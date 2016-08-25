@@ -39,11 +39,12 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	} /*end FOR */
 
 	if ($sets != '' && $erAud == 0) {
-		$lineaMOD .= trim($sets, ',');
+		$lineaMOD .= trim($sets, ',') . 'WHERE nordemp = '.$emp;
 		try {
 			$qUpdate = $conn->query($lineaMOD);
 		} catch (Exception $e) {
 			$erMOD ++;
+			$jsondata['errors'][$erMOD] = $e->getMessage();
 		}
 	}
 

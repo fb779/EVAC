@@ -3,7 +3,7 @@
 		session_start();
 	}
 	ini_set('default_charset', 'UTF-8');
-	// require_once "../dompdf/dompdf_config.inc.php";
+	require_once "../dompdf/dompdf_config.inc.php";
 	$region = $_SESSION['region'];
 	$vig=$_SESSION['vigencia'];
 	//$nomPeriodo = $_SESSION['nomPeri'];
@@ -19,10 +19,10 @@
 
 	include('convertToPDF.php');
 
-	$html =  utf8_decode( file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+	$html = file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig);
+	// echo "$html";
 	$style = '';
-	// $style = '';
-	// doPDF('nombrePDF',$html,true,'style.css',false,'letter','landscape');
+
 	doPDF('nombrePDF',$html,true,$style,false,'Letter','portrait');
 
 ?>
