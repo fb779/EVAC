@@ -11,8 +11,7 @@
 
 	if (isset($_GET['sede'])) {
 		$id_region = $_GET['sede'];
-	}
-	else {
+	} else {
 		$id_region = $_SESSION['region'];
 	}
 

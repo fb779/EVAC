@@ -3,12 +3,11 @@
 		session_start();
 	}
 	ini_set('default_charset', 'UTF-8');
-	require_once "../dompdf/dompdf_config.inc.php";
 	$region = $_SESSION['region'];
 	$vig=$_SESSION['vigencia'];
-	//$nomPeriodo = $_SESSION['nomPeri'];
 	$numero = $_GET['numord'];
 
+	// require_once "../dompdf/dompdf_config.inc.php";
 	// $dompdf = new DOMPDF();
 	// $dompdf->set_paper("letter", "portrait");
 	// // $dompdf->set_base_path('/bootstrap/css/bootstrap.min.css');
@@ -19,7 +18,9 @@
 
 	include('convertToPDF.php');
 
-	$html = file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig);
+	$html = utf8_decode(file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+	// echo htmlentities($bodytag);
+	// $html = file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig);
 	// echo "$html";
 	$style = '';
 

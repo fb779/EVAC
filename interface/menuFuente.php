@@ -73,9 +73,9 @@
             	?>
           	</ul>
           	<ul class="nav navbar-nav navbar-right">
-          			<li><a href="aPDF.php?numord=<?php echo $numero ; ?>">APDF</a></li>
           		<?php if ($estado>3) { ?>
-          			<li><a href="formDili.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Form. Diligenciado</a></li>
+          			<li><a href="aPDF.php?numord=<?php echo $numero ; ?>">Form. Diligenciado</a></li>
+          			<!-- <li><a href="formDili.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Form. Diligenciado</a></li> -->
           		<?php } ?>
             	<li><a href="../administracion/cambioclave.php">Cambiar Clave</a></li>
             	<li><a href="../index.php">Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a></li>

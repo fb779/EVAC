@@ -48,23 +48,38 @@
 				text-align: center;
 				-o-text-overflow: clip;
 				text-overflow: clip;
-				background: rgba(252,252,252,1);
+				/*background: rgba(252,252,252,1);*/
 				width: 90%;
 			}
 
-
+			.campTextarea {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				margin: 5px;
+				padding: 5px;
+				overflow: hidden;
+				border: 1px solid #b7b7b7;
+				-webkit-border-radius: 5px;
+				border-radius: 5px;
+				color: rgba(0,142,198,1);
+				text-align: center;
+				-o-text-overflow: clip;
+				text-overflow: clip;
+				/*background-color: rgba(252,252,252,1);*/
+				width: 90%;
+			}
 
 			table {
+				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
 				margin: 10px auto;
 				border-collapse: collapse;
-				/*border: solid 1px #7BEAFB;*/
 			}
-			tr {
-				/*border: solid 1px #7BEAFB;*/
-			}
+
 			td {
 				padding: 5px 10px;
-				border: solid 1px #7BEAFB;
 			}
 
 			.contenido {
@@ -72,9 +87,9 @@
 				padding: 0px 15px;
 			}
 
-			.datagrid {font: normal 12px/100% Arial, Helvetica, sans-serif;  overflow: hidden;  margin-bottom: 2em;}
-			.datagrid table { border-collapse: collapse; margin: 0 auto; text-align: center; background: #fff; border: 1px solid #006699; }
-			.datagrid table thead th {background-color:#006699; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; text-align: center; }
+			.datagrid {-webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; font: normal 12px/100% Arial, Helvetica, sans-serif; background: #ffffff; border: solid 1px #000000; overflow: hidden;  margin-bottom: 2em;}
+			.datagrid table { border-collapse: collapse; border-spacing: 0px; margin: 0 auto; text-align: center; }
+			.datagrid table thead th {background-color:#006699; color:#FFFFFF; font-size: 15px; font-weight: bold; text-align: center; }
 			.datagrid table td, .datagrid table th { padding: 5px 1px; }
 			.datagrid table tbody td { color: #00557F; border-left: 1px solid #E1EEF4;font-size: 12px; font-weight: normal; }
 			.datagrid table tbody .alt td { background: #E1EEf4; color: #00557F; }
@@ -89,16 +104,16 @@
 				/*overflow: hidden;*/
 				-webkit-border-radius: 8px 8px 0 0;
 				border-radius: 8px 8px 0 0;
-				color: rgba(255,255,255,1);
+				/*color: rgba(255,255,255,1);*/
 				text-align: center;
 				-o-text-overflow: ellipsis;
 				/*text-overflow: ellipsis;*/
-				background-color: #0199d9;
+				/*background-color: #0199d9;*/
 			}
 
 			.pconten{
 				margin-bottom: 0;
-				background-color: #B1C8EA;
+				/*background-color: #B1C8EA;*/
 				padding: 10px;
 			}
 
@@ -372,19 +387,19 @@
 							<tr>
 								<td>
 									<label>
-										<input type="checkbox" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> >
 										Medios de comunicación (prensa,radio,tv)
 									</label>
 								</td>
 								<td>
 									<label>
-										<input type="checkbox" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox"  <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> >
 										Servicio Público de Empleo
 									</label>
 								</td>
 								<td>
 									<label>
-										<input type="checkbox" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox"  <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> >
 										Portales laborales WEB
 									</label>
 								</td>
@@ -392,19 +407,19 @@
 							<tr>
 								<td>
 									<label>
-										<input type="checkbox" id="idi1r3c4" class="chkbx" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> >
 										Agencias / bolsas de empleo / headhunters / firmas cazatalentos
 									</label>
 								</td>
 								<td>
 									<label>
-										<input type="checkbox" id="idi1r3c5" class="chkbx" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox"  <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> >
 										Universidades  e  instituciones educativas (oficinas de egresados)
 									</label>
 								</td>
 								<td>
 									<label>
-										<input type="checkbox" id="idi1r3c6" class="chkbx" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox"  <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> >
 										Contactos no  formales (colegas, amigos, empleados)
 									</label>
 								</td>
@@ -412,20 +427,20 @@
 							<tr>
 								<td>
 									<label>
-										<input type="checkbox" id="idi1r3c7" class="chkbx" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> >
 										Redes sociales o aplicaciones
 									</label>
 								</td>
 								<td>
 									<label>
-										<input type="checkbox" id="idi1r3c8" class="chkbx" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
+										<input type="checkbox"<?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> >
 										Otra no mencionada anteriormente
 									</label>
 								</td>
 								<td>
 									<label class="">Cual?</label>
 									<div>
-										<input type='text' value = "<?php echo ($row['i1r3c9'] != '') ? $row['i1r3c9'] : '&nbsp;'; ?>" />
+										<input type='text' id="noCual" value="<?php echo ($row['i1r3c9'] != '') ? $row['i1r3c9'] : '&nbsp;'; ?>" />
 									</div>
 								</td>
 							</tr>
@@ -435,133 +450,51 @@
 
 				</div>
 			</div>
- 		</div>
 
+			<div class="panel">
+				<div class="ptitle">
+					<b>4. De las vacantes mencionadas en el numeral 1. </b>
+				</div>
+				<div class="pconten">
+					<div>
+						<table>
+							<tr>
+								<td colspan="3"> <label for=""> ¿Cuántas requerían de una competencia certificada? </label> </td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<input type='text' value="<?php echo ($row['i1r4c1'] != '') ? $row['i1r4c1'] : '&nbsp;'; ?>" />
 
-			<div class='container'>
-
-				<fieldset style='border-style: solid; border-width: 1px' id="" class="<?php //echo $estadoII3; ?>" >
-					<legend>
-						<h5 style='font-family: arial'><b>
-							:
-						</b></h5>
-					</legend>
-					<div id="ii3contenido" class="container-fluid hidden">
-						<div class="col-sx-12 text-danger"> <h4>Debe seleccionar alguno de los valores </h4> </div>
+								</td>
+								<td></td>
+							</tr>
+						</table>
 					</div>
-					<div id="msCheck" class="container-fluid text-danger text-center"></div>
-					<div id="medPub">
-						<div class="container-fluid">
-							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c1" class="chkbx" name="i1r3c1" value="<?php echo $row['i1r3c1']?>" <?php echo ($row['i1r3c1'] == 1) ? 'checked' : ''?> required>
-								    Medios de comunicación (prensa,radio,tv)
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c2" class="chkbx" name="i1r3c2" value="<?php echo $row['i1r3c2']?>" <?php echo ($row['i1r3c2'] == 1) ? 'checked' : ''?> required>
-								    Servicio Público de Empleo
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
-								    Portales laborales WEB
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c4" class="chkbx" name="i1r3c4" value="<?php echo $row['i1r3c4']?>" <?php echo ($row['i1r3c4'] == 1) ? 'checked' : ''?> required>
-								    Agencias / bolsas de empleo / headhunters / firmas cazatalentos
-								  </label>
-								</div>
-							</div>
-						</div>
 
-						<div class="container-fluid">
-							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-								<div class="checkbox" >
-								  <label>
-								    <input type="checkbox" id="idi1r3c5" class="chkbx" name="i1r3c5" value="<?php echo $row['i1r3c5']?>" <?php echo ($row['i1r3c5'] == 1) ? 'checked' : ''?> required>
-								    Universidades  e  instituciones educativas (oficinas de egresados)
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c6" class="chkbx" name="i1r3c6" value="<?php echo $row['i1r3c6']?>" <?php echo ($row['i1r3c6'] == 1) ? 'checked' : ''?> required>
-								     Contactos no  formales (colegas, amigos, empleados)
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c7" class="chkbx" name="i1r3c7" value="<?php echo $row['i1r3c7']?>" <?php echo ($row['i1r3c7'] == 1) ? 'checked' : ''?> required>
-								    Redes sociales o aplicaciones
-								  </label>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-2">
-								<div class="checkbox">
-								  <label>
-								    <input type="checkbox" id="idi1r3c8" class="chkbx" name="i1r3c8" value="<?php echo $row['i1r3c8']?>" <?php echo ($row['i1r3c8'] == 1) ? 'checked' : ''?> required>
-								    Otra no mencionada anteriormente
-								  </label>
-								</div>
-							</div>
-						</div>
-						<div class="container-fluid">
-							<div class="col-xs-12 col-sm-1"></div>
-							<div class="form-group form-group-sm col-xs-12 col-sm-12">
-								<label class="">Cual?</label>
-								<div>
-									<input type='text' class='form-control input-sm' id='idi1r3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="50" required/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
 
-				<fieldset style='border-style: solid; border-width: 1px' id="" >
-					<legend>
-						<h5 style='font-family: arial'><b>
-							4. De las vacantes mencionadas en el numeral 1.
-						</b></h5>
-					</legend>
-
-					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12">
-							<label class="">¿Cuántas requerían de una competencia certificada?</label>
-							<div>
-								<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']; ?>" maxlength="3" required />
-							</div>
-						</div>
-					</div>
-				</fieldset>
-				<fieldset style='border-style: solid; border-width: 1px'>
-					<legend><h4 style='font-family: arial'>Observaciones</h4></legend>
-					<div class='col-sm-6' style='padding-bottom: 10px'>
-						<textarea class='form-control' rows='2' name='OBSERVACIONES' id='obsfte' value="<?php echo $row['OBSERVACIONES'] ?>" ><?php echo $row['OBSERVACIONES'] ?></textarea>
-					</div>
-				</fieldset>
-
+				</div>
 			</div>
 
+			<div class="panel">
+				<div class="ptitle">
+					<b>Observaciones </b>
+				</div>
+				<div class="pconten">
+
+						<table>
+							<tr>
+								<td>
+									<div class='campTextarea' style='padding-bottom: 10px'>
+										<?php echo $row['OBSERVACIONES']; ?>
+									</div>
+								</td>
+							</tr>
+						</table>
+
+
+				</div>
+			</div>
+ 		</div>
 </body>
  </html>

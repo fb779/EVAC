@@ -7,25 +7,25 @@
 	$tipousu = $_SESSION['tipou'];
 	$nombre = $_SESSION['nombreu'];
 	$region = $_SESSION['region'];
-	$pagina = "ASIGNACIÓN DE FUENTES";
+	$pagina = "ASIGNACI&Oacute;N DE FUENTES";
 	$vig = $_SESSION['vigencia'];
-		
+
 	if(!isset($_REQUEST['ident'])){
 		exit;
 	}
-		
+
 	$usuario=$_REQUEST['ident'];
-	
-	
-	$sql_fuentes=$conn->prepare("SELECT a.nordemp, nombre, a.ciiu3  FROM control a, caratula b WHERE usuarioss = '".$usuario."' AND a.nordemp = b.nordemp");
-	
-	
+
+
+	$sql_fuentes=$conn->prepare("SELECT a.nordemp, nombre, a.ciiu3  FROM control a, caratula b WHERE usuarioss = '".$usuario."' AND a.nordemp = b.nordemp AND vigencia = $vig");
+
+
 	//var_dump($sql_fuentes);
 	$sql_fuentes->execute();
-	
+
 	//var_dump($sql_fuentes);
 	 //exit;
-	
+
 	/*if ($region == 99) {
 		$qActividad = $conn->prepare("SELECT a.ciiu3, b.descrip, COUNT( a.ciiu3 ) AS asignar FROM control a, ciiu3 b WHERE a.vigencia =:periodo AND
 			usuario = ''  AND a.ciiu3 = b.codigo GROUP BY a.ciiu3");
@@ -36,7 +36,7 @@
 			usuarioss = ''  AND a.ciiu3 = b.codigo AND a.codsede = :region GROUP BY a.ciiu3");
 			$qActividad->execute(array(':periodo'=>$vig, ':region'=>$region));
 	}*/
-	
+
 
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
@@ -53,7 +53,7 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
@@ -63,7 +63,7 @@
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 		<script type="text/javascript">
@@ -94,11 +94,11 @@
 					}]
 				});
 			}
-			
+
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();
 			});
-			
+
 			function generaClave() {
 				$.ajax({
 					url: "genfuente.php",
@@ -111,25 +111,25 @@
 		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<div class="container" style="padding-top:60px">
 			<h4 class="text-center" style="font-family: arial">Eliminar Fuente</h4>
 				<table class='table table-condensed table-hover table-bordered'>
 				<th>
-					Número de órden
+					N&uacute;mero de &oacute;rden
 				</th>
 				<th>
 					Nombre
 				</th>
 				<th>
-					Código actividad
+					C&oacute;digo actividad
 				</th>
 				<th>
 					Eliminar
 				</th>
-				<?php 
+				<?php
 				    while ($rowFuentes = $sql_fuentes->fetch(PDO::FETCH_ASSOC)) {
 						echo "<tr>";
 							echo "<td>";
@@ -166,4 +166,4 @@
 				</table>
 		</div>
  	</body>
- </html> 
+ </html>

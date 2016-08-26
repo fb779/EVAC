@@ -232,10 +232,10 @@
 					<span class='pull-right'>
 						<select class='form-control input-sm' onChange='window.location.href=this.value;'>
 							<option value=''>Descarga Documentos</option>
-							<option value='../documentos/FormularioEDITSVBorrador.pdf'>Formulario Borrador</option>
-							<option value='../documentos/MANUALDEDILIGENCIAMIENTO_EDIT_SERVICIOS_2016.pdf'>Maual de Diligenciamiento</option>
-							<option value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario de T&eacute;rminos</option>
-							<option value='../documentos/MANUALDECRITICA_EDIT_SERVICIOS_2016.pdf'>Manual de Cr&iacute;tica</option>
+							<option value='../documentos/evac_formulario_borrador.pdf'>Formulario Borrador</option>
+							<option value='../documentos/evac_manual_fuente.pdf'>Maual de Diligenciamiento</option>
+							<!-- <option value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario de T&eacute;rminos</option> -->
+							<option value='../documentos/evac_manual_critica.pdf'>Manual de Cr&iacute;tica</option>
 						</select>
 					</span>
 				</div>

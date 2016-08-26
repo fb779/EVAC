@@ -28,17 +28,19 @@ $paper_2  : estilo del papel[*]
 
 require_once("../dompdf/dompdf_config.inc.php");
 
-function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='a4',$paper_2='portrait')
+function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='letter',$paper_2='portrait')
 {
     if( $body!=true and $body!=false ) $body=false;
     if( $mode!=true and $mode!=false ) $mode=false;
 
-    if( $body == true )
-    {
-        $content='
-        <!doctype html>
+
+
+    if( $body == true ) {
+        $content = '
+        <!DOCTYPE html>
         <html>
         <head>
+            <meta charset="utf-8">
             <link rel="stylesheet" href="'.$style.'" type="text/css" />
         </head>
         <body>'
@@ -47,8 +49,7 @@ function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='
         </html>';
     }
 
-    if( $content!='' )
-    {
+    if( $content != '' ) {
         //Añadimos la extensión del archivo. Si está vacío el nombre lo creamos
         $path!='' ? $path .='.pdf' : $path = crearNombre(10);
 
@@ -58,8 +59,8 @@ function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='
 
         $dompdf =  new DOMPDF();
         $dompdf -> set_paper($paper_1,$paper_2);
-        $dompdf -> load_html(utf8_encode($content));
-        ini_set("memory_limit","64M"); //opcional
+        $dompdf -> load_html(utf8_encode(tildesToHtml($content)));
+        // ini_set("memory_limit","64M"); //opcional
         $dompdf -> render();
 
         //Creamos el pdf
@@ -72,8 +73,13 @@ function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='
     }
 }
 
-function crearNombre($length)
-{
+function tildesToHtml($content){
+    $acentos = array('á','é','í','ó','ú','Á','É','Í','Ó','Ú','ñ','Ñ','¿');
+    $acenCon = array('&aacute;','&eacute;','&iacute;','&oacute;','&uacute;','&Aacute;','&Eacute;','&Iacute;','&Oacute;','&Uacute;','&ntilde;','&Ntilde;','&iquest;');
+    return str_replace($acentos, $acenCon, $content);
+}
+
+function crearNombre($length) {
     if( ! isset($length) or ! is_numeric($length) ) $length=6;
 
     $str  = "0123456789abcdefghijklmnopqrstuvwxyz";
