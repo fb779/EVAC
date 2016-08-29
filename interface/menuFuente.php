@@ -52,12 +52,12 @@
         <div id="navbar" class="navbar-collapse collapse">
         	<ul class="nav navbar-nav">
             	<li <?php echo ($page=='cara') ? 'class="active"' : '' ?>><a href="caratula.php?numero=<?php echo $numero ?>">Car&aacute;tula &Uacute;nica</a></li>
-            	<li <?php echo ($page=='cap1') ? 'class="active"' : '' ?>><a href="capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color1 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 1<?php echo ($icono1 == "SI") ? $icono : ''?></a></li>
-            	<!-- li <?php echo ($page=='cap2') ? 'class="active"' : '' ?>><a href="capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color2 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 2<?php echo ($icono2 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap3') ? 'class="active"' : '' ?>><a href="capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color3 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 3<?php echo ($icono3 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap4') ? 'class="active"' : '' ?>><a href="capitulo4.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color4 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 4<?php echo ($icono4 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
-            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Cap&iacute;tulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap1') ? 'class="active"' : '' ?>><a href="capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color1 == "OK") ? $txtColor : ''?> >Modulo 1<?php echo ($icono1 == "SI") ? $icono : ''?></a></li>
+            	<!-- li <?php echo ($page=='cap2') ? 'class="active"' : '' ?>><a href="capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color2 == "OK") ? $txtColor : ''?> >Modulo 2<?php echo ($icono2 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap3') ? 'class="active"' : '' ?>><a href="capitulo3.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color3 == "OK") ? $txtColor : ''?> >Modulo 3<?php echo ($icono3 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap4') ? 'class="active"' : '' ?>><a href="capitulo4.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color4 == "OK") ? $txtColor : ''?> >Modulo 4<?php echo ($icono4 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap5') ? 'class="active"' : '' ?>><a href="capitulo5.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color5 == "OK") ? $txtColor : ''?> >Modulo 5<?php echo ($icono5 == "SI") ? $icono : ''?></a></li>
+            	<li <?php echo ($page=='cap6') ? 'class="active"' : '' ?>><a href="capitulo6.php?numord=<?php echo $numero . "&nombre=" . $nombre?>" <?php echo ($color6 == "OK") ? $txtColor : ''?> >Modulo 6<?php echo ($icono6 == "SI") ? $icono : ''?></a></li>
             	<li <?php echo ($page=='cap7') ? 'class="active"' : '' ?>><a href="capitulo7.php?numord=<?php echo $numero . "&nombre=" . $nombre?>">Evaluaci&oacute;n</a></li-->
 
 				<?php

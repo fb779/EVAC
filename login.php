@@ -44,7 +44,7 @@
 		        	 <h2>ENCUESTA DE VACANTES -EVAC</h2>
 		        	 <h4>Se&ntilde;or Empresario:</h4>
 					 <p>
-						El Departamento Administrativo Nacional de Estad&iacute;stica DANE, en el marco de su plan de modernizaci&oacute;n de los instrumentos de recolecci&oacute;n de las encuestas econ&oacute;micas y con el prop&oacute;sito de agilizar y facilitar el reporte corecto y oportuno de los datos estad&iacute;sticos requeridos por la Encuesta de Vacantes - EVAC, pone a su disposici&oacute;n el presente fiormulario electr&oacute;nico, con el cual podrá diligenciar y verificar en linea la cosistencia de su informaci&oacute;n.
+						El Departamento Administrativo Nacional de Estad&iacute;stica DANE, en el marco de su plan de modernizaci&oacute;n de los instrumentos de recolecci&oacute;n de las encuestas econ&oacute;micas y con el prop&oacute;sito de agilizar y facilitar el reporte correcto y oportuno de los datos estad&iacute;sticos requeridos por la Encuesta de Vacantes - EVAC, pone a su disposici&oacute;n el presente formulario electr&oacute;nico, con el cual podrá diligenciar y verificar en linea la consistencia de su informaci&oacute;n.
 					 </p>
 
 					 <p>

@@ -133,7 +133,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading"><h5> Mensaje de sistema</h5></div>
 						<div class="panel-body text-center">
-							<label for="">No se an creado periodos</label>
+							<label for="">No se han creado periodos</label>
 							<span for=""></span>
 						</div>
 					</div>

@@ -251,7 +251,8 @@ p {
 			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 			baseYear: "1800",
 			earliest: new Date(2000,0,1,0,0,0),
-			latest: new Date(2099,11,31,23,59,59)
+			// latest: new Date(2099,11,31,23,59,59)
+			latest: new Date()
 		});
 
 		$("#idfechaf").AnyTime_picker({
@@ -319,7 +320,7 @@ p {
 				if (parseInt( $('#idfechai').val().replace(/-/g,'') ) > parseInt( $('#idfechaf').val().replace(/-/g,''))){
 					var dayLater = new Date(feci+oneDay); // Se obtiene la fecha seleccionada y se agrega 1 dia
 					dayLater.setHours(0,0,0,0);
-					var moreDaysLater = new Date(feci+(2*oneYear)); // a la fecha seleccionada se le agrega 2 meses
+					var moreDaysLater = new Date(feci+(2*oneYear)); // a la fecha seleccionada se le agrega 2 años
 					moreDaysLater.setHours(23,59,59,999)
 
 					$('#idfechaf').
@@ -335,6 +336,7 @@ p {
 						dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 						monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 						earliest: dayLater,
+						latest: new Date(2099,11,31,23,59,59)
 						//latest: moreDaysLater
 					});
 				}else{
@@ -355,7 +357,8 @@ p {
 						labelDayOfMonth: "Dia del Mes",
 						dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 						monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-						earliest: dayLater
+						earliest: dayLater,
+						latest: new Date(2099,11,31,23,59,59)
 						//latest: moreDaysLater
 					});
 				}
@@ -543,7 +546,7 @@ $(document).ready(function(){
 		if ($(this).val() == ''){
 			$(this).parent().parent().addClass('text-danger');
 			$(this).css('border',"1px solid" + color);
-			$(this).parent().append('<span class="text-danger"><h6>Falta Rason social</h6></span>');
+			$(this).parent().append('<span class="text-danger"><h6>Falta Raz&oacute;n social</h6></span>');
 		}
 	});
 
@@ -566,7 +569,7 @@ $(document).ready(function(){
 		if ($(this).val() == ''){
 			$(this).parent().parent().addClass('text-danger');
 			$(this).css('border',"1px solid" + color);
-			$(this).parent().append('<span class="text-danger"><h6>Falta La Dirección de Gerencia</h6></span>');
+			$(this).parent().append('<span class="text-danger"><h6>Falta la Dirección de la Gerencia</h6></span>');
 		}
 	});
 
@@ -582,11 +585,13 @@ $(document).ready(function(){
 				$(this).parent().parent().addClass('text-danger');
 				$(this).css('border',"1px solid" + color);
 				$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+				$('#btnGuardar').addClass('disabled');
 			}
 		}else{
 			$(this).parent().parent().addClass('text-danger');
 			$(this).css('border',"1px solid" + color);
 			$(this).parent().append('<span class="text-danger">Falta correo electrónico</span>');
+			$('#btnGuardar').addClass('disabled');
 		}
 	});
 
@@ -613,11 +618,13 @@ $(document).ready(function(){
 	    		$(this).parent().parent().addClass('text-danger');
 	    		$(this).css('border',"1px solid" + color);
 	    		$(this).parent().append('<span class="text-danger">Correo invalido</span>');
+	    		$('#btnGuardar').addClass('disabled');
 	    	}
 	    }else{
 	    	$(this).parent().parent().addClass('text-danger');
 	    	$(this).css('border',"1px solid" + color);
 	    	$(this).parent().append('<span class="text-danger">Falta correo electrónico de notificación</span>');
+	    	$('#btnGuardar').addClass('disabled');
 	    }
 
 	});
@@ -703,16 +710,15 @@ $(document).ready(function(){
 	/** Validacion para el campo estado y activacion de la casilla adicional */
 	$('#idestado').on('change', function(){
 		var v = parseInt($(this).val());
-
 		if (v == 7){
 			$('#idestactotro').parent().parent().removeClass('hidden');
-			$('#idestactotro').prop('disabled',false);
+			// $('#idestactotro').prop('disabled',false);
 			$('#idestactotro').prop('required',true);
 		}else{
 			$('#idestactotro').parent().parent().addClass('hidden');
 			$('#idestactotro').prop('required',false);
-			$('#idestactotro').prop('disabled',true);
-			$('#idestactotro').val(' ');
+			// $('#idestactotro').prop('disabled',true);
+			$('#idestactotro').val('');
 		}
 	});
 
@@ -757,7 +763,6 @@ $(document).ready(function(){
 			$item.parent().parent().removeClass('has-error');
 			$item.parent().parent().removeClass('text-danger');
 			if ($item.val() === '' && $item.prop('required')){
-				// debugger;
 				$item.parent().parent().addClass('has-error');
 				$item.parent().parent().addClass('text-danger');
 			}
@@ -835,7 +840,7 @@ $(document).ready(function(){
 				<span class='pull-right'> <select class='form-control input-sm' onChange='window.location.href=this.value;'>
 					<option value=''>Descarga Documentos</option>
 							<option value='../documentos/evac_formulario_borrador.pdf'>Formulario Borrador</option>
-							<option value='../documentos/evac_manual_fuente.pdf'>Maual de Diligenciamiento</option>
+							<option value='../documentos/evac_manual_fuente.pdf'>Manual de Diligenciamiento</option>
 							<!-- <option value='../documentos/GLOSARIODETERMINOS_EDIT_SERVICIOS_2016.pdf'>Glosario de T&eacute;rminos</option> -->
 				</select>
 				</span>
@@ -1009,9 +1014,9 @@ $(document).ready(function(){
 					</div>
 					<div class="form-group col-xs-1"> &nbsp;</div>
 					<div class="form-group col-xs-2">
-						<label class='control-label' for='ntele'>Telefono</label>
+						<label class='control-label' for='ntele'>Tel&eacute;fono</label>
 						<div class=''>
-							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Falta Tel&eacute;fono' value='<?php echo $row['telefono'] ?>' required />
+							<input type='tel' class='form-control input-sm' id='ntele' name='telefono' maxlength="10" data-error='Falta n&uacute;mero de tel&eacute;fono' value='<?php echo $row['telefono'] ?>' required />
 							<div class="help-block with-errors"></div>
 						</div>
 					</div>
@@ -1187,7 +1192,7 @@ $(document).ready(function(){
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
 					<h4 style='font-family: arial'>Composici&oacute;n del Capital Social y Estado Actual</h4>
-					<div ><h6 > Nota: La sigiente información esta representada en porcentaje %, la sumatoria de todos los campos debe representar el 100% </h6></div>
+					<div ><h6 > Nota: La siguiente información esta representada en porcentaje %, la sumatoria de todos los campos debe representar el 100% </h6></div>
 				</legend>
 
 				<div id="cocaso" class="container-fluid small text-center">
@@ -1247,7 +1252,7 @@ $(document).ready(function(){
 					<div class="form-group col-xs-5 <?php echo ($row['otro'] != '')?'':'hidden';  ?>">
 						<label class='control-label' for='nfaxn'>Otro</label>
 						<div class=''>
-							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo $row['otro'] ?>' required/>
+							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo ($row['otro'] != '')? $row['otro'] : '' ?>' required/>
 						</div>
 					</div>
 				</div>
@@ -1333,12 +1338,12 @@ $(document).ready(function(){
 
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
-					<h4 style='font-family: arial'>Actividades Economicas</h4>
+					<h4 style='font-family: arial'>Actividades Econ&oacute;micas</h4>
 				</legend>
 				<div class="container-fluid text-center">
 					<!-- div class="row">&nbsp; </div-->
 					<div class='form-group col-xs-12 col-sm-3'>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Actividades Economicas</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Actividades Econ&oacute;micas</button>
 					</div>
 
 					<div id="actividades" class="col-xs-12 col-sm-9">
@@ -1382,7 +1387,7 @@ $(document).ready(function(){
 						<label class='control-label' for='idrep'>Representante Legal:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='idrep' name="repleg" data-error='Diligencie Reoresentante Legal' maxlength="50" value="<?php echo trim($row['repleg']) ?>" required />
+						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='idrep' name="repleg" data-error='Diligencie Representante Legal' maxlength="50" value="<?php echo trim($row['repleg']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1391,7 +1396,7 @@ $(document).ready(function(){
 						<label class='control-label' for='iddil'>Persona que Diligencia:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='iddil' name="responde" data-error='Ingrese nombre Persona que Diligencia' maxlength="50" value="<?php echo trim($row['responde']) ?>" required />
+						<input type="text" class='form-control input-sm solo-letras mayusculas no-especiales' id='iddil' name="responde" data-error='Ingrese el nombre de la persona que diligencia' maxlength="50" value="<?php echo trim($row['responde']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1401,7 +1406,7 @@ $(document).ready(function(){
 						<label class='control-label' for='iddil'>Cargo Persona que Diligencia:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="text" class='form-control input-sm solo-letras  mayusculas no-especiales' id='idcadil' name="carresponde" data-error='Ingrese el cargo de la Persona que Diligencia' maxlength="50" value="<?php echo trim($row['carresponde']) ?>" required />
+						<input type="text" class='form-control input-sm solo-letras  mayusculas no-especiales' id='idcadil' name="carresponde" data-error='Ingrese el cargo de la persona que diligencia' maxlength="50" value="<?php echo trim($row['carresponde']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1412,7 +1417,7 @@ $(document).ready(function(){
 						<label class='control-label' for='idteldil'>Tel&eacute;fono:</label>
 					</div>
 					<div class='col-sm-2 small'>
-						<input type="text" class='form-control input-sm solo-numero' id='idteldil' name="teler" maxlength="10" data-error='Diligencie tel&eacute;fono Persona que diligencia' value="<?php echo $row['teler'] ?>" required />
+						<input type="text" class='form-control input-sm solo-numero' id='idteldil' name="teler" maxlength="10" data-error='Diligencie  numero de tel&eacute;fono de la persona que diligencia' value="<?php echo $row['teler'] ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1432,7 +1437,7 @@ $(document).ready(function(){
 						<label class='control-label' for='idemres'>Email Persona que diligencia:</label>
 					</div>
 					<div class='col-sm-6 small'>
-						<input type="email" class='form-control input-sm mayusculas' style='text-transform: lowercase' id='idemres' name="emailres" maxlength="50" data-error='Ingrese Email persona que diligencia' value="<?php echo trim($row['emailres']) ?>" required />
+						<input type="email" class='form-control input-sm mayusculas' style='text-transform: lowercase' id='idemres' name="emailres" maxlength="50" data-error='Ingrese el email de la persona que diligencia' value="<?php echo trim($row['emailres']) ?>" required />
 						<div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -1466,7 +1471,7 @@ $(document).ready(function(){
 					<a href='capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
 				</div>
 				<div class='col-sm-1 small pull-right'>
-					<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Car&aacute;tula &uacute;nica'>Grabar</button>
+					<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Car&aacute;tula &uacute;nica'>Grabar</button>
 				</div>
 			</div>
 		</form>
@@ -1482,7 +1487,7 @@ $(document).ready(function(){
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Actividades Economicas CIIU</h4>
+					<h4 class="modal-title" id="myModalLabel">Actividades Econ&oacute;micas CIIU</h4>
 				</div>
 				<div id="listActividad" class="modal-body">
 					<!-- Listado de actividades consultadas -->

@@ -176,7 +176,7 @@ $(document).ready(function(){
 		$('#addDisp').click(function(){
 			if (validar_disponibilidad()){
 				var x = lista.children().length + 1;
-				var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Disp '+ x +'</a></li>';
+				var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
 				var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
 
 				lista.append(vinculo);

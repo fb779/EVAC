@@ -86,7 +86,7 @@
 							<th class='text-right'>En Dig.</th>
 							<th class='text-right'>Digit.</th>
 							<th class='text-right'>Revisi&oacute;n</th>
-							<th class='text-right'>Eviados DC.</th>
+							<th class='text-right'>Enviados DC.</th>
 							<th class='text-right'>Aceptados</th>
 							<th class='text-right'>Nove.</th>
 							<th class='text-right'>TOTAL</th>
@@ -143,61 +143,61 @@
 								echo "<td>" . $lUsuarios['ident'] . "</td>";
 								echo "<td>" . $lUsuarios['nombre'] . "</td>";
 								if ($valor1 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==0&usu=" . $usurep . "' target='_blank'>" . $valor1 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==0&usu=" . $usurep . "' target='_blank'>" . $valor1 . "</a></td>";
 								}
 								if ($distri == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado=>0&usu=" . $usurep . "' target='_blank'>" . $distri . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado=>0&usu=" . $usurep . "' target='_blank'>" . $distri . "</a></td>";
 								}
 								if ($valor2 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==1&usu=" . $usurep . "' target='_blank'>" . $valor2 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==1&usu=" . $usurep . "' target='_blank'>" . $valor2 . "</a></td>";
 								}
 								if ($valor3 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==2&usu=" . $usurep . "' target='_blank'>" . $valor3 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==2&usu=" . $usurep . "' target='_blank'>" . $valor3 . "</a></td>";
 								}
 								if ($valor4 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==3&usu=" . $usurep . "' target='_blank'>" . $valor4 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==3&usu=" . $usurep . "' target='_blank'>" . $valor4 . "</a></td>";
 								}
 								if ($valor5 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==4&usu=" . $usurep . "' target='_blank'>" . $valor5 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==4&usu=" . $usurep . "' target='_blank'>" . $valor5 . "</a></td>";
 								}
 								if ($valor6 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==5&usu=" . $usurep . "' target='_blank'>" . $valor6 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==5&usu=" . $usurep . "' target='_blank'>" . $valor6 . "</a></td>";
 								}
 								if ($valor7 == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?estado==6&usu=" . $usurep . "' target='_blank'>" . $valor7 . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?estado==6&usu=" . $usurep . "' target='_blank'>" . $valor7 . "</a></td>";
 								}
 								if ($valnov == 0) {
-									echo "<td class='text-right'>0</td>";
+									echo "<td class='text-center'>0</td>";
 								}
 								else {
-									echo "<td class='text-right'><a href='listaRC.php?nove=SI&usu=" . $usurep . "' target='_blank'>" . $valnov . "</a></td>";
+									echo "<td class='text-center'><a href='listaRC.php?nove=SI&usu=" . $usurep . "' target='_blank'>" . $valnov . "</a></td>";
 								}
 								$totalusu = $valor8+$valnov;
-								echo "<td class='text-right'>" . $totalusu . "</td>";
+								echo "<td class='text-center'>" . $totalusu . "</td>";
 								$totalG = $totalG + $totalusu;
 								echo "</tr>";
 								$totalusu =0;

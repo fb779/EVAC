@@ -7,7 +7,7 @@
 		}
 		include '../conecta.php';
 
-		$namePeriodo = array(1=>'Primer trimestre de',2=>'Segundo trimestre de',3=>'Tercer trimestre de',4=>'Cuarto trimestre de');
+		$namePeriodo = array(1=>'I trimestre de',2=>'II trimestre de',3=>'III trimestre de',4=>'IV trimestre de');
 		$estPeriodo = array('ac' => 'ac', 'cr' => 'cr');
 		$fecActual = getdate();
 		//$numPeriodo = $_POS['var'];
@@ -31,7 +31,7 @@
 				$numPeriodo = 1;
 			}
 			/** cambiamos el periodo activo para crear el nuevo periodo */
-			$cabmiarPeriodos = $conn->query("UPDATE periodoactivo set estperiodo = 'cr', fecmodificacion = curdate() where estperiodo = 'ac'") ;
+			$cabmiarPeriodos = $conn->query("UPDATE periodoactivo set estperiodo = $estPeriodo['cr'], fecmodificacion = curdate() where estperiodo = $estPeriodo['ac']") ;
 			/* Crear el nuevo periodo activo */
 			// $qNewPeriodo = $conn->query("INSERT into periodoactivo (codperiodo,estperiodo,nomperiodo,numperiodo,anioperiodo,feccreacion,fecmodificacion) value ((select codPeriodo from tipoperiodo where codPeriodo = 02),'". $estPeriodo['ac'] ."','" . $namePeriodo[$numPeriodo] . " " . $fecActual['year'] ."'," . $numPeriodo .",". $fecActual['year'] .",CURDATE(),'0000-00-01')");
 

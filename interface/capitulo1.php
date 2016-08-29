@@ -108,13 +108,13 @@
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
-							1. Durante el periodo de referencia
+							1. Durante el periodo de referencia ¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?
 						</b></h5>
 					</legend>
 
 					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1">
-						<label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label>
-						<div class="col-xs-12 col-sm-2 ">
+						<!-- <label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label> -->
+						<div class="col-xs-12 col-sm-12 text-center">
 							<label class="radio-inline">
 							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> required > Si
 							</label>
@@ -138,12 +138,12 @@
 							2. Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: </br>
 						 		&Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad:
 						 </b></h5>
-						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relacionelas en una sola fila, si alguna de ellas difiere agregue otra. </h6></div>
+						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relacionelas en una pestaña, si alguna de ellas difiere agregue otra. </h6></div>
 					</legend>
 					<div class="container-fluid">
-						<div class="col-xs-12 col-sm-12">
+						<!-- <div class="col-xs-12 col-sm-12">
 							<label for="">Este módulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus características.</label>
-						</div>
+						</div> -->
 						<div class="col-xs-12">
 							<div id="disNoti" class="alert alert-warning text-center hidden" role="alert">
 								<!-- button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button-->
@@ -192,7 +192,7 @@
 							<p>
 								<ul id="listDisTab" class="nav nav-tabs" >
 								<?php $c = 1; foreach ($rowDisLink as $displ){  ?>
-									<li class="<?php echo ($c==1)?'active':''; ?>"><a href="#disp<?php echo $c;?>" data-toggle="tab">Disp <?php echo $c;?></a></li>
+									<li class="<?php echo ($c==1)?'active':''; ?>"><a href="#disp<?php echo $c;?>" data-toggle="tab">Vacante <?php echo $c;?></a></li>
 								<?php $c++; } ?>
 								</ul>
 							</p>
