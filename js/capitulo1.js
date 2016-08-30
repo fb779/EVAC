@@ -66,6 +66,7 @@ $(document).ready(function(){
 			$('#numero').prop('disabled', false);
 			$('[name="i1r1c1"]').prop('disabled', false);
 			//$('#idi1r3c9').prop('disabled',true)
+			if ($('[name="i1r1c1"]:checked').val() == 2) { $btnGuardar.focus(); }
 		});
 	/** Validacion del campo radibutton i1r1c1 */
 
@@ -98,7 +99,7 @@ $(document).ready(function(){
 			if (!valCheckbox()){
 				$chk.prop('required',true);
 				$chk.parent().parent().parent().parent().addClass('has-error');
-				$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
+				$('#msCheck').append('<label class="col-xs-12">Debe seleccionar una o varias de las opciones</label>');
 
 			}else{
 				$chk.prop('required',false);
@@ -157,7 +158,7 @@ $(document).ready(function(){
 				$chk.prop('required',true);
 				$chk.parent().parent().parent().parent().addClass('has-error');
 				$('#msCheck').children('label').remove();
-				$('#msCheck').append('<label class="col-xs-12">Debe seleccionar almeno una de las opciones</label>');
+				$('#msCheck').append('<label class="col-xs-12">Debe seleccionar una o varias de las opciones</label>');
 			}
 		});
 	/** Validacion del campo certificacion i1r4c1 */
@@ -176,9 +177,14 @@ $(document).ready(function(){
 		$('#addDisp').click(function(){
 			if (validar_disponibilidad()){
 				var x = lista.children().length + 1;
-				var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
-				var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
-
+				// var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
+				// var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
+				/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
+				var vinculo = '<li class="active"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
+				var panel = '<div class="tab-pane active" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
+				lista.children().removeClass('active');
+				conte.children().removeClass('active');
+				/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
 				lista.append(vinculo);
 				conte.append(panel);
 
@@ -435,19 +441,19 @@ $(document).ready(function(){
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 
-		/** Funcion que lanza un modal de confirmacion para el guardado parcial de la información */
+		/** Funcion que lanza un modal de confirmacion para el guardado parcial de la informaci&oacute;n */
 		$('#saveDisp').on('click', function(){
 			// e.preventDefault();
 			var $datos = $('#listDisForm');
 			if ($datos.children().length > 0){
-				var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
-				var ct = ['<p><h4 class="text-danger">Las disponibilidades que no esten completas no seran guardadas</h4></p>','<p><h4>Desea guardar las disponibilidades creadas hasta el momento ?<h4></p>'];
+				var hd = '<h4>Guardado de informaci&oacute;n parcial de las vacantes laborales</h4>';
+				var ct = ['<p><h4 class="text-danger">Las vacantes que no esten diligenciadas completamente no ser&aacute;n guardadas</h4></p>','<p><h4>Desea guardar las vacantes creadas hasta el momento ?<h4></p>'];
 				$('#mHeader').append(hd);
 				$('#mContent').append(ct[0],ct[1]);
 				$("#mNotificacion").modal();
 			}else{
-				var hd = '<h4>Guardado de informacion parcial de disponibilidad laboral</h4>';
-				var ct = ['<p><h4 class="text-danger">Desea eliminar las disponibilidades creadas hasta el momento ?</h4></p>'];
+				var hd = '<h4>Guardado de informaci&oacute;n parcial de disponibilidad laboral</h4>';
+				var ct = ['<p><h4 class="text-danger">Desea eliminar las vacantes creadas hasta el momento ?</h4></p>'];
 				$('#mHeader').append(hd);
 				$('#mContent').append(ct[0]);
 				$("#mNotificacion").modal();
@@ -474,8 +480,7 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
 					success: function(dato) {
-						debugger;
-						var ct = ['<p>La informacion se guardo con éxito</p>','<p>La informacion no se guardo con éxito</p>'];
+						var ct = ['<p>La informaci&oacute;n se guardo con éxito</p>','<p>La informaci&oacute;n no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
 							$('#mNoti').addClass('alert-success');
@@ -500,8 +505,7 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtDel': '1'},
 					success: function(dato) {
-						debugger;
-						var ct = ['<p>La informacion se elimino con éxito</p>','<p>La informacion no se guardo con éxito</p>'];
+						var ct = ['<p>La informaci&oacute;n se elimino con éxito</p>','<p>La informaci&oacute;n no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
 							$('#mNoti').addClass('alert-success');
@@ -544,8 +548,9 @@ $(document).ready(function(){
 			event.preventDefault();
 			$('#C1_numdisp').val( $('#listDisForm').children().length);
 
-			/* nuevo envio de informacion para el manejo de auditoria */
+			/* nuevo envio de informaci&oacute;n para el manejo de auditoria */
 			var $dtForm = $('#capitulo1').find(':input, checkbox').not('.validar, [type="hidden"]').serializeArray();
+			// var $dtForm = $('#capitulo1').find(':input').not('.validar, [type="hidden"]').prop('disabled',false).serializeArray();
 
 			var $dtDisp = $('#listDisForm');
 			var $cmps = [];
@@ -556,7 +561,7 @@ $(document).ready(function(){
 			});
 			/* fin auditoria */
 
-
+			debugger;
 			$.ajax({
 				url: "../persistencia/grabacapi.php",
 				type: "POST",
@@ -565,6 +570,7 @@ $(document).ready(function(){
 				// data: $(this).serialize(),
 				data: {'mod': 'C1_nordemp' ,'emp': $('#numero').val(),'dtForm': JSON.stringify($dtForm),'dtDisp': JSON.stringify($cmps)},
 				success: function(dato) {
+					debugger;
 					if (dato.success) {
 						$("#btn_cont").show();
 						$("#idmsg").show();
@@ -692,6 +698,7 @@ $(document).ready(function(){
 				});
 			});
 			$('#idi1r2ctv').val(sumTotVac);
+			$('.dttotalvacantes').text(sumTotVac);
 			$('#idi1r2ctvcb').val(sumTotVacCub);
 			$('#idi1r2ctvnocb').val(sumTotVacNoCub);
 		}

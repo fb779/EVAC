@@ -16,6 +16,9 @@ function replace($item=''){
 	return utf8_decode($item);
 }
 
+	$arrayName = array('algo' => 'aqui', 'uno mas' => 9823);
+	$campos = array('i1r1c2' => 0, 'i1r1c3' => 0, 'i1r1c4' => 0, 'i1r3c9' => "", 'i1r4c1' => "", 'OBSERVACIONES' => "");
+	print_r( array_merge($arrayName, $campos));
 ?>
 
 

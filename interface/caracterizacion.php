@@ -93,7 +93,7 @@
 					<label class="">Salario u honorarios mensuales</label>
 					<div class='input-group input-group-sm'>
 						<span class="input-group-addon" id="sizing-addon1">$</span>
-						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' maxlength="9" value = "<?php //echo $row['i1r2c']?>" maxlength="9" required />
+						<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='i1r2c' maxlength="9" value = "<?php //echo $row['i1r2c']?>" maxlength="9" placeholder="Valor digitado en pesos" required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>

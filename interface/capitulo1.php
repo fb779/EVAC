@@ -27,7 +27,7 @@
 	// verificacion para la carga de informacion del formulario y creacion de registros para la informacion
 	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
+	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
 /**########################**/
 
 	if ($tipousu != "FU") {
@@ -65,12 +65,17 @@
 			body {
 				padding-top: 50px;
 			}
+
+			legend {
+				font: normal 16px/2;
+			}
 			.modal-width {
 				width: 90%;
 			}
 			.textoB {
 				font-weight: bold;
 			}
+
 		</style>
 	</head>
 	<body>
@@ -88,7 +93,7 @@
 */
 		?>
 		<div class="well well-sm" style="font-size: 12px; /*padding-top: 60px;*/ z-index: 1;" id="wc2">
- 			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZAC&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?>
+ 			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZACI&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?>
  			<!-- Informacion de prueba BORRAR  -->
  			<?php echo $rowDisCont->rowCount(); ?>
  			<!-- Informacion de prueba BORRAR  -->
@@ -116,7 +121,7 @@
 						<!-- <label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label> -->
 						<div class="col-xs-12 col-sm-12 text-center">
 							<label class="radio-inline">
-							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1 || $row['i1r1c1'] == '') ? 'checked' : ''; ?> required > Si
+							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> required > Si
 							</label>
 							<label class="radio-inline">
 							  <input type="radio" name="i1r1c1" id="idi1r1c1no" value="2" <?php echo ($row['i1r1c1'] == 2) ? 'checked' : ''; ?>  > No
@@ -134,10 +139,10 @@
 
 				<fieldset style='border-style: solid; border-width: 1px'>
 					<legend>
-						<h5 style='font-family: arial'><b><?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii2&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
+						<h5 style='font-family: arial'><b>
 							2. Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: </br>
-						 		&Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad:
 						 </b></h5>
+					 		<h6 style="font: normal 14px/2 arial" > <b> &Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad. </b></h6 >
 						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relacionelas en una pestaña, si alguna de ellas difiere agregue otra. </h6></div>
 					</legend>
 					<div class="container-fluid">
@@ -154,13 +159,13 @@
 						<?php if ($grabaOK) { ?>
 							<div id="contenido" class="col-xs-12 col-sm-12">
 								<button id="addDisp" type="button" class="btn btn-default" aria-label="Left Align">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar vacante
 								</button>
 								<button id="saveDisp" type="button" class="btn btn-default" aria-label="Left Align">
-									<span class="glyphicon glyphicon-save text-primary" aria-hidden="true"></span> Guardado parcial
+									<span class="glyphicon glyphicon-save text-primary" aria-hidden="true"></span> Grabaci&oacute;n parcial
 								</button>
 								<button id="removeDisp" type="button" class="btn btn-danger" aria-label="Left Align">
-									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar ultima vacante
 								</button>
 							</div>
 						<?php } ?>
@@ -296,7 +301,7 @@
 													<label class="">Salario u honorarios mensuales</label>
 													<div class='input-group input-group-sm'>
 														<span class="input-group-addon" id="sizing-addon1">$</span>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" placeholder="Valor digitado en pesos" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
@@ -389,7 +394,7 @@
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
-							3. Para  las vacantes mencionadas en el numeral 1, Seleccione  el (los) medio(s) de publicación utilizado(s):
+							3. Para  las <span class="dttotalvacantes"><?php echo $row['i1r1c2'] ?></span> vacantes mencionadas en la pregunta 2, Seleccione  el (los) medio(s) de publicación utilizado(s):
 						</b></h5>
 					</legend>
 					<div id="ii3contenido" class="container-fluid hidden">
@@ -477,7 +482,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-12">
 								<label class="">Cual?</label>
 								<div>
-									<input type='text' class='form-control input-sm' id='idi1r3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="50" required/>
+									<input type='text' class='form-control input-sm' id='idi1r3c9' name='i1r3c9' value = "<?php echo $row['i1r3c9']?>"  maxlength="60" required/>
 								</div>
 							</div>
 						</div>
@@ -488,13 +493,13 @@
 					<legend>
 						<h5 style='font-family: arial'><b>
 							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii3&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
-							4. De las vacantes mencionadas en el numeral 1.
+							4. De las <span class="dttotalvacantes"><?php echo $row['i1r1c2'] ?></span> vacantes mencionadas en la pregunta 2. ¿Cuántas requerían de una competencia certificada?
 						</b></h5>
 					</legend>
 
 					<div class="container-fluid">
-						<div class="form-group form-group-sm col-xs-12">
-							<label class="">¿Cuántas requerían de una competencia certificada?</label>
+						<div class="form-group form-group-sm col-xs-4 ">
+							<label class=""></label>
 							<div>
 								<input type='text' class='form-control input-sm solo-numero' id='idi1r4c1' name='i1r4c1' value = "<?php echo $row['i1r4c1']; ?>" maxlength="3" required />
 							</div>
@@ -510,14 +515,14 @@
 				<?php if ($grabaOK) { ?>
 				<div class='form-group form-group-sm'>
 					<div class='col-md-8'>
-						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Cap&iacute;tulo I Actualizado Correctamente</p>
+						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Modulo I Actualizado Correctamente</p>
 					</div>
 					<div class='col-sm-1 small pull-right' id="btn_cont" style="display: none;" >
 						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
-						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
+						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente modulo'>Continuar</a>
 					</div>
 					<div class='col-sm-1 small pull-right'>
-						<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Cap&iacute;tulo I'>Grabar</button>
+						<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Modulo I'>Grabar</button>
 					</div>
 				</div>
 				<?php } ?>

@@ -16,12 +16,20 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	$mod = $_POST['mod'];
 	$emp = $_POST['emp'];
 	$dtForm = json_decode($_POST['dtForm']);
+	$jsondata['dtForm'] = json_decode($_POST['dtForm']);
 	// $dtDisp =  json_decode($_POST['dtDisp']);
+
 
 	switch (substr($mod,0,2)) {
 		case 'C1':
 			$tabla = "capitulo_i";
+			$llave = "C1_nordemp";
 			$modulo = "m1";
+
+			if ( count($dtForm) == 1 ){
+				// $campos = [{"name": "i1r1c2", "value": 0}, {"name": "i1r1c3", "value": 0}, {"name": "i1r1c4", "value": 0}, {"name": "i1r3c9", "value": ""}, {"name": "i1r4c1", "value": ""}, {"name": "OBSERVACIONES", "value": ""}];
+				// $dtForm = array_merge($dtForm, $campos);
+			}
 			break;
 	}
 
@@ -55,14 +63,14 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 
 	if ($sets != '' && $erAud == 0) {
-		$lineaMOD .= trim($sets, ', ');
+		$lineaMOD .= trim($sets, ', ') .' where ' . $llave . ' = ' . $emp . ' AND vigencia = ' . $vig ;
 		try {
 			$qUpdate = $conn->query($lineaMOD);
 		} catch (Exception $e) {
 			$erMOD ++;
 		}
 	}
-	// $jsondata['qMOD'] = $lineaMOD;
+	$jsondata['qMOD'] = $lineaMOD;
 
 	/* Auditoria y Guardado de disponibilidades */
 
@@ -116,6 +124,11 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$erINS ++;
 			}
 		}else{
+			try {
+				$conn->query("DELETE FROM capitulo_i_displab WHERE C1_nordemp = '".$emp."' AND vigencia = '".$vig."' ;");
+			} catch (Exception $e) {
+				$erDEL ++;
+			}
 			$jsondata['msDisp'] = 'No hay disponibilidades para guardar';
 		}
 	}

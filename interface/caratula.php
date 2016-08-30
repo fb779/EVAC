@@ -38,7 +38,7 @@
 			'idDptoN' => $row ['depnotific']
 	) );
 
-	$qOrganiza = $conn->query ( "SELECT * FROM organiza" );
+	$qOrganiza = $conn->query ( "SELECT * FROM organiza order by codigo" );
 	$qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 	$actividad = $row ['ciiu3'];
@@ -67,7 +67,7 @@
 
 	if ($tipousu != "FU") {
 		$txtEstado = " estado - " . $rowCtl ['desc_estado'];
-		$txtActividad = $codCiiu . $descripCiiu;
+		$txtActividad = $codCiiu . ' - ' . $descripCiiu;
 	} else {
 		$txtEstado = "";
 		$txtActividad = "";
@@ -250,7 +250,7 @@ p {
 			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 			baseYear: "1800",
-			earliest: new Date(2000,0,1,0,0,0),
+			earliest: new Date(1900,0,1,0,0,0),
 			// latest: new Date(2099,11,31,23,59,59)
 			latest: new Date()
 		});
@@ -916,9 +916,9 @@ $(document).ready(function(){
 									<?php
 										foreach ( $qCIIU3 as $ciiu3 ) {
 											if ($ciiu3 ['CODIGO'] == $row ['ciiu3']) {
-												echo "<option value='" . $ciiu3 ['CODIGO'] . "' selected>" . $ciiu3 ['DESCRIP'] . "</option>";
+												echo "<option value='" . $ciiu3 ['CODIGO'] . "' selected>" . $ciiu3 ['CODIGO'] . ' - ' . $ciiu3 ['DESCRIP'] . "</option>";
 											} else {
-												echo "<option value='" . $ciiu3 ['CODIGO'] . "'>" . $ciiu3 ['DESCRIP'] . "</option>";
+												echo "<option value='" . $ciiu3 ['CODIGO'] . "'>" . $ciiu3 ['CODIGO'] . ' - ' . $ciiu3 ['DESCRIP'] . "</option>";
 											}
 										}
 									?>
@@ -1141,7 +1141,7 @@ $(document).ready(function(){
 							<select class='form-control' name='orgju' id='idorg' required>
 								<?php
 									foreach ( $qOrganiza as $lOrganiza ) {
-										$algo = (substr($lOrganiza['codigo'],0,2) =='12') ? $lOrganiza['codigo']." - " : '';
+										$algo = (substr($lOrganiza['codigo'],0,2) !='') ? $lOrganiza['codigo']." - " : '';
 										if ($lOrganiza ['codigo'] == $row ['orgju']) {
 											echo "<option value='" . $lOrganiza ['codigo'] . "' selected>" . $algo . $lOrganiza ['nombre'] . substr($row['codigo'], 0,2). "</option>";
 										} else {
@@ -1250,7 +1250,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-1"></div>
 					<div class="form-group col-xs-5 <?php echo ($row['otro'] != '')?'':'hidden';  ?>">
-						<label class='control-label' for='nfaxn'>Otro</label>
+						<label class='control-label' for='nfaxn'>&iquest;Cual?</label>
 						<div class=''>
 							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo ($row['otro'] != '')? $row['otro'] : '' ?>' required/>
 						</div>
