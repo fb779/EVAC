@@ -14,19 +14,19 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
-	
+
 	$qObserva = $conn->prepare("SELECT vigencia,nordemp,usuario,capitulo,REPLACE(observacion, '\n', '') AS observacion, fecha FROM observaciones
 		WHERE vigencia = $vig AND LENGTH(observacion)>0");
 
 	$qObserva->execute();
-	
+
 	header("Content-Type: application/vnd.ms-excel");
 	header("Content-Disposition: attachment; filename=observaciones.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	//echo "\xEF\xBB\xBF"; //Para manejar los acentos al pasar textos a Excel.
 	//print chr(255) . chr(254) . mb_convert_encoding('UTF-16LE', 'UTF-8'); // Sale en chino
-	
+
 	$cabeza = false;
 	while ($tabla = $qObserva->fetch(PDO::FETCH_ASSOC)) {
 		if (!$cabeza) {

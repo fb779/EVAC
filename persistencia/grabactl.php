@@ -49,6 +49,8 @@
 
 	if (isset($_POST['capitulo'])) {
 		$modulo = $_POST['modulo'];
+		$graba = $_POST['dtGrabar'];
+
 		if ($tipousu == "CR") {
 			$estado = 3;
 		}
@@ -67,7 +69,7 @@
 		}
 		if ($rowCtl['estado'] <= 3) {
 			//if ($m1+$m2+$m3+$m4+$m5+$m6 == 12) {
-			if ($m1 == 2) {
+			if ($m1 == 2 && $graba == 1) {
 				$estadoFor = 3;
 			}
 			else {

@@ -54,7 +54,7 @@
 					</thead>
 					<tbody>
 						<tr><td><a href='xlscapdire.php'>DIRECTORIO DE EMPRESAS</a></td></tr>
-						<tr><td><a href='xlscap1.php'>CAPITULO I</a></td></tr>
+						<tr><td><a href='xlscap1.php'>MODULO I</a></td></tr>
 						<!-- <tr><td><a href='xlscap2.php'>CAPITULO II</a></td></tr>
 						<tr><td><a href='xlscap3.php'>CAPITULO III</a></td></tr>
 						<tr><td><a href='xlscap4.php'>CAPITULO IV</a></td></tr>
@@ -62,7 +62,7 @@
 						<tr><td><a href='xlscap6.php'>CAPITULO VI</a></td></tr>
 						<tr><td><a href='xlscap7.php'>EVALUACION</a></td></tr> -->
 						<tr><td><a href='xlsObser.php'>OBSERVACIONES CR&Iacute;TICO</a></td></tr>
-						<!-- <tr><td><a href='xlsactiv.php'>LISTADO DE ACTIVIDADES</a></td></tr> -->
+						<tr><td><a href='xlsactiv.php'>LISTADO DE ACTIVIDADES</a></td></tr>
 						<tr><td><a href='xlscontrol.php'>TABLA DE CONTROL</a></td></tr>
 					</tbody>
 				</table>

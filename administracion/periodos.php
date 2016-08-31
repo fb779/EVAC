@@ -74,8 +74,8 @@
 		<div class="row small">
 			<div class="col-xs-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Periodo Activo</div>
-					<div class="panel-body">
+					<div class="panel-heading">Ultimo Periodo Creado</div>
+					<div class="panel-body text-center">
 						<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
 					</div>
 				</div>
@@ -83,8 +83,8 @@
 
 			<div class="col-xs-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Periodo actual</div>
-					<div class="panel-body">
+					<div class="panel-heading">Periodo Actual</div>
+					<div class="panel-body text-center">
 						<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
 					</div>
 				</div>

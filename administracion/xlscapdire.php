@@ -2,26 +2,26 @@
 	if (session_id() == "") {
 		session_start();
 	 }
-	 
+
 	if (!isset($_SESSION['tipou'])) {
 		echo "<h2 style='text-align: center; font-family: arial'>SESIÓN HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
-	}	
+	}
 	include '../conecta.php';
 	$vig = $_SESSION['vigencia'];
 	$salida = "caratula.xls";
-	
-	$select = $conn->prepare("SELECT a.*, b.novedad FROM caratula a, control b WHERE a.nordemp = b.nordemp AND a.nordemp IN
-		(SELECT b.nordemp FROM control b WHERE b.vigencia =$vig)");
-	
+
+	// $select = $conn->prepare("SELECT a.*, b.novedad FROM caratula a, control b WHERE a.nordemp = b.nordemp AND a.nordemp IN (SELECT b.nordemp FROM control b WHERE b.vigencia =$vig)");
 //	$select = $conn->prepare("SELECT a.*, b.novedad FROM caratula a WHERE a.nordemp IN (SELECT b.nordemp FROM control b WHERE b.vigencia = $vig)");
-	$select->execute();
-	
+
+	$select = $conn->prepare("SELECT ca.*, ct.novedad FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp WHERE ct.vigencia = :vigencia");
+	$select->execute(array(':vigencia' => $vig));
+
 	header("Content-Type: application/vnd.ms-excel");
 	header("Content-Disposition: attachment; filename=caratula.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
-	
+
 	$cabeza = false;
 	while ($tabla = $select->fetch(PDO::FETCH_ASSOC)) {
 		if (!$cabeza) {

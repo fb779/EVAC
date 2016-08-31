@@ -2,8 +2,10 @@
 if(session_id() == "") {
 	session_start();
 }
+$vig = $_SESSION['vigencia'];
+
 require('../fpdf/fpdf.php');
-	
+
 class PDF extends FPDF
 {
 	function Header()
@@ -27,8 +29,10 @@ $empresa = $_GET['numord'];
 
 include '../conecta.php';
 
-$qCara = $conn->query("SELECT a.nordemp, a.nombre, a.nompropie, a.direccion, a.numdoc, a.depto, a.mpio, b.ndpto, b.nmuni
-	FROM caratula a, divipola b WHERE a.nordemp = $empresa AND b.dpto = a.depto AND b.muni = a.mpio");
+$nomPeriodo = $conn->query("SELECT nomperiodo FROM periodoactivo WHERE id = ".$vig)->fetch(PDO::FETCH_ASSOC);
+
+$qCara = $conn->query("SELECT a.nordemp, a.nombre, a.nompropie, a.direccion, a.numdoc, a.depto, a.mpio, b.ndpto, b.nmuni FROM caratula a, divipola b WHERE a.nordemp = $empresa AND b.dpto = a.depto AND b.muni = a.mpio");
+
 foreach($qCara AS $lCara) {
 	$nombre = $lCara['nombre'];
 	$razons = $lCara['nompropie'];
@@ -75,9 +79,9 @@ $pdf->SetFont('Arial','I',12);
 $pdf->Cell(30,30,$dpto,0,0,'L');
 $pdf->Ln(10);
 $pdf->SetFont('Times','',11);
-$pdf->Write(30,'Rindió la Encuesta De Desarrollo e Innovación Tecnológica correspondiente al año 2014 - 2015  y cumplió con los ');
+$pdf->Write(30,'Rindió la Encuesta de Vacantes correspondiente al '. $nomPeriodo['nomperiodo'] .' y cumplió con los requisitos establecidos en ');
 $pdf->Ln(10);
-$pdf->Write(30,'requisitos establecidos en la Ley 0079 del 20 de Octubre de 1993.');
+$pdf->Write(30,'la Ley 0079 del 20 de Octubre de 1993.');
 //$pdf->Ln(10);
 //$pdf->Write(30,'');
 $pdf->Ln(10);
@@ -86,16 +90,16 @@ $pdf->Write(30,'Esta empresa debe identificarse con el número ');
 $pdf->SetFont('Arial','I',12);
 $pdf->Write(30,$numero);
 $pdf->SetFont('Times','',11);
-$pdf->Cell(0,30,' para todos los trámites requeridos y para la ');
+$pdf->Cell(0,30,'  para todos los trámites requeridos y para la información estadística ');
 $pdf->Ln(10);
-$pdf->Write(30,'información estadística solicitada por el DANE.');
+$pdf->Write(30,'solicitada por el DANE.');
 $pdf->Ln(10);
 $pdf->Ln(10);
 $pdf->Write(30,'Recuerde que la emisión del paz y salvo, no evita consultas posteriores por parte del DANE, frente a la información ');
 $pdf->Ln(10);
-$pdf->Write(30,'por ustedes reportada; lo que si evita es la aplicación de las sanciones establecidas en la ley 079 de 1993,'); 
+$pdf->Write(30,'por ustedes reportada; lo que si evita es la aplicación de las sanciones establecidas en la ley 079 de 1993, por no ');
 $pdf->Ln(10);
-$pdf->Write(30,'por no rendir información al DANE.',0,'L');
+$pdf->Write(30,'rendir información al DANE.',0,'L');
 //$pdf->Ln(10);
 //$pdf->Write(30,'Válido hasta: ',0,'L');
 //$pdf->SetFont('Arial','I',12);

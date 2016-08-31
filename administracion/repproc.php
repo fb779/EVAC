@@ -18,7 +18,7 @@
 		LEFT JOIN usuarios d ON a.usuarioss = d.ident
 		LEFT JOIN novedades e ON a.novedad = e.idnovedades
 		LEFT JOIN regionales f ON a.codsede = f.codis
-		WHERE a.nordemp LIKE '$numero'
+		WHERE a.nordemp LIKE '$numero' AND a.vigencia = $vig
 		ORDER BY a.nordemp
 		");
 

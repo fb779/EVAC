@@ -14,7 +14,7 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
-	
+
 	if ($region == 99) {
 		if ($tipousu == "CO" OR $tipousu == "AT" OR $tipousu == "TE") {
 			$qDevueltos = $conn->prepare("SELECT a.vigencia, a.nordemp, c.nombre AS empresa, d.nombre AS Sede, b.nombre AS nombreusu, a.fecha,
@@ -45,12 +45,12 @@
 		}
 	}
 	$qDevueltos->execute();
-	
+
 	header("Content-Type: application/vnd.ms-excel");
 	header("Content-Disposition: attachment; filename=devoluciones.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
-	
+
 	$cabeza = false;
 	while ($tabla = $qDevueltos->fetch(PDO::FETCH_ASSOC)) {
 		if (!$cabeza) {

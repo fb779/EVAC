@@ -94,9 +94,6 @@
 		?>
 		<div class="well well-sm" style="font-size: 12px; /*padding-top: 60px;*/ z-index: 1;" id="wc2">
  			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZACI&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?>
- 			<!-- Informacion de prueba BORRAR  -->
- 			<?php echo $rowDisCont->rowCount(); ?>
- 			<!-- Informacion de prueba BORRAR  -->
  		</div>
 
  		<div class="container text-justify" style="font-size: 12px">

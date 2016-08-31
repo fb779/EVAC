@@ -11,8 +11,8 @@
 	$anterior = $vig-1;
 	$numero = $_GET['numord']; $nombre = $_GET['nombre'];
 	//$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig");
-	
-	
+
+
 // 	foreach($qControl AS $rowCtl) {
 // 		$m1 = $rowCtl['m1'];
 // // 		$m2 = $rowCtl['m2'];
@@ -21,7 +21,7 @@
 // // 		$m5 = $rowCtl['m5'];
 // // 		$m6 = $rowCtl['m6'];
 // 	}
-	
+
 // 	if ($region == 99) {
 // 		$envioOK = true;
 // 	} else {
@@ -39,7 +39,7 @@
 	$qControl = $conn->query("SELECT * FROM control WHERE nordemp = $numero AND vigencia = $vig")->fetch(PDO::FETCH_ASSOC);
 	$m1 = $qControl['m1'];
 	$est = $qControl['estado'];
-	
+
 	if ($region == 99) {
 		$envioOK = true;
 	} else if ($tipousu == "FU" AND $m1 == 2) { //if ($tipousu == "FU" AND $m1+$m2+$m3+$m4+$m5+$m6 == 12) {
@@ -47,7 +47,7 @@
 	}  else if ($tipousu == "CR" AND $m1 == 3) { //if ($tipousu == "CR" AND $m1+$m2+$m3+$m4+$m5+$m6 == 18) {
 		$envioOK = true;
 	}
-	
+
 	$qDevol = $conn->query("SELECT * FROM devoluciones WHERE nordemp = $numero AND vigencia = $vig");
 	if ($qDevol->rowCount() > 0) {
 		$reenv = true;
@@ -59,12 +59,12 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovaci�n Tecnol�gica - Formulario Electr�nico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Env&iacute;o de formulario'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
@@ -89,7 +89,7 @@
 		            });
 		         });
 			});
-			
+
 			$(function() {
 				$("#reenvio").click(function(event) {
 					event.preventDefault();
@@ -106,7 +106,7 @@
 		            });
 		         });
 			});
-			
+
 			$(function() {
 				$("#devolver").submit(function(event) {
 					event.preventDefault();
@@ -124,13 +124,13 @@
 		            });
 		         });
 			});
-			
+
 			$(function() {
 				$("#btndev").click(function() {
 					$("#cntdev").show();
 				});
 			});
-			
+
 			$(function() {
 				$("#btnreenv").click(function() {
 					$("#cntreenv").show();
@@ -150,11 +150,11 @@
 		<div class="well well-sm text-center" style="font-weight: bold; padding-top: 60px">
 			<!-- div class="col-xs-12">
 				<?php //print_r($qControl);?>
-				
+
 				<?php //print_r($_SESSION);?>
-				
+
 				<?php //print_r($qDevol->rowCount());?>
-				
+
 			</div-->
  			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
@@ -222,7 +222,7 @@
 				</fieldset>
 			</form>
 		</div>
-<!--		
+<!--
 		<div class="container container-offset-1" style="display: none" id="cntreenv">
 			<form role='form' data-toggle='validator' id="reenvio" method="post">
 				<input type="hidden" name="numero" id="idnumero" value="<?php echo $numero ?>" />
@@ -233,6 +233,6 @@
 				</fieldset>
 			</form>
 		</div>
--->		
+-->
  	</body>
- </html> 
+ </html>

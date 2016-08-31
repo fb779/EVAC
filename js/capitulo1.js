@@ -488,6 +488,15 @@ $(document).ready(function(){
 							$('#mNoti').removeClass('hidden');
 							$("#mSave").addClass('hidden');
 
+							$(function() {
+								$.ajax({
+									url: "../persistencia/grabactl.php",
+									type: "POST",
+									data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
+									success: function(dato) {
+									}
+								});
+							});
 						}else{
 							$('#mNoti').addClass('alert-danger');
 							$('#mNoti').append(ct[1]);
@@ -578,13 +587,12 @@ $(document).ready(function(){
 							$.ajax({
 								url: "../persistencia/grabactl.php",
 								type: "POST",
-								data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1"},
+								data: {modulo: "m1", estado: "2", numero: $("#numero").val(), capitulo: "C1", dtGrabar:'1'},
 								success: function(dato) {
 								}
 							});
 						});
 						if ($("#idTipo").val() == "CR") {
-
 							$("#idObs1").modal('show');
 							$("#idObs1").on('shown.bs.modal', function () {
 								$('#crObser').on('click', function(){

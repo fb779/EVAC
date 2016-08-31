@@ -176,31 +176,18 @@
 		<div class="container">
 			<div class="row col-xs-12 small">
 				<div class="form-group form-group-sm col-xs-3">
-					<label for="">Seleccione el periodo</label>
 					<select class='form-control' id="periodo" name="periodo">
-						<option value="">Periodo</option>
+						<option value="">Seleccione el periodo</option>
 						<?php foreach ($qPerac as $per){?>
 							<option value="<?php echo $per['id']; ?>"><?php echo $per['nomperiodo']; ?></option>
 						<?php } ?>
 					</select>
 				</div>
-				<div class="col-xs-4">
-					<div class="panel panel-default">
-						<!--div class="panel-heading">Periodo Activo</div-->
-						<div class="panel-body">
-							<label>Periodo Activo: </label>
-							<span for=""><?php echo $_SESSION['nomPeriAct']; ?> </span>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-1">&nbsp;</div>
-				<div class="col-xs-4">
-					<div class="panel panel-default">
-						<!--div class="panel-heading">Periodo actual</div-->
-						<div class="panel-body">
-							<label>Periodo actual: </label>
-							<span for=""><?php echo $_SESSION['nomPeri']; ?></span>
-						</div>
+
+				<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
+					<div class='input-group input-group-sm'>
+						<span class="input-group-addon" id="sizing-addon1">Periodo Activo</span>
+						<input type='text' class='form-control text-center ' value="<?php echo $_SESSION['nomPeri']; ?>" />
 					</div>
 				</div>
 			</div>

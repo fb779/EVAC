@@ -2,23 +2,23 @@
 	if(session_id()  == "") {
 		session_start();
 	}
-	
+
 	if (!isset($_SESSION['tipou'])) {
 		echo "<h2 style='text-align: center; font-family: arial'>SESIÓN HA FINALIZADO. DEBE AUTENTICARSE DE NUEVO</h2>";
 		return;
 	}
-	
+
 	include '../conecta.php';
-	
+
 	$region = $_SESSION['region'];
 
 	$vig = $_SESSION['vigencia'];
-	
+
 	if (isset($_POST['borrar'])) {
 		$usuarioB = $_POST['idBorrar'];
 		$qBorrar = $conn->prepare("DELETE FROM usuarios WHERE ident = :idUsuario");
 		$qBorrar->execute(array(':idUsuario'=>$usuarioB));
-		
+
 		if (substr($usuarioB,2,2)=='99') {
 			$qLimpia = $conn->prepare("UPDATE control SET usuario = '' WHERE usuario = :idUsuario");
 		}
@@ -26,6 +26,7 @@
 			$qLimpia = $conn->prepare("UPDATE control SET usuarioss = '' WHERE usuarioss = :idUsuario");
 		}
 		$qLimpia->execute(array(':idUsuario'=>$usuarioB));
+		echo "Eliminacion exitosa.";
 	}
 	else {
 		if (isset($_POST['cambio'])) {
@@ -50,14 +51,14 @@
 			$codreg = $_POST['region'];
 			$email = "'" . $_POST['email'] . "'";
 		}
-		
+
 		if ($tipomant=="ccla") {
 			$claveactual = $_POST['actual'];
 			$nuevaclave = $_POST['nueva'];
 			$confirma = $_POST['confirma'];
 			$idusuario = $_POST['idUsuario'];
 		}
-		
+
 		if ($tipomant=="actu") {
 			$usuactu="'" . $_POST['ident'] . "'";
 			$nombre = "'" . $_POST['nombre'] . "'";
@@ -65,7 +66,7 @@
 			$codreg = $_POST['region'];
 			$email = "'" . $_POST['email'] . "'";
 		}
-		
+
 		if ($tipomant=="adic") {
 			$ultimo = $conn->query("SELECT ident FROM usuarios WHERE tipo = '" . $nivel . "' AND region=" . $codreg . " ORDER BY ident DESC LIMIT 1");
 			if($ultimo->rowCount() == 0) {
@@ -96,12 +97,12 @@
 				$nuevaid . ", " . $nombre . ", '" . $nivel . "', " . $cero . ", " . $cadenapass . ", CURDATE(), " . "DATE_ADD(CURDATE(), INTERVAL 1 YEAR), " . $cero . ", " .
 				$codreg . ", " . $cero . ", " . $email . ")");
 			$cadenains->execute();
-			
+
 			echo "Usuario Creado <br>";
 			echo "Identificación: " . $nuevaid . "<br>";
 			echo "Clave: " . $password;
 		}
-		
+
 		if ($tipomant=="ccla") {
 			$qVerifica = $conn->query("SELECT * FROM usuarios WHERE ident LIKE BINARY '$idusuario'");
 			foreach ($qVerifica AS $lVerifica) {
@@ -119,7 +120,7 @@
 				}
 			}
 		}
-		
+
 		if ($tipomant=="actu") {
 			$lineactu = $conn->prepare("UPDATE usuarios SET nombre = " . $nombre . ", tipo = '" . $nivel . "', region = " . $codreg . ", email = " . $email . " WHERE ident LIKE BINARY " . $usuactu);
 			$lineactu->execute();

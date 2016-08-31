@@ -85,8 +85,9 @@
 									type: "POST",
 									data: {borrar: "borrar", idBorrar: id},
 									success: function(dato) {
-										alert(dato);
+										//alert(dato);
 										borra.setMessage(id+' - '+nombre+' ELIMINADO');
+
 									}
 								});
 							}

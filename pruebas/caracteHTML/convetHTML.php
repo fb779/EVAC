@@ -8,7 +8,7 @@
 
 	$bodytag = str_replace($acentos, $acenCon, $cadena);
 
-	echo $cadena . ' - ' . htmlentities($bodytag);
+	// echo $cadena . ' - ' . htmlentities($bodytag);
 
 	// echo replace($acentos);
 
@@ -16,13 +16,25 @@ function replace($item=''){
 	return utf8_decode($item);
 }
 
-	$arrayName = array('algo' => 'aqui', 'uno mas' => 9823);
-	$campos = array('i1r1c2' => 0, 'i1r1c3' => 0, 'i1r1c4' => 0, 'i1r3c9' => "", 'i1r4c1' => "", 'OBSERVACIONES' => "");
-	print_r( array_merge($arrayName, $campos));
+	$post = "[{\"name\":\"i1r1c1\",\"value\":\"1\"},{\"name\":\"i1r1c2\",\"value\":\"10\"},{\"name\":\"i1r1c3\",\"value\":\"1\"},{\"name\":\"i1r1c4\",\"value\":\"9\"},{\"name\":\"i1r3c2\",\"value\":\"1\"},{\"name\":\"i1r4c1\",\"value\":\"0\"},{\"name\":\"OBSERVACIONES\",\"value\":\"\"}]";
+
+	$post = "[{\"name\":\"i1r1c1\",\"value\":\"2\"}]";
+
+	$campos = ",{\"name\": \"i1r1c2\", \"value\": 0},{\"name\": \"i1r1c3\", \"value\": 0},{\"name\": \"i1r1c4\", \"value\": 0},{\"name\":\"i1r3c1\",\"value\":\"0\"},{\"name\":\"i1r3c2\",\"value\":\"0\"},{\"name\":\"i1r3c3\",\"value\":\"1\"},{\"name\":\"i1r3c4\",\"value\":\"0\"},{\"name\":\"i1r3c5\",\"value\":\"0\"},{\"name\":\"i1r3c6\",\"value\":\"0\"},{\"name\":\"i1r3c7\",\"value\":\"0\"},{\"name\":\"i1r3c8\",\"value\":\"0\"},{\"name\": \"i1r3c9\", \"value\": \"\"},{\"name\": \"i1r4c1\", \"value\": \"\"},{\"name\": \"OBSERVACIONES\", \"value\": \"\"}]";
+
+
+	$jsonDe = rtrim($post,']') . $campos;
+
+	echo $jsonDe;
+	// print_r($jsonDe);
+
+
+
+	// print_r( array_merge($arrayName, $campos));
 ?>
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -58,7 +70,7 @@ function replace($item=''){
 	</div>
 
 
-	<!-- <ul class="list">
+	<ul class="list">
 		<li class="list__item">
 			<label class="label--checkbox">
 				<input type="checkbox" class="checkbox" checked>
@@ -83,9 +95,9 @@ function replace($item=''){
 				Item 4
 			</label>
 		</li>
-	</ul> -->
+	</ul>
 </body>
 </html>
-
+ -->
 
 
