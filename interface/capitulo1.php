@@ -79,21 +79,9 @@
 		</style>
 	</head>
 	<body>
-	<?php
-			include 'menuFuente.php';
-/*
-			if ($tipousu != "FU") {
-				echo "<script type='text/javascript'>";
-				echo "$(function() {";
-				echo "$(window).load(function(){";
-			    echo "$('#avisoCrit').modal('show');";
-			    echo "});});";
-			    echo "</script>";
-			}
-*/
-		?>
-		<div class="well well-sm" style="font-size: 12px; /*padding-top: 60px;*/ z-index: 1;" id="wc2">
- 			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZACI&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); //echo $anterior . "-" . $vig . " . " . $txtEstado ?>
+		<?php  include 'menuFuente.php'; ?>
+		<div class="well well-sm" style="font-size: 12px; z-index: 1;" id="wc2">
+ 			<?php echo $numero . " - " . $nombre?> - CAP&Iacute;TULO I - CARACTERIZACI&Oacute;N DE VACANTES ABIERTAS <?php echo strtoupper($nomPeriodo); ?>
  		</div>
 
  		<div class="container text-justify" style="font-size: 12px">
@@ -109,13 +97,11 @@
 				<fieldset style='border-style: solid; border-width: 1px'>
 					<legend>
 						<h5 style='font-family: arial'><b>
-							<?php //echo ($consLog ? "<a href='../administracion/listaLog.php?idl=ii1&numfte=" . $numero . "' title='Control Cambios' target='_blank'>" . $cLog . "</a>" : '') ?>
 							1. Durante el periodo de referencia ¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?
 						</b></h5>
 					</legend>
 
 					<div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1">
-						<!-- <label class="col-xs-12 col-sm-7" >¿tuvo alguna vacante abierta a candidatos no vinculados con la empresa?</label> -->
 						<div class="col-xs-12 col-sm-12 text-center">
 							<label class="radio-inline">
 							  <input type="radio" name="i1r1c1" id="idi1r1c1si" value="1" <?php echo ($row['i1r1c1'] == 1) ? 'checked' : ''; ?> required > Si
@@ -125,13 +111,6 @@
 							</label>
 						</div>
 					</div>
-
-					<!--div class="form-group form-group-sm col-xs-12 col-sm-11 col-sm-offset-1 ">
-						<label class="col-xs-12 col-sm-4">Indique la  cantidad total  de  vacantes abiertas</label>
-						<div class='col-xs-12 col-sm-3 small'>
-							<input type='text' class='form-control input-sm text-center' id='idi1r1c2' name='i1r1c2' value = "<?php //echo $row['i1r1c2']; ?>" maxlength="9" required />
-						</div>
-					</div-->
 				</fieldset>
 
 				<fieldset style='border-style: solid; border-width: 1px'>
@@ -140,15 +119,11 @@
 							2. Clasifique las vacantes abiertas durante el trimestre de referencia de acuerdo a las siguientes caracter&iacute;sticas: </br>
 						 </b></h5>
 					 		<h6 style="font: normal 14px/2 arial" > <b> &Aacute;rea funcional, M&iacute;nimo nivel educativo requerido, &Aacute;rea de formaci&oacute;n, Experiencia en meses, Modalidad de contrataci&oacute;n, Salarios u honorarios y edad. </b></h6 >
-						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relacionelas en una pestaña, si alguna de ellas difiere agregue otra. </h6></div>
+						 <div style="color:red;"><h6 > Nota: Si más de una vacante presenta las mismas características relaci&oacute;nelas en una pestaña, si alguna de ellas difiere agregu&eacute; otra. </h6></div>
 					</legend>
 					<div class="container-fluid">
-						<!-- <div class="col-xs-12 col-sm-12">
-							<label for="">Este módulo  determina la cantidad de vacantes durante el "<?php echo $nomPeriodo;?>" e  identifica sus características.</label>
-						</div> -->
 						<div class="col-xs-12">
 							<div id="disNoti" class="alert alert-warning text-center hidden" role="alert">
-								<!-- button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button-->
 								<div id="diNoMensaje" class="row">
 								</div>
 							</div>

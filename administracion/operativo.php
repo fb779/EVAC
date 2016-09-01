@@ -11,7 +11,8 @@
 	$tipousu = $_SESSION['tipou'];
 	$nombre = $_SESSION['nombreu'];
 	$devoluciones = false;
-	$vig=$_SESSION['vigencia']; $anterior = $vig - 1; $nuevas=9; $deuda = 5; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)"; $rinden = "(99,5)";
+	$vig=$_SESSION['vigencia'];
+	$anterior = $vig - 1; $nuevas=9; $deuda = 5; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)"; $rinden = "(99,5)";
 	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $porce = false; $valorBase = 0;
 	if (isset($_GET['nreg']) AND $_GET['nreg'] > 0) {
 		$regOpe = $_GET['nreg'];
@@ -187,7 +188,7 @@
 				<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 					<div class='input-group input-group-sm'>
 						<span class="input-group-addon" id="sizing-addon1">Periodo Activo</span>
-						<input type='text' class='form-control text-center ' value="<?php echo $_SESSION['nomPeri']; ?>" />
+						<input type='text' class='form-control text-center ' value="<?php echo $_SESSION['nomPeri']; ?>" disabled style="background-color: #fff" />
 					</div>
 				</div>
 			</div>

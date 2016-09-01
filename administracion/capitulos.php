@@ -62,7 +62,7 @@
 						<tr><td><a href='xlscap6.php'>CAPITULO VI</a></td></tr>
 						<tr><td><a href='xlscap7.php'>EVALUACION</a></td></tr> -->
 						<tr><td><a href='xlsObser.php'>OBSERVACIONES CR&Iacute;TICO</a></td></tr>
-						<tr><td><a href='xlsactiv.php'>LISTADO DE ACTIVIDADES</a></td></tr>
+						<!-- <tr><td><a href='xlsactiv.php'>LISTADO DE ACTIVIDADES</a></td></tr> -->
 						<tr><td><a href='xlscontrol.php'>TABLA DE CONTROL</a></td></tr>
 					</tbody>
 				</table>

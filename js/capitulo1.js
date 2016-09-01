@@ -570,7 +570,6 @@ $(document).ready(function(){
 			});
 			/* fin auditoria */
 
-			debugger;
 			$.ajax({
 				url: "../persistencia/grabacapi.php",
 				type: "POST",
@@ -579,7 +578,6 @@ $(document).ready(function(){
 				// data: $(this).serialize(),
 				data: {'mod': 'C1_nordemp' ,'emp': $('#numero').val(),'dtForm': JSON.stringify($dtForm),'dtDisp': JSON.stringify($cmps)},
 				success: function(dato) {
-					debugger;
 					if (dato.success) {
 						$("#btn_cont").show();
 						$("#idmsg").show();

@@ -482,7 +482,7 @@
 							<tr>
 								<td>
 									<div class='campTextarea' style='padding-bottom: 10px'>
-										<?php echo $row['OBSERVACIONES']; ?>
+										<?php echo ($row['OBSERVACIONES'] != '') ? $row['OBSERVACIONES'] : '&nbsp;'; ?>
 									</div>
 								</td>
 							</tr>

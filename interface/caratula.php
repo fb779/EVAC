@@ -251,7 +251,6 @@ p {
 			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 			baseYear: "1800",
 			earliest: new Date(1900,0,1,0,0,0),
-			// latest: new Date(2099,11,31,23,59,59)
 			latest: new Date()
 		});
 
@@ -264,7 +263,6 @@ p {
 			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 			minYear: 1800,
-			//earliest: new Date(2000,0,1,0,0,0),
 			earliest: new Date(Convertidor.parse($('#idfechai').val()).getTime()+oneDay),
 			latest: new Date(2099,11,31,23,59,59)
 		});
@@ -279,7 +277,6 @@ p {
 			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
 			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 			baseYear: "1800",
-			//earliest: new Date(2001,0,1,0,0,0),
 			earliest: new Date(),
 			latest: new Date(2099,11,31,23,59,59)
 		});
@@ -337,7 +334,6 @@ p {
 						monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
 						earliest: dayLater,
 						latest: new Date(2099,11,31,23,59,59)
-						//latest: moreDaysLater
 					});
 				}else{
 					var day = new Date(fecf);
@@ -561,7 +557,7 @@ $(document).ready(function(){
 			$(this).parent().append('<span class="text-danger"><h6>Falta Nombre comercial</h6></span>');
 		}
 	});
-
+	/** validacion de la direccion de la gerencia general */
 	$('#dire').on('blur', function() {
 		$(this).parent().parent().removeClass('text-danger');
 		$(this).css('border',"");
@@ -632,6 +628,9 @@ $(document).ready(function(){
 	/** Activacion del campo para una organización no existente */
 	$('#idorg').on('change', function(){
 		var v = $(this);
+		var $arFecdesde = ['10', '11'];
+		var $arFechasta = ['10', '11', '12.1','12.2','12.3','12.4','12.5','12.6','12.7','12.8','12.9','12.10','12.11','13'];
+		/* validación para activar el campo adicional de organización jurudica */
 		if( v.val() == '99.1' || v.val() == '13' ){
 			$('#idorgcual').prop('disabled',false);
 			$('#idorgcual').prop('required',true);
@@ -641,20 +640,26 @@ $(document).ready(function(){
 			$('#idorgcual').parent().addClass('hidden');
 			$('#idorgcual').val('');
 		}
+
+		/* validacion para vaciar la fecha dependiendo de la organizacion juridica */
+		/* PENDIENTE DE DESARROLLAR */
+		if( $.inArray(v.val(),$arFecdesde) != -1 ){}
+		if( $.inArray(v.val(),$arFechasta) != -1 ){}
+		/* PENDIENTE DE DESARROLLAR */
 	});
 
 	/** Validacion de organización inexistente en los listados */
 	$('#idorgcual').on('blur', function() {
-					//$(this).parent().removeClass('text-danger');
-					$(this).css('border',"");
-					$(this).parent().children('span').remove();
-					// Se utiliza la funcion test() nativa de JavaScript
-					if ($(this).val() == ''){
-						$(this).parent().addClass('text-danger');
-						$(this).css('border',"1px solid" + color);
-						$(this).parent().append('<span class="text-danger">Debe espeficicar alguna organización</span>');
-					}
-				});
+		//$(this).parent().removeClass('text-danger');
+		$(this).css('border',"");
+		$(this).parent().children('span').remove();
+		// Se utiliza la funcion test() nativa de JavaScript
+		if ($(this).val() == ''){
+			$(this).parent().addClass('text-danger');
+			$(this).css('border',"1px solid" + color);
+			$(this).parent().append('<span class="text-danger">Debe espeficicar alguna organización</span>');
+		}
+	});
 
 	/** Validacion para la composicion del capital social */
 	$('#idnalpub, #idnalpr, #idexpub, #idexpr').on('blur', function(){
@@ -733,6 +738,22 @@ $(document).ready(function(){
 			$(this).parent().append('<span class="text-danger">Describa cual es el otro estado actual de la empresa</span>');
 		}
 	});
+
+	/* terminar funcionalidad de suma de valores de los establecimientos */
+	function sumNumEstab (){
+		var suma = 0;
+		var msj = $('#numestabmsj');
+
+		$('.numestab :input').each(function() {
+			// var $item = $(this);
+			var $item = parseInt($item.val());
+
+			if ( !isNaN( $item.val() ) ){
+				suma += parseInt($item.val())
+			}
+		});
+	}
+	/* terminar funcionalidad de suma de valores de los establecimientos */
 
 	$('.numestab :input').on('change', function(){
 		var v = $(this);
@@ -821,7 +842,7 @@ $(document).ready(function(){
 				<div class="form-group form-group-sm col-xs-12 col-sm-5 ">
 					<div class='input-group input-group-sm'>
 						<span class="input-group-addon" id="sizing-addon1">Periodo Activo</span>
-						<input type='text' class='form-control text-center ' value="<?php echo $_SESSION['nomPeri']; ?>" />
+						<input type='text' class='form-control text-center ' value="<?php echo $_SESSION['nomPeri']; ?>" disabled style="background-color: #fff"/>
 					</div>
 				</div>
 				<?php } ?>
@@ -908,7 +929,7 @@ $(document).ready(function(){
 						<div class="col-xs-12 col-sm-3">
 							<label for="">CIIU</label>
 							<div class="from-group form-group-sm">
-								<select class='form-control' id='listadep' name='ciiu3' required>
+								<select class='form-control' id='listadep' name='ciiu3' required <?php echo ($tipousu != 'CO')? 'disabled':''; ?> >
 									<?php
 										foreach ( $qCIIU3 as $ciiu3 ) {
 											if ($ciiu3 ['CODIGO'] == $row ['ciiu3']) {
@@ -961,8 +982,9 @@ $(document).ready(function(){
 						<div class='col-xs-10 small'>
 							<input type='text' class='form-control input-sm no-especiales mayusculas' id='sig' name='sigla' maxlength="20" value='<?php echo trim($row['sigla']) ?>' />
 						</div>
+						<div class="col-xs-10 col-xs-offset-2 text-left">* Si la empresa no tiene SIGLA no incluya leyendas, dejar en blanco </div>
 					</div>
-					<div class="col-xs-12">&nbsp;</div>
+					<div class="col-xs-12"> &nbsp; </div>
 					<div class="col-xs-12">
 						<label class='col-xs-2 text-right'  for='dire'>Direcci&oacute;n Gerencia General:</label>
 						<div class='col-xs-10 small'>
@@ -1155,10 +1177,21 @@ $(document).ready(function(){
 					</div>
 
 					<div class="form group form-group-sm col-xs-3">
-						<label class='' for='idfechai'>Fecha Constituci&oacute;n Desde:</label>
+						<?php
+							function validateDate($date, $format = 'Y-m-d') {
+								$d = DateTime::createFromFormat($format, $date);
+								return $d && $d->format($format) == $date;
+							}
+							// if ( validateDate($row['fechaconst'])) {
+							// 	echo 'si tiene el formato;';
+							// }else {
+							// 	echo 'no tiene el formato';
+							// }
+						?>
+						<label class='' for='idfechai'>Fecha Constituci&oacute;n Desde: </label>
 						<div class='small date'>
 							<div class='input-group input-append date' id='idFechaDesde'>
-								<input type='text' class='form-control ' name='fechaconst' id='idfechai' value=<?php echo $row['fechaconst']?> />
+								<input type='text' class='form-control ' name='fechaconst' id='idfechai' value=<?php echo $row['fechaconst']; ?> />
 									<span class='input-group-addon add-on'>
 										<button type='button' id='btnFechaDesde' class='btn btn-default btn-xs'>
 											<span class='glyphicon glyphicon-calendar'></span>
@@ -1173,7 +1206,7 @@ $(document).ready(function(){
 						<div class=' date'>
 
 							<div class='input-group input-append date' id='idfechaH'>
-								<input type='text' class='form-control ' name='fechahasta' id="idfechaf" value=<?php echo $row['fechahasta']?> />
+								<input type='text' class='form-control ' name='fechahasta' id="idfechaf" value=<?php echo $row['fechahasta'];  ?> />
 								<div class='input-group-addon add-on'>
 									<button type='button' id='btnFechaHasta' class='btn btn-default btn-xs'>
 										<span class='glyphicon glyphicon-calendar'></span>
@@ -1231,7 +1264,7 @@ $(document).ready(function(){
 				<div class="container-fluid">
 					<div class="col-xs-1"></div>
 					<div class="form-group col-xs-5" id='estadoAct'>
-						<label class='control-label' for='idestado'>Estado Actual:</label>
+						<label class='control-label' for='idestado'>Estado Actual: <?php echo $row ['estadoact']; ?></label>
 						<select class='form-control form-control-sm' name='estadoact' id='idestado'>
 							<?php
 							foreach ( $qEstadoAct as $lEstadoAct ) {
@@ -1245,10 +1278,10 @@ $(document).ready(function(){
 						</select>
 					</div>
 					<div class="col-xs-1"></div>
-					<div class="form-group col-xs-5 <?php echo ($row['otro'] != '')?'':'hidden';  ?>">
+					<div class="form-group col-xs-5 <?php echo ($row['estadoact'] != 7) ? 'hidden':'';  ?>">
 						<label class='control-label' for='nfaxn'>&iquest;Cual?</label>
 						<div class=''>
-							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo ($row['otro'] != '')? $row['otro'] : '' ?>' required/>
+							<input type='text' class='form-control input-sm' id='idestactotro' name='otro' maxlength="50" value='<?php echo ($row ['estadoact'] == 7) ? $row['otro'] : '' ?>' required/>
 						</div>
 					</div>
 				</div>
@@ -1258,6 +1291,9 @@ $(document).ready(function(){
 					<h4 style='font-family: arial'>N&uacute;mero de Establecimientos que conforman la Empresa de acuerdo con la actividad Econ&oacute;mica</h4>
 				</legend>
 				<div class="container-fluid text-center small numestab">
+					<div id="numestabmsj" class="col-xs-12">
+
+					</div>
 					<div class="col-xs-12">
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
@@ -1441,7 +1477,7 @@ $(document).ready(function(){
 			<?php if ($tipousu == "CO" and $rowCtl ['estado'] == 0) { ?>
 				<fieldset style='border-style: solid; border-width: 1px'>
 					<legend>
-						<h4 style='font-family: arial'>Fecha de Distribuci&oacuten</h4>
+						<h4 style='font-family: arial'>Fecha de Distribuci&oacute;n</h4>
 					</legend>
 					<div class='form-group form-group-sm'>
 						<div class='col-sm-2 col-sm-offset-2'>
