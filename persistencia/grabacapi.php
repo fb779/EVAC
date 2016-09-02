@@ -27,7 +27,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$modulo = "m1";
 
 			if ( count($dtForm) == 1 ){
-				$campos = ",{\"name\": \"i1r1c2\", \"value\": 0},{\"name\": \"i1r1c3\", \"value\": 0},{\"name\": \"i1r1c4\", \"value\": 0},{\"name\":\"i1r3c1\",\"value\":\"0\"},{\"name\":\"i1r3c2\",\"value\":\"0\"},{\"name\":\"i1r3c3\",\"value\":\"1\"},{\"name\":\"i1r3c4\",\"value\":\"0\"},{\"name\":\"i1r3c5\",\"value\":\"0\"},{\"name\":\"i1r3c6\",\"value\":\"0\"},{\"name\":\"i1r3c7\",\"value\":\"0\"},{\"name\":\"i1r3c8\",\"value\":\"0\"},{\"name\": \"i1r3c9\", \"value\": \"\"},{\"name\": \"i1r4c1\", \"value\": \"\"},{\"name\": \"OBSERVACIONES\", \"value\": \"\"}]";
+				$campos = ",{\"name\": \"i1r1c2\", \"value\": 0},{\"name\": \"i1r1c3\", \"value\": 0},{\"name\": \"i1r1c4\", \"value\": 0},{\"name\":\"i1r3c1\",\"value\":\"0\"},{\"name\":\"i1r3c2\",\"value\":\"0\"},{\"name\":\"i1r3c3\",\"value\":\"0\"},{\"name\":\"i1r3c4\",\"value\":\"0\"},{\"name\":\"i1r3c5\",\"value\":\"0\"},{\"name\":\"i1r3c6\",\"value\":\"0\"},{\"name\":\"i1r3c7\",\"value\":\"0\"},{\"name\":\"i1r3c8\",\"value\":\"0\"},{\"name\": \"i1r3c9\", \"value\": \"\"},{\"name\": \"i1r4c1\", \"value\": \"\"},{\"name\": \"OBSERVACIONES\", \"value\": \"\"}]";
 				$dtForm = json_decode(rtrim($_POST['dtForm'], ']') . $campos);
 			}
 			break;

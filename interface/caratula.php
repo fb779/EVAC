@@ -288,7 +288,10 @@ p {
 			labelMonth: "Mes",
 			labelDayOfMonth: "Dia del Mes",
 			dayAbbreviations: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
-			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
+			monthAbbreviations: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+			baseYear: "1800",
+			earliest: new Date(),
+			latest: new Date(2099,11,31,23,59,59)
 		});
 
 		$("#btnFecha").click(function() {
@@ -407,7 +410,25 @@ $(document).ready(function() {
     	$that.addClass("addAct"); // agregar clase eliminar al div.
     	$(actividad).append($(this).parent().parent().parent())
     	//$(actividad).append($(this).parents(".form-group"));
+    	ordenamiento(actividad.children());
     });
+
+    function ordenamiento( $listado ){
+		$listado.sort(function (a, b) {
+			// convert to integers from strings
+			a = parseInt($(a).attr("id"), 10);
+			b = parseInt($(b).attr("id"), 10);
+			// count += 2;
+			// compare
+			if(a > b) {
+			    return 1;
+			} else if(a < b) {
+			    return -1;
+			} else {
+			    return 0;
+			}
+		});
+	}
 });
 /* Fin funcion campos dinamicos */
 
@@ -741,21 +762,33 @@ $(document).ready(function(){
 
 	/* terminar funcionalidad de suma de valores de los establecimientos */
 	function sumNumEstab (){
-		var suma = 0;
-		var msj = $('#numestabmsj');
-
+		var $suma = 0; var $campos = 0; var $msj = $('#numestabmsj');
+		$msj.children('span').remove();
+		$('.numestab :input').parent().removeClass('has-error');
+		$('.numestab :input').parent().removeClass('text-danger');
+		$('#btnGuardar').removeClass('disabled');
 		$('.numestab :input').each(function() {
-			// var $item = $(this);
-			var $item = parseInt($item.val());
-
-			if ( !isNaN( $item.val() ) ){
-				suma += parseInt($item.val())
+			var $item = parseInt($(this).val());
+			if ( !isNaN( $item ) ){
+				$suma += $item;
+				$campos ++;
 			}
 		});
+
+		if ($suma < 1 && $campos ==12 ){
+			$('.numestab :input').parent().addClass('has-error');
+			$('.numestab :input').parent().addClass('text-danger');
+			$('#btnGuardar').addClass('disabled');
+			$msj.append('<span><h5>Debe tener almeno 1 establecimiento en total</h5></span>')
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 	/* terminar funcionalidad de suma de valores de los establecimientos */
 
-	$('.numestab :input').on('change', function(){
+	$('.numestab :input').on('blur', function(){
 		var v = $(this);
 		v.parent().removeClass('text-danger');
 		v.css('border',"");
@@ -765,6 +798,8 @@ $(document).ready(function(){
 			v.parent().addClass('text-danger');
 			v.css('border',"1px solid" + color);
 			$(this).parent().append('<span class="text-danger">Debe digitar un valor entre 0-999</span>');
+		} else {
+			sumNumEstab();
 		}
 	});
 
@@ -1289,11 +1324,10 @@ $(document).ready(function(){
 			<fieldset style='border-style: solid; border-width: 1px'>
 				<legend>
 					<h4 style='font-family: arial'>N&uacute;mero de Establecimientos que conforman la Empresa de acuerdo con la actividad Econ&oacute;mica</h4>
+					<!-- <div class="text-danger" ><h6 > Nota: Debe existir almeno 1 establecimiento de trabajo </h6></div> -->
 				</legend>
 				<div class="container-fluid text-center small numestab">
-					<div id="numestabmsj" class="col-xs-12">
-
-					</div>
+					<div id="numestabmsj" class="col-xs-12 text-danger"> </div>
 					<div class="col-xs-12">
 						<div class="col-xs-1">&nbsp;</div>
 						<div class="form-group col-xs-2">
@@ -1482,7 +1516,8 @@ $(document).ready(function(){
 					<div class='form-group form-group-sm'>
 						<div class='col-sm-2 col-sm-offset-2'>
 							<div class='input-group input-append date' id='idFechaD'>
-								<input type='text' class='form-control col-xs-1' name='fechadist' id='idfechad' value=" . date ( 'Y-m-d' ) . " />
+								<!-- <input type='text' class='form-control col-xs-1' name='fechadist' id='idfechad' value=" . date ( 'Y-m-d' ) . " /> -->
+								<input type='text' class='form-control col-xs-1' name='fechadist' id='idfechad' value=" <?php echo ($row['fechadist']!='')?$row['fechadist']:''; ?> " />
 								<span class='input-group-addon add-on'>
 									<button type='button' id='btnFecha' class='btn btn-default btn-xs'>
 										<span class='glyphicon glyphicon-calendar'></span>
@@ -1524,7 +1559,7 @@ $(document).ready(function(){
 				<div id="listActividad" class="modal-body">
 					<!-- Listado de actividades consultadas -->
 					<?php foreach ( $qlisActi as $lsAct ) { ?>
-					<div class="form-group">
+					<div id="<?php echo $lsAct['CODIGO']; ?>" class="form-group">
 						<div class="input-group ">
 							<span class="input-group-btn">
 								<button class="btn btn-default addAct" type="button">

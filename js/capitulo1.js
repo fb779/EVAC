@@ -13,13 +13,22 @@ $(document).ready(function(){
 	/** Definicion de variables  */
 
 	/** Validar los campos con la carga de la pagina */
+
 		valida_todo();
+		if (lista.children().length == 0 && conte.children().length == 0) { addVacante(); }
 
 	/** Validacion del campo radibutton i1r1c1 */
 		/** validacion del campo en la carga de la pagina */
 		if ($('[name="i1r1c1"]:checked').val() == 2){
 			$(':input,select',$fr).each(function(){
 				$(this).prop('disabled', true);
+			});
+			lista.children().each(function(){
+				$(this).remove();
+			});
+			/** retiramos las caracterizaciones existentes */
+			conte.children().each(function(){
+				$(this).remove();
 			});
 			$btnGuardar.prop('disabled', false);
 			$('#idTipo').prop('disabled', false);
@@ -58,8 +67,10 @@ $(document).ready(function(){
 					$(this).prop('disabled', false);
 				});
 				// $chk.prop('required', true);
+
 				$('#removeDisp').prop('disabled', true);
 				$('#idi1r3c9').prop('disabled', true);
+				if (lista.children().length == 0 && conte.children().length == 0) { addVacante(); $('#diNoMensaje').parent().addClass('hidden'); }
 			}
 			$btnGuardar.prop('disabled', false);
 			$('#idTipo').prop('disabled', false);
@@ -174,37 +185,9 @@ $(document).ready(function(){
 		}
 
 		/** Boton para agregar caracterizacion nueva */
+
 		$('#addDisp').click(function(){
-			if (validar_disponibilidad()){
-				var x = lista.children().length + 1;
-				// var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
-				// var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
-				/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
-				var vinculo = '<li class="active"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
-				var panel = '<div class="tab-pane active" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
-				lista.children().removeClass('active');
-				conte.children().removeClass('active');
-				/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
-				lista.append(vinculo);
-				conte.append(panel);
-
-				var item = carac.clone();
-				item.removeClass('hidden');
-				item.attr('id', 'caracteriza' + x);
-				item.find('input, select').each(function(index, element){
-					//$(element).addClass('validar');
-
-					$(element).attr('name', $(element).attr('name') + x + '_' + index);
-				});
-				$('#disp' + x).append(item);
-
-				if (lista.length > 0 && conte.length > 0){
-					$btnGuardar.prop('disabled', true);
-					$('#removeDisp').prop('disabled', false);
-					lista.removeClass('hidden');
-				}
-				validar_totales();
-			}
+			if (validar_disponibilidad()){  addVacante(); }
 		});
 		/** Boton para eliminar caracterizacion */
 		$('#removeDisp').click(function(){
@@ -665,6 +648,38 @@ $(document).ready(function(){
 	/** Funciones genericas de manipulacion de los campos */
 
 	/** Funciones de validaciones */
+		/** Funciona para agregar disponibilidad con validación */
+		function addVacante(){
+			var x = lista.children().length + 1;
+			// var vinculo = '<li class="'+ ((x==1)?'active':'') +'"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
+			// var panel = '<div class="tab-pane '+ ((x==1)?'active':'') +'" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
+			/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
+			var vinculo = '<li class="active"><a href="#disp'+ x +'" data-toggle="tab">Vacante '+ x +'</a></li>';
+			var panel = '<div class="tab-pane active" id="disp'+x+'"> <div class="col-xs-12"> <h4 class="text-danger">Todos los campos son obligatorios</h4> </div></div>';
+			lista.children().removeClass('active');
+			conte.children().removeClass('active');
+			/* Modificacion del comportamiento para dejar activa la ultima disponibilidad */
+			lista.append(vinculo);
+			conte.append(panel);
+
+			var item = carac.clone();
+			item.removeClass('hidden');
+			item.attr('id', 'caracteriza' + x);
+			item.find('input, select').each(function(index, element){
+				//$(element).addClass('validar');
+
+				$(element).attr('name', $(element).attr('name') + x + '_' + index);
+			});
+			$('#disp' + x).append(item);
+
+			if (lista.length > 0 && conte.length > 0){
+				$btnGuardar.prop('disabled', true);
+				$('#removeDisp').prop('disabled', false);
+				lista.removeClass('hidden');
+			}
+			validar_totales();
+		}
+
 		/** Metodo para validar la seleccion de uno de los checkbox */
 		function valCheckbox(){
 			var ct = 0;
