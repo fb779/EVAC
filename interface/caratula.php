@@ -43,13 +43,14 @@
 
 	$actividad = $row ['ciiu3'];
 
-	$qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "'" );
+	$qActEmp = $conn->query ( "select ci.CODIGO, ci.DESCRIP from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "' ORDER BY ci.CODIGO" );
 	// $qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
 	// 		select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')
 	// 		and CODIGO like '" . substr ( $actividad, 0, 2 ) . "%'" );
 
-	$qlisActi = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3 where CODIGO not in (
-			select ci.CODIGO from actiemp as ac inner join caratula as ct on ct.nordemp = ac.nordemp inner join ciiu3 as ci on ci.CODIGO = ac.actividad where ac.nordemp = '" . $numero . "')" );
+	/* Consulta par ael listado de actividades que no esten vinculadas a la empresa */
+	$qlisActi = $conn->query ( "SELECT CODIGO, DESCRIP FROM ciiu3 WHERE CODIGO NOT IN ( SELECT ci.CODIGO FROM actiemp AS ac INNER JOIN caratula AS ct ON ct.nordemp = ac.nordemp INNER JOIN ciiu3 AS ci ON ci.CODIGO = ac.actividad WHERE ac.nordemp = '" . $numero . "') ORDER BY CODIGO" );
+	/* Consulta par ael listado de actividades que no esten vinculadas a la empresa */
 
 	$qCIIU3 = $conn->query ( "select CODIGO, DESCRIP FROM ciiu3" );
 
@@ -403,31 +404,60 @@ $(document).ready(function() {
 
     // interaccion para remover el item de el listado de la pagina y regresarlo al modal
     $(contenedor).on("click", ".eliminar", function(e) {
-    	var $that = $(this);
-    	$that.children().removeClass("glyphicon-remove");
-    	$that.children().addClass("glyphicon-plus");
-    	$that.removeClass("eliminar"); // agregar clase eliminar al div.
-    	$that.addClass("addAct"); // agregar clase eliminar al div.
-    	$(actividad).append($(this).parent().parent().parent())
+    	// var $that = $(this);
+    	// $that.children().removeClass("glyphicon-remove");
+    	// $that.children().addClass("glyphicon-plus");
+    	// $that.removeClass("eliminar"); // agregar clase eliminar al div.
+    	// $that.addClass("addAct"); // agregar clase eliminar al div.
+    	// $(actividad).append($(this).parent().parent().parent());
+    	// debugger;
+    	$(this).parent().parent().parent().remove();
     	//$(actividad).append($(this).parents(".form-group"));
-    	ordenamiento(actividad.children());
+    });
+
+    $("#myModal").on('show.bs.modal', function () {
+    	var $activ = $('#actividades :input').serializeArray();
+    	var $lisActiv = $('#listActividad');
+
+    	$.ajax({
+    		url: '../persistencia/consActividad.php',
+    		type: 'POST',
+    		dataType: 'json',
+    		data: {'emp': $('#numero').val(), 'dtActi': JSON.stringify($activ)}
+    	})
+    	.done(function(data){
+    		$lisActiv.children().remove();
+    		var $jsonObj = $.parseJSON(data.actividades);
+    		$.each($jsonObj, function(index, val) {
+    			 var $item = '<div class="form-group"> <div class="input-group "> <span class="input-group-btn"> <button class="btn btn-default addAct" type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button> </span> <input type="text" class="form-control" id="'+val.name+'" name="'+val.name+'" value="'+val.name + ' - ' + val.value +'" readonly> </div> </div>';
+    			 $lisActiv.append($item);
+    		});
+    	})
+    	.fail(function(jqXHR, textStatus, errorThrown) {
+    		debugger;
+            alert("Algo ha fallado: " + textStatus);
+
+        });
+
     });
 
     function ordenamiento( $listado ){
-		$listado.sort(function (a, b) {
-			// convert to integers from strings
-			a = parseInt($(a).attr("id"), 10);
-			b = parseInt($(b).attr("id"), 10);
-			// count += 2;
-			// compare
-			if(a > b) {
-			    return 1;
-			} else if(a < b) {
-			    return -1;
-			} else {
-			    return 0;
-			}
-		});
+    	debugger;
+    	// $listado.tsort("",{attr:"id",order:'asc'});
+		// $listado.sort(function (a, b) {
+		// 	// convert to integers from strings
+		// 	a = parseInt($(a).attr("id"), 10);
+		// 	b = parseInt($(b).attr("id"), 10);
+		// 	// count += 2;
+		// 	// compare
+		// 	if(a > b) {
+		// 	    return 1;
+		// 	} else if(a < b) {
+		// 	    return -1;
+		// 	} else {
+		// 	    return 0;
+		// 	}
+		// });
 	}
 });
 /* Fin funcion campos dinamicos */
@@ -662,11 +692,21 @@ $(document).ready(function(){
 			$('#idorgcual').val('');
 		}
 
-		/* validacion para vaciar la fecha dependiendo de la organizacion juridica */
-		/* PENDIENTE DE DESARROLLAR */
-		if( $.inArray(v.val(),$arFecdesde) != -1 ){}
-		if( $.inArray(v.val(),$arFechasta) != -1 ){}
-		/* PENDIENTE DE DESARROLLAR */
+		/*
+			validacion para vaciar la fecha dependiendo de la organizacion juridica
+			para fecha cons si orgju = 10 || 11 = 0000-00-00
+			para fecha hast si orgju = 10 ... 13 = 0000-00-00
+		*/
+		if( $.inArray(v.val(),$arFecdesde) != -1 ){
+			var $fecDesde = $('#idfechai');
+			$fecDesde.val('0000-00-00');
+		}
+
+		if( $.inArray(v.val(),$arFechasta) != -1 ) {
+			var $fecHasta = $('#idfechaf');
+			$fecHasta.val('0000-00-00');
+		}
+
 	});
 
 	/** Validacion de organización inexistente en los listados */
@@ -760,7 +800,7 @@ $(document).ready(function(){
 		}
 	});
 
-	/* terminar funcionalidad de suma de valores de los establecimientos */
+	/* funcionalidad de suma de valores de los establecimientos para validar que almenos tenga 1 establecimiento */
 	function sumNumEstab (){
 		var $suma = 0; var $campos = 0; var $msj = $('#numestabmsj');
 		$msj.children('span').remove();
@@ -786,7 +826,6 @@ $(document).ready(function(){
 		}
 
 	}
-	/* terminar funcionalidad de suma de valores de los establecimientos */
 
 	$('.numestab :input').on('blur', function(){
 		var v = $(this);
@@ -1299,7 +1338,7 @@ $(document).ready(function(){
 				<div class="container-fluid">
 					<div class="col-xs-1"></div>
 					<div class="form-group col-xs-5" id='estadoAct'>
-						<label class='control-label' for='idestado'>Estado Actual: <?php echo $row ['estadoact']; ?></label>
+						<label class='control-label' for='idestado'>Estado Actual:</label>
 						<select class='form-control form-control-sm' name='estadoact' id='idestado'>
 							<?php
 							foreach ( $qEstadoAct as $lEstadoAct ) {
@@ -1545,8 +1584,7 @@ $(document).ready(function(){
 	</div>
 
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1558,8 +1596,8 @@ $(document).ready(function(){
 				</div>
 				<div id="listActividad" class="modal-body">
 					<!-- Listado de actividades consultadas -->
-					<?php foreach ( $qlisActi as $lsAct ) { ?>
-					<div id="<?php echo $lsAct['CODIGO']; ?>" class="form-group">
+					<?php if ($qlisActi == 0) { foreach ( $qlisActi as $lsAct ) { ?>
+					<div class="form-group">
 						<div class="input-group ">
 							<span class="input-group-btn">
 								<button class="btn btn-default addAct" type="button">
@@ -1570,7 +1608,7 @@ $(document).ready(function(){
 								value="<?php echo $lsAct['CODIGO'] . ' - ' . $lsAct['DESCRIP']; ?>" readonly>
 						</div>
 					</div>
-					<?php } ?>
+					<?php } } ?>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
