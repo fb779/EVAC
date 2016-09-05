@@ -1596,7 +1596,7 @@ $(document).ready(function(){
 				</div>
 				<div id="listActividad" class="modal-body">
 					<!-- Listado de actividades consultadas -->
-					<?php if ($qlisActi == 0) { foreach ( $qlisActi as $lsAct ) { ?>
+					<?php if ($qlisActi->rowCount() == 0) { foreach ( $qlisActi as $lsAct ) { ?>
 					<div class="form-group">
 						<div class="input-group ">
 							<span class="input-group-btn">

@@ -13,7 +13,7 @@
 		$ciiu = array();
 
 		if ( count($lActiv) == 0){
-			$qlisActi = $conn->query ( "SELECT CODIGO, DESCRIP FROM ciiu3 WHERE CODIGO NOT IN (SELECT ci.CODIGO FROM actiemp AS ac INNER JOIN caratula AS ct ON ct.nordemp = ac.nordemp INNER JOIN ciiu3 AS ci ON ci.CODIGO = ac.actividad WHERE ac.nordemp = '" . $emp . "') ORDER BY CODIGO");
+			$qlisActi = $conn->query ( "SELECT CODIGO, DESCRIP FROM ciiu3 ORDER BY CODIGO");
 		}else if (count($lActiv) > 0) {
 			$grupo = '';
 			foreach ($lActiv as $dt) {
