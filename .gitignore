@@ -83,3 +83,7 @@ dompdf/lib/fonts/log.htm
 
 ### NetBeans
 nbproject/
+
+## Documentacion formato ofimatica
+~*.doc
+~*.docx
