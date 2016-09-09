@@ -52,13 +52,13 @@
 			$(function() {
 				$("button").click(function(event) {
 					event.preventDefault();
-	 	                    $.ajax({
-		                        url: "../administracion/correos.php",
-		                        type: "POST",
-		                        success: function(dato) {
-		                            alert(dato);
-		                        }
-		                    });
+					$.ajax({
+						url: "../administracion/correos.php",
+						type: "POST",
+						success: function(dato) {
+							alert(dato);
+						}
+					});
 				});
 			});
 
@@ -132,7 +132,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Usuario Actualizado</p>
 				<div class='col-sm-1 small'>
-					<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' data-placement="right" title='Se envian correos a fuentes que resultaron errados en envíos anteriores y a fuentes sin verificar'>Enviar Correos</button>
+					<button type='submit' class='btn btn-primary btn-md' data-toggle='tooltip' data-placement="right" title='Se envian correos a fuentes que resultaron errados en env&iacute;os anteriores y a fuentes sin verificar'>Enviar Correos</button>
 				</div>
 			</div>
 		</div>

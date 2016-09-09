@@ -1,10 +1,10 @@
 <?php
 	include '../conecta.php';
-	
+
 	date_default_timezone_set('America/Bogota');
-	
+
 	$autoriza = 1; $creado = 0;
-	
+
 	$documento = $_GET['b04f60'];
 	$dv = $_GET['5f458dc406e8'];
 	$numero = $_GET['b0a6a243b5fe'];
@@ -15,12 +15,12 @@
 	foreach($qNnombre AS $lnombre) {
 		$a=1;
 	}
-	
+
 	$qControl = $conn->query("SELECT estado FROM control WHERE nordemp = $numero AND vigencia = $vig");
 	foreach($qControl AS $lControl) {
 		$estado_comp=$lControl['estado'];
 	}
-	
+
 
 	if ($lnombre['numdoc'] != $documento OR $lnombre['dv'] != $dv) {
 		$autoriza = 2;
@@ -41,7 +41,7 @@
 		$strength=4;
 		$consonants = 'bdghjmnpqrstvzBDGHJLMNPQRSTVWXZ23456789';
 		$cero = 0;
-		
+
 		$id_usuario = "F" . $numero;
 		$verificar = $conn->query("SELECT * FROM usuarios WHERE ident = '" . $id_usuario . "'");
 		if ($verificar) {
@@ -63,12 +63,12 @@
 			$nombre = '"' . $lnombre['nombre'] . '"';
 			$nivel = "FU";
 			$email = "'" . $lnombre['emailnotif'] . "'";
-			
+
 			$cadenains = $conn->prepare("INSERT INTO usuarios (ident, nombre, tipo, numemp, clave, fcrea, fexpi, primera, region, ciiu3, email) VALUES ('" .
 				$id_usuario . "', " . $nombre . ", '" . $nivel . "', " . $numero . ", " . $cadenapass . ", CURDATE(), " . "DATE_ADD(CURDATE(), INTERVAL 1 YEAR), " . $cero . ", " .
 				$cero . ", " . $cero . ", " . $email . ")");
 			$cadenains->execute();
-			
+
 			//ACTUALIZA CARATULA Y CONTROL
 			$actualiza = $conn->prepare("UPDATE caratula SET vericorr = 1 WHERE nordemp = " . $numero);
 			$actualiza->execute();
@@ -92,12 +92,12 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Encuesta de Desarrollo e Innovación Tecnológica - Formulario Electrónico</title>
+		<title> <?php echo $_SESSION['titulo'] . 'Formulario Electrónico'; ?> </title>
 		<link href="../bootstrap/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
