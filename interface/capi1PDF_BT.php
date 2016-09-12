@@ -150,6 +150,7 @@
 								<td></td>
 								<td>
 									<?php
+										$dt_i1r1c1 = '&nbsp;';
 										if ($row['i1r1c1'] == 1) { $dt_i1r1c1 = "Si"; }
 										else if ($row['i1r1c1'] == 2) { $dt_i1r1c1 = "No"; }
 									?>

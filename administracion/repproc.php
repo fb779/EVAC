@@ -10,7 +10,10 @@
 	$nombre = $_SESSION['nombreu'];
 	$region = $_SESSION['region'];
 	$pagina = "CONSULTA PROCESOS";
-	$numero = $_GET['numero'];
+	if (isset($_GET['numero'])){
+		$numero = $_GET['numero'];
+	} else { $numero = ''; }
+
 
 	$qControl = $conn->query("SELECT a.nordemp, a.ciiu3, b.nombre, c.desc_estado, IFNULL(d.nombre, 'No asignado') AS ususede, e.desc_novedad,
 		f.nombre AS sede, a.fecdist, a.fecdig, a.fecrev, a.fecacept, a.aceptadc FROM control a LEFT JOIN caratula b ON a.nordemp = b.nordemp
@@ -78,12 +81,12 @@
 			});
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px;">
 		<?php
 			include 'menuRet.php';
 		?>
 		<form class='form-horizontal' role='form' name="opera" id="idopera">
-		<div class="container" style="padding-top: 60px;">
+		<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="col-lg-6">

@@ -79,11 +79,11 @@
 			});
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuRet.php';
 		?>
-		<form class='form-horizontal' role='form' data-toggle='validator' name="formusu" id="idusuario" style="padding-top:75px">
+		<form class='form-horizontal' role='form' data-toggle='validator' name="formusu" id="idusuario" >
 			<input type="hidden" name="ident" id="idident" value="<?php echo $idUsuario ?>" />
 			<div class='container'>
 				<div class="col-md-8 col-md-offset-2">

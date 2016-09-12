@@ -39,19 +39,19 @@
 
 
 	<style type="text/css">
-		div { margin-bottom: 10px; }
+		.container div { margin-bottom: 10px; }
 		p {font-size: 13px !important;}
 	</style>
 	<title></title>
 	<link rel="stylesheet" href="">
 </head>
-<body>
+<body style="padding-top: 60px;">
 	<?php
 		include 'menuCOCR.php';
-		if ($tipousu == "CO") {
-			echo "<br><br>";
-			include 'menuCO.php';
-		}
+		// if ($tipousu == "CO") {
+		// 	echo "<br><br>";
+		// 	include 'menuCO.php';
+		// }
 
 	?>
 	<div class="container">

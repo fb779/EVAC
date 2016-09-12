@@ -69,11 +69,11 @@
 			});
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuRet.php';
 		?>
-		<div class="container" style="margin-top: 10px; padding-top: 60px">
+		<div class="container">
 			<div class="col-md-12">
 				<table class='table table-condensed table-hover'>
 					<thead>

@@ -27,7 +27,7 @@
 	// verificacion para la carga de informacion del formulario y creacion de registros para la informacion
 	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
+	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
 /**########################**/
 
 	if ($tipousu != "FU") {
@@ -273,31 +273,35 @@
 													<label class="">Salario u honorarios mensuales</label>
 													<div class='input-group input-group-sm'>
 														<span class="input-group-addon" id="sizing-addon1">$</span>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" placeholder="Valor digitado en pesos" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7'];?>" maxlength="9" placeholder="Valor digitado en pesos" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Edad</label>
-													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_7" required>
+													<div class='input-group input-group-sm'>
+														<span class="input-group-addon" id="sizing-addon1">Desde</span>
+														<select class='form-control input-sm validar' id="" name='<?php echo $ncam; ?>_7' required>
 															<option value="" > Seleccione una opción</option>
-															<option value="1" <?php echo ($dispc['i1r2c8'] == 1) ? 'selected' : '';  ?> >15 - 20</option>
-															<option value="2" <?php echo ($dispc['i1r2c8'] == 2) ? 'selected' : '';  ?> >20 - 25</option>
-															<option value="3" <?php echo ($dispc['i1r2c8'] == 3) ? 'selected' : '';  ?> >25 - 30</option>
-															<option value="4" <?php echo ($dispc['i1r2c8'] == 4) ? 'selected' : '';  ?> >30 - 35</option>
-															<option value="5" <?php echo ($dispc['i1r2c8'] == 5) ? 'selected' : '';  ?> >35 - 40</option>
-															<option value="6" <?php echo ($dispc['i1r2c8'] == 6) ? 'selected' : '';  ?> >40 - 45</option>
-															<option value="7" <?php echo ($dispc['i1r2c8'] == 7) ? 'selected' : '';  ?> >45 - 50</option>
-															<option value="8" <?php echo ($dispc['i1r2c8'] == 8) ? 'selected' : '';  ?> >50 - 55</option>
-															<option value="9" <?php echo ($dispc['i1r2c8'] == 9) ? 'selected' : '';  ?> >55 - 60</option>
-															<option value="10" <?php echo ($dispc['i1r2c8'] == 10) ? 'selected' : '';  ?> >60 - 65</option>
-															<option value="11" <?php echo ($dispc['i1r2c8'] == 11) ? 'selected' : '';  ?> >65 - 70</option>
-															<option value="12" <?php echo ($dispc['i1r2c8'] == 12) ? 'selected' : '';  ?> >70 - 75</option>
-															<option value="13" <?php echo ($dispc['i1r2c8'] == 13) ? 'selected' : '';  ?> >75 - 80</option>
-															<option value="14" <?php echo ($dispc['i1r2c8'] == 14) ? 'selected' : '';  ?> >80 - 85</option>
-															<option value="15" <?php echo ($dispc['i1r2c8'] == 15) ? 'selected' : '';  ?> >85 - 90</option>
-															<option value="16" <?php echo ($dispc['i1r2c8'] == 16) ? 'selected' : '';  ?> >Indiferente</option>
+															<?php for ($i=15; $i <= 90; $i+=5) {
+																if ( $dispc['i1r2c8'] == $i ){ ?>
+																	<option value="<?php echo $i; ?>" selected > <?php echo $i; ?> </option>
+																<?php } else { ?>
+																	<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+																<?php } ?>
+															<?php } ?>
+														</select>
+
+														<span class="input-group-addon" id="sizing-addon1">Hasta</span>
+														<select class='form-control input-sm validar' id="" name='<?php echo $ncam; ?>_8' required>
+															<option value="" > Seleccione una opción</option>
+															<?php for ($i=15; $i <= 90; $i+=5) {
+																if ( $dispc['i1r2c9'] == $i ){ ?>
+																	<option value="<?php echo $i; ?>" selected > <?php echo $i; ?> </option>
+																<?php } else { ?>
+																	<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+																<?php } ?>
+															<?php } ?>
 														</select>
 													</div>
 												</div>
@@ -305,7 +309,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
 													</div>
 												</div>
 											</div>
@@ -313,21 +317,21 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>_9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>_10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_12' value = "<?php echo $dispc['i1r2c13']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 											</div>
@@ -335,7 +339,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 													<div class="small">
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
+														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_13" <?php echo ($dispc['i1r2c14']>0)?'':'disabled' ?>>
 															<option value="" > Seleccione una opción</option>
 															<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
 															<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
@@ -351,7 +355,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-7">
 													<label class="">Cual?</label>
 													<div>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_14' maxlength="50" value="<?php echo $dispc['i1r2c15']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
 													</div>
 												</div>
 											</div>

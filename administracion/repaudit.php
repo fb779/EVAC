@@ -9,7 +9,9 @@
 	$nombre = $_SESSION['nombreu'];
 	$region = $_SESSION['region'];
 	$pagina = "CONSULTA LOG DE MODIFICACIONES";
-	$numero = $_GET['numero'];
+	if (isset($_GET['numero'])){
+		$numero = $_GET['numero'];
+	} else { $numero = ''; }
 
 	$qLog = $conn->query("SELECT a.*, b.nombre
 						  FROM auditoria a, usuarios b
@@ -73,12 +75,12 @@
 			});
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuRet.php';
 		?>
 		<form class='form-horizontal' role='form' name="opera" id="idopera">
-		<div class="container" style="padding-top: 60px;">
+		<div class="container">
 			<div class="col-md-12">
 				<div class="col-md-12">
 					<div class="col-lg-6">

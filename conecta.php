@@ -9,7 +9,7 @@
 //	$servidor ="localhost";
 // 	$usuario  ="dimpe";
 // 	$password ="D1mP3D3s4rr0ll0";
-	$db = "dane_evac_pr";
+	$db = "dane_evac_mod";
 	$usuario  ="root";
 	$password ="toor";
 

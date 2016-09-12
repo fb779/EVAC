@@ -41,14 +41,14 @@ CREATE TABLE `auditoria` (
   `id` int(10) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `ciiu3` int(4) NOT NULL,
-  `tipo_usuario` varchar(2) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `usuario` varchar(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `tipo_usuario` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `usuario` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `fec_mod` date NOT NULL,
   `hora_mod` time NOT NULL,
-  `nom_var` varchar(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `valor_anterior` varchar(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `valor_actual` varchar(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `tabla` varchar(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `nom_var` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `valor_anterior` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `valor_actual` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tabla` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -72,9 +72,9 @@ CREATE TABLE `capitulo_i` (
   `i1r3c6` tinyint(1) DEFAULT NULL,
   `i1r3c7` tinyint(1) DEFAULT NULL,
   `i1r3c8` tinyint(1) DEFAULT NULL,
-  `i1r3c9` text CHARACTER SET latin1 COLLATE latin1_spanish_ci,
+  `i1r3c9` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `i1r4c1` tinyint(1) DEFAULT NULL,
-  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_spanish_ci
+  `OBSERVACIONES` text CHARACTER SET utf8 COLLATE utf8_unicode_ci
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -100,7 +100,7 @@ CREATE TABLE `capitulo_i_displab` (
   `i1r2c11` int(10) DEFAULT NULL,
   `i1r2c12` int(10) DEFAULT NULL,
   `i1r2c13` tinyint(1) DEFAULT NULL,
-  `i1r2c14` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL
+  `i1r2c14` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -118,23 +118,23 @@ CREATE TABLE `caratula` (
   `dv` tinyint(1) UNSIGNED NOT NULL,
   `registmat` tinyint(1) UNSIGNED NOT NULL,
   `camara` mediumint(8) UNSIGNED DEFAULT NULL,
-  `numeroreg` char(14) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
+  `numeroreg` char(14) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `nompropie` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `sigla` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `direccion` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `sigla` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `direccion` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `depto` tinyint(2) UNSIGNED NOT NULL,
   `mpio` mediumint(3) UNSIGNED NOT NULL,
-  `telefono` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
+  `telefono` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `aa` mediumint(6) UNSIGNED NOT NULL,
-  `fax` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `orgju` char(7) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `fax` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `orgju` char(7) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `orgjucual` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `dirnotifi` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `dirnotifi` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `depnotific` tinyint(2) UNSIGNED NOT NULL,
   `munnotific` mediumint(3) UNSIGNED NOT NULL,
-  `telenotific` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
-  `faxnotific` varchar(12) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL,
+  `telenotific` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `faxnotific` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `aanotifica` mediumint(6) UNSIGNED NOT NULL,
   `capsocin` tinyint(3) UNSIGNED NOT NULL,
   `capsocinpu` tinyint(3) UNSIGNED NOT NULL,
@@ -161,19 +161,19 @@ CREATE TABLE `caratula` (
   `ciiu3` mediumint(4) UNSIGNED NOT NULL,
   `fechaconst` date DEFAULT NULL,
   `fechahasta` date DEFAULT NULL,
-  `repleg` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `responde` varchar(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `repleg` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `responde` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `carresponde` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `teler` bigint(12) UNSIGNED NOT NULL,
   `faxr` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `estadoact` char(9) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `otro` varchar(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `emailemp` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `web` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `emailnotif` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `webnotif` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `emailres` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'email de la persona que diligencia el formulario',
-  `lgg` char(10) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `estadoact` char(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `otro` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `emailemp` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `web` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `emailnotif` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `webnotif` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `emailres` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'email de la persona que diligencia el formulario',
+  `lgg` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `estcart` tinyint(1) NOT NULL,
   `correlativa` mediumint(7) NOT NULL,
   `envcorr` tinyint(4) NOT NULL,
@@ -193,8 +193,8 @@ CREATE TABLE `caratula` (
 
 CREATE TABLE `casos` (
   `caso` int(11) NOT NULL COMMENT 'Secuencial casos',
-  `condicion` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'formula',
-  `descripcion` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'Descripcion caso'
+  `condicion` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'formula',
+  `descripcion` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Descripcion caso'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -204,8 +204,8 @@ CREATE TABLE `casos` (
 --
 
 CREATE TABLE `ciiu3` (
-  `CODIGO` varchar(4) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL DEFAULT '0',
-  `DESCRIP` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci DEFAULT NULL
+  `CODIGO` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `DESCRIP` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -218,9 +218,9 @@ CREATE TABLE `control` (
   `nordemp` bigint(10) UNSIGNED NOT NULL,
   `vigencia` mediumint(4) UNSIGNED NOT NULL,
   `estado` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `usuario` char(8) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `usuariodt` char(8) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `usuarioss` char(8) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `usuario` char(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `usuariodt` char(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `usuarioss` char(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `ciiu3` mediumint(4) NOT NULL DEFAULT '0',
   `m1` tinyint(1) NOT NULL DEFAULT '0',
   `m2` tinyint(1) NOT NULL DEFAULT '0',
@@ -239,7 +239,7 @@ CREATE TABLE `control` (
   `fecacept` date NOT NULL,
   `aceptadc` date NOT NULL COMMENT 'Fecha acepta DANE central',
   `prio2` tinyint(1) NOT NULL DEFAULT '0',
-  `acceso` char(3) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Indica a que rol se le permite acceso a modificaci├│n (FU(fuente), CR(cr├¡tico), DC(dane central))'
+  `acceso` char(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Indica a que rol se le permite acceso a modificaci├│n (FU(fuente), CR(cr├¡tico), DC(dane central))'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -251,11 +251,11 @@ CREATE TABLE `control` (
 CREATE TABLE `devoluciones` (
   `vigencia` mediumint(4) NOT NULL DEFAULT '0' COMMENT 'Periodo Devoluci├│n',
   `nordemp` bigint(10) NOT NULL DEFAULT '0' COMMENT 'Numero empresa',
-  `observa` longtext CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Observaci├│n de la devoluci├│n',
+  `observa` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Observaci├│n de la devoluci├│n',
   `codsede` int(2) NOT NULL DEFAULT '0' COMMENT 'Sede fuente',
-  `tipo` char(5) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT '(DV)-Devuelto (RV)-Reenviado',
-  `coddev` char(7) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL COMMENT 'Quien devuelve el formulario',
-  `codcrit` char(8) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'C├│digo de cr├¡tico',
+  `tipo` char(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '(DV)-Devuelto (RV)-Reenviado',
+  `coddev` char(7) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Quien devuelve el formulario',
+  `codcrit` char(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'C├│digo de cr├¡tico',
   `fecha` date NOT NULL COMMENT 'Fecha Devoluci├│n/Reenvio'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -268,7 +268,7 @@ CREATE TABLE `devoluciones` (
 CREATE TABLE `divipola` (
   `dpto` tinyint(2) UNSIGNED NOT NULL,
   `muni` mediumint(3) UNSIGNED NOT NULL,
-  `ndpto` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `ndpto` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `nmuni` varchar(45) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -294,8 +294,8 @@ CREATE TABLE `edit_eam` (
   `eqinfo` bigint(13) NOT NULL DEFAULT '0' COMMENT 'Equipo de inform├ítica y telecomunicaci├│n',
   `pertot2009` bigint(13) NOT NULL DEFAULT '0' COMMENT 'Personal total 2009',
   `pertot2010` bigint(13) NOT NULL DEFAULT '0' COMMENT 'Personal total 2010',
-  `enmarcha` char(2) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Proyectos en marcha',
-  `desc_novedad` char(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Descripci├│n novedad'
+  `enmarcha` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Proyectos en marcha',
+  `desc_novedad` char(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Descripci├│n novedad'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Comparaci├│n EAMvsEDIT';
 
 -- --------------------------------------------------------
@@ -307,21 +307,21 @@ CREATE TABLE `edit_eam` (
 CREATE TABLE `edit_eas` (
   `nordemp` bigint(10) NOT NULL,
   `novedad` int(2) NOT NULL COMMENT 'NOvedad Anuales',
-  `personal` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Personal Abuales',
-  `ingresos` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Ingresos Anuales',
-  `otrosing` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Otros ingresos anuales',
-  `maqyeq` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Maq. y Eq. Anuales',
-  `eqinf` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Eq. Info. Anuales',
-  `software` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Software Anuales',
-  `pertot_edit_a1` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Personal Edit P. anterior',
-  `pertot_edit_a2` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Personal Edit P. anterior',
-  `vtas_edit_a1` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Vtas Edit P. Anterior',
-  `pertot_edit_i1` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Personal Industria P. Anterior',
-  `pertot_edit_i2` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Personal Industria P. Anterior',
-  `vtas_edit_i1` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Vtas Edit Industria P. Anterior',
-  `enmarcha` char(2) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL COMMENT 'Proyectos en marcha',
+  `personal` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Personal Abuales',
+  `ingresos` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Ingresos Anuales',
+  `otrosing` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Otros ingresos anuales',
+  `maqyeq` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Maq. y Eq. Anuales',
+  `eqinf` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Eq. Info. Anuales',
+  `software` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Software Anuales',
+  `pertot_edit_a1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Personal Edit P. anterior',
+  `pertot_edit_a2` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Personal Edit P. anterior',
+  `vtas_edit_a1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Vtas Edit P. Anterior',
+  `pertot_edit_i1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Personal Industria P. Anterior',
+  `pertot_edit_i2` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Personal Industria P. Anterior',
+  `vtas_edit_i1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Vtas Edit Industria P. Anterior',
+  `enmarcha` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Proyectos en marcha',
   `novant` int(2) NOT NULL COMMENT 'Novedad EDIT Anterior',
-  `dirbase` char(10) CHARACTER SET latin1 NOT NULL COMMENT 'INvestigaci├│m'
+  `dirbase` char(10) CHARACTER SET utf8 NOT NULL COMMENT 'INvestigaci├│m'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -331,8 +331,8 @@ CREATE TABLE `edit_eas` (
 --
 
 CREATE TABLE `estadoact` (
-  `codigo` char(2) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `estado` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `codigo` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `estado` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -343,7 +343,7 @@ CREATE TABLE `estadoact` (
 
 CREATE TABLE `estados` (
   `idestados` tinyint(2) UNSIGNED NOT NULL,
-  `desc_estado` varchar(45) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `desc_estado` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -617,7 +617,7 @@ CREATE TABLE `hoja_casos` (
 
 CREATE TABLE `novedades` (
   `idnovedades` tinyint(2) UNSIGNED NOT NULL,
-  `desc_novedad` varchar(45) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `desc_novedad` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -629,9 +629,9 @@ CREATE TABLE `novedades` (
 CREATE TABLE `observaciones` (
   `vigencia` mediumint(4) NOT NULL COMMENT 'Periodo',
   `nordemp` bigint(8) NOT NULL COMMENT 'Nro de Orden',
-  `usuario` char(8) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'usuario que ingresa la observacion',
+  `usuario` char(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'usuario que ingresa la observacion',
   `capitulo` tinyint(1) NOT NULL COMMENT 'capitulo',
-  `observacion` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'Observacion',
+  `observacion` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Observacion',
   `fecha` date NOT NULL COMMENT 'Fecha observacion'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -642,8 +642,8 @@ CREATE TABLE `observaciones` (
 --
 
 CREATE TABLE `organiza` (
-  `codigo` char(7) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `codigo` char(7) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -683,13 +683,13 @@ CREATE TABLE `recvtas` (
 CREATE TABLE `regionales` (
   `dpto` int(2) UNSIGNED NOT NULL,
   `codis` tinyint(2) UNSIGNED NOT NULL,
-  `nombre` char(30) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `nombre` char(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `activo` tinyint(1) UNSIGNED NOT NULL,
   `codireg` int(2) UNSIGNED NOT NULL,
-  `asistente` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `telefono` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `direccion` varchar(200) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `correo` char(80) CHARACTER SET latin1 NOT NULL
+  `asistente` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `telefono` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `direccion` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `correo` char(80) CHARACTER SET utf8 NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -702,9 +702,9 @@ CREATE TABLE `soportes` (
   `id` int(11) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `soporte_binario` mediumblob NOT NULL,
-  `soporte_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_peso` varchar(15) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_tipo` varchar(25) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `soporte_nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `soporte_peso` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `soporte_tipo` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -717,9 +717,9 @@ CREATE TABLE `soportesb` (
   `id` int(11) NOT NULL,
   `numemp` bigint(10) NOT NULL,
   `soporte_binario` mediumblob NOT NULL,
-  `soporte_nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_peso` varchar(15) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `soporte_tipo` varchar(25) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `soporte_nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `soporte_peso` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `soporte_tipo` varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -741,17 +741,17 @@ CREATE TABLE `tipoperiodo` (
 --
 
 CREATE TABLE `usuarios` (
-  `ident` char(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `nombre` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
-  `tipo` char(2) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `ident` char(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tipo` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `numemp` bigint(10) NOT NULL,
-  `clave` char(16) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
+  `clave` char(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `fcrea` date NOT NULL,
   `fexpi` date NOT NULL,
   `primera` tinyint(1) NOT NULL,
   `region` tinyint(2) NOT NULL,
   `ciiu3` mediumint(4) NOT NULL,
-  `email` varchar(80) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL
+  `email` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -922,22 +922,22 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 --
 -- AUTO_INCREMENT de la tabla `capitulo_i_displab`
 --
 ALTER TABLE `capitulo_i_displab`
-  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=260;
+  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=0;
 --
 -- AUTO_INCREMENT de la tabla `periodoactivo`
 --
 ALTER TABLE `periodoactivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 --
 -- AUTO_INCREMENT de la tabla `soportes`
 --
@@ -952,7 +952,7 @@ ALTER TABLE `soportesb`
 -- AUTO_INCREMENT de la tabla `tipoperiodo`
 --
 ALTER TABLE `tipoperiodo`
-  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

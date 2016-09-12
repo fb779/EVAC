@@ -232,15 +232,18 @@ $(document).ready(function(){
 			var $ele = $('#listDisForm');
 			var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
 			var vacAbi = 'i1r2c' + pnal + '_0';
-			var vacCub = 'i1r2c' + pnal + '_8';
-			var vacHom = 'i1r2c' + pnal + '_9';
-			var vacMuj = 'i1r2c' + pnal + '_10';
-			var vacNoCub = 'i1r2c' + pnal + '_11';
-			var vacNoCubCa = 'i1r2c' + pnal + '_12';
-			var edad = 'i1r2c' + pnal + '_4';
+			var edad1 = 'i1r2c' + pnal + '_7';
+			var edad2 = 'i1r2c' + pnal + '_8';
+			var vacCub = 'i1r2c' + pnal + '_9';
+			var vacHom = 'i1r2c' + pnal + '_10';
+			var vacMuj = 'i1r2c' + pnal + '_11';
+			var vacNoCub = 'i1r2c' + pnal + '_12';
+			var vacNoCubCa = 'i1r2c' + pnal + '_13';
+			var exp = 'i1r2c' + pnal + '_4';
 			var sal = 'i1r2c' + pnal + '_6';
-			var cual = 'i1r2c' + pnal + '_13';
+			var cual = 'i1r2c' + pnal + '_14';
 
+			// debugger;
 			if( $(this).attr('name') === vacAbi){
 				/** interaccion con el total de vacantes abiertas por disponibilidad */
 				var vac = parseInt($(this).val());
@@ -395,6 +398,26 @@ $(document).ready(function(){
 				$(this).parent().parent().addClass('has-error');
 				$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
 				$(this).val('');
+			} else if( $(this).attr('name') == edad1 && $(this).val() !== ''){
+				if( parseInt($('[name="'+edad2+'"]').val()) < parseInt($(this).val())  ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede se mayor a la edad Hasta</span>');
+					$('[name="'+edad2+'"]').val('');
+				}
+			} else if( $(this).attr('name') == edad2 && $(this).val() !== ''){
+				debugger;
+				if ( $('[name="'+edad1+'"]').val() ==='' ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion en el campo edad Desde</span>');
+					$(this).val('');
+				}else if( parseInt($('[name="'+edad1+'"]').val()) > parseInt($(this).val())  ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede se mayor a la edad Hasta</span>');
+					$(this).val('');
+				}
 			} else{
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
@@ -402,7 +425,7 @@ $(document).ready(function(){
 					$(this).css('border',"1px solid" + color);
 					if ($(this).is('select')){
 						$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion</span>');
-					}else if( $(this).attr('name') == edad ){
+					}else if( $(this).attr('name') == exp ){
 						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 					}else if( $(this).attr('name') == sal ){
 						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
@@ -456,6 +479,7 @@ $(document).ready(function(){
 				var $cm = $(':input,select',$(this));
 				$cmps.push( $cm.serializeArray() );
 			});
+			debugger;
 			if ($datos.children().length > 0){
 				$.ajax({
 					url: "../persistencia/parcial.php",
@@ -463,6 +487,7 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
 					success: function(dato) {
+						debugger;
 						var ct = ['<p>La informaci&oacute;n se guardo con éxito</p>','<p>La informaci&oacute;n no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
@@ -667,7 +692,6 @@ $(document).ready(function(){
 			item.attr('id', 'caracteriza' + x);
 			item.find('input, select').each(function(index, element){
 				//$(element).addClass('validar');
-
 				$(element).attr('name', $(element).attr('name') + x + '_' + index);
 			});
 			$('#disp' + x).append(item);
@@ -733,9 +757,9 @@ $(document).ready(function(){
 				var con = 0;
 				var pnal = $item.attr('id').substring(4);
 				var vacantes = 'i1r2c' + pnal + '_0';
-				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
-				var vacCausa = 'i1r2c' + pnal + '_12';
-				var vacCual = 'i1r2c' + pnal + '_13';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_12';
+				var vacCausa = 'i1r2c' + pnal + '_13';
+				var vacCual = 'i1r2c' + pnal + '_14';
 				var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
@@ -781,6 +805,7 @@ $(document).ready(function(){
 		/** Funcio que valida todos los campos del formulario */
 		function valida_todo(){
 			var $c = 0;
+			debugger;
 			if ( $('#idi1r3c9').val() === '' && $('#idir3c8').prop('checked') ){ $c++; }
 			if ( $('#idi1r4c1').val() === '' ){ $c++; }
 			//if ( $('#idi1r4c1').val() !== '' && parseInt($('#idi1r4c1').val()) > parseInt($('#idi1r2ctv').val()) ) { $('#idi1r4c1').val(''); $c++; }

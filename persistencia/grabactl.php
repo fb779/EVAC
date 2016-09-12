@@ -49,7 +49,12 @@
 
 	if (isset($_POST['capitulo'])) {
 		$modulo = $_POST['modulo'];
-		$graba = $_POST['dtGrabar'];
+		if (isset($_POST['dtGrabar'])){
+			$graba = $_POST['dtGrabar'];
+		} else {
+			$graba = 0;
+		}
+
 
 		if ($tipousu == "CR") {
 			$estado = 3;

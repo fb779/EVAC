@@ -99,7 +99,25 @@
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Edad</label>
-					<div class='small'>
+					<div class='input-group input-group-sm'>
+						<span class="input-group-addon" id="sizing-addon1">Desde</span>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<?php for ($i=15; $i <= 90; $i+=5) { ?>
+								<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+							<?php } ?>
+						</select>
+
+						<span class="input-group-addon" id="sizing-addon1">Hasta</span>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<?php for ($i=15; $i <= 90; $i+=5) { ?>
+								<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+							<?php } ?>
+						</select>
+					</div>
+
+					<!-- <div class='small'>
 						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
@@ -119,7 +137,7 @@
 							<option value="15" <?php //echo ($row['i1r2c'] == 15) ? 'checked' : '';  ?> >85 - 90</option>
 							<option value="16" <?php //echo ($row['i1r2c'] == 16) ? 'checked' : '';  ?> >Indiferente</option>
 						</select>
-					</div>
+					</div> -->
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">

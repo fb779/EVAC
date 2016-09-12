@@ -429,15 +429,15 @@ $(document).ready(function() {
     		$lisActiv.children().remove();
     		var $jsonObj = $.parseJSON(data.actividades);
     		$.each($jsonObj, function(index, val) {
-    			 var $item = '<div class="form-group"> <div class="input-group "> <span class="input-group-btn"> <button class="btn btn-default addAct" type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button> </span> <input type="text" class="form-control" id="'+val.name+'" name="'+val.name+'" value="'+val.name + ' - ' + val.value +'" readonly> </div> </div>';
-    			 $lisActiv.append($item);
+    			var $item = '<div class="form-group"> <div class="input-group "> <span class="input-group-btn"> <button class="btn btn-default addAct" type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button> </span> <input type="text" class="form-control" id="'+val.name+'" name="'+val.name+'" value="'+val.name + ' - ' + val.value +'" readonly> </div> </div>';
+    			$lisActiv.append($item);
     		});
     	})
     	.fail(function(jqXHR, textStatus, errorThrown) {
     		debugger;
-            alert("Algo ha fallado: " + textStatus);
+    		alert("Algo ha fallado: " + textStatus);
 
-        });
+    	});
 
     });
 
@@ -819,7 +819,7 @@ $(document).ready(function(){
 			$('.numestab :input').parent().addClass('has-error');
 			$('.numestab :input').parent().addClass('text-danger');
 			$('#btnGuardar').addClass('disabled');
-			$msj.append('<span><h5>Debe tener almeno 1 establecimiento en total</h5></span>')
+			$msj.append('<span><h5>Debe tener almenos 1 establecimiento en total</h5></span>')
 			return true;
 		} else {
 			return false;

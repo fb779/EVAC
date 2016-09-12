@@ -115,11 +115,11 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuRet.php';
 		?>
-			<div class="container" style="padding-top: 80px">
+			<div class="container">
 				<div class="col-md-8 col-md-offset-2">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="musuarios.php?accion=AD">Crear Usuario</a></li>

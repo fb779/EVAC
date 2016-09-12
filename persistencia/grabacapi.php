@@ -81,19 +81,21 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$tvcb = 0;
 		$tvnc = 0;
 
-		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14) values ';
-		$tem = '';
+		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15) values ';
+		$numCampos = 15; /* numero de campos a insetar */
+		$tem = ''; /* estructura de los values a insertar en las vacantes */
+		/* creación de los insert de las vacantes creadas, la vacante solo puede tener los campos 14 y 15 como NULL. */
 		foreach ($dtDisp as $key=>$dt){
 			$tem1 = "('" . $emp . "','" . $vig . "',";
-			for ($j=0; $j<14; $j++){
+			for ($j=0; $j<$numCampos; $j++){
 				//$nc = 'i1r2c' . ($key+1). $j;
 				if (isset($dt[$j]) && $dt[$j]->value != ''){
 					$tem1 .= "'" . $dt[$j]->value . "',";
 				}else{
 					$tem1 .= "NULL,";
-					if ($j < 12){
+					if ($j < ($numCampos-2)){
 						$sv--;
-						$j = 14;
+						$j = $numCampos;
 						$tem1 = '';
 					}
 				}
@@ -101,8 +103,8 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 			if ($tem1 != ''){
 				$tvab += $dt[0]->value;
-				$tvcb += $dt[8]->value;
-				$tvnc += $dt[11]->value;
+				$tvcb += $dt[9]->value;
+				$tvnc += $dt[12]->value;
 				$tem .= rtrim($tem1, ",") .  '),';
 			}
 		}
