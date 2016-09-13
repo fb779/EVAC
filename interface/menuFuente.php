@@ -3,29 +3,10 @@
 	$color1=""; $color2=""; $color3=""; $color4=""; $color5=""; $color6="";
 	$icono1=""; $icono2=""; $icono3=""; $icono4=""; $icono5=""; $icono6="";
 // 	$muestrapys = false;
+    /* Activa el iconop y cambia el color a verde cuando se ha guardado el formulario */
 	if ($rowCtl['estado']==3 && $rowCtl['m1']==2) {
 		$color1 = "OK";
 		$icono1 = "SI";
-	}
-	if ($rowCtl['m2']==3) {
-		$color2 = "OK";
-		$icono2 = "SI";
-	}
-	if ($rowCtl['m3']==3) {
-		$color3 = "OK";
-		$icono3 = "SI";
-	}
-	if ($rowCtl['m4']==3) {
-		$color4 = "OK";
-		$icono4 = "SI";
-	}
-	if ($rowCtl['m5']==3) {
-		$color5 = "OK";
-		$icono5 = "SI";
-	}
-	if ($rowCtl['m6']==3) {
-		$color6 = "OK";
-		$icono6 = "SI";
 	}
 	$txtColor = "style='color: green'";
 	$icono = "<span class='glyphicon glyphicon-ok' style='color: green'></span>";

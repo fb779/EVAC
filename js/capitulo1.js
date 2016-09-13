@@ -238,12 +238,13 @@ $(document).ready(function(){
 			var vacHom = 'i1r2c' + pnal + '_10';
 			var vacMuj = 'i1r2c' + pnal + '_11';
 			var vacNoCub = 'i1r2c' + pnal + '_12';
-			var vacNoCubCa = 'i1r2c' + pnal + '_13';
+			// var vacNoCubCa = 'i1r2c' + pnal + '_13';
+			var vacNoCubCa = 'i1r2c' + pnal + '_20';
 			var exp = 'i1r2c' + pnal + '_4';
 			var sal = 'i1r2c' + pnal + '_6';
 			var cual = 'i1r2c' + pnal + '_14';
 
-			// debugger;
+			debugger;
 			if( $(this).attr('name') === vacAbi){
 				/** interaccion con el total de vacantes abiertas por disponibilidad */
 				var vac = parseInt($(this).val());
@@ -418,7 +419,9 @@ $(document).ready(function(){
 					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede se mayor a la edad Hasta</span>');
 					$(this).val('');
 				}
-			} else{
+			}
+
+			else {
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
@@ -442,8 +445,8 @@ $(document).ready(function(){
 			}
 
 			validar_totales();
-			validar_disponibilidad();
-			valida_todo();
+			// validar_disponibilidad();
+			// valida_todo();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 
@@ -588,7 +591,7 @@ $(document).ready(function(){
 				success: function(dato) {
 					if (dato.success) {
 						$("#btn_cont").show();
-						$("#idmsg").show();
+						$("#idmsg").show().delay(1500).hide(1500);
 						$(function() {
 							$.ajax({
 								url: "../persistencia/grabactl.php",
@@ -759,22 +762,26 @@ $(document).ready(function(){
 				var vacantes = 'i1r2c' + pnal + '_0';
 				var vacNoCubiertas = 'i1r2c' + pnal + '_12';
 				var vacCausa = 'i1r2c' + pnal + '_13';
-				var vacCual = 'i1r2c' + pnal + '_14';
+				var vacCual = 'i1r2c' + pnal + '_20';
 				var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
-
+				debugger;
 				$item.find(':input').each(function(){
 		    		var $input = $(this);
 
 					if ($input.val() === ''){
 						if ($input.attr('name') == vacCausa && parseInt($vacNoCu.val()) > 0){
 							con++;
-						}else if ($input.attr('name') == vacCual && parseInt($vacCaus.val()) == 7){
+						}else if ($input.attr('name') == vacCual && parseInt($vacCaus.attr('value')) == 1){
 							con++;
 						}else if ($input.attr('name') != vacCausa && $input.attr('name') != vacCual){
 							con++;
 						}
+					}
+
+					if ($input.attr('type') == 'checkbox'){
+						debugger;
 					}
 				});
 
@@ -805,7 +812,7 @@ $(document).ready(function(){
 		/** Funcio que valida todos los campos del formulario */
 		function valida_todo(){
 			var $c = 0;
-			debugger;
+			// debugger;
 			if ( $('#idi1r3c9').val() === '' && $('#idir3c8').prop('checked') ){ $c++; }
 			if ( $('#idi1r4c1').val() === '' ){ $c++; }
 			//if ( $('#idi1r4c1').val() !== '' && parseInt($('#idi1r4c1').val()) > parseInt($('#idi1r2ctv').val()) ) { $('#idi1r4c1').val(''); $c++; }

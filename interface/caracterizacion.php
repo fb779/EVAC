@@ -1,4 +1,4 @@
-<!-- Contenedor de la caracterizacion -->
+Contenedor de la caracterizacion -->
 		<div id="caracterizacion" class="text-center hidden">
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -172,24 +172,59 @@
 
 			</div>
 
-			<div class="container-fluid small">
-				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-					<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-					<div class="small">
-						<select class='form-control input-sm validar' id="" name="i1r2c" disabled>
-							<option value="" > Seleccione una opción</option>
-							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
-							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Postulantes sobre-calificados</option>
-							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Pocos postulantes</option>
-							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Otra</option>
-						</select>
+			<div id="causas" class="container-fluid small">
+				<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
+				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							La remuneración ofrecida era insuficiente
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							Postulantes sub-calificados
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							Postulantes sobre-calificados
+						</label>
+					</div>
+				</div>
+
+				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							Falta de experiencia o conocimiento específico
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							Los postulantes no dominaban otros idiomas
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							Pocos postulantes
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1 text-left">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0">Otra
+						</label>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-7">
+				<div class="form-group form-group-sm col-xs-12 col-sm-8">
 					<label class="">Cual?</label>
 					<div>
 						<input type='text' class='form-control input-sm validar' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="50" disabled />
@@ -197,4 +232,4 @@
 				</div>
 			</div>
 		</div>
-		<!-- Contenedor de la caracterizacion -->
+		<!-- Contenedor de la caracterizacion

@@ -493,7 +493,7 @@
 					<div class='col-md-8'>
 						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Modulo I Actualizado Correctamente</p>
 					</div>
-					<div class='col-sm-1 small pull-right' id="btn_cont" style="display: none;" >
+					<div class='col-sm-1 small pull-right' id="btn_cont" <?php echo ($rowCtl['estado']>=2 && $rowCtl['m1']==2)?'':'style="display: none;"'; ?>  >
 						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
 						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente modulo'>Continuar</a>
 					</div>

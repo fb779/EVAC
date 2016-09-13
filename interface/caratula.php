@@ -198,7 +198,7 @@ p {
                 data: {'emp': $('#numero').val() ,'dtForm': JSON.stringify($items), 'dtActi': JSON.stringify($activ)},
                 success: function(dato) {
                 	if (dato.success){
-                		$("#idmsg").show();
+                		$("#idmsg").show().delay(1500).hide(1500);
                 	} else {
                 		// document.getElementById(retorno).focus();
                 		alert('Dificultades al guardado, debe revisar los campos requeridos ' );
@@ -434,31 +434,10 @@ $(document).ready(function() {
     		});
     	})
     	.fail(function(jqXHR, textStatus, errorThrown) {
-    		debugger;
-    		alert("Algo ha fallado: " + textStatus);
-
+    		console.log("Algo ha fallado: " + textStatus);
+    		// alert("Algo ha fallado: " + textStatus);
     	});
-
     });
-
-    function ordenamiento( $listado ){
-    	debugger;
-    	// $listado.tsort("",{attr:"id",order:'asc'});
-		// $listado.sort(function (a, b) {
-		// 	// convert to integers from strings
-		// 	a = parseInt($(a).attr("id"), 10);
-		// 	b = parseInt($(b).attr("id"), 10);
-		// 	// count += 2;
-		// 	// compare
-		// 	if(a > b) {
-		// 	    return 1;
-		// 	} else if(a < b) {
-		// 	    return -1;
-		// 	} else {
-		// 	    return 0;
-		// 	}
-		// });
-	}
 });
 /* Fin funcion campos dinamicos */
 
