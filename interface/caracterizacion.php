@@ -1,4 +1,4 @@
-Contenedor de la caracterizacion -->
+<!-- Contenedor de la caracterizacion -->
 		<div id="caracterizacion" class="text-center hidden">
 			<div class="container-fluid small">
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -172,46 +172,47 @@ Contenedor de la caracterizacion -->
 
 			</div>
 
-			<div id="causas" class="container-fluid small">
+			<div class="container-fluid small">
 				<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
+				<div class="col-xs-12 col-sm-12 text-danger text-left">
+					<label for="">Si el campo esta activo debe seleccionar al menos una opcion</label>
+				</div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
-
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							La remuneración ofrecida era insuficiente
 						</label>
 					</div>
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							Postulantes sub-calificados
 						</label>
 					</div>
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							Postulantes sobre-calificados
 						</label>
 					</div>
 				</div>
-
 				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							Falta de experiencia o conocimiento específico
 						</label>
 					</div>
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							Los postulantes no dominaban otros idiomas
 						</label>
 					</div>
 					<div class="checkbox col-xs-4">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
 							Pocos postulantes
 						</label>
 					</div>
@@ -219,7 +220,7 @@ Contenedor de la caracterizacion -->
 				<div class="col-xs-12 col-sm-1 text-left">
 					<div class="checkbox">
 						<label>
-							<input type="checkbox" class="validar" name='i1r2c' value="0">Otra
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>Otra
 						</label>
 					</div>
 				</div>
@@ -232,4 +233,4 @@ Contenedor de la caracterizacion -->
 				</div>
 			</div>
 		</div>
-		<!-- Contenedor de la caracterizacion
+		<!-- Contenedor de la caracterizacion -->

@@ -335,7 +335,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="container-fluid small">
+											<div  class="container-fluid small">
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 													<div class="small">
