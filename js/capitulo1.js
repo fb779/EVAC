@@ -315,14 +315,12 @@ $(document).ready(function(){
 							$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 						}
 						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
-							vacNoCubCa.prop('disabled', false);
-							vacNoCubCa.prop('required', true);
+							vacNoCubCa.prop({disabled: false, required: true});
 						}else{
-							vacNoCubCa.val('');
+							vacNoCubCa.prop({value:0 ,checked: false, disabled: true});
 							vacNoCubCa.parent().parent().removeClass('text-danger');
 							vacNoCubCa.parent().parent().children('span').remove();
 							vacNoCubCa.css('border',"");
-							vacNoCubCa.prop('disabled', true);
 							$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 							$('[name="'+cual+'"]').parent().parent().children('span').remove();
 							$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
@@ -335,11 +333,10 @@ $(document).ready(function(){
 						$('[name="'+vacHom+'"').val('');
 						$('[name="'+vacMuj+'"').val('');
 						$('[name="'+vacNoCub+'"').val('');
-						vacNoCubCa.val('');
 						vacNoCubCa.parent().parent().removeClass('text-danger');
 						vacNoCubCa.parent().parent().children('span').remove();
 						vacNoCubCa.css('border',"");
-						vacNoCubCa.prop('disabled', true);
+						vacNoCubCa.prop({value: 0, disabled:true});
 						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 						$('[name="'+cual+'"]').parent().parent().children('span').remove();
 						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
@@ -391,7 +388,7 @@ $(document).ready(function(){
 				if( parseInt($('[name="'+edad2+'"]').val()) < parseInt($(this).val())  ){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
-					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede se mayor a la edad Hasta</span>');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
 					$('[name="'+edad2+'"]').val('');
 				}
 			} else if( $(this).attr('name') == edad2 && $(this).val() !== ''){
@@ -403,7 +400,7 @@ $(document).ready(function(){
 				}else if( parseInt($('[name="'+edad1+'"]').val()) > parseInt($(this).val())  ){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
-					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede se mayor a la edad Hasta</span>');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
 					$(this).val('');
 				}
 			} else if ($(this).attr('type') == 'checkbox') {
@@ -426,8 +423,6 @@ $(document).ready(function(){
 					$('[name="'+cual+'"]').prop('required', false);
 					$('[name="'+cual+'"]').prop('disabled', true);
 				}
-
-
 			} else {
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
@@ -452,7 +447,8 @@ $(document).ready(function(){
 			}
 
 			validar_totales();
-			// validar_disponibilidad();
+			valCausas();
+			validar_disponibilidad();
 			// valida_todo();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
@@ -714,7 +710,9 @@ $(document).ready(function(){
 			validar_totales();
 		}
 
-		/** Metodo para validar la seleccion de uno de los checkbox */
+		/** Metodo para validar la seleccion de uno de los checkbox
+			si se ha seleccionado almenos 1 de los campos retornra true
+			en caso contrario retornara false */
 		function valCheckbox(){
 			var ct = 0;
 			var $ch = $('#medPub [type="checkbox"]');
@@ -728,7 +726,6 @@ $(document).ready(function(){
 				$ch.prop('required', true);
 			}
 
-
 			return (ct>0) ? true:false;
 		}
 
@@ -738,8 +735,8 @@ $(document).ready(function(){
 			$('#listDisForm').children().each(function(){
 				var pnal = $(this).attr('id').substring(4);
 				var vacantes = 'i1r2c' + pnal + '_0';
-				var vacCubiertas = 'i1r2c' + pnal + '_8';
-				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
+				var vacCubiertas = 'i1r2c' + pnal + '_9';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_12';
 				$(this).find(':input').each(function(){
 					if ($(this).attr('name') == vacantes && $(this).val() !== '' ){
 						sumTotVac += parseInt($(this).val());
@@ -773,10 +770,9 @@ $(document).ready(function(){
 				var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
-				debugger;
-				$item.find(':input').each(function(){
-		    		var $input = $(this);
 
+				$item.find(':input').not('[type="checkbox"]').each(function(){
+		    		var $input = $(this);
 					if ($input.val() === ''){
 						if ($input.attr('name') == vacCausa && parseInt($vacNoCu.val()) > 0){
 							con++;
@@ -786,15 +782,10 @@ $(document).ready(function(){
 							con++;
 						}
 					}
-
-					// if ($input.attr('type') == 'checkbox'){
-					// 	debugger;
-					// }
 				});
 
 				if (con > 0){
-					// $diNoMsj.append('<p id="msj'+pnal+'" class="col-xs-3">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
-					$diNoMsj.append('<p id="msj'+pnal+'">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
+					$diNoMsj.append('<p id="msj'+pnal+'">Falta campos por diligenciar en la vacante '+ pnal +'</p>');
 		    	}
 			});
 
@@ -811,7 +802,23 @@ $(document).ready(function(){
 
 		/* Funcion para validad las causas de las disponibilidades dinamicamente */
 		function valCausas(){
-			$('#listDisForm').children().each(function(){}
+			var $con = 0;
+
+			debugger;
+			var $items = $('#listDisForm div.active').find('[type="checkbox"]');
+
+			$items.each(function(){
+				var $input = $(this);
+				if ($input.prop('checked')){ $con ++; }
+			});
+
+			if ($con > 0){
+				$items.prop('required', false);
+			}else{
+				$items.prop('required', true);
+			}
+
+			return ($con>0) ? true:false;
 		}
 
 		/** Funciona para validar que los campos dinamicos solo reciban numeros */
