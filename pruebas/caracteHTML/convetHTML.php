@@ -33,7 +33,6 @@ function replace($item=''){
 	// print_r( array_merge($arrayName, $campos));
 ?>
 
-
 <!-- <!DOCTYPE html>
 <html>
 <head>

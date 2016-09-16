@@ -27,7 +27,7 @@
 	// verificacion para la carga de informacion del formulario y creacion de registros para la informacion
 	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
+	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15, i1r2c16, i1r2c17, i1r2c18, i1r2c19, i1r2c20, i1r2c21 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
 /**########################**/
 
 	if ($tipousu != "FU") {
@@ -336,26 +336,64 @@
 												</div>
 											</div>
 											<div  class="container-fluid small">
-												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+												<div class="form-group form-group-sm col-xs-12 col-sm-12 ">
 													<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-													<div class="small">
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_13" <?php echo ($dispc['i1r2c14']>0)?'':'disabled' ?>>
-															<option value="" > Seleccione una opción</option>
-															<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-															<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
-															<option value="3" <?php echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >Postulantes sobre-calificados</option>
-															<option value="4" <?php echo ($dispc['i1r2c13'] == 4) ? 'selected' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-															<option value="5" <?php echo ($dispc['i1r2c13'] == 5) ? 'selected' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-															<option value="6" <?php echo ($dispc['i1r2c13'] == 6) ? 'selected' : '';  ?> >Pocos postulantes</option>
-															<option value="7" <?php echo ($dispc['i1r2c13'] == 7) ? 'selected' : '';  ?> >Otra</option>
-														</select>
+													<div class="alert alert-danger text-center hidden" role="alert">
+														DEBE SELECCIONAR M&Iacute;NIMO UNA DE LAS OPCIONES
 													</div>
-												</div>
-												<div class="col-xs-12 col-sm-1"></div>
-												<div class="form-group form-group-sm col-xs-12 col-sm-7">
-													<label class="">Cual?</label>
-													<div>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_14' maxlength="50" value="<?php echo $dispc['i1r2c15']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_13' value="<?php echo $dispc['i1r2c14']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																La remuneración ofrecida era insuficiente
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_14' value="<?php echo $dispc['i1r2c15']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																Postulantes sub-calificados
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_15' value="<?php echo $dispc['i1r2c16']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																Postulantes sobre-calificados
+															</label>
+														</div>
+													</div>
+													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_16' value="<?php echo $dispc['i1r2c17']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																Falta de experiencia o conocimiento específico
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_17' value="<?php echo $dispc['i1r2c18']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																Los postulantes no dominaban otros idiomas
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_18' value="<?php echo $dispc['i1r2c19']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																Pocos postulantes
+															</label>
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-1 text-left">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_19' value="<?php echo $dispc['i1r2c20']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>Otra
+															</label>
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-1"></div>
+													<div class="form-group form-group-sm col-xs-12 col-sm-8">
+														<label class="">Cual?</label>
+														<div>
+															<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_20' maxlength="50" value="<?php echo $dispc['i1r2c21']?>" <?php echo ($dispc['i1r2c20'] == 1)?'':'disabled' ?> />
+														</div>
 													</div>
 												</div>
 											</div>

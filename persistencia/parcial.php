@@ -19,6 +19,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$jsondata['data'] = $data;
 
 
+		// $sqlInsert = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15, i1r2c16, i1r2c17, i1r2c18, i1r2c19, i1r2c20, i1r2c21) values ';
 		$sqlInsert = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15) values ';
 		$numCampos = 15; /* numero de campos a insetar */
 		$tem = '';
@@ -57,7 +58,7 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$jsondata['success'] = true;
 		}else{
 			$conn->query("delete from capitulo_i_displab where C1_nordemp = '".$emp."' and vigencia = '".$vig."' ;");
-			$actcapi = $conn->exec($sqlInsert);
+			// $actcapi = $conn->exec($sqlInsert);
 			$jsondata['message'] = 'Se eliminaron las disponibilidades';
 			$jsondata['success'] = false;
 		}

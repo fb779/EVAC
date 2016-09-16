@@ -174,8 +174,8 @@
 
 			<div class="container-fluid small">
 				<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-				<div class="col-xs-12 col-sm-12 text-danger text-left">
-					<label for="">Si el campo esta activo debe seleccionar al menos una opcion</label>
+				<div class="alert alert-danger text-center hidden" role="alert">
+					DEBE SELECCIONAR M&Iacute;NIMO UNA DE LAS OPCIONES
 				</div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
 					<div class="checkbox col-xs-4">
