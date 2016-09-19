@@ -344,19 +344,19 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_13' value="<?php echo $dispc['i1r2c14']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_13' value="<?php echo ($dispc['i1r2c14'] != '')? $dispc['i1r2c14']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c14'] == 1)? 'checked':''; ?>>
 																La remuneración ofrecida era insuficiente
 															</label>
 														</div>
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_14' value="<?php echo $dispc['i1r2c15']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_14' value="<?php echo ($dispc['i1r2c15'] != '')? $dispc['i1r2c15']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c15'] == 1)? 'checked':''; ?>>
 																Postulantes sub-calificados
 															</label>
 														</div>
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_15' value="<?php echo $dispc['i1r2c16']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_15' value="<?php echo ($dispc['i1r2c16'] != '')? $dispc['i1r2c16']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c16'] == 1)? 'checked':''; ?>>
 																Postulantes sobre-calificados
 															</label>
 														</div>
@@ -364,19 +364,19 @@
 													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_16' value="<?php echo $dispc['i1r2c17']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_16' value="<?php echo ($dispc['i1r2c17'] != '')? $dispc['i1r2c17']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c17'] == 1)? 'checked':''; ?>>
 																Falta de experiencia o conocimiento específico
 															</label>
 														</div>
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_17' value="<?php echo $dispc['i1r2c18']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_17' value="<?php echo ($dispc['i1r2c18'] != '')? $dispc['i1r2c18']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c18'] == 1)? 'checked':''; ?>>
 																Los postulantes no dominaban otros idiomas
 															</label>
 														</div>
 														<div class="checkbox col-xs-4">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_18' value="<?php echo $dispc['i1r2c19']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_18' value="<?php echo ($dispc['i1r2c19'] != '')? $dispc['i1r2c19']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c19'] == 1)? 'checked':''; ?>>
 																Pocos postulantes
 															</label>
 														</div>
@@ -384,7 +384,7 @@
 													<div class="col-xs-12 col-sm-1 text-left">
 														<div class="checkbox">
 															<label>
-																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_19' value="<?php echo $dispc['i1r2c20']?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled' ?>>Otra
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_19' value="<?php echo ($dispc['i1r2c20'] != '')? $dispc['i1r2c20']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c20'] == 1)? 'checked':''; ?>>Otra
 															</label>
 														</div>
 													</div>
@@ -438,7 +438,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : '';?> required>
 								    Portales laborales WEB
 								  </label>
 								</div>
@@ -531,7 +531,7 @@
 					<div class='col-md-8'>
 						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Modulo I Actualizado Correctamente</p>
 					</div>
-					<div class='col-sm-1 small pull-right' id="btn_cont" <?php echo ($rowCtl['estado']>=2 && $rowCtl['m1']==2)?'':'style="display: none;"'; ?>  >
+					<div class='col-sm-1 small pull-right' id="btn_cont" <?php echo ($rowCtl['estado']>=3 && $rowCtl['m1']==2)?'':'style="display: none;"'; ?>  >
 						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
 						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente modulo'>Continuar</a>
 					</div>

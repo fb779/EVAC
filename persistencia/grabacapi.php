@@ -81,19 +81,45 @@ if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$tvcb = 0;
 		$tvnc = 0;
 
-		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15) values ';
-		$numCampos = 15; /* numero de campos a insetar */
+		// $lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15) values ';
+		$lineaINS = 'INSERT INTO capitulo_i_displab (C1_nordemp, vigencia, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15, i1r2c16, i1r2c17, i1r2c18, i1r2c19, i1r2c20, i1r2c21) values ';
+		$numCampos = 20; /* numero de campos a insetar a validar para la inserción (campos obligatorios i1r2c1 - i1r2c13) */
+		$numCmpDif = 8; /* campos no obligatorios para las vacantes dinamicas (7 campos de checkbox y campo opcional cual) i1r2c14 - i1r2c21 */
 		$tem = ''; /* estructura de los values a insertar en las vacantes */
-		/* creación de los insert de las vacantes creadas, la vacante solo puede tener los campos 14 y 15 como NULL. */
-		foreach ($dtDisp as $key=>$dt){
-			$tem1 = "('" . $emp . "','" . $vig . "',";
-			for ($j=0; $j<$numCampos; $j++){
-				//$nc = 'i1r2c' . ($key+1). $j;
-				if (isset($dt[$j]) && $dt[$j]->value != ''){
+
+		/* ciclo que itera los datos enviados del formulario para la incersion de las vacantes */
+		foreach ($dtDisp as $key=>$dt){ /* se iteran sobre cada una de las vacantes enviadas */
+			$tem1 = "('" . $emp . "','" . $vig . "',"; /* guarda los values para la inservion de cada vacante */
+
+			/* ciclo que itera sobre los 21 campos de la vacante y verifica si son datos obligatorios o opcionales
+			 * se consideran obligatorios los datos del campo 0 al campo i1r2c1 - i1r2c13
+			 * se consideran opcionales los datos del campo i1r2c14 - i1r2c21
+			*/
+			for ($j=0; $j<=$numCampos; $j++){
+				$nc = 'i1r2c'.($key+1).'_'.$j;
+
+				if (isset($dt[$j]) && $dt[$j]->value != '' &&  $j<=($numCampos-$numCmpDif)){
+					/* datos obligatorios de la vacante */
 					$tem1 .= "'" . $dt[$j]->value . "',";
-				}else{
-					$tem1 .= "NULL,";
-					if ($j < ($numCampos-2)){
+					$jsondata['campos'][$nc] = $dt[$j]->value;
+				} else if ($j > ($numCampos-$numCmpDif)) {
+					/* datos opcionales de la vacante */
+					$tem2 = '';
+					for ($i=13; $i <= $numCampos ; $i++) {
+						if (isset($dt[$i]) && $dt[$i]->value != '' && $dt[$i]->name == $nc){
+							$tem2 = "'" . $dt[$i]->value . "',";
+							$jsondata['campos'][$nc] = $dt[$i]->value;
+						}
+					}
+
+					if ($tem2 != ''){
+						$tem1 .= $tem2;
+					} else {
+						$tem1 .= "NULL,";
+					}
+				} else {
+					/* datos obligatorios que no vienen con la información generan error para la inserción */
+					if ($j < ($numCampos-$numCmpDif)){
 						$sv--;
 						$j = $numCampos;
 						$tem1 = '';

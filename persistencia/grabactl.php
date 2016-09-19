@@ -72,7 +72,7 @@
 // 			$m5 = $rowCtl['m5'];
 // 			$m6 = $rowCtl['m6'];
 		}
-		if ($rowCtl['estado'] <= 3) {
+		if ($rowCtl['estado'] < 3) {
 			//if ($m1+$m2+$m3+$m4+$m5+$m6 == 12) {
 			if ($m1 == 2 && $graba == 1) {
 				$estadoFor = 3;

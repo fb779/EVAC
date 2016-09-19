@@ -39,6 +39,7 @@ $(document).ready(function(){
 		/** Funcion que valida el cambio del radio button */
 		$('[name="i1r1c1"]').on('change',function(){
 			var $chk = $('#medPub [type="checkbox"]');
+			debugger;
 			if ( parseInt($(this).val()) == 2 ){
 				/** retiramos los vicculos de la caracterización */
 				lista.children().each(function(){
@@ -67,8 +68,7 @@ $(document).ready(function(){
 					$(this).prop('disabled', false);
 				});
 				// $chk.prop('required', true);
-
-				$('#removeDisp').prop('disabled', true);
+				if (lista.children().length == 0 && conte.children().length == 0) { $('#removeDisp').prop('disabled', true); } else { $('#removeDisp').prop('disabled', false); }
 				$('#idi1r3c9').prop('disabled', true);
 				if (lista.children().length == 0 && conte.children().length == 0) { addVacante(); $('#diNoMensaje').parent().addClass('hidden'); }
 			}
@@ -241,12 +241,12 @@ $(document).ready(function(){
 			var vacMuj = 'i1r2c' + pnal + '_11';
 			var vacNoCub = 'i1r2c' + pnal + '_12';
 			// var vacNoCubCa = 'i1r2c' + pnal + '_13';
-			var vacNoCubCa = $(this, $ele).parents('div .active').find('[type="checkbox"]');
+			var vacNoCubCa = $panel.find('[type="checkbox"]');
 			var namevacNoCubCa = 'i1r2c' + pnal + '_19';
 			var cual = 'i1r2c' + pnal + '_20';
 			var exp = 'i1r2c' + pnal + '_4';
 			var sal = 'i1r2c' + pnal + '_6';
-			debugger;
+
 			if( $(this).attr('name') === vacAbi){
 				/** interaccion con el total de vacantes abiertas por disponibilidad */
 				var vac = parseInt($(this).val());
@@ -401,7 +401,7 @@ $(document).ready(function(){
 					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
 					$(this).val('');
 				}
-			} else if ($(this).attr('type') == 'checkbox') {
+			} /*else if ($(this).attr('type') == 'checkbox') {
 				if ($(this).prop('checked')){
 					$(this).val(1);
 				} else {
@@ -432,7 +432,7 @@ $(document).ready(function(){
 					$items.parent().parent().parent().parent().removeClass('text-danger');
 					$items.parent().parent().parent().parent().removeClass('has-error');
 				}
-			} else {
+			}*/ else {
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
@@ -455,12 +455,61 @@ $(document).ready(function(){
 				}
 			}
 
-			// valCausas($panel);
-			valCausas();
-
+			// valCausas();
 			validar_totales();
 			validar_disponibilidad();
 			// valida_todo();
+		});
+
+		$('#listDisForm').on('change', '.validar', function(){
+			// $(this).css('border',"");
+			$(this).parent().parent().removeClass('has-error');
+			$(this).parent().parent().removeClass('text-danger');
+			$(this).parent().parent().children('span').remove();
+
+			var $ele = $('#listDisForm');
+			var $panel = $(this, $ele).parents('div .active');
+			var pnal = $panel.attr('id').substring(4);
+			var namevacNoCubCa = 'i1r2c' + pnal + '_19';
+			var cual = 'i1r2c' + pnal + '_20';
+
+
+			if ($(this).attr('type') == 'checkbox') {
+				if ($(this).prop('checked')){
+					$(this).val(1);
+				} else {
+					$(this).val(0);
+				}
+
+				if ($(this).attr('name') == namevacNoCubCa ){
+					if ($(this).prop('checked')){
+						$('[name="'+cual+'"]').prop({required: true, disabled: false});
+					} else {
+						$('[name="'+cual+'"]').val('');
+						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+						$('[name="'+cual+'"]').parent().parent().children('span').remove();
+						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+						// $('[name="'+cual+'"]').css('border',"");
+						$('[name="'+cual+'"]').prop({required: false, disabled: true});
+					}
+				}
+
+				var $alerta = $('#listDisForm div.active').find('.alert');
+				var $items = $('#listDisForm div.active').find('[type="checkbox"]');
+				if (valCausas($panel)){
+					$alerta.removeClass('hidden');
+					$items.parent().parent().parent().parent().addClass('text-danger');
+					$items.parent().parent().parent().parent().addClass('has-error');
+				} else {
+					$alerta.addClass('hidden');
+					$items.parent().parent().parent().parent().removeClass('text-danger');
+					$items.parent().parent().parent().parent().removeClass('has-error');
+				}
+			}
+
+			valCausas();
+			// validar_totales();
+			validar_disponibilidad();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 
@@ -493,11 +542,11 @@ $(document).ready(function(){
 			var $cmps = [];
 
 			$datos.children().each(function(){
-				debugger;
+
 				var $cm = $(':input,select',$(this));
 				$cmps.push( $cm.serializeArray() );
 			});
-			debugger;
+
 			if ($datos.children().length > 0){
 				$.ajax({
 					url: "../persistencia/parcial.php",
@@ -505,7 +554,7 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
 					success: function(dato) {
-						debugger;
+
 						var ct = ['<p>La informaci&oacute;n se guardo con éxito</p>','<p>La informaci&oacute;n no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
@@ -783,7 +832,7 @@ $(document).ready(function(){
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
 
-				// debugger;
+
 				$item.find(':input').not('[type="checkbox"]').each(function(){
 		    		var $input = $(this);
 					if ($input.val() === ''){
@@ -816,7 +865,7 @@ $(document).ready(function(){
 		/* Funcion para validad las causas de las disponibilidades dinamicamente */
 		function valCausas($panel=''){
 			/* verifica si se ha seleccionado almeno 1 de los causas del panel a validar o del panel activo
-			 * si almeno una seleccionada return false
+			 * si al menos una seleccionada return false
 			 * si no hay una seleccionada return true
 			 */
 			var $con = 0;
@@ -828,9 +877,9 @@ $(document).ready(function(){
 			});
 
 			if ($con > 0){
-				$items.prop('required', false);
+				$items.prop({required: false});
 			}else{
-				$items.prop('required', true);
+				$items.prop({required: true});
 			}
 
 			return ($con==0) ? true:false;

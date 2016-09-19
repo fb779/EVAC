@@ -4,7 +4,7 @@
 	$icono1=""; $icono2=""; $icono3=""; $icono4=""; $icono5=""; $icono6="";
 // 	$muestrapys = false;
     /* Activa el iconop y cambia el color a verde cuando se ha guardado el formulario */
-	if ($rowCtl['estado']==3 && $rowCtl['m1']==2) {
+	if ($rowCtl['estado']>=3 && $rowCtl['m1']==2) {
 		$color1 = "OK";
 		$icono1 = "SI";
 	}
