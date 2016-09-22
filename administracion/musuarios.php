@@ -52,12 +52,15 @@
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/validator.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
+		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
+		<script type="text/javascript" src="../js/notSubmit.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -67,15 +70,38 @@
 			$(function() {
 				$("#idusuario").submit(function(event) {
 					event.preventDefault();
+					$inputs = $(this).find('input').not('select');
+					$select = $(this).find('select');
 					$.ajax({
 		                url: "../persistencia/grabarusu.php",
 		                type: "POST",
 		                data: $(this).serialize(),
 		                success: function(dato) {
-		                    alert(dato);
+		                    alertPersonalizado(dato);
+		                    $inputs.prop({value:''});
+		                    $select.prop({value: '0'});
+
 		                }
 					});
 				});
+
+				function alertPersonalizado( mensaje = '' ){
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_SUCCESS,
+						title: 'Usuario Creado',
+						message: mensaje,
+						closable: false,
+						buttons: [
+						{
+							id: 'cerrar',
+							label: 'Cerrar',
+								action: function(cerrar) {
+								cerrar.close();
+								// location.reload();
+							}
+						}]
+					});
+				}
 			});
 		</script>
 	</head>

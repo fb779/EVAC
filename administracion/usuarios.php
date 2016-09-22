@@ -64,8 +64,10 @@
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
+		<link href="../bootstrap/css/jquery.dataTable.min.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<script src="../bootstrap/js/jquery.dataTable.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
@@ -77,24 +79,34 @@
 					type: BootstrapDialog.TYPE_WARNING,
 					title: 'Eliminar Usuario',
 					message: id+' - '+nombre,
+					closable: false,
 					buttons: [{
+						id: 'guardar',
 						label: 'Confirmar',
 							action: function(borra) {
+								var $btnSave = $('#guardar');
+								var $btnClose = $('#cancelar')
+								var $fila = $('#'+id);
 								$.ajax({
 									url: "../persistencia/grabarusu.php",
 									type: "POST",
 									data: {borrar: "borrar", idBorrar: id},
 									success: function(dato) {
-										//alert(dato);
-										borra.setMessage(id+' - '+nombre+' ELIMINADO');
+										borra.setType(BootstrapDialog.TYPE_SUCCESS);
+										borra.setMessage(id+' - '+nombre+' - ELIMINADO');
+										$btnSave.hide();
+										$btnClose.text('Cerrar');
+										$fila.remove();
 
 									}
 								});
 							}
 					}, {
+						id: 'cancelar',
 						label: 'Cancelar',
 							action: function(cerrar) {
 							cerrar.close();
+							// location.reload();
 						}
 					}]
 				});
@@ -138,14 +150,14 @@
 								<th class="text-center">Nombre</th>
 								<th class="text-center">Nivel</th>
 								<th class="text-center">Fuentes</th>
-								<th class="text-center">&nbsp;</th>
+								<th class="text-center" colspan="3">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								$sec = 1;
 								while ($row = $qUsuario->fetch(PDO::FETCH_ASSOC)) {
-									echo "<tr><td>" . $row['ident'] . "</td>";
+									echo "<tr id='" .$row['ident']."'><td>" . $row['ident'] . "</td>";
 									echo "<td>" . $row['nombre'] . "</td>";
 									echo "<td>" . $row['nivel'] . "</td>";
 
@@ -162,9 +174,10 @@
 									// if ( (substr($row['ident'], 0, 2) == "CO" || substr($row['ident'], 0, 4) == "CR99" ) and $region == '99') {
 									if (substr($row['ident'], 0, 4) == "CR99" and $region == '99') {
 										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
-									}
-									if (substr($row['ident'], 0, 2) == "CR" and $region != '99') {
+									}else if (substr($row['ident'], 0, 2) == "CR" and $region != '99') {
 										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
+									} else {
+										echo '<td> &nbsp;</td>';
 									}
 								}
 							?>

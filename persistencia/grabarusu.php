@@ -98,8 +98,8 @@
 				$codreg . ", " . $cero . ", " . $email . ")");
 			$cadenains->execute();
 
-			echo "Usuario Creado <br>";
-			echo "Identificación: " . $nuevaid . "<br>";
+			echo "Usuario Creado ";
+			echo utf8_encode("Identificación: " . $nuevaid . " ");
 			echo "Clave: " . $password;
 		}
 
