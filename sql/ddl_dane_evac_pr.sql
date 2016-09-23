@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-09-2016 a las 21:40:35
+-- Tiempo de generación: 23-09-2016 a las 22:39:54
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -126,8 +126,8 @@ CREATE TABLE `caratula` (
   `registmat` tinyint(1) UNSIGNED NOT NULL,
   `camara` mediumint(8) UNSIGNED DEFAULT NULL,
   `numeroreg` char(14) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nompropie` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nompropie` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `sigla` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `direccion` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `depto` tinyint(2) UNSIGNED NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE `caratula` (
   `aa` mediumint(6) UNSIGNED NOT NULL,
   `fax` varchar(12) COLLATE utf8_unicode_ci DEFAULT NULL,
   `orgju` char(7) COLLATE utf8_unicode_ci NOT NULL,
-  `orgjucual` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `orgjucual` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dirnotifi` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `depnotific` tinyint(2) UNSIGNED NOT NULL,
   `munnotific` mediumint(3) UNSIGNED NOT NULL,
@@ -170,9 +170,9 @@ CREATE TABLE `caratula` (
   `fechahasta` date DEFAULT NULL,
   `repleg` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `responde` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `carresponde` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `carresponde` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `teler` bigint(12) UNSIGNED NOT NULL,
-  `faxr` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `faxr` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `estadoact` char(9) COLLATE utf8_unicode_ci NOT NULL,
   `otro` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `emailemp` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
@@ -929,22 +929,22 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `capitulo_i_displab`
 --
 ALTER TABLE `capitulo_i_displab`
-  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id_displab` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=0;
+  MODIFY `caso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Secuencial casos', AUTO_INCREMENT=260;
 --
 -- AUTO_INCREMENT de la tabla `periodoactivo`
 --
 ALTER TABLE `periodoactivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `soportes`
 --
@@ -959,7 +959,7 @@ ALTER TABLE `soportesb`
 -- AUTO_INCREMENT de la tabla `tipoperiodo`
 --
 ALTER TABLE `tipoperiodo`
-  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `idperiodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
