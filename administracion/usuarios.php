@@ -115,12 +115,36 @@
 			});
 
 			function generaClave() {
-				$.ajax({
-					url: "genfuente.php",
-					type: "POST",
-					success: function(dato) {
-						alert(dato);
-					}
+				BootstrapDialog.show({
+					type: BootstrapDialog.TYPE_WARNING,
+					title: 'CREAR CLAVES DE USUARIOS FUENTES',
+					message: 'Desea crear y las claves de los usuarios fuente ?',
+					closable: false,
+					buttons: [{
+						id: 'guardar',
+						label: 'Confirmar',
+							action: function(borra) {
+								var $btnSave = $('#guardar');
+								var $btnClose = $('#cancelar')
+								$.ajax({
+									url: "genfuente.php",
+									type: "POST",
+									success: function(dato) {
+										borra.setType(BootstrapDialog.TYPE_SUCCESS);
+										borra.setMessage(dato) ;
+										$btnSave.hide();
+										$btnClose.text('Cerrar');
+									}
+								});
+							}
+					}, {
+						id: 'cancelar',
+						label: 'Cancelar',
+							action: function(cerrar) {
+							cerrar.close();
+							// location.reload();
+						}
+					}]
 				});
 			}
 		</script>
