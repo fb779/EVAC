@@ -64,10 +64,8 @@
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
 		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
-		<link href="../bootstrap/css/jquery.dataTable.min.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
-		<script src="../bootstrap/js/jquery.dataTable.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>

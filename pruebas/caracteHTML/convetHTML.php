@@ -5,6 +5,8 @@
 	$acentos = array('á','é','í','ó','ú','Á','É','Í','Ó','Ú','ñ','Ñ','¿');
 	$acenCon = array('&aacute;','&eacute;','&iacute;','&oacute;','&uacute;','&Aacute;','&Eacute;','&Iacute;','&Oacute;','&Uacute;','&ntilde;','&Ntilde;','&iquest;');
 
+	$cadena1 = "Usuario Creado Identificación: 'AT99002' Clave: yVu4UTAv";
+	echo htmlentities($cadena1);
 
 	$bodytag = str_replace($acentos, $acenCon, $cadena);
 
@@ -25,7 +27,7 @@ function replace($item=''){
 
 	$jsonDe = rtrim($post,']') . $campos;
 
-	echo $jsonDe;
+	// echo $jsonDe;
 	// print_r($jsonDe);
 
 

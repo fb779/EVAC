@@ -99,7 +99,7 @@
 			$cadenains->execute();
 
 			echo "Usuario Creado ";
-			echo utf8_encode("Identificación: " . $nuevaid . " ");
+			echo htmlentities("Identificación: " . $nuevaid . " ");
 			echo "Clave: " . $password;
 		}
 

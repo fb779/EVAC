@@ -61,7 +61,10 @@
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 		<script type="text/javascript" src="../js/notSubmit.js"></script>
-		<style type="text/css"> p {font-size: 13px !important;}</style>
+		<style type="text/css">
+			p {font-size: 13px !important;}
+			#nu {text-transform: uppercase;}
+		</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
@@ -120,7 +123,7 @@
 									<label class='control-label' for='nu'>Nombre:</label>
 								</div>
 								<div class='col-sm-8 small'>
-									<input type='text' class='form-control input-sm' id='nu' name='nombre' data-error='Diligencie Nombre Usuario' value='<?php echo $nomUsuario ?>' required />
+									<input type='text' class='form-control input-sm' id='nu' name='nombre' data-error='Diligencie Nombre Usuario' value='<?php echo $nomUsuario ?>' required onkeypress="$(this).val($(this).val().toUpperCase());"/>
 								</div>
 							</div>
 							<div class="help-block with-errors"></div>
