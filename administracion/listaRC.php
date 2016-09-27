@@ -9,9 +9,9 @@
 	$nombre = $_SESSION['nombreu'];
 	$region = $_SESSION['region'];
 	$pagina = "LISTA";
-	
+
 	ini_set('default_charset', 'UTF-8');
-	
+
 	$usuario = $_GET['usu'];
 	if (substr($usuario,2,2) == "99") {
 		$campoUsu = "usuario";
@@ -54,21 +54,31 @@
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="../bootstrap/css/custom.css" rel="stylesheet">
-		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">		
+		<link href="../bootstrap/css/sticky-footer.css" rel="stylesheet">
 		<script src="../bootstrap/js/jquery.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../js/html5shiv.js"></script>
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
+		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 		<style type="text/css"> p {font-size: 13px !important;}</style>
+		<script>
+			$(document).ready(function(){
+				$('#example').DataTable({
+					language:{ "url": "../js/Spanish.json" }
+				});
+			});
+
+		</script>
 	</head>
 	<body>
-		<?php 
+		<?php
 			include 'menuRet.php';
 		?>
 		<div class="container" style="padding-top: 60px;">
 			<div class="col-md-12">
-				<table class='table table-condensed table-hover table-bordered' style='font-size: 11px'>
+				<table id="example" class='table table-condensed table-hover table-bordered' style='font-size: 11px'>
 					<thead>
 						<tr>
 							<th class="text-center">Sec.</th>
@@ -105,4 +115,4 @@
 			</div>
 		</div>
  	</body>
- </html> 
+ </html>

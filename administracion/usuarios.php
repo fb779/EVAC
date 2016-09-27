@@ -70,6 +70,8 @@
 		<script type="text/javascript" src="../js/respond.js"></script>
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
+		<!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script> -->
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			function confirmar(id, nombre) {
@@ -112,6 +114,11 @@
 
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
+				// $('#tbUsuarios').DataTable({
+				// 	language:{
+				// 		"url": "../js/Spanish.json"
+				// 	}
+				// });
 			});
 
 			function generaClave() {
@@ -164,15 +171,22 @@
 						<?php } ?>
 					</ul>
 				</div>
+
+				<div class="col-xs-12">
+
+				</div>
+
 				<div class="col-md-8 col-md-offset-2">
-					<table class='table table-condensed table-hover table-bordered'>
+					<table id="tbUsuarios" class='table table-condensed table-hover table-bordered'>
 						<thead>
 							<tr>
 								<th class="text-center">Ident.</th>
 								<th class="text-center">Nombre</th>
 								<th class="text-center">Nivel</th>
 								<th class="text-center">Fuentes</th>
-								<th class="text-center" colspan="3">&nbsp;</th>
+								<th class="text-center">&nbsp;</th>
+								<th class="text-center">&nbsp;</th>
+								<th class="text-center">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>

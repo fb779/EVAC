@@ -38,6 +38,97 @@
 
 	$qUsuarios = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
 
+	/* crear datos para alimentar la tabla */
+	$dtSource = array();
+	foreach($qUsuarios as $key=>$lUsuarios) {
+		$usurep = $lUsuarios['ident'];
+		$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep' AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
+
+		$valor1 =0; $valor2 =0; $valor3 =0; $valor4 =0; $valor5 =0; $valor6 =0; $valor7 =0; $valor8 =0; $valnov =0; $distri =0;
+		foreach($qControl AS $lControl) {
+			switch ($lControl['estado']) {
+				case "0":
+					$valor1 = $lControl['grpestado'];
+					break;
+				case "1":
+					$distri += $lControl['grpestado'];
+					$valor2 = $lControl['grpestado'];
+					break;
+				case "2":
+					$distri += $lControl['grpestado'];
+					$valor3 = $lControl['grpestado'];
+					break;
+				case "3":
+					$distri += $lControl['grpestado'];
+					$valor4 = $lControl['grpestado'];
+					break;
+				case "4":
+					$distri += $lControl['grpestado'];
+					$valor5 = $lControl['grpestado'];
+					break;
+				case "5":
+					$distri += $lControl['grpestado'];
+					$valor6 = $lControl['grpestado'];
+					break;
+				case "6":
+					$distri += $lControl['grpestado'];
+					$valor7 = $lControl['grpestado'];
+					break;
+				case "TOTAL":
+					$valor8 = $lControl['grpestado'];
+					break;
+			}
+		}
+		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades");
+		foreach($qNovedad AS $lNovedad) {
+			$valnov = $lNovedad['nove'];
+		}
+
+		$dtSource[$key]['ident'] = $lUsuarios['ident'];
+		$dtSource[$key]['nombre'] = $lUsuarios['nombre'];
+
+		if ($valor1 == 0) { $dtSource[$key]['val1'] = 0; }
+		else { $dtSource[$key]['val1'] = $valor1; }
+
+		if ($distri == 0) { $dtSource[$key]['val2'] = 0; }
+		else { $dtSource[$key]['val2'] = $valor2; }
+
+		if ($valor2 == 0) { $dtSource[$key]['val3'] = 0; }
+		else { $dtSource[$key]['val3'] = $valor3; }
+
+		if ($valor3 == 0) { $dtSource[$key]['val4'] = 0; }
+		else { $dtSource[$key]['val4'] = $valor3; }
+
+		if ($valor4 == 0) { $dtSource[$key]['val5'] = 0; }
+		else { $dtSource[$key]['val5'] = $valor4; }
+
+		if ($valor5 == 0) { $dtSource[$key]['val6'] = 0; }
+		else { $dtSource[$key]['val6'] = $valor5; }
+
+		if ($valor6 == 0) { $dtSource[$key]['val7'] = 0; }
+		else { $dtSource[$key]['val7'] = $valor6; }
+
+		if ($valor7 == 0) { $dtSource[$key]['val8'] = 0; }
+		else { $dtSource[$key]['val8'] = $valor7; }
+
+		if ($valnov == 0) {
+
+			$dtSource[$key]['novedad'] = 0;
+		}
+		else {
+
+			$dtSource[$key]['val1'] = $valor8;
+		}
+
+		$totalusu = $valor8+$valnov;
+		$dtSource[$key]['totalUsu'] = $totalusu;
+
+		$totalG = $totalG + $totalusu;
+		// $dtSource['totalGlobal'] = $totalG;
+
+		$totalusu =0;
+	}
+
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
@@ -62,10 +153,18 @@
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 		<script type="text/javascript" src="../charts/amcharts/amcharts.js"></script>
 		<script type="text/javascript" src="../charts/amcharts/serial.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
 		<style type="text/css"> p {font-size: 13px !important;}</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
+
+				$('#example').DataTable({
+					language:{ "url": "../js/Spanish.json" }
+				});
 			});
 		</script>
 	</head>
@@ -73,9 +172,80 @@
 		<?php
 			include 'menuRet.php';
 		?>
-		<div class="container">
+
+		<div class="container-fluid">
+			<div class="col-xs-12">
+
+
+				<div class="panel panel-default">
+					<div class="panel-heading">Titulo para la tabla de reporte</div>
+					<div class="panel-body">
+						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="text-center">Usuario</th>
+									<th class='text-center'>Nombre</th>
+									<th class='text-center'>Sin Dist.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Distrib.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Pend.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>En Dig.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Digit.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Revisi&oacute;n</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Enviados DC.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Aceptados</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>Nove.</th>
+									<!-- <th>%</th> -->
+									<th class='text-center'>TOTAL</th>
+								</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<th colspan="11" class="text-right">TOTAL</th>
+									<th class="text-center"> <?php echo $totalG ?> </th>
+								</tr>
+							</tfoot>
+							<tbody>
+								<?php foreach($dtSource as $dt) { ?>
+									<tr>
+										<td class="text-center"><?php echo $dt['ident'] ?></td>
+										<td class="text-left"><?php echo $dt['nombre'] ?></td>
+										<td class="text-center"><?php echo $dt['val1'] ?></td>
+										<td class="text-center"><?php echo $dt['val2'] ?></td>
+										<td class="text-center"><?php echo $dt['val3'] ?></td>
+										<td class="text-center"><?php echo $dt['val4'] ?></td>
+										<td class="text-center"><?php echo $dt['val5'] ?></td>
+										<td class="text-center"><?php echo $dt['val6'] ?></td>
+										<td class="text-center"><?php echo $dt['val7'] ?></td>
+										<td class="text-center"><?php echo $dt['val8'] ?></td>
+										<td class="text-center"><?php echo $dt['novedad'] ?></td>
+										<td class="text-center"><?php echo $dt['totalUsu'] ?></td>
+									</tr>
+
+
+							<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					<div class="panel-footer">
+						<a href='xlsRepCrit.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
+							<span class = "glyphicon glyphicon-download-alt"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- div class="container">
 			<div class="col-md-12">
-				<table class='table table-condensed table-hover'>
+				<table class='table table-condensed table-hover hidden'>
 					<thead>
 						<tr>
 							<th class="text-center">Usuario</th>
@@ -215,6 +385,6 @@
 					<span class = "glyphicon glyphicon-download-alt"></span>
 				</a>
 			</div>
-		</div>
+		</div> -->
  	</body>
  </html>
