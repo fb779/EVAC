@@ -12,6 +12,7 @@
 	$pagina = "REPORTE CRITICOS";
 	$vig=$_SESSION['vigencia'];
 	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $nove = 7; $totalG=0; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)";
+
 	if (isset($_GET['regi'])) {
 		$regOpe = $_GET['regi'];
 	}
@@ -25,105 +26,105 @@
 		$campoUsu = "usuarioss";
 	}
 
-	$cols = array(
-		 "Sin Distribuir"=>0,
-		 "Distribuidos"=>1,
-		 "Pendientes"=>2,
-		 "En Digitaci&oacute;n"=>3,
-		 "Digitados"=>4,
-		 "An&aacute;lisis Verificaci&oacute;n"=>5,
-		 "Verificados"=>6,
-		 "Aceptados"=>7,
-		 "Novedades"=>8);
+	$estados = array(
+		 "sinDistribuir" => '0',
+		 "distribuidos" => '1',
+		 "digitacion" => '2',
+		 "grabados" => '3',
+		 "verificacion" => '4',
+		 "danecentral" => '5',
+		 "aceptado" => '6',
+		 "novedades" => '7',
+		 "total" => 'TOTAL'
+	);
 
 	$qUsuarios = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
-
+	$qUsu = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
 	/* crear datos para alimentar la tabla */
 	$dtSource = array();
 	foreach($qUsuarios as $key=>$lUsuarios) {
 		$usurep = $lUsuarios['ident'];
 		$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep' AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
 
-		$valor1 =0; $valor2 =0; $valor3 =0; $valor4 =0; $valor5 =0; $valor6 =0; $valor7 =0; $valor8 =0; $valnov =0; $distri =0;
+		$sinDistribuir =0; $distribuidos =0; $digitacion =0; $grabados =0; $criticados =0; $dane =0; $aceptado =0; $tUsuario =0; $valnov =0; $distri =0;
 		foreach($qControl AS $lControl) {
 			switch ($lControl['estado']) {
-				case "0":
-					$valor1 = $lControl['grpestado'];
+				case $estados['sinDistribuir']:
+					$sinDistribuir = $lControl['grpestado'];
 					break;
-				case "1":
-					$distri += $lControl['grpestado'];
-					$valor2 = $lControl['grpestado'];
+				case $estados['distribuidos']:
+					// $distri += $lControl['grpestado'];
+					$distribuidos = $lControl['grpestado'];
 					break;
-				case "2":
-					$distri += $lControl['grpestado'];
-					$valor3 = $lControl['grpestado'];
+				case $estados['digitacion']:
+					// $distri += $lControl['grpestado'];
+					$digitacion = $lControl['grpestado'];
 					break;
-				case "3":
-					$distri += $lControl['grpestado'];
-					$valor4 = $lControl['grpestado'];
+				case $estados['grabados']:
+					// $distri += $lControl['grpestado'];
+					$grabados = $lControl['grpestado'];
 					break;
-				case "4":
-					$distri += $lControl['grpestado'];
-					$valor5 = $lControl['grpestado'];
+				case $estados['verificacion']:
+					// $distri += $lControl['grpestado'];
+					$criticados = $lControl['grpestado'];
 					break;
-				case "5":
-					$distri += $lControl['grpestado'];
-					$valor6 = $lControl['grpestado'];
+				case $estados['danecentral']:
+					// $distri += $lControl['grpestado'];
+					$dane = $lControl['grpestado'];
 					break;
-				case "6":
-					$distri += $lControl['grpestado'];
-					$valor7 = $lControl['grpestado'];
+				case $estados['aceptado']:
+					// $distri += $lControl['grpestado'];
+					$aceptado = $lControl['grpestado'];
 					break;
-				case "TOTAL":
-					$valor8 = $lControl['grpestado'];
+				case $estados['total']:
+					$tUsuario = $lControl['grpestado'];
 					break;
 			}
 		}
-		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades");
-		foreach($qNovedad AS $lNovedad) {
-			$valnov = $lNovedad['nove'];
-		}
+
+		// echo $grabados;
+		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
+		$valnov = $qNovedad['nove'];
+		// foreach($qNovedad AS $lNovedad) {
+		// 	$valnov = $lNovedad['nove'];
+		// }
 
 		$dtSource[$key]['ident'] = $lUsuarios['ident'];
 		$dtSource[$key]['nombre'] = $lUsuarios['nombre'];
+		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
 
-		if ($valor1 == 0) { $dtSource[$key]['val1'] = 0; }
-		else { $dtSource[$key]['val1'] = $valor1; }
+		if (($sinDistribuir + $distribuidos) == 0) { $dtSource[$key]['sinDIgitar'] = 0; }
+		else { $dtSource[$key]['sinDIgitar'] = $sinDistribuir + $distribuidos; }
 
-		if ($distri == 0) { $dtSource[$key]['val2'] = 0; }
-		else { $dtSource[$key]['val2'] = $valor2; }
+		// if ($distribuidos == 0) { $dtSource[$key]['digitacion'] = 0; }
+		// else { $dtSource[$key]['digitacion'] = $distribuidos; }
 
-		if ($valor2 == 0) { $dtSource[$key]['val3'] = 0; }
-		else { $dtSource[$key]['val3'] = $valor3; }
+		if ($digitacion == 0) { $dtSource[$key]['digitacion'] = 0; }
+		else { $dtSource[$key]['digitacion'] = $digitacion; }
 
-		if ($valor3 == 0) { $dtSource[$key]['val4'] = 0; }
-		else { $dtSource[$key]['val4'] = $valor3; }
+		if ($grabados == 0) { $dtSource[$key]['grabados'] = 0; }
+		else { $dtSource[$key]['grabados'] = $grabados; }
 
-		if ($valor4 == 0) { $dtSource[$key]['val5'] = 0; }
-		else { $dtSource[$key]['val5'] = $valor4; }
+		if ($criticados == 0) { $dtSource[$key]['criticados'] = 0; }
+		else { $dtSource[$key]['criticados'] = $criticados; }
 
-		if ($valor5 == 0) { $dtSource[$key]['val6'] = 0; }
-		else { $dtSource[$key]['val6'] = $valor5; }
+		if ($dane == 0) { $dtSource[$key]['dane'] = 0; }
+		else { $dtSource[$key]['dane'] = $dane; }
 
-		if ($valor6 == 0) { $dtSource[$key]['val7'] = 0; }
-		else { $dtSource[$key]['val7'] = $valor6; }
+		if ($aceptado == 0) { $dtSource[$key]['aceptado'] = 0; }
+		else { $dtSource[$key]['aceptado'] = $aceptado; }
 
-		if ($valor7 == 0) { $dtSource[$key]['val8'] = 0; }
-		else { $dtSource[$key]['val8'] = $valor7; }
+		// if ($distri == 0) { $dtSource[$key]['distri'] = 0; }
+		// else { $dtSource[$key]['distri'] = $distri; }
 
-		if ($valnov == 0) {
+		$dtSource[$key]['novedad'] = $valnov;
+		// $dtSource[$key]['sinDIgitar'] = $sinDistribuir + $distribuidos;
 
-			$dtSource[$key]['novedad'] = 0;
-		}
-		else {
 
-			$dtSource[$key]['val1'] = $valor8;
-		}
+		// $totalusu = $tUsuario+$valnov;
+		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
 
-		$totalusu = $valor8+$valnov;
-		$dtSource[$key]['totalUsu'] = $totalusu;
-
-		$totalG = $totalG + $totalusu;
+		$totalG += $dtSource[$key]['totalUsu'];
 		// $dtSource['totalGlobal'] = $totalG;
 
 		$totalusu =0;
@@ -132,6 +133,16 @@
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
+
+	function porcentaje($muestra, $valor){
+		if ($muestra>0){
+			$porcentaje = ($valor * 100)/$muestra;
+		}else {
+			$porcentaje = ($valor * 100)/1;
+		}
+
+		return round($porcentaje, 2, PHP_ROUND_HALF_DOWN) . '%';
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -157,12 +168,22 @@
 		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
 		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 
-		<style type="text/css"> p {font-size: 13px !important;}</style>
+		<style type="text/css">
+			p {font-size: 13px !important;}
+
+			table.dataTable thead th {
+				vertical-align: middle;
+			}
+
+			.text-center {
+				vertical-align: middle;
+			}
+		</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
 
-				$('#example').DataTable({
+				$('#example').DataTable( {
 					language:{ "url": "../js/Spanish.json" }
 				});
 			});
@@ -183,51 +204,51 @@
 						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th class="text-center">Usuario</th>
-									<th class='text-center'>Nombre</th>
-									<th class='text-center'>Sin Dist.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Distrib.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Pend.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>En Dig.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Digit.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Revisi&oacute;n</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Enviados DC.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Aceptados</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>Nove.</th>
-									<!-- <th>%</th> -->
-									<th class='text-center'>TOTAL</th>
+									<th class="text-center" rowspan="2">Nombre Critico</th>
+									<th class="text-center" rowspan="2">Directorio Asignado</th>
+									<th class="text-center" rowspan="2">Sin digitar</th>
+									<th class="text-center" rowspan="2">En digitaci&oacute;n</th>
+									<th class="text-center" rowspan="2">Grabados</th>
+									<th class="text-center" colspan="2">Devoluciones</th>
+									<th class="text-center" rowspan="2">Criticados</th>
+									<th class="text-center" rowspan="2">Aprobados</th>
+									<th class="text-center" rowspan="2">Novedades</th>
+									<th class="text-center" rowspan="2">Deuda</th>
+									<th class="text-center" rowspan="2">Recolectados</th>
+									<th class="text-center" rowspan="2">indicador Calidad</th>
+									<!-- <th>13</th> -->
+								</tr>
+
+								<tr class="text-center">
+									<th>Devueltos</th>
+									<th>Historico</th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
-									<th colspan="11" class="text-right">TOTAL</th>
+									<th colspan="" class="text-left">TOTAL</th>
 									<th class="text-center"> <?php echo $totalG ?> </th>
+									<th colspan="11">&nbsp;</th>
 								</tr>
 							</tfoot>
 							<tbody>
 								<?php foreach($dtSource as $dt) { ?>
 									<tr>
+										<td class="text-left"><?php echo $dt['nombre']; ?></td>
+										<td class="text-center"><?php echo $dt['totalUsu']; ?></td>
+										<td class="text-center"><?php echo $dt['sinDIgitar'] . ' - ' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']); ?></td>
+										<td class="text-center"><?php echo $dt['digitacion'] . ' - ' . porcentaje($dt['totalUsu'],$dt['digitacion']); ?></td>
+										<td class="text-center"><?php echo $dt['grabados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['grabados']); ?></td>
+										<td class="text-center"><?php // echo $dt['devueltos'] . ' - ' . porcentaje($dt['totalUsu'],$dt['devueltos']); ?></td>
+										<td class="text-center"><?php // echo $dt['historico'] . ' - ' . porcentaje($dt['totalUsu'],$dt['historico']); ?></td>
+										<td class="text-center"><?php echo $dt['dane'] . ' - ' . porcentaje($dt['totalUsu'],$dt['dane']); ?></td>
+										<td class="text-center"><?php echo $dt['aceptado'] . ' - ' . porcentaje($dt['totalUsu'],$dt['aceptado']); ?></td>
+										<td class="text-center"><?php echo $dt['novedad'] . ' - ' . porcentaje($dt['totalUsu'],$dt['novedad']); ?></td>
+										<td class="text-center"><?php // echo $dt['criticados'] ?></td>
+										<td class="text-center"><?php // echo $dt['distri'] ?></td>
 										<td class="text-center"><?php echo $dt['ident'] ?></td>
-										<td class="text-left"><?php echo $dt['nombre'] ?></td>
-										<td class="text-center"><?php echo $dt['val1'] ?></td>
-										<td class="text-center"><?php echo $dt['val2'] ?></td>
-										<td class="text-center"><?php echo $dt['val3'] ?></td>
-										<td class="text-center"><?php echo $dt['val4'] ?></td>
-										<td class="text-center"><?php echo $dt['val5'] ?></td>
-										<td class="text-center"><?php echo $dt['val6'] ?></td>
-										<td class="text-center"><?php echo $dt['val7'] ?></td>
-										<td class="text-center"><?php echo $dt['val8'] ?></td>
-										<td class="text-center"><?php echo $dt['novedad'] ?></td>
-										<td class="text-center"><?php echo $dt['totalUsu'] ?></td>
 									</tr>
+
 
 
 							<?php } ?>
@@ -243,9 +264,9 @@
 			</div>
 		</div>
 
-		<!-- div class="container">
+		<div class="container">
 			<div class="col-md-12">
-				<table class='table table-condensed table-hover hidden'>
+				<table class='table table-condensed table-hover'>
 					<thead>
 						<tr>
 							<th class="text-center">Usuario</th>
@@ -264,7 +285,7 @@
 					</thead>
 					<tbody>
 						<?php
-							foreach($qUsuarios as $lUsuarios) {
+							foreach($qUsu as $lUsuarios) {
 								$usurep = $lUsuarios['ident'];
 								$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep'
 									AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
@@ -385,6 +406,6 @@
 					<span class = "glyphicon glyphicon-download-alt"></span>
 				</a>
 			</div>
-		</div> -->
+		</div>
  	</body>
  </html>
