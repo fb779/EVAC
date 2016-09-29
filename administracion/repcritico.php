@@ -21,9 +21,11 @@
 	}
 	if ($regOpe == 99) {
 		$campoUsu = "usuario";
+		$campDevol = "coddev";
 	}
 	else {
 		$campoUsu = "usuarioss";
+		$campDevol = "codcrit";
 	}
 
 	$estados = array(
@@ -82,12 +84,14 @@
 			}
 		}
 
-		// echo $grabados;
 		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
 		$valnov = $qNovedad['nove'];
-		// foreach($qNovedad AS $lNovedad) {
-		// 	$valnov = $lNovedad['nove'];
-		// }
+
+		$devolucion = $conn->query("SELECT count(*) as devolucion FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('DEV')")->fetch(PDO::FETCH_ASSOC);
+		$dtSource[$key]['devueltos'] = $devolucion['devolucion'];
+
+		$hisDevoluciones = $conn->query("SELECT count(*) as hisdevo FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('RV')")->fetch(PDO::FETCH_ASSOC);
+		$dtSource[$key]['hisDevolucion'] = $hisDevoluciones['hisdevo'];
 
 		$dtSource[$key]['ident'] = $lUsuarios['ident'];
 		$dtSource[$key]['nombre'] = $lUsuarios['nombre'];
@@ -96,17 +100,11 @@
 		if (($sinDistribuir + $distribuidos) == 0) { $dtSource[$key]['sinDIgitar'] = 0; }
 		else { $dtSource[$key]['sinDIgitar'] = $sinDistribuir + $distribuidos; }
 
-		// if ($distribuidos == 0) { $dtSource[$key]['digitacion'] = 0; }
-		// else { $dtSource[$key]['digitacion'] = $distribuidos; }
-
 		if ($digitacion == 0) { $dtSource[$key]['digitacion'] = 0; }
 		else { $dtSource[$key]['digitacion'] = $digitacion; }
 
-		if ($grabados == 0) { $dtSource[$key]['grabados'] = 0; }
-		else { $dtSource[$key]['grabados'] = $grabados; }
-
-		if ($criticados == 0) { $dtSource[$key]['criticados'] = 0; }
-		else { $dtSource[$key]['criticados'] = $criticados; }
+		if ($grabados + $criticados == 0) { $dtSource[$key]['grabados'] = 0; }
+		else { $dtSource[$key]['grabados'] = $grabados + $criticados; }
 
 		if ($dane == 0) { $dtSource[$key]['dane'] = 0; }
 		else { $dtSource[$key]['dane'] = $dane; }
@@ -114,19 +112,12 @@
 		if ($aceptado == 0) { $dtSource[$key]['aceptado'] = 0; }
 		else { $dtSource[$key]['aceptado'] = $aceptado; }
 
-		// if ($distri == 0) { $dtSource[$key]['distri'] = 0; }
-		// else { $dtSource[$key]['distri'] = $distri; }
-
 		$dtSource[$key]['novedad'] = $valnov;
-		// $dtSource[$key]['sinDIgitar'] = $sinDistribuir + $distribuidos;
 
-
-		// $totalusu = $tUsuario+$valnov;
-		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
+		$dtSource[$key]['deuda'] = ($dtSource[$key]['totalUsu'] - ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] ));
+		$dtSource[$key]['recolectados'] = ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] );
 
 		$totalG += $dtSource[$key]['totalUsu'];
-		// $dtSource['totalGlobal'] = $totalG;
-
 		$totalusu =0;
 	}
 
@@ -184,7 +175,11 @@
 				$('[data-toggle="tooltip"]').tooltip();
 
 				$('#example').DataTable( {
-					language:{ "url": "../js/Spanish.json" }
+					language:{ "url": "../js/Spanish.json" },
+					// "pagingType": "numbers",
+					// "search": {
+					// 	"caseInsensitive": true
+					// }
 				});
 			});
 		</script>
@@ -239,13 +234,13 @@
 										<td class="text-center"><?php echo $dt['sinDIgitar'] . ' - ' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']); ?></td>
 										<td class="text-center"><?php echo $dt['digitacion'] . ' - ' . porcentaje($dt['totalUsu'],$dt['digitacion']); ?></td>
 										<td class="text-center"><?php echo $dt['grabados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['grabados']); ?></td>
-										<td class="text-center"><?php // echo $dt['devueltos'] . ' - ' . porcentaje($dt['totalUsu'],$dt['devueltos']); ?></td>
-										<td class="text-center"><?php // echo $dt['historico'] . ' - ' . porcentaje($dt['totalUsu'],$dt['historico']); ?></td>
+										<td class="text-center"><?php echo $dt['devueltos'] . ' - ' . porcentaje($dt['totalUsu'],$dt['devueltos']); ?></td>
+										<td class="text-center"><?php echo $dt['hisDevolucion'] . ' - ' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']); ?></td>
 										<td class="text-center"><?php echo $dt['dane'] . ' - ' . porcentaje($dt['totalUsu'],$dt['dane']); ?></td>
 										<td class="text-center"><?php echo $dt['aceptado'] . ' - ' . porcentaje($dt['totalUsu'],$dt['aceptado']); ?></td>
 										<td class="text-center"><?php echo $dt['novedad'] . ' - ' . porcentaje($dt['totalUsu'],$dt['novedad']); ?></td>
-										<td class="text-center"><?php // echo $dt['criticados'] ?></td>
-										<td class="text-center"><?php // echo $dt['distri'] ?></td>
+										<td class="text-center"><?php echo $dt['deuda'] . ' - ' . porcentaje($dt['totalUsu'],$dt['deuda']); ?></td>
+										<td class="text-center"><?php echo $dt['recolectados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['recolectados']); ?></td>
 										<td class="text-center"><?php echo $dt['ident'] ?></td>
 									</tr>
 
