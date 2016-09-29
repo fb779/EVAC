@@ -41,7 +41,7 @@
 
 		$qUsuario = $conn->prepare("SELECT us.ident, us.nombre,
 			(CASE us.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END) AS nivel,
-			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE ct.usuarioss = us.ident and pa.id = :vigencia ) AS fuentes
+			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE (ct.usuarioss = us.ident or ct.usuario = us.ident) and pa.id = :vigencia ) AS fuentes
 			FROM usuarios AS us where us.tipo NOT IN ('FU') order by us.ident");
 
 		$qUsuario->execute(array(':vigencia'=>$vig));
