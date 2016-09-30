@@ -39,7 +39,7 @@ $(document).ready(function(){
 		/** Funcion que valida el cambio del radio button */
 		$('[name="i1r1c1"]').on('change',function(){
 			var $chk = $('#medPub [type="checkbox"]');
-			debugger;
+
 			if ( parseInt($(this).val()) == 2 ){
 				/** retiramos los vicculos de la caracterización */
 				lista.children().each(function(){
@@ -49,6 +49,8 @@ $(document).ready(function(){
 				conte.children().each(function(){
 					$(this).remove();
 				});
+				$('#diNoMensaje').children('p').remove();
+				$('#disNoti').addClass('hidden');
 				/**deshabilitamos todos los campos del formulario */
 				$chk.prop('checked', false);
 				// $chk.prop('required', false);
@@ -62,6 +64,7 @@ $(document).ready(function(){
 				$('#obsfte').val('');
 				$('#idi1r4c1').val('');
 				validar_totales();
+
 			}else if ( parseInt($(this).val()) == 1 ) {
 				/** habilitamos todos los campos del formulario */
 				$(':input,select', $fr ).each(function(){
@@ -401,26 +404,7 @@ $(document).ready(function(){
 					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
 					$(this).val('');
 				}
-			} /*else if ($(this).attr('type') == 'checkbox') {
-				if ($(this).prop('checked')){
-					$(this).val(1);
-				} else {
-					$(this).val(0);
-				}
-
-				if ($(this).attr('name') == namevacNoCubCa ){
-					if ($(this).prop('checked')){
-						$('[name="'+cual+'"]').prop({required: true, disabled: false});
-					} else {
-						$('[name="'+cual+'"]').val('');
-						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
-						$('[name="'+cual+'"]').parent().parent().children('span').remove();
-						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
-						$('[name="'+cual+'"]').css('border',"");
-						$('[name="'+cual+'"]').prop({required: false, disabled: true});
-					}
-				}
-
+			} else if ($(this).attr('type') == 'checkbox') {
 				var $alerta = $('#listDisForm div.active').find('.alert');
 				var $items = $('#listDisForm div.active').find('[type="checkbox"]');
 				if (valCausas($panel)){
@@ -432,7 +416,7 @@ $(document).ready(function(){
 					$items.parent().parent().parent().parent().removeClass('text-danger');
 					$items.parent().parent().parent().parent().removeClass('has-error');
 				}
-			}*/ else {
+			} else {
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
@@ -458,7 +442,7 @@ $(document).ready(function(){
 			// valCausas();
 			validar_totales();
 			validar_disponibilidad();
-			// valida_todo();
+			valida_todo();
 		});
 
 		$('#listDisForm').on('change', '.validar', function(){
@@ -508,8 +492,8 @@ $(document).ready(function(){
 			}
 
 			valCausas();
-			// validar_totales();
 			validar_disponibilidad();
+			// validar_totales();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 
@@ -902,6 +886,7 @@ $(document).ready(function(){
 			if (!validar_disponibilidad()) { $c++;}
 			if ($c > 0){ $btnGuardar.prop('disabled', true); }
 			else { $btnGuardar.prop('disabled', false); }
+			validar_totales();
 		}
 	/** Funciones de validaciones */
 });

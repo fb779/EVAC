@@ -338,7 +338,7 @@
 											<div  class="container-fluid small">
 												<div class="form-group form-group-sm col-xs-12 col-sm-12 ">
 													<div class="col-xs-12 text-left">
-														<label >De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
+														<label class="control-label" >De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 													</div>
 													<div class="alert alert-danger text-center hidden" role="alert">
 														DEBE SELECCIONAR M&Iacute;NIMO UNA DE LAS OPCIONES

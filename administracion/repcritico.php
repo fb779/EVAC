@@ -117,6 +117,12 @@
 		$dtSource[$key]['deuda'] = ($dtSource[$key]['totalUsu'] - ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] ));
 		$dtSource[$key]['recolectados'] = ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] );
 
+		if ( $dtSource[$key]['hisDevolucion'] > 0 || $dtSource[$key]['dane'] > 0 && $dtSource[$key]['aceptado'] > 0 ){
+			$dtSource[$key]['calidad'] = round(1-(($dtSource[$key]['devueltos']+$dtSource[$key]['hisDevolucion'])/($dtSource[$key]['hisDevolucion']+$dtSource[$key]['dane']+$dtSource[$key]['aceptado'])),2,PHP_ROUND_HALF_DOWN).'%';
+		} else{
+			$dtSource[$key]['calidad'] = round(0,2,PHP_ROUND_HALF_DOWN).'%';
+		}
+
 		$totalG += $dtSource[$key]['totalUsu'];
 		$totalusu =0;
 	}
@@ -161,7 +167,9 @@
 
 		<style type="text/css">
 			p {font-size: 13px !important;}
-
+			#mdalReport{
+				width: 99% !important;
+			}
 			table.dataTable thead th {
 				vertical-align: middle;
 			}
@@ -176,11 +184,33 @@
 
 				$('#example').DataTable( {
 					language:{ "url": "../js/Spanish.json" },
+					responsive: true,
 					// "pagingType": "numbers",
 					// "search": {
 					// 	"caseInsensitive": true
 					// }
 				});
+
+				// $('#repCriticos').DataTable( {
+				// 	language:{ "url": "../js/Spanish.json" },
+				// 	responsive: true,
+				// 	// "pagingType": "numbers",
+				// 	// "search": {
+				// 	// 	"caseInsensitive": true
+				// 	// }
+				// });
+
+				$("#myBtn").click(function(){
+			        // $("#myModal").modal("show");
+					$("#modalReportes").modal("show");
+			    });
+
+				$("#modalReportes").on('show.bs.modal', function () {
+					debugger;
+					console.log('si entre al evento del modal....');
+					// alert('The modal is about to be shown.');
+				});
+
 			});
 		</script>
 	</head>
@@ -191,8 +221,9 @@
 
 		<div class="container-fluid">
 			<div class="col-xs-12">
-
-
+				<button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button>
+			</div>
+			<div class="col-xs-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Titulo para la tabla de reporte</div>
 					<div class="panel-body">
@@ -241,7 +272,7 @@
 										<td class="text-center"><?php echo $dt['novedad'] . ' - ' . porcentaje($dt['totalUsu'],$dt['novedad']); ?></td>
 										<td class="text-center"><?php echo $dt['deuda'] . ' - ' . porcentaje($dt['totalUsu'],$dt['deuda']); ?></td>
 										<td class="text-center"><?php echo $dt['recolectados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['recolectados']); ?></td>
-										<td class="text-center"><?php echo $dt['ident'] ?></td>
+										<td class="text-center"><?php echo $dt['calidad'] ?></td>
 									</tr>
 
 
@@ -402,5 +433,94 @@
 				</a>
 			</div>
 		</div>
+
+		<!-- creacion y manejo de modal para reporte de empresas para critico -->
+		<div class="modal fade" id="modalReportes" role="dialog">
+			<div id="mdalReport" class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class=" text-center"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> REPORTE DE CRITICOS</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- <table id="repCriticos">
+									<thead>
+										<tr>
+											<th>N. Orden</th>
+											<th>Nombre</th>
+											<th>Departamento</th>
+											<th>Municipio</th>
+											<th>Ciiu4</th>
+											<th>Clase Ciiu4</th>
+											<th>Regional Dane</th>
+											<th>Dir Territorial - recolecta</th>
+											<th>Sede</th>
+											<th>Inclusión</th>
+											<th>Novedad</th>
+											<th>Estado</th>
+											<th>Devuelto acumulado</th>
+											<th>Fecha ultima devolución</th>
+											<th>Diías hasta hoy</th>
+											<th>Critico</th>
+											<th>Observaciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+										</tr>
+										<tr>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>sir t amot.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+											<td>Lorem ipsum dolor sit amet.</td>
+										</tr>
+									</tbody>
+								</table> -->
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
  	</body>
  </html>

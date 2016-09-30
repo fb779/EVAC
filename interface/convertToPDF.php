@@ -28,7 +28,7 @@ $paper_2  : estilo del papel[*]
 
 require_once("../dompdf/dompdf_config.inc.php");
 
-function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='letter',$paper_2='portrait')
+function toPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='letter',$paper_2='portrait')
 {
     if( $body!=true and $body!=false ) $body=false;
     if( $mode!=true and $mode!=false ) $mode=false;
