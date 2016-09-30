@@ -11,7 +11,7 @@
 	$nomPeriodo = $conn->query("select nomperiodo from periodoactivo where id = $vig")->fetch(PDO::FETCH_ASSOC);
 	$qCapitulo = $conn->query("SELECT * FROM capitulo_i WHERE C1_nordemp = $numero AND vigencia = $vig");
 	$row = $qCapitulo->fetch(PDO::FETCH_ASSOC);
-	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig");
+	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15, i1r2c16, i1r2c17, i1r2c18, i1r2c19, i1r2c20, i1r2c21 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig");
 /**########################**/
 ?>
 
@@ -74,6 +74,7 @@
 				-webkit-box-sizing: content-box;
 				-moz-box-sizing: content-box;
 				box-sizing: content-box;
+				width: 100%;
 				margin: 10px auto;
 				border-collapse: collapse;
 			}
@@ -150,6 +151,7 @@
 								<td></td>
 								<td>
 									<?php
+										$dt_i1r1c1 = '&nbsp;';
 										if ($row['i1r1c1'] == 1) { $dt_i1r1c1 = "Si"; }
 										else if ($row['i1r1c1'] == 2) { $dt_i1r1c1 = "No"; }
 									?>
@@ -201,7 +203,7 @@
 						<table>
 							<thead>
 								<tr>
-									<th colspan="3"> Disp <?php echo $c;?> </th>
+									<th colspan="3"> Vacante <?php echo $c;?> </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -295,29 +297,23 @@
 										<?php //echo $dispc['i1r2c7']; ?>
 									</td>
 									<td>
-										<?php
-										if ($dispc['i1r2c8'] == 1) { $dtEdad = '15 - 20'; }
-										elseif ($dispc['i1r2c8'] == 2) { $dtEdad = '20 - 25'; }
-										elseif ($dispc['i1r2c8'] == 3) { $dtEdad = '25 - 30'; }
-										elseif ($dispc['i1r2c8'] == 4) { $dtEdad = '30 - 35'; }
-										elseif ($dispc['i1r2c8'] == 5) { $dtEdad = '35 - 40'; }
-										elseif ($dispc['i1r2c8'] == 6) { $dtEdad = '40 - 45'; }
-										elseif ($dispc['i1r2c8'] == 7) { $dtEdad = '45 - 50'; }
-										elseif ($dispc['i1r2c8'] == 8) { $dtEdad = '50 - 55'; }
-										elseif ($dispc['i1r2c8'] == 9) { $dtEdad = '55 - 60'; }
-										elseif ($dispc['i1r2c8'] == 10) { $dtEdad = '60 - 65'; }
-										elseif ($dispc['i1r2c8'] == 11) { $dtEdad = '65 - 70'; }
-										elseif ($dispc['i1r2c8'] == 12) { $dtEdad = '70 - 75'; }
-										elseif ($dispc['i1r2c8'] == 13) { $dtEdad = '75 - 80'; }
-										elseif ($dispc['i1r2c8'] == 14) { $dtEdad = '80 - 85'; }
-										elseif ($dispc['i1r2c8'] == 15) { $dtEdad = '85 - 90'; }
-										elseif ($dispc['i1r2c8'] == 16) { $dtEdad = 'Indiferente'; }
-										?>
-										<input type="text" value="<?php echo $dtEdad; ?>">
-										<?php //echo $dtEdad; ?>
+										<table>
+											<tr>
+												<td><span class="input-group-addon" id="sizing-addon1">Desde</span></td>
+												<td><span class="input-group-addon" id="sizing-addon1">Hasta</span></td>
+											</tr>
+											<tr>
+												<td>
+													<input type="text" value = "<?php echo $dispc['i1r2c8']; ?>">
+												</td>
+												<td>
+													<input type="text" value = "<?php echo $dispc['i1r2c9']; ?>">
+												</td>
+											</tr>
+										</table>
 									</td>
 									<td>
-										<input type='text' value = "<?php echo $dispc['i1r2c9']; ?>"/>
+										<input type='text' value = "<?php echo $dispc['i1r2c10']; ?>"/>
 										<?php //echo $dispc['i1r2c9']; ?>
 									</td>
 								</tr>
@@ -328,41 +324,82 @@
 								</tr>
 								<tr class="alt">
 									<td>
-										<input type='text' value = "<?php echo $dispc['i1r2c10']; ?>" />
+										<input type='text' value = "<?php echo $dispc['i1r2c11']; ?>" />
 										<?php //echo $dispc['i1r2c10']; ?>
 									</td>
 									<td>
-										<input type='text' value = "<?php echo $dispc['i1r2c11']; ?>" />
+										<input type='text' value = "<?php echo $dispc['i1r2c12']; ?>" />
 										<?php //echo $dispc['i1r2c11']; ?>
 									</td>
 									<td>
-										<input type='text' value = "<?php echo $dispc['i1r2c12'];?>" />
+										<input type='text' value = "<?php echo $dispc['i1r2c13'];?>" />
 										<?php //echo $dispc['i1r2c12'];?>
 									</td>
 								</tr>
 								<tr>
-									<td> <label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label> </td>
-									<td colspan="2"> <label class="">Cual?</label> </td>
+									<td colspan="3"> <label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label> </td>
+									<!-- <td colspan="2"> <label class="">Cual?</label> </td> -->
 								</tr>
 								<tr class="alt">
-									<td >
-										<?php
-										if ($dispc['i1r2c13'] == 1) { $dtNoCubiertas = 'La remuneración ofrecida era insuficiente';}
-										elseif ($dispc['i1r2c13'] == 2) { $dtNoCubiertas = 'Postulantes sub-calificados';}
-										elseif ($dispc['i1r2c13'] == 3) { $dtNoCubiertas = 'Postulantes sobre-calificados';}
-										elseif ($dispc['i1r2c13'] == 4) { $dtNoCubiertas = 'Falta de experiencia o conocimiento específico';}
-										elseif ($dispc['i1r2c13'] == 5) { $dtNoCubiertas = 'Los postulantes no dominaban otros idiomas';}
-										elseif ($dispc['i1r2c13'] == 6) { $dtNoCubiertas = 'Pocos postulantes';}
-										elseif ($dispc['i1r2c13'] == 7) { $dtNoCubiertas = 'Otra';}
-										else { $dtNoCubiertas = 'No aplica'; }
-										?>
-										<input type="text" value="<?php echo $dtNoCubiertas; ?>">
-										<?php //echo $dtNoCubiertas; ?>
+									<td colspan="3" >
+										<table>
+											<tr>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c14'] == 1) ? 'checked' : ''?> >
+														La remuneración ofrecida era insuficiente
+													</label>
+												</td>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c15'] == 1) ? 'checked' : ''?> >
+														Postulantes sub-calificados
+													</label>
+												</td>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c16'] == 1) ? 'checked' : ''?> >
+														Postulantes sobre-calificados
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c17'] == 1) ? 'checked' : ''?> >
+														Falta de experiencia o conocimiento específico
+													</label>
+												</td>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c18'] == 1) ? 'checked' : ''?> >
+														Los postulantes no dominaban otros idiomas
+													</label>
+												</td>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c19'] == 1) ? 'checked' : ''?> >
+														Pocos postulantes
+													</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<label>
+														<input type="checkbox" <?php echo ($dispc['i1r2c20'] == 1) ? 'checked' : ''?> >
+														Otra
+													</label>
+												</td>
+												<td colspan="2">
+													<span>Cual?</span> <br>
+													<input type='text' id="noCual" value="<?php echo ($dispc['i1r2c21'] != '') ? $dispc['i1r2c21'] : '&nbsp;'; ?>" />
+												</td>
+												<td></td>
+											</tr>
+										</table>
+
 									</td>
-									<td colspan="2">
-										<input type='text' id="noCual" value="<?php echo ($dispc['i1r2c14'] != '') ? $dispc['i1r2c14'] : '&nbsp;'; ?>" />
-										<?php //echo $dispc['i1r2c14']; ?>
-									</td>
+
 								</tr>
 							</tbody>
 						</table>

@@ -27,7 +27,7 @@
 	// verificacion para la carga de informacion del formulario y creacion de registros para la informacion
 	/** Carga de informacion del capitulo 1 disponibilidades */
 	$rowDisLink = $conn->query("SELECT id_displab from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig;");
-	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
+	$rowDisCont = $conn->query("SELECT id_displab, i1r2c1, i1r2c2, i1r2c3, i1r2c4, i1r2c5, i1r2c6, i1r2c7, i1r2c8, i1r2c9, i1r2c10, i1r2c11, i1r2c12, i1r2c13, i1r2c14, i1r2c15, i1r2c16, i1r2c17, i1r2c18, i1r2c19, i1r2c20, i1r2c21 from capitulo_i_displab WHERE C1_nordemp = $numero AND vigencia = $vig ORDER BY id_displab;");
 /**########################**/
 
 	if ($tipousu != "FU") {
@@ -273,31 +273,35 @@
 													<label class="">Salario u honorarios mensuales</label>
 													<div class='input-group input-group-sm'>
 														<span class="input-group-addon" id="sizing-addon1">$</span>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7']?>" maxlength="9" placeholder="Valor digitado en pesos" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7'];?>" maxlength="9" placeholder="Valor digitado en pesos" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">Edad</label>
-													<div class='small'>
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_7" required>
+													<div class='input-group input-group-sm'>
+														<span class="input-group-addon" id="sizing-addon1">Desde</span>
+														<select class='form-control input-sm validar' id="" name='<?php echo $ncam; ?>_7' required>
 															<option value="" > Seleccione una opción</option>
-															<option value="1" <?php echo ($dispc['i1r2c8'] == 1) ? 'selected' : '';  ?> >15 - 20</option>
-															<option value="2" <?php echo ($dispc['i1r2c8'] == 2) ? 'selected' : '';  ?> >20 - 25</option>
-															<option value="3" <?php echo ($dispc['i1r2c8'] == 3) ? 'selected' : '';  ?> >25 - 30</option>
-															<option value="4" <?php echo ($dispc['i1r2c8'] == 4) ? 'selected' : '';  ?> >30 - 35</option>
-															<option value="5" <?php echo ($dispc['i1r2c8'] == 5) ? 'selected' : '';  ?> >35 - 40</option>
-															<option value="6" <?php echo ($dispc['i1r2c8'] == 6) ? 'selected' : '';  ?> >40 - 45</option>
-															<option value="7" <?php echo ($dispc['i1r2c8'] == 7) ? 'selected' : '';  ?> >45 - 50</option>
-															<option value="8" <?php echo ($dispc['i1r2c8'] == 8) ? 'selected' : '';  ?> >50 - 55</option>
-															<option value="9" <?php echo ($dispc['i1r2c8'] == 9) ? 'selected' : '';  ?> >55 - 60</option>
-															<option value="10" <?php echo ($dispc['i1r2c8'] == 10) ? 'selected' : '';  ?> >60 - 65</option>
-															<option value="11" <?php echo ($dispc['i1r2c8'] == 11) ? 'selected' : '';  ?> >65 - 70</option>
-															<option value="12" <?php echo ($dispc['i1r2c8'] == 12) ? 'selected' : '';  ?> >70 - 75</option>
-															<option value="13" <?php echo ($dispc['i1r2c8'] == 13) ? 'selected' : '';  ?> >75 - 80</option>
-															<option value="14" <?php echo ($dispc['i1r2c8'] == 14) ? 'selected' : '';  ?> >80 - 85</option>
-															<option value="15" <?php echo ($dispc['i1r2c8'] == 15) ? 'selected' : '';  ?> >85 - 90</option>
-															<option value="16" <?php echo ($dispc['i1r2c8'] == 16) ? 'selected' : '';  ?> >Indiferente</option>
+															<?php for ($i=15; $i <= 90; $i+=5) {
+																if ( $dispc['i1r2c8'] == $i ){ ?>
+																	<option value="<?php echo $i; ?>" selected > <?php echo $i; ?> </option>
+																<?php } else { ?>
+																	<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+																<?php } ?>
+															<?php } ?>
+														</select>
+
+														<span class="input-group-addon" id="sizing-addon1">Hasta</span>
+														<select class='form-control input-sm validar' id="" name='<?php echo $ncam; ?>_8' required>
+															<option value="" > Seleccione una opción</option>
+															<?php for ($i=15; $i <= 90; $i+=5) {
+																if ( $dispc['i1r2c9'] == $i ){ ?>
+																	<option value="<?php echo $i; ?>" selected > <?php echo $i; ?> </option>
+																<?php } else { ?>
+																	<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+																<?php } ?>
+															<?php } ?>
 														</select>
 													</div>
 												</div>
@@ -305,7 +309,7 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas logró cubrir?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_8' value = "<?php echo $dispc['i1r2c9']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
 													</div>
 												</div>
 											</div>
@@ -313,45 +317,85 @@
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿cuantas se ocuparon con hombres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>_9' value = "<?php echo $dispc['i1r2c10']?>" maxlength="9" required />
+														<input type='text' class='form-control input-sm text-right validar' id='' name='<?php echo $ncam; ?>_10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes cubiertas ¿Cuántas se ocuparon con mujeres?</label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_10' value = "<?php echo $dispc['i1r2c11']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
 												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 													<label class="">De las vacantes ¿Cuántas NO logró cubrir? </label>
 													<div class='small'>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_11' value = "<?php echo $dispc['i1r2c12']?>" maxlength="9" readonly required />
+														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_12' value = "<?php echo $dispc['i1r2c13']?>" maxlength="9" readonly required />
 													</div>
 												</div>
 											</div>
-											<div class="container-fluid small">
-												<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
-													<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-													<div class="small">
-														<select class='form-control input-sm validar' id="" name="<?php echo $ncam; ?>_12" <?php echo ($dispc['i1r2c13']>0)?'':'disabled' ?>>
-															<option value="" > Seleccione una opción</option>
-															<option value="1" <?php echo ($dispc['i1r2c13'] == 1) ? 'selected' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-															<option value="2" <?php echo ($dispc['i1r2c13'] == 2) ? 'selected' : '';  ?> >Postulantes sub-calificados</option>
-															<option value="3" <?php echo ($dispc['i1r2c13'] == 3) ? 'selected' : '';  ?> >Postulantes sobre-calificados</option>
-															<option value="4" <?php echo ($dispc['i1r2c13'] == 4) ? 'selected' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-															<option value="5" <?php echo ($dispc['i1r2c13'] == 5) ? 'selected' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-															<option value="6" <?php echo ($dispc['i1r2c13'] == 6) ? 'selected' : '';  ?> >Pocos postulantes</option>
-															<option value="7" <?php echo ($dispc['i1r2c13'] == 7) ? 'selected' : '';  ?> >Otra</option>
-														</select>
+											<div  class="container-fluid small">
+												<div class="form-group form-group-sm col-xs-12 col-sm-12 ">
+													<div class="col-xs-12 text-left">
+														<label >De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
 													</div>
-												</div>
-												<div class="col-xs-12 col-sm-1"></div>
-												<div class="form-group form-group-sm col-xs-12 col-sm-7">
-													<label class="">Cual?</label>
-													<div>
-														<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_13' maxlength="50" value="<?php echo $dispc['i1r2c14']?>" <?php echo (isset($dispc['i1r2c14']))?'':'disabled' ?> />
+													<div class="alert alert-danger text-center hidden" role="alert">
+														DEBE SELECCIONAR M&Iacute;NIMO UNA DE LAS OPCIONES
+													</div>
+													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_13' value="<?php echo ($dispc['i1r2c14'] != '')? $dispc['i1r2c14']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c14'] == 1)? 'checked':''; ?>>
+																La remuneración ofrecida era insuficiente
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_14' value="<?php echo ($dispc['i1r2c15'] != '')? $dispc['i1r2c15']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c15'] == 1)? 'checked':''; ?>>
+																Postulantes sub-calificados
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_15' value="<?php echo ($dispc['i1r2c16'] != '')? $dispc['i1r2c16']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c16'] == 1)? 'checked':''; ?>>
+																Postulantes sobre-calificados
+															</label>
+														</div>
+													</div>
+													<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_16' value="<?php echo ($dispc['i1r2c17'] != '')? $dispc['i1r2c17']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c17'] == 1)? 'checked':''; ?>>
+																Falta de experiencia o conocimiento específico
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_17' value="<?php echo ($dispc['i1r2c18'] != '')? $dispc['i1r2c18']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c18'] == 1)? 'checked':''; ?>>
+																Los postulantes no dominaban otros idiomas
+															</label>
+														</div>
+														<div class="checkbox col-xs-4">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_18' value="<?php echo ($dispc['i1r2c19'] != '')? $dispc['i1r2c19']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c19'] == 1)? 'checked':''; ?>>
+																Pocos postulantes
+															</label>
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-1 text-left">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" class="validar" name='<?php echo $ncam; ?>_19' value="<?php echo ($dispc['i1r2c20'] != '')? $dispc['i1r2c20']:'0'; ?>" <?php echo ($dispc['i1r2c13'] > 0)?'':'disabled'; echo ($dispc['i1r2c20'] == 1)? 'checked':''; ?>>Otra
+															</label>
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-1"></div>
+													<div class="form-group form-group-sm col-xs-12 col-sm-8">
+														<label class="">Cual?</label>
+														<div>
+															<input type='text' class='form-control input-sm validar' id='' name='<?php echo $ncam; ?>_20' maxlength="50" value="<?php echo $dispc['i1r2c21']?>" <?php echo ($dispc['i1r2c20'] == 1)?'':'disabled' ?> />
+														</div>
 													</div>
 												</div>
 											</div>
@@ -396,7 +440,7 @@
 							<div class="form-group form-group-sm col-xs-12 col-sm-2 ">
 								<div class="checkbox">
 								  <label>
-								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : ''?> required>
+								    <input type="checkbox" id="idi1r3c3" class="chkbx" name="i1r3c3" value="<?php echo $row['i1r3c3']?>" <?php echo ($row['i1r3c3'] == 1) ? 'checked' : '';?> required>
 								    Portales laborales WEB
 								  </label>
 								</div>
@@ -489,7 +533,7 @@
 					<div class='col-md-8'>
 						<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Modulo I Actualizado Correctamente</p>
 					</div>
-					<div class='col-sm-1 small pull-right' id="btn_cont" style="display: none;" >
+					<div class='col-sm-1 small pull-right' id="btn_cont" <?php echo ($rowCtl['estado']>=3 && $rowCtl['m1']==2)?'':'style="display: none;"'; ?>  >
 						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
 						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente modulo'>Continuar</a>
 					</div>

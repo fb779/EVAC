@@ -39,6 +39,7 @@ $(document).ready(function(){
 		/** Funcion que valida el cambio del radio button */
 		$('[name="i1r1c1"]').on('change',function(){
 			var $chk = $('#medPub [type="checkbox"]');
+			debugger;
 			if ( parseInt($(this).val()) == 2 ){
 				/** retiramos los vicculos de la caracterización */
 				lista.children().each(function(){
@@ -67,8 +68,7 @@ $(document).ready(function(){
 					$(this).prop('disabled', false);
 				});
 				// $chk.prop('required', true);
-
-				$('#removeDisp').prop('disabled', true);
+				if (lista.children().length == 0 && conte.children().length == 0) { $('#removeDisp').prop('disabled', true); } else { $('#removeDisp').prop('disabled', false); }
 				$('#idi1r3c9').prop('disabled', true);
 				if (lista.children().length == 0 && conte.children().length == 0) { addVacante(); $('#diNoMensaje').parent().addClass('hidden'); }
 			}
@@ -223,23 +223,29 @@ $(document).ready(function(){
 		});
 
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
-		$('#listDisForm').on('change, blur', '.validar', function(){
+		// $('#listDisForm').on('change blur', '.validar', function(){
+		$('#listDisForm').on('blur', '.validar', function(){
 			$(this).css('border',"");
 			$(this).parent().parent().removeClass('has-error');
 			$(this).parent().parent().removeClass('text-danger');
 			$(this).parent().parent().children('span').remove();
 
 			var $ele = $('#listDisForm');
-			var pnal = $(this, $ele).parents('div .active').attr('id').substring(4);
+			var $panel = $(this, $ele).parents('div .active');
+			var pnal = $panel.attr('id').substring(4);
 			var vacAbi = 'i1r2c' + pnal + '_0';
-			var vacCub = 'i1r2c' + pnal + '_8';
-			var vacHom = 'i1r2c' + pnal + '_9';
-			var vacMuj = 'i1r2c' + pnal + '_10';
-			var vacNoCub = 'i1r2c' + pnal + '_11';
-			var vacNoCubCa = 'i1r2c' + pnal + '_12';
-			var edad = 'i1r2c' + pnal + '_4';
+			var edad1 = 'i1r2c' + pnal + '_7';
+			var edad2 = 'i1r2c' + pnal + '_8';
+			var vacCub = 'i1r2c' + pnal + '_9';
+			var vacHom = 'i1r2c' + pnal + '_10';
+			var vacMuj = 'i1r2c' + pnal + '_11';
+			var vacNoCub = 'i1r2c' + pnal + '_12';
+			// var vacNoCubCa = 'i1r2c' + pnal + '_13';
+			var vacNoCubCa = $panel.find('[type="checkbox"]');
+			var namevacNoCubCa = 'i1r2c' + pnal + '_19';
+			var cual = 'i1r2c' + pnal + '_20';
+			var exp = 'i1r2c' + pnal + '_4';
 			var sal = 'i1r2c' + pnal + '_6';
-			var cual = 'i1r2c' + pnal + '_13';
 
 			if( $(this).attr('name') === vacAbi){
 				/** interaccion con el total de vacantes abiertas por disponibilidad */
@@ -257,20 +263,18 @@ $(document).ready(function(){
 					}
 
 					if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){ // validacion para activar la seleccion de vacantes no cubiertas
-						$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
-						$('[name="'+vacNoCubCa+'"]').prop('required', true);
+						vacNoCubCa.prop({disabled: false, required: true});
 					}else{
-						$('[name="'+vacNoCubCa+'"]').val('');
-						$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
-						$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
-						$('[name="'+vacNoCubCa+'"]').css('border',"");
-						$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+						vacNoCubCa.parent().parent().parent().parent().removeClass('text-danger');
+						vacNoCubCa.parent().parent().parent().parent().removeClass('has-error');
+						vacNoCubCa.parent().parent().parent().parent().children('.alert').addClass('hidden');
+						vacNoCubCa.css('border',"");
+						vacNoCubCa.prop({value:0, disabled: true});
 						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
-						$('[name="'+cual+'"]').parent().parent().children('span').remove();
+						$('[name="'+cual+'"]').parent().parent().children('alert').addClass('hidden');
 						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
 						$('[name="'+cual+'"]').css('border',"");
-						$('[name="'+cual+'"]').prop('required', false);
-						$('[name="'+cual+'"]').prop('disabled', true);
+						$('[name="'+cual+'"]').prop({required: false, disabled: true});
 					}
 				}else{
 					$(this).val('');
@@ -279,23 +283,22 @@ $(document).ready(function(){
 					$('[name="'+vacMuj+'"').val('');
 					$('[name="'+vacNoCub+'"').val(''); // vacantes no cubiertas
 
-					$('[name="'+vacNoCubCa+'"]').val('');
-					$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
-					$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
-					$('[name="'+vacNoCubCa+'"]').css('border',"");
-					$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+					vacNoCubCa.parent().parent().parent().parent().removeClass('text-danger');
+					vacNoCubCa.parent().parent().parent().parent().removeClass('has-error');
+					vacNoCubCa.parent().parent().parent().parent().children('.alert').addClass('hidden');
+					vacNoCubCa.css('border',"");
+					vacNoCubCa.prop({value:0, disabled: true});
 					$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 					$('[name="'+cual+'"]').parent().parent().children('span').remove();
 					$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
 					$('[name="'+cual+'"]').css('border',"");
-					$('[name="'+cual+'"]').prop('required', false);
-					$('[name="'+cual+'"]').prop('disabled', true);
+					$('[name="'+cual+'"]').prop({required: false, disabled: true});
 
 					$(this).parent().parent().addClass('text-danger');
 					$(this).css('border',"1px solid" + color);
 					$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 1 - 999 en el campo</span>');
 				}
-			}else if ( $(this).attr('name') === vacCub ){
+			} else if ( $(this).attr('name') === vacCub ){
 				/** interaccion con el total de vacantes cubiertas por disponibilidad */
 				var vacCu = parseInt($(this).val());
 				if ( !isNaN(vacCu)  ){
@@ -309,14 +312,13 @@ $(document).ready(function(){
 							$('[name="'+vacNoCub+'"').val( parseInt( $('[name="'+vacAbi+'"').val()) - parseInt($('[name="'+vacCub+'"').val()) ); // vacantes no cubiertas
 						}
 						if (parseInt($('[name="'+vacNoCub+'"').val()) > 0){
-							$('[name="'+vacNoCubCa+'"]').prop('disabled', false);
-							$('[name="'+vacNoCubCa+'"]').prop('required', true);
+							vacNoCubCa.prop({disabled: false, required: true});
 						}else{
-							$('[name="'+vacNoCubCa+'"]').val('');
-							$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
-							$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
-							$('[name="'+vacNoCubCa+'"]').css('border',"");
-							$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+							vacNoCubCa.prop({value:0 ,checked: false, disabled: true});
+							vacNoCubCa.parent().parent().parent().parent().removeClass('text-danger');
+							vacNoCubCa.parent().parent().parent().parent().removeClass('has-error');
+							vacNoCubCa.parent().parent().parent().parent().children('.alert').addClass('hidden');
+							vacNoCubCa.css('border',"");
 							$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 							$('[name="'+cual+'"]').parent().parent().children('span').remove();
 							$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
@@ -329,17 +331,16 @@ $(document).ready(function(){
 						$('[name="'+vacHom+'"').val('');
 						$('[name="'+vacMuj+'"').val('');
 						$('[name="'+vacNoCub+'"').val('');
-						$('[name="'+vacNoCubCa+'"]').val('');
-						$('[name="'+vacNoCubCa+'"]').parent().parent().removeClass('text-danger');
-						$('[name="'+vacNoCubCa+'"]').parent().parent().children('span').remove();
-						$('[name="'+vacNoCubCa+'"]').css('border',"");
-						$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+						vacNoCubCa.parent().parent().parent().parent().removeClass('text-danger');
+						vacNoCubCa.parent().parent().parent().parent().removeClass('has-error');
+						vacNoCubCa.parent().parent().parent().parent().children('.alert').addClass('hidden');
+						vacNoCubCa.css('border',"");
+						vacNoCubCa.prop({value: 0, disabled:true});
 						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
 						$('[name="'+cual+'"]').parent().parent().children('span').remove();
 						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
 						$('[name="'+cual+'"]').css('border',"");
-						$('[name="'+cual+'"]').prop('required', false);
-						$('[name="'+cual+'"]').prop('disabled', true);
+						$('[name="'+cual+'"]').prop({required: false, disabled: true});
 						$(this).parent().parent().addClass('text-danger');
 						$(this).css('border',"1px solid" + color);
 						$(this).parent().parent().append('<span>Debe ingresar un valor menor o igual al numero de vacantes abiertas</span>');
@@ -351,12 +352,12 @@ $(document).ready(function(){
 					$('[name="'+vacMuj+'"').val('');
 					$('[name="'+vacNoCub+'"').val(''); // vacantes no cubiertas
 					$('[name="'+cual+'"]').prop('disabled', true);
-					$('[name="'+vacNoCubCa+'"]').prop('disabled', true);
+					vacNoCubCa.prop({disabled: true});
 					$(this).parent().parent().addClass('text-danger');
 					$(this).css('border',"1px solid" + color);
 					$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 				}
-			}else if( $(this).attr('name') === vacHom ){
+			} else if( $(this).attr('name') === vacHom ){
 				/** interaccion con el total de vacantes cubiertas por hombres */
 				var vacHo = parseInt($(this).val());
 				if ( !isNaN(vacHo) ){
@@ -376,33 +377,69 @@ $(document).ready(function(){
 					$(this).css('border',"1px solid" + color);
 					$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 				}
-			}else if( $(this).attr('name') === vacNoCubCa && $(this).val()!==''){
-				/** interaccion con el campo Causas de las vacantes no cubiertas por disponibilidad */
-				if ($('[name="'+vacNoCubCa+'"').val() == '7'){
-					$('[name="'+cual+'"]').prop('disabled', false);
-					$('[name="'+cual+'"]').prop('required', true);
-				} else {
-					$('[name="'+cual+'"]').val('');
-					$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
-					$('[name="'+cual+'"]').parent().parent().children('span').remove();
-					$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
-					$('[name="'+cual+'"]').css('border',"");
-					$('[name="'+cual+'"]').prop('required', false);
-					$('[name="'+cual+'"]').prop('disabled', true);
-				}
 			} else if( $(this).attr('name') == sal && $(this).val() === '0' ){
 				$(this).parent().parent().addClass('text-danger');
 				$(this).parent().parent().addClass('has-error');
 				$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
 				$(this).val('');
-			} else{
+			} else if( $(this).attr('name') == edad1 && $(this).val() !== ''){
+				if( parseInt($('[name="'+edad2+'"]').val()) < parseInt($(this).val())  ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
+					$('[name="'+edad2+'"]').val('');
+				}
+			} else if( $(this).attr('name') == edad2 && $(this).val() !== ''){
+				if ( $('[name="'+edad1+'"]').val() ==='' ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion en el campo edad Desde</span>');
+					$(this).val('');
+				}else if( parseInt($('[name="'+edad1+'"]').val()) > parseInt($(this).val())  ){
+					$(this).parent().parent().addClass('text-danger');
+					$(this).parent().parent().addClass('has-error');
+					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
+					$(this).val('');
+				}
+			} /*else if ($(this).attr('type') == 'checkbox') {
+				if ($(this).prop('checked')){
+					$(this).val(1);
+				} else {
+					$(this).val(0);
+				}
+
+				if ($(this).attr('name') == namevacNoCubCa ){
+					if ($(this).prop('checked')){
+						$('[name="'+cual+'"]').prop({required: true, disabled: false});
+					} else {
+						$('[name="'+cual+'"]').val('');
+						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+						$('[name="'+cual+'"]').parent().parent().children('span').remove();
+						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+						$('[name="'+cual+'"]').css('border',"");
+						$('[name="'+cual+'"]').prop({required: false, disabled: true});
+					}
+				}
+
+				var $alerta = $('#listDisForm div.active').find('.alert');
+				var $items = $('#listDisForm div.active').find('[type="checkbox"]');
+				if (valCausas($panel)){
+					$alerta.removeClass('hidden');
+					$items.parent().parent().parent().parent().addClass('text-danger');
+					$items.parent().parent().parent().parent().addClass('has-error');
+				} else {
+					$alerta.addClass('hidden');
+					$items.parent().parent().parent().parent().removeClass('text-danger');
+					$items.parent().parent().parent().parent().removeClass('has-error');
+				}
+			}*/ else {
 				if($(this).val() === ''){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
 					$(this).css('border',"1px solid" + color);
 					if ($(this).is('select')){
 						$(this).parent().parent().append('<span class="text-danger">Debe seleccionar una opcion</span>');
-					}else if( $(this).attr('name') == edad ){
+					}else if( $(this).attr('name') == exp ){
 						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor numerico de 0 - 999 en el campo</span>');
 					}else if( $(this).attr('name') == sal ){
 						$(this).parent().parent().append('<span class="text-danger">Debe ingresar un valor en el campo de 1 - 999999999 en el campo</span>');
@@ -418,9 +455,61 @@ $(document).ready(function(){
 				}
 			}
 
+			// valCausas();
 			validar_totales();
 			validar_disponibilidad();
-			valida_todo();
+			// valida_todo();
+		});
+
+		$('#listDisForm').on('change', '.validar', function(){
+			// $(this).css('border',"");
+			$(this).parent().parent().removeClass('has-error');
+			$(this).parent().parent().removeClass('text-danger');
+			$(this).parent().parent().children('span').remove();
+
+			var $ele = $('#listDisForm');
+			var $panel = $(this, $ele).parents('div .active');
+			var pnal = $panel.attr('id').substring(4);
+			var namevacNoCubCa = 'i1r2c' + pnal + '_19';
+			var cual = 'i1r2c' + pnal + '_20';
+
+
+			if ($(this).attr('type') == 'checkbox') {
+				if ($(this).prop('checked')){
+					$(this).val(1);
+				} else {
+					$(this).val(0);
+				}
+
+				if ($(this).attr('name') == namevacNoCubCa ){
+					if ($(this).prop('checked')){
+						$('[name="'+cual+'"]').prop({required: true, disabled: false});
+					} else {
+						$('[name="'+cual+'"]').val('');
+						$('[name="'+cual+'"]').parent().parent().removeClass('text-danger');
+						$('[name="'+cual+'"]').parent().parent().children('span').remove();
+						$('[name="'+cual+'"]').parent().parent().removeClass('has-error');
+						// $('[name="'+cual+'"]').css('border',"");
+						$('[name="'+cual+'"]').prop({required: false, disabled: true});
+					}
+				}
+
+				var $alerta = $('#listDisForm div.active').find('.alert');
+				var $items = $('#listDisForm div.active').find('[type="checkbox"]');
+				if (valCausas($panel)){
+					$alerta.removeClass('hidden');
+					$items.parent().parent().parent().parent().addClass('text-danger');
+					$items.parent().parent().parent().parent().addClass('has-error');
+				} else {
+					$alerta.addClass('hidden');
+					$items.parent().parent().parent().parent().removeClass('text-danger');
+					$items.parent().parent().parent().parent().removeClass('has-error');
+				}
+			}
+
+			valCausas();
+			// validar_totales();
+			validar_disponibilidad();
 		});
 		/** Funcion que valida los errores y mensajes de los campos dinamicos */
 
@@ -453,9 +542,11 @@ $(document).ready(function(){
 			var $cmps = [];
 
 			$datos.children().each(function(){
+
 				var $cm = $(':input,select',$(this));
 				$cmps.push( $cm.serializeArray() );
 			});
+
 			if ($datos.children().length > 0){
 				$.ajax({
 					url: "../persistencia/parcial.php",
@@ -463,6 +554,7 @@ $(document).ready(function(){
 					dataType: "json",
 					data: {'C1': $('#numero').val(),'dtSe': JSON.stringify($cmps)},
 					success: function(dato) {
+
 						var ct = ['<p>La informaci&oacute;n se guardo con éxito</p>','<p>La informaci&oacute;n no se guardo con éxito</p>'];
 						if (dato.success){
 							//location.reload();
@@ -563,7 +655,7 @@ $(document).ready(function(){
 				success: function(dato) {
 					if (dato.success) {
 						$("#btn_cont").show();
-						$("#idmsg").show();
+						$("#idmsg").show().delay(1500).hide(1500);
 						$(function() {
 							$.ajax({
 								url: "../persistencia/grabactl.php",
@@ -667,7 +759,6 @@ $(document).ready(function(){
 			item.attr('id', 'caracteriza' + x);
 			item.find('input, select').each(function(index, element){
 				//$(element).addClass('validar');
-
 				$(element).attr('name', $(element).attr('name') + x + '_' + index);
 			});
 			$('#disp' + x).append(item);
@@ -680,7 +771,9 @@ $(document).ready(function(){
 			validar_totales();
 		}
 
-		/** Metodo para validar la seleccion de uno de los checkbox */
+		/** Metodo para validar la seleccion de uno de los checkbox
+			si se ha seleccionado almenos 1 de los campos retornra true
+			en caso contrario retornara false */
 		function valCheckbox(){
 			var ct = 0;
 			var $ch = $('#medPub [type="checkbox"]');
@@ -694,7 +787,6 @@ $(document).ready(function(){
 				$ch.prop('required', true);
 			}
 
-
 			return (ct>0) ? true:false;
 		}
 
@@ -704,8 +796,8 @@ $(document).ready(function(){
 			$('#listDisForm').children().each(function(){
 				var pnal = $(this).attr('id').substring(4);
 				var vacantes = 'i1r2c' + pnal + '_0';
-				var vacCubiertas = 'i1r2c' + pnal + '_8';
-				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
+				var vacCubiertas = 'i1r2c' + pnal + '_9';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_12';
 				$(this).find(':input').each(function(){
 					if ($(this).attr('name') == vacantes && $(this).val() !== '' ){
 						sumTotVac += parseInt($(this).val());
@@ -733,20 +825,18 @@ $(document).ready(function(){
 				var con = 0;
 				var pnal = $item.attr('id').substring(4);
 				var vacantes = 'i1r2c' + pnal + '_0';
-				var vacNoCubiertas = 'i1r2c' + pnal + '_11';
-				var vacCausa = 'i1r2c' + pnal + '_12';
-				var vacCual = 'i1r2c' + pnal + '_13';
+				var vacNoCubiertas = 'i1r2c' + pnal + '_12';
+				var vacCausa = 'i1r2c' + pnal + '_19';
+				var vacCual = 'i1r2c' + pnal + '_20';
 				var $vacNoCu = $('[name="'+vacNoCubiertas+'"]');
 				var $vacCaus = $('[name="'+vacCausa+'"]');
 				var $vacCual = $('[name="'+vacCual+'"]');
 
-				$item.find(':input').each(function(){
-		    		var $input = $(this);
 
+				$item.find(':input').not('[type="checkbox"]').each(function(){
+		    		var $input = $(this);
 					if ($input.val() === ''){
-						if ($input.attr('name') == vacCausa && parseInt($vacNoCu.val()) > 0){
-							con++;
-						}else if ($input.attr('name') == vacCual && parseInt($vacCaus.val()) == 7){
+						if ($input.attr('name') == vacCual && $vacCaus.prop('checked')){
 							con++;
 						}else if ($input.attr('name') != vacCausa && $input.attr('name') != vacCual){
 							con++;
@@ -754,9 +844,10 @@ $(document).ready(function(){
 					}
 				});
 
+				if (parseInt($vacNoCu.val()) > 0 && valCausas($item) ){ con++; }
+
 				if (con > 0){
-					// $diNoMsj.append('<p id="msj'+pnal+'" class="col-xs-3">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
-					$diNoMsj.append('<p id="msj'+pnal+'">Falta campos por diligenciar en la disponibilidad '+ pnal +'</p>');
+					$diNoMsj.append('<p id="msj'+pnal+'">Falta campos por diligenciar en la vacante '+ pnal +'</p>');
 		    	}
 			});
 
@@ -769,6 +860,29 @@ $(document).ready(function(){
 		    	$btnGuardar.prop('disabled', false);
 		    	return true;
 			}
+		}
+
+		/* Funcion para validad las causas de las disponibilidades dinamicamente */
+		function valCausas($panel=''){
+			/* verifica si se ha seleccionado almeno 1 de los causas del panel a validar o del panel activo
+			 * si al menos una seleccionada return false
+			 * si no hay una seleccionada return true
+			 */
+			var $con = 0;
+			var $items = ($panel == '') ?  $('#listDisForm div.active').find('[type="checkbox"]') : $panel.find('[type="checkbox"]');
+
+			$items.each(function(){
+				var $input = $(this);
+				if ($input.prop('checked') && !$input.prop('disabled')){ $con ++; }
+			});
+
+			if ($con > 0){
+				$items.prop({required: false});
+			}else{
+				$items.prop({required: true});
+			}
+
+			return ($con==0) ? true:false;
 		}
 
 		/** Funciona para validar que los campos dinamicos solo reciban numeros */

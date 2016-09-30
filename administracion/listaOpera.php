@@ -153,7 +153,7 @@
 				$query .= $condiE;
 			}
 		}
-		$query .= " AND a.nordemp = b.nordemp";
+		$query .= " AND a.nordemp = b.nordemp order by a.nordemp";
 		$lista = $conn->prepare($query);
 		if ($id_region != 99) {
 			$lista->execute(array(':periodo'=>$vig, ':region'=>$id_region));
@@ -183,7 +183,7 @@
 				$query .= $condiE;
 			}
 		}
-		$query .= " AND a.nordemp = b.nordemp";
+		$query .= " AND a.nordemp = b.nordemp order by a.nordemp";
 		$lista = $conn->prepare($query);
 		if ($id_region != 99) {
 			$lista->execute(array(':periodo'=>$vig, ':idUsuario'=>$id_usu, ':region'=>$id_region));

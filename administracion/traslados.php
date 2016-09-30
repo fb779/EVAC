@@ -77,11 +77,11 @@
 
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px;">
 		<?php
 			include 'menuRet.php';
 		?>
-			<div class="container" style="padding-top: 80px">
+			<div class="container">
 				<form role='form' id="traslado">
 					<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
 					<div class="panel panel-default">

@@ -122,11 +122,11 @@
 
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px;">
 		<?php
 			include 'menuRet.php';
 		?>
-		<div class="container" style="padding-top: 80px">
+		<div class="container">
 			<form role='form' id="novedad" data-toggle="validator">
 				<input type="hidden" name="numero" id="numero" value="<?php echo $numero ?>" />
 

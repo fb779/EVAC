@@ -41,7 +41,7 @@
 
 		$qUsuario = $conn->prepare("SELECT us.ident, us.nombre,
 			(CASE us.tipo WHEN 'CO' THEN 'Coordinador' WHEN 'AT' THEN 'Asistente T&eacute;cnico' WHEN 'CR' THEN 'Cr&iacute;tico' WHEN 'TE' THEN 'Temático' END) AS nivel,
-			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE ct.usuarioss = us.ident and pa.id = :vigencia ) AS fuentes
+			(SELECT COUNT($campoUsuario) FROM control AS ct INNER JOIN periodoactivo AS pa on ct.vigencia = pa.id WHERE (ct.usuarioss = us.ident or ct.usuario = us.ident) and pa.id = :vigencia ) AS fuentes
 			FROM usuarios AS us where us.tipo NOT IN ('FU') order by us.ident");
 
 		$qUsuario->execute(array(':vigencia'=>$vig));
@@ -77,24 +77,34 @@
 					type: BootstrapDialog.TYPE_WARNING,
 					title: 'Eliminar Usuario',
 					message: id+' - '+nombre,
+					closable: false,
 					buttons: [{
+						id: 'guardar',
 						label: 'Confirmar',
 							action: function(borra) {
+								var $btnSave = $('#guardar');
+								var $btnClose = $('#cancelar')
+								var $fila = $('#'+id);
 								$.ajax({
 									url: "../persistencia/grabarusu.php",
 									type: "POST",
 									data: {borrar: "borrar", idBorrar: id},
 									success: function(dato) {
-										//alert(dato);
-										borra.setMessage(id+' - '+nombre+' ELIMINADO');
+										borra.setType(BootstrapDialog.TYPE_SUCCESS);
+										borra.setMessage(id+' - '+nombre+' - ELIMINADO');
+										$btnSave.hide();
+										$btnClose.text('Cerrar');
+										$fila.remove();
 
 									}
 								});
 							}
 					}, {
+						id: 'cancelar',
 						label: 'Cancelar',
 							action: function(cerrar) {
 							cerrar.close();
+							// location.reload();
 						}
 					}]
 				});
@@ -105,21 +115,45 @@
 			});
 
 			function generaClave() {
-				$.ajax({
-					url: "genfuente.php",
-					type: "POST",
-					success: function(dato) {
-						alert(dato);
-					}
+				BootstrapDialog.show({
+					type: BootstrapDialog.TYPE_WARNING,
+					title: 'CREAR CLAVES DE USUARIOS FUENTES',
+					message: 'Desea crear y las claves de los usuarios fuente ?',
+					closable: false,
+					buttons: [{
+						id: 'guardar',
+						label: 'Confirmar',
+							action: function(borra) {
+								var $btnSave = $('#guardar');
+								var $btnClose = $('#cancelar')
+								$.ajax({
+									url: "genfuente.php",
+									type: "POST",
+									success: function(dato) {
+										borra.setType(BootstrapDialog.TYPE_SUCCESS);
+										borra.setMessage(dato) ;
+										$btnSave.hide();
+										$btnClose.text('Cerrar');
+									}
+								});
+							}
+					}, {
+						id: 'cancelar',
+						label: 'Cancelar',
+							action: function(cerrar) {
+							cerrar.close();
+							// location.reload();
+						}
+					}]
 				});
 			}
 		</script>
 	</head>
-	<body>
+	<body style="padding-top: 60px; ">
 		<?php
 			include 'menuRet.php';
 		?>
-			<div class="container" style="padding-top: 80px">
+			<div class="container">
 				<div class="col-md-8 col-md-offset-2">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="musuarios.php?accion=AD">Crear Usuario</a></li>
@@ -138,14 +172,14 @@
 								<th class="text-center">Nombre</th>
 								<th class="text-center">Nivel</th>
 								<th class="text-center">Fuentes</th>
-								<th class="text-center">&nbsp;</th>
+								<th class="text-center" colspan="3">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								$sec = 1;
 								while ($row = $qUsuario->fetch(PDO::FETCH_ASSOC)) {
-									echo "<tr><td>" . $row['ident'] . "</td>";
+									echo "<tr id='" .$row['ident']."'><td>" . $row['ident'] . "</td>";
 									echo "<td>" . $row['nombre'] . "</td>";
 									echo "<td>" . $row['nivel'] . "</td>";
 
@@ -162,9 +196,10 @@
 									// if ( (substr($row['ident'], 0, 2) == "CO" || substr($row['ident'], 0, 4) == "CR99" ) and $region == '99') {
 									if (substr($row['ident'], 0, 4) == "CR99" and $region == '99') {
 										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
-									}
-									if (substr($row['ident'], 0, 2) == "CR" and $region != '99') {
+									}else if (substr($row['ident'], 0, 2) == "CR" and $region != '99') {
 										echo "<td><a href='asignar.php?ident=" . $row['ident'] . "&nombre=" . $row['nombre'] . "' data-toggle='tooltip' title='Asignar Fuentes'><span class='glyphicon glyphicon-link'></span></a></td></tr>";
+									} else {
+										echo '<td> &nbsp;</td>';
 									}
 								}
 							?>

@@ -99,7 +99,25 @@
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
 					<label class="">Edad</label>
-					<div class='small'>
+					<div class='input-group input-group-sm'>
+						<span class="input-group-addon" id="sizing-addon1">Desde</span>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<?php for ($i=15; $i <= 90; $i+=5) { ?>
+								<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+							<?php } ?>
+						</select>
+
+						<span class="input-group-addon" id="sizing-addon1">Hasta</span>
+						<select class='form-control input-sm validar' id="" name="i1r2c" required>
+							<option value="" > Seleccione una opción</option>
+							<?php for ($i=15; $i <= 90; $i+=5) { ?>
+								<option value="<?php echo $i; ?>" > <?php echo $i; ?> </option>
+							<?php } ?>
+						</select>
+					</div>
+
+					<!-- <div class='small'>
 						<select class='form-control input-sm validar' id="" name="i1r2c" required>
 							<option value="" > Seleccione una opción</option>
 							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >15 - 20</option>
@@ -119,7 +137,7 @@
 							<option value="15" <?php //echo ($row['i1r2c'] == 15) ? 'checked' : '';  ?> >85 - 90</option>
 							<option value="16" <?php //echo ($row['i1r2c'] == 16) ? 'checked' : '';  ?> >Indiferente</option>
 						</select>
-					</div>
+					</div> -->
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
 				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
@@ -155,23 +173,61 @@
 			</div>
 
 			<div class="container-fluid small">
-				<div class="form-group form-group-sm col-xs-12 col-sm-3 ">
+				<div class="col-xs-12 text-left">
 					<label>De las vacantes NO cubiertas ¿Cuáles fueron las causas?</label>
-					<div class="small">
-						<select class='form-control input-sm validar' id="" name="i1r2c" disabled>
-							<option value="" > Seleccione una opción</option>
-							<option value="1" <?php //echo ($row['i1r2c'] == 1) ? 'checked' : '';  ?> >La remuneración ofrecida era insuficiente</option>
-							<option value="2" <?php //echo ($row['i1r2c'] == 2) ? 'checked' : '';  ?> >Postulantes sub-calificados</option>
-							<option value="3" <?php //echo ($row['i1r2c'] == 3) ? 'checked' : '';  ?> >Postulantes sobre-calificados</option>
-							<option value="4" <?php //echo ($row['i1r2c'] == 4) ? 'checked' : '';  ?> >Falta de experiencia o conocimiento específico</option>
-							<option value="5" <?php //echo ($row['i1r2c'] == 5) ? 'checked' : '';  ?> >Los postulantes no dominaban otros idiomas</option>
-							<option value="6" <?php //echo ($row['i1r2c'] == 6) ? 'checked' : '';  ?> >Pocos postulantes</option>
-							<option value="7" <?php //echo ($row['i1r2c'] == 7) ? 'checked' : '';  ?> >Otra</option>
-						</select>
+				</div>
+				<div class="alert alert-danger text-center hidden" role="alert">
+					DEBE SELECCIONAR M&Iacute;NIMO UNA DE LAS OPCIONES
+				</div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							La remuneración ofrecida era insuficiente
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							Postulantes sub-calificados
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							Postulantes sobre-calificados
+						</label>
+					</div>
+				</div>
+				<div class="form-group form-group-sm col-xs-12 col-sm-12 text-left">
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							Falta de experiencia o conocimiento específico
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							Los postulantes no dominaban otros idiomas
+						</label>
+					</div>
+					<div class="checkbox col-xs-4">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>
+							Pocos postulantes
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-1 text-left">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" class="validar" name='i1r2c' value="0" disabled>Otra
+						</label>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-1"></div>
-				<div class="form-group form-group-sm col-xs-12 col-sm-7">
+				<div class="form-group form-group-sm col-xs-12 col-sm-8">
 					<label class="">Cual?</label>
 					<div>
 						<input type='text' class='form-control input-sm validar' id='' name='i1r2c' value = "<?php //echo $row['i1r2c']?>" maxlength="50" disabled />

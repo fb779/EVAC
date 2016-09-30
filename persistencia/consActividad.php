@@ -24,7 +24,8 @@
 		}
 
 		foreach ($qlisActi->fetchAll() as $value) {
-			$ciiu[] = array('name' => $value['CODIGO'], 'value' => htmlentities($value['DESCRIP']) );
+			// $ciiu[] = array('name' => $value['CODIGO'], 'value' => htmlentities($value['DESCRIP']) );
+			$ciiu[] = array('name' => $value['CODIGO'], 'value' => $value['DESCRIP'] );
 		}
 
 		$jsondata['actividades'] = json_encode($ciiu);

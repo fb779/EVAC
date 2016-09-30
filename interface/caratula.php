@@ -198,7 +198,7 @@ p {
                 data: {'emp': $('#numero').val() ,'dtForm': JSON.stringify($items), 'dtActi': JSON.stringify($activ)},
                 success: function(dato) {
                 	if (dato.success){
-                		$("#idmsg").show();
+                		$("#idmsg").show().delay(1500).hide(1500);
                 	} else {
                 		// document.getElementById(retorno).focus();
                 		alert('Dificultades al guardado, debe revisar los campos requeridos ' );
@@ -429,36 +429,15 @@ $(document).ready(function() {
     		$lisActiv.children().remove();
     		var $jsonObj = $.parseJSON(data.actividades);
     		$.each($jsonObj, function(index, val) {
-    			 var $item = '<div class="form-group"> <div class="input-group "> <span class="input-group-btn"> <button class="btn btn-default addAct" type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button> </span> <input type="text" class="form-control" id="'+val.name+'" name="'+val.name+'" value="'+val.name + ' - ' + val.value +'" readonly> </div> </div>';
-    			 $lisActiv.append($item);
+    			var $item = '<div class="form-group"> <div class="input-group "> <span class="input-group-btn"> <button class="btn btn-default addAct" type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button> </span> <input type="text" class="form-control" id="'+val.name+'" name="'+val.name+'" value="'+val.name + ' - ' + val.value +'" readonly> </div> </div>';
+    			$lisActiv.append($item);
     		});
     	})
     	.fail(function(jqXHR, textStatus, errorThrown) {
-    		debugger;
-            alert("Algo ha fallado: " + textStatus);
-
-        });
-
+    		console.log("Algo ha fallado: " + textStatus);
+    		// alert("Algo ha fallado: " + textStatus);
+    	});
     });
-
-    function ordenamiento( $listado ){
-    	debugger;
-    	// $listado.tsort("",{attr:"id",order:'asc'});
-		// $listado.sort(function (a, b) {
-		// 	// convert to integers from strings
-		// 	a = parseInt($(a).attr("id"), 10);
-		// 	b = parseInt($(b).attr("id"), 10);
-		// 	// count += 2;
-		// 	// compare
-		// 	if(a > b) {
-		// 	    return 1;
-		// 	} else if(a < b) {
-		// 	    return -1;
-		// 	} else {
-		// 	    return 0;
-		// 	}
-		// });
-	}
 });
 /* Fin funcion campos dinamicos */
 
@@ -819,7 +798,7 @@ $(document).ready(function(){
 			$('.numestab :input').parent().addClass('has-error');
 			$('.numestab :input').parent().addClass('text-danger');
 			$('#btnGuardar').addClass('disabled');
-			$msj.append('<span><h5>Debe tener almeno 1 establecimiento en total</h5></span>')
+			$msj.append('<span><h5>Debe tener almenos 1 establecimiento en total</h5></span>')
 			return true;
 		} else {
 			return false;

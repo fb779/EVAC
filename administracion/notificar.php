@@ -71,8 +71,8 @@
 		<?php
 			include 'menuRet.php';
 		?>
-	<body>
-		<div class='container' style='padding-top: 80px'>
+	<body style="padding-top: 60px; ">
+		<div class='container'>
 			<div class="col-md-8 col-md-offset-2">
 				<table class='table table-condensed table-hover table-bordered'>
 					<thead>
