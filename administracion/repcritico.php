@@ -118,7 +118,7 @@
 		$dtSource[$key]['recolectados'] = ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] );
 
 		if ( $dtSource[$key]['hisDevolucion'] > 0 || $dtSource[$key]['dane'] > 0 && $dtSource[$key]['aceptado'] > 0 ){
-			$dtSource[$key]['calidad'] = round(1-(($dtSource[$key]['devueltos']+$dtSource[$key]['hisDevolucion'])/($dtSource[$key]['hisDevolucion']+$dtSource[$key]['dane']+$dtSource[$key]['aceptado'])),2,PHP_ROUND_HALF_DOWN).'%';
+			$dtSource[$key]['calidad'] = round((1-(($dtSource[$key]['devueltos']+$dtSource[$key]['hisDevolucion'])/($dtSource[$key]['hisDevolucion']+$dtSource[$key]['dane']+$dtSource[$key]['aceptado'])))*100,2,PHP_ROUND_HALF_DOWN).'%';
 		} else{
 			$dtSource[$key]['calidad'] = round(0,2,PHP_ROUND_HALF_DOWN).'%';
 		}
@@ -170,8 +170,13 @@
 			#mdalReport{
 				width: 99% !important;
 			}
-			table.dataTable thead th {
+
+			table.dataTable {
+				font-size: 0.8em;
+			}
+			table.dataTable thead th, table.dataTable tbody td {
 				vertical-align: middle;
+				text-align: center;
 			}
 
 			.text-center {
@@ -206,7 +211,35 @@
 			    });
 
 				$("#modalReportes").on('show.bs.modal', function () {
-					debugger;
+					// debugger;
+					$('#repCriticos').DataTable( {
+						language:{ "url": "../js/Spanish.json" },
+						// responsive: true,
+						"ajax": "../persistencia/reporteCriticoListado.php",
+				        "columns": [
+				            {'data':'nordemp'},
+							{'data':'nombre'},
+							{'data':'depto'},
+							{'data':'mpio'},
+							{'data':'ciiu'},
+							{'data':'categoriaCiiu'},
+							{'data':'regional'},
+							{'data':'territorial'},
+							{'data':'codsede'},
+							{'data':'inclusion'},
+							{'data':'novedad'},
+							{'data':'estado'},
+							{'data':'devolucion'},
+							{'data':'fecha'},
+							{'data':'dias'},
+							{'data':'critico'},
+							{'data':'observacion'},
+				        ]
+						// "pagingType": "numbers",
+						// "search": {
+						// 	"caseInsensitive": true
+						// }
+					});
 					console.log('si entre al evento del modal....');
 					// alert('The modal is about to be shown.');
 				});
@@ -262,17 +295,17 @@
 									<tr>
 										<td class="text-left"><?php echo $dt['nombre']; ?></td>
 										<td class="text-center"><?php echo $dt['totalUsu']; ?></td>
-										<td class="text-center"><?php echo $dt['sinDIgitar'] . ' - ' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']); ?></td>
-										<td class="text-center"><?php echo $dt['digitacion'] . ' - ' . porcentaje($dt['totalUsu'],$dt['digitacion']); ?></td>
-										<td class="text-center"><?php echo $dt['grabados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['grabados']); ?></td>
-										<td class="text-center"><?php echo $dt['devueltos'] . ' - ' . porcentaje($dt['totalUsu'],$dt['devueltos']); ?></td>
-										<td class="text-center"><?php echo $dt['hisDevolucion'] . ' - ' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']); ?></td>
-										<td class="text-center"><?php echo $dt['dane'] . ' - ' . porcentaje($dt['totalUsu'],$dt['dane']); ?></td>
-										<td class="text-center"><?php echo $dt['aceptado'] . ' - ' . porcentaje($dt['totalUsu'],$dt['aceptado']); ?></td>
-										<td class="text-center"><?php echo $dt['novedad'] . ' - ' . porcentaje($dt['totalUsu'],$dt['novedad']); ?></td>
-										<td class="text-center"><?php echo $dt['deuda'] . ' - ' . porcentaje($dt['totalUsu'],$dt['deuda']); ?></td>
-										<td class="text-center"><?php echo $dt['recolectados'] . ' - ' . porcentaje($dt['totalUsu'],$dt['recolectados']); ?></td>
-										<td class="text-center"><?php echo $dt['calidad'] ?></td>
+										<td class="text-center"><?php echo $dt['sinDIgitar'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['digitacion'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['grabados'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['devueltos'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['hisDevolucion'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['dane'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['aceptado'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['novedad'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['deuda'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
+										<td class="text-center"><?php echo $dt['recolectados'] . ' - <strong>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
+										<td class="text-center"><strong><?php echo $dt['calidad'] ?><strong></td>
 									</tr>
 
 
@@ -447,29 +480,29 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-xs-12">
-								<!-- <table id="repCriticos">
+								<table id="repCriticos">
 									<thead>
 										<tr>
-											<th>N. Orden</th>
-											<th>Nombre</th>
-											<th>Departamento</th>
-											<th>Municipio</th>
-											<th>Ciiu4</th>
-											<th>Clase Ciiu4</th>
-											<th>Regional Dane</th>
-											<th>Dir Territorial - recolecta</th>
-											<th>Sede</th>
-											<th>Inclusión</th>
-											<th>Novedad</th>
-											<th>Estado</th>
-											<th>Devuelto acumulado</th>
-											<th>Fecha ultima devolución</th>
-											<th>Diías hasta hoy</th>
-											<th>Critico</th>
-											<th>Observaciones</th>
+											<th  class="text-center">N. Orden</th>
+											<th  class="text-center">Nombre</th>
+											<th  class="text-center">Departamento</th>
+											<th  class="text-center">Municipio</th>
+											<th  class="text-center">Ciiu4</th>
+											<th  class="text-center">Clase Ciiu4</th>
+											<th  class="text-center">Regional Dane</th>
+											<th  class="text-center">Dir Territorial - recolecta</th>
+											<th  class="text-center">Sede</th>
+											<th  class="text-center">Inclusión</th>
+											<th  class="text-center">Novedad</th>
+											<th  class="text-center">Estado</th>
+											<th  class="text-center">Devuelto acumulado</th>
+											<th  class="text-center">Fecha ultima devolución</th>
+											<th  class="text-center">Diías hasta hoy</th>
+											<th  class="text-center">Critico</th>
+											<th  class="text-center">Observaciones</th>
 										</tr>
 									</thead>
-									<tbody>
+									<!-- <tbody>
 										<tr>
 											<td>Lorem ipsum dolor sit amet.</td>
 											<td>Lorem ipsum dolor sit amet.</td>
@@ -508,8 +541,8 @@
 											<td>Lorem ipsum dolor sit amet.</td>
 											<td>Lorem ipsum dolor sit amet.</td>
 										</tr>
-									</tbody>
-								</table> -->
+									</tbody> -->
+								</table>
 							</div>
 						</div>
 					</div>
