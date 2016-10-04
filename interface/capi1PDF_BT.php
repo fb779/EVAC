@@ -203,7 +203,7 @@
 						<table>
 							<thead>
 								<tr>
-									<th colspan="3"> Vacante <?php echo $c;?> </th>
+									<th colspan="3"> VACANTE <?php echo $c;?> </th>
 								</tr>
 							</thead>
 							<tbody>

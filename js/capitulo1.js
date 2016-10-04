@@ -389,7 +389,7 @@ $(document).ready(function(){
 				if( parseInt($('[name="'+edad2+'"]').val()) < parseInt($(this).val())  ){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
-					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
+					$(this).parent().parent().append('<span class="text-danger">La edad Hasta debe ser igual o mayor a la edad Desde</span>');
 					$('[name="'+edad2+'"]').val('');
 				}
 			} else if( $(this).attr('name') == edad2 && $(this).val() !== ''){
@@ -401,7 +401,7 @@ $(document).ready(function(){
 				}else if( parseInt($('[name="'+edad1+'"]').val()) > parseInt($(this).val())  ){
 					$(this).parent().parent().addClass('text-danger');
 					$(this).parent().parent().addClass('has-error');
-					$(this).parent().parent().append('<span class="text-danger">La edad Desde no puede ser mayor a la edad Hasta</span>');
+					$(this).parent().parent().append('<span class="text-danger">La edad Hasta debe ser igual o mayor a la edad Desde</span>');
 					$(this).val('');
 				}
 			} else if ($(this).attr('type') == 'checkbox') {

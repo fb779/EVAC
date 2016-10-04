@@ -479,7 +479,7 @@ $(document).ready(function(){
 
 
 	var color = '#a94442';
-	// var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+	// var regexEmail = new RegExp( /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/);
 	var regexEmail = new RegExp(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/);
 
 	/** Validacion campo ndoc Numero documento */
