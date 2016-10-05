@@ -445,6 +445,43 @@ $(document).ready(function(){
 			valida_todo();
 		});
 
+		// $('#salario').on('keyup change', '.validar', function(event) {
+		// 	debugger;
+		// 	event.preventDefault();
+		// 	$salario = $(this);
+		// 	$salario.val(format($salario));
+
+
+		// 	/* Act on the event */
+		// });
+		$('#listDisForm').on('keyup', '.validar', function(){
+			$(this).css('border',"");
+			$(this).parent().parent().removeClass('has-error');
+			$(this).parent().parent().removeClass('text-danger');
+			$(this).parent().parent().children('span').remove();
+
+			var $input = $(this);
+			var $ele = $('#listDisForm');
+			var $panel = $(this, $ele).parents('div .active');
+			var pnal = $panel.attr('id').substring(4);
+			var sal = 'i1r2c' + pnal + '_6';
+			// debugger;
+			if( $input.attr('name') == sal && $input.val()!='' ){
+				var num = $input.val().replace(/\./g,'');
+				if(!isNaN(num)){
+					num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+					num = num.split('').reverse().join('').replace(/^[\.]/,'');
+					$input.val(num);
+					$input.prop('value',num);
+				}
+
+				// else{ alert('Solo se permiten numeros');
+				// $input.value = $input.value.replace(/[^\d\.]*/g,'');
+				// }
+			}
+
+		});
+
 		$('#listDisForm').on('change', '.validar', function(){
 			// $(this).css('border',"");
 			$(this).parent().parent().removeClass('has-error');
@@ -872,7 +909,7 @@ $(document).ready(function(){
 		/** Funciona para validar que los campos dinamicos solo reciban numeros */
 		$('#listDisForm').on('keyup', '.validar', function(){
 			if ($(this).hasClass('solo-numero')){
-				this.value = (this.value + '').replace(/[^0-9]/g, '');
+				this.value = (this.value + '').replace(/[^.0-9]/g, '');
 			}
 		});
 

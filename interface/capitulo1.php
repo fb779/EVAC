@@ -273,7 +273,7 @@
 													<label class="">Salario u honorarios mensuales</label>
 													<div class='input-group input-group-sm'>
 														<span class="input-group-addon" id="sizing-addon1">$</span>
-														<input type='text' class='form-control input-sm text-right validar solo-numero' id='' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7'];?>" maxlength="9" placeholder="Valor digitado en pesos" required />
+														<input type='text' class='form-control input-sm text-right validar solo-decimales' name='<?php echo $ncam; ?>_6' value = "<?php echo $dispc['i1r2c7'];?>" maxlength="11" placeholder="Valor digitado en pesos" required />
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-1"></div>
@@ -535,10 +535,10 @@
 					</div>
 					<div class='col-sm-1 small pull-right' id="btn_cont" <?php echo ($rowCtl['estado']>=3 && $rowCtl['m1']==2)?'':'style="display: none;"'; ?>  >
 						<!-- a href='capitulo2.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo' >Continuar</a-->
-						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente modulo'>Continuar</a>
+						<a href='../administracion/envio.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente M&oacute;dulo'>Continuar</a>
 					</div>
 					<div class='col-sm-1 small pull-right'>
-						<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Modulo I'>Grabar</button>
+						<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n M&oacute;dulo I'>Grabar</button>
 					</div>
 				</div>
 				<?php } ?>

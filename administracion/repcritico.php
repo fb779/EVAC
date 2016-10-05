@@ -338,9 +338,34 @@
 										<td class="text-center"> <button name="re" class="btn btn-link"> <?php echo $dt['recolectados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
 										<td class="text-center"><strong><?php echo $dt['calidad'] ?><strong></td>
 									</tr>
+									<!-- <tr>
+										<td class="text-left" rowspan="2"><?php echo $dt['nombre']; ?></td>
+										<td class="text-center" rowspan="2"> <button name="dr" class="btn btn-link"> <?php echo $dt['totalUsu']; ?> </button></td>
+										<td class="text-center"> <button name="sd" class="btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="dg" class="btn btn-link"> <?php echo $dt['digitacion'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="gb" class="btn btn-link"> <?php echo $dt['grabados'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="dv" class="btn btn-link"> <?php echo $dt['devueltos'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="hdv" class="btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="cr" class="btn btn-link"> <?php echo $dt['dane'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="ap" class="btn btn-link"> <?php echo $dt['aceptado'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="nv" class="btn btn-link"> <?php echo $dt['novedad'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="de" class="btn btn-link"> <?php echo $dt['deuda'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="re" class="btn btn-link"> <?php echo $dt['recolectados'] . '</button>'; ?></td>
+										<td class="text-center" rowspan="2"><strong><?php echo $dt['calidad'] ?><strong></td>
+									</tr>
 
-
-
+									<tr>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
+									</tr> -->
 							<?php } ?>
 							</tbody>
 						</table>

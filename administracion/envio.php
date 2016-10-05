@@ -156,7 +156,7 @@
 				<?php //print_r($qDevol->rowCount());?>
 
 			</div-->
- 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
+ 			<?php echo $numero . " - " . $nombre ?> - ENV&Iacute;O DE INFORMACI&Oacute;N
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
  		</div>
 		<div class="container">
