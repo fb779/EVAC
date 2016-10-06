@@ -36,7 +36,6 @@
 		 "verificacion" => '4',
 		 "danecentral" => '5',
 		 "aceptado" => '6',
-		 "novedades" => '7',
 		 "total" => 'TOTAL'
 	);
 
@@ -164,11 +163,13 @@
 
 		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
 		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
+		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 
 		<style type="text/css">
 			p {font-size: 13px !important;}
 			#mdalReport{
-				width: 99% !important;
+				width: 98% !important;
 			}
 
 			table.dataTable {
@@ -204,7 +205,7 @@
 					// }
 				});
 
-				$(".btn-link").click(function(){
+				$(".rpCritico").click(function(){
 					$usCons = $(this).parent().parent().attr('name');
 					$tpCons = $(this).attr('name');
 					$("#modalReportes").modal("show");
@@ -215,6 +216,8 @@
 					var $tbody = $('#repCriticos tbody');
 
 					$.ajax({
+						async: false,
+						cache: false,
 						url: '../persistencia/reporteCriticoListado.php',
 						type: 'POST',
 						dataType: 'json',
@@ -224,13 +227,14 @@
 						// debugger;
 						if (data.success){
 							var $empresas = data.data;
+							var $title = $('.modal-header');
 
+							$title.append('<h5 class="modal-title text-center"> <strong> Critico: </strong>'+ data.critico +'</h5>');
 							$.each($empresas,function(i, item){
 								console.log(item.depto)
-								$tbody.append('<tr class="text-center"> <td>'+item.nordemp+'</td> <td class="text-left">'+item.nombre+'</td> <td>'+item.depto+'</td> <td>'+item.mpio+'</td> <td>'+item.ciiu+'</td> <td>'+item.categoriaCiiu+'</td> <td>'+item.regional+'</td> <td>'+item.territorial+'</td> <td>'+item.codsede+'</td> <td>'+item.inclusion+'</td> <td>'+item.novedad+'</td> <td>'+item.estado+'</td> <td>'+item.devolucion+'</td> <td>'+item.fecha+'</td> <td>'+item.dias+'</td> <td>'+item.critico+'</td> <td>'+item.observacion+'</td> </tr>');
+								$tbody.append('<tr class="text-center"> <td>'+item.nordemp+'</td> <td class="text-left">'+item.nombre+'</td> <td>'+item.depto+'</td> <td>'+item.mpio+'</td> <td>'+item.ciiu+'</td> <td>'+item.categoriaCiiu+'</td> <td>'+item.regional+'</td> <td>'+item.territorial+'</td> <td>'+item.codsede+'</td> <td>'+item.inclusion+'</td> <td>'+item.novedad+'</td> <td>'+item.estado+'</td> <td>'+item.devolucion+'</td> <td>'+item.fecha+'</td> <td>'+item.dias+'</td> <td>'+item.critico+'</td> <td> <button class="observa btn btn-link" name="'+item.nordemp+'" type="">'+item.observacion+'</button></td> </tr>');
 							});
 						}
-
 
 						$('#repCriticos').DataTable( {
 							language:{ "url": "../js/Spanish.json" },
@@ -240,44 +244,60 @@
 					});
 
 					$("#modalReportes").on('hidden.bs.modal', function () {
-						// debugger
-;						$usCons = '';
+						// debugger;
+						$usCons = '';
 						$tpCons = '';
 
 						$('#repCriticos').DataTable().clear().draw();
 						$('#repCriticos').DataTable().destroy();
 					});
 
-					// $('#repCriticos').DataTable( {
-					// 	language:{ "url": "../js/Spanish.json" },
-					// 	// responsive: true,
-					// 	"ajax": "../persistencia/reporteCriticoListado.php",
-					// 	"columns": [
-					// 		{'data':'nordemp'},
-					// 		{'data':'nombre'},
-					// 		{'data':'depto'},
-					// 		{'data':'mpio'},
-					// 		{'data':'ciiu'},
-					// 		{'data':'categoriaCiiu'},
-					// 		{'data':'regional'},
-					// 		{'data':'territorial'},
-					// 		{'data':'codsede'},
-					// 		{'data':'inclusion'},
-					// 		{'data':'novedad'},
-					// 		{'data':'estado'},
-					// 		{'data':'devolucion'},
-					// 		{'data':'fecha'},
-					// 		{'data':'dias'},
-					// 		{'data':'critico'},
-					// 		{'data':'observacion'},
-					// 	]
-					// 	// "pagingType": "numbers",
-					// 	// "search": {
-					// 	// 	"caseInsensitive": true
-					// 	// }
-					// });
 				});
 
+				$('#repCriticos').on('click', '.observa', function() {
+					var $item = $(this);
+					BootstrapDialog.show({
+						size: BootstrapDialog.SIZE_NORMAL,
+						title: 'Empresa: '+$item.attr('name'),
+						message: function(dialogRef){
+
+							var $message = $('<div class="row"></div>');
+							var $datos = '';
+							$.ajax({
+								async: false,
+								cache: false,
+								url: '../persistencia/cargaObservaciones.php',
+								type: 'POST',
+								dataType: 'json',
+								data: {'empresa': $item.attr('name')},
+							})
+							.done(function(data) {
+								debugger;
+								if (data.success){
+									var $observa = data.data;
+
+									$.each($observa, function(i, item) {
+										 $message.append('<div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-4">'+item.nombre+'</div> <div class="col-xs-6">'+item.observacion+'</div>');
+									});
+
+								}
+							});
+							// $message.append('<h4>Esto es un contenido de prueba</h4>');
+
+							return $message;
+						},
+						closable: false,
+						// onshow: function(){
+
+						// },
+						buttons: [{
+							label: 'Cerrar',
+							action: function(dialog) {
+								dialog.close();
+							}
+						}]
+					});
+				});
 			});
 		</script>
 	</head>
@@ -325,17 +345,17 @@
 								<?php foreach($dtSource as $dt) { ?>
 									<tr name="<?php echo $dt['ident'] ?>">
 										<td class="text-left"><?php echo $dt['nombre']; ?></td>
-										<td class="text-center"> <button name="dr" class="btn btn-link"> <?php echo $dt['totalUsu']; ?> </button></td>
-										<td class="text-center"> <button name="sd" class="btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="dg" class="btn btn-link"> <?php echo $dt['digitacion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="gb" class="btn btn-link"> <?php echo $dt['grabados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="dv" class="btn btn-link"> <?php echo $dt['devueltos'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="hdv" class="btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="cr" class="btn btn-link"> <?php echo $dt['dane'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="ap" class="btn btn-link"> <?php echo $dt['aceptado'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="nv" class="btn btn-link"> <?php echo $dt['novedad'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="de" class="btn btn-link"> <?php echo $dt['deuda'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="re" class="btn btn-link"> <?php echo $dt['recolectados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dr" class="rpCritico btn btn-link"> <?php echo $dt['totalUsu']; ?> </button></td>
+										<td class="text-center"> <button name="sd" class="rpCritico btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dg" class="rpCritico btn btn-link"> <?php echo $dt['digitacion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="gb" class="rpCritico btn btn-link"> <?php echo $dt['grabados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dv" class="rpCritico btn btn-link"> <?php echo $dt['devueltos'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="hdv" class="rpCritico btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="cr" class="rpCritico btn btn-link"> <?php echo $dt['dane'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="ap" class="rpCritico btn btn-link"> <?php echo $dt['aceptado'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="nv" class="rpCritico btn btn-link"> <?php echo $dt['novedad'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="de" class="rpCritico btn btn-link"> <?php echo $dt['deuda'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="re" class="rpCritico btn btn-link"> <?php echo $dt['recolectados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
 										<td class="text-center"><strong><?php echo $dt['calidad'] ?><strong></td>
 									</tr>
 									<!-- <tr>
@@ -531,7 +551,12 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class=" text-center"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> REPORTE DE CRITICOS</h4>
+						<div class="text-center">
+							<h4 class="modal-title text-center">
+								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> &nbsp; REPORTE DE CRITICOS
+							</h4>
+
+						</div>
 					</div>
 					<div class="modal-body">
 						<div class="row">
