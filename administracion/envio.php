@@ -156,7 +156,7 @@
 				<?php //print_r($qDevol->rowCount());?>
 
 			</div-->
- 			<?php echo $numero . " - " . $nombre ?> - ENVIO DE INFORMACIÓN
+ 			<?php echo $numero . " - " . $nombre ?> - ENV&Iacute;O DE INFORMACI&Oacute;N
  			<a href="../index.php" class='pull-right'>Finalizar Sesi&oacute;n <span class="sr-only">(current)</span></a>
  		</div>
 		<div class="container">
@@ -179,7 +179,7 @@
 									}
 									echo "</div>";
 									echo "<div class='form-group' style='padding-top: 20px'>";
-									echo "<a style='display: none' id='idpdf' href='../interface/formDili.php?numord=" . $numero . "&nombre=" . $nombre . "' class='btn btn-default btn-lg' data-toggle='tooltip' title='Descargar formulario diligenciado'>Descargar formulario</a>";
+									echo "<a style='display: none' id='idpdf' href='../interface/aPDF.php?numord=" . $numero . "' class='btn btn-default btn-lg' data-toggle='tooltip' title='Descargar formulario diligenciado'>Descargar formulario</a>";
 									echo "</div>";
 								}
 								else {

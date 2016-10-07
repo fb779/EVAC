@@ -12,6 +12,7 @@
 	$pagina = "REPORTE CRITICOS";
 	$vig=$_SESSION['vigencia'];
 	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $nove = 7; $totalG=0; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)";
+
 	if (isset($_GET['regi'])) {
 		$regOpe = $_GET['regi'];
 	}
@@ -20,27 +21,124 @@
 	}
 	if ($regOpe == 99) {
 		$campoUsu = "usuario";
+		$campDevol = "coddev";
 	}
 	else {
 		$campoUsu = "usuarioss";
+		$campDevol = "codcrit";
 	}
 
-	$cols = array(
-		 "Sin Distribuir"=>0,
-		 "Distribuidos"=>1,
-		 "Pendientes"=>2,
-		 "En Digitaci&oacute;n"=>3,
-		 "Digitados"=>4,
-		 "An&aacute;lisis Verificaci&oacute;n"=>5,
-		 "Verificados"=>6,
-		 "Aceptados"=>7,
-		 "Novedades"=>8);
+	$estados = array(
+		 "sinDistribuir" => '0',
+		 "distribuidos" => '1',
+		 "digitacion" => '2',
+		 "grabados" => '3',
+		 "verificacion" => '4',
+		 "danecentral" => '5',
+		 "aceptado" => '6',
+		 "total" => 'TOTAL'
+	);
 
 	$qUsuarios = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
+	$qUsu = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
+	/* crear datos para alimentar la tabla */
+	$dtSource = array();
+	foreach($qUsuarios as $key=>$lUsuarios) {
+		$usurep = $lUsuarios['ident'];
+		$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep' AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
+
+		$sinDistribuir =0; $distribuidos =0; $digitacion =0; $grabados =0; $criticados =0; $dane =0; $aceptado =0; $tUsuario =0; $valnov =0; $distri =0;
+		foreach($qControl AS $lControl) {
+			switch ($lControl['estado']) {
+				case $estados['sinDistribuir']:
+					$sinDistribuir = $lControl['grpestado'];
+					break;
+				case $estados['distribuidos']:
+					// $distri += $lControl['grpestado'];
+					$distribuidos = $lControl['grpestado'];
+					break;
+				case $estados['digitacion']:
+					// $distri += $lControl['grpestado'];
+					$digitacion = $lControl['grpestado'];
+					break;
+				case $estados['grabados']:
+					// $distri += $lControl['grpestado'];
+					$grabados = $lControl['grpestado'];
+					break;
+				case $estados['verificacion']:
+					// $distri += $lControl['grpestado'];
+					$criticados = $lControl['grpestado'];
+					break;
+				case $estados['danecentral']:
+					// $distri += $lControl['grpestado'];
+					$dane = $lControl['grpestado'];
+					break;
+				case $estados['aceptado']:
+					// $distri += $lControl['grpestado'];
+					$aceptado = $lControl['grpestado'];
+					break;
+				case $estados['total']:
+					$tUsuario = $lControl['grpestado'];
+					break;
+			}
+		}
+
+		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
+		$valnov = $qNovedad['nove'];
+
+		$devolucion = $conn->query("SELECT count(*) as devolucion FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('DEV')")->fetch(PDO::FETCH_ASSOC);
+		$dtSource[$key]['devueltos'] = $devolucion['devolucion'];
+
+		$hisDevoluciones = $conn->query("SELECT count(*) as hisdevo FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('RV')")->fetch(PDO::FETCH_ASSOC);
+		$dtSource[$key]['hisDevolucion'] = $hisDevoluciones['hisdevo'];
+
+		$dtSource[$key]['ident'] = $lUsuarios['ident'];
+		$dtSource[$key]['nombre'] = $lUsuarios['nombre'];
+		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
+
+		if (($sinDistribuir + $distribuidos) == 0) { $dtSource[$key]['sinDIgitar'] = 0; }
+		else { $dtSource[$key]['sinDIgitar'] = $sinDistribuir + $distribuidos; }
+
+		if ($digitacion == 0) { $dtSource[$key]['digitacion'] = 0; }
+		else { $dtSource[$key]['digitacion'] = $digitacion; }
+
+		if ($grabados + $criticados == 0) { $dtSource[$key]['grabados'] = 0; }
+		else { $dtSource[$key]['grabados'] = $grabados + $criticados; }
+
+		if ($dane == 0) { $dtSource[$key]['dane'] = 0; }
+		else { $dtSource[$key]['dane'] = $dane; }
+
+		if ($aceptado == 0) { $dtSource[$key]['aceptado'] = 0; }
+		else { $dtSource[$key]['aceptado'] = $aceptado; }
+
+		$dtSource[$key]['novedad'] = $valnov;
+
+		$dtSource[$key]['deuda'] = ($dtSource[$key]['totalUsu'] - ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] ));
+		$dtSource[$key]['recolectados'] = ($dtSource[$key]['dane'] + $dtSource[$key]['aceptado'] + $dtSource[$key]['novedad'] );
+
+		if ( $dtSource[$key]['hisDevolucion'] > 0 || $dtSource[$key]['dane'] > 0 && $dtSource[$key]['aceptado'] > 0 ){
+			$dtSource[$key]['calidad'] = round( ( 1-( ($dtSource[$key]['devueltos']+$dtSource[$key]['hisDevolucion'])/($dtSource[$key]['hisDevolucion']+$dtSource[$key]['dane']+$dtSource[$key]['aceptado']) ) )*100, 2, PHP_ROUND_HALF_DOWN).'%';
+		} else{
+			$dtSource[$key]['calidad'] = round(0,2,PHP_ROUND_HALF_DOWN).'%';
+		}
+
+		$totalG += $dtSource[$key]['totalUsu'];
+		$totalusu =0;
+	}
 
 	$qNregion = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
+
+	function porcentaje($muestra, $valor){
+		if ($muestra>0){
+			$porcentaje = ($valor * 100)/$muestra;
+		}else {
+			$porcentaje = ($valor * 100)/1;
+		}
+
+		return round($porcentaje, 2, PHP_ROUND_HALF_DOWN) . '%';
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,10 +160,157 @@
 		<script type="text/javascript" src="../js/css3-mediaqueries.js"></script>
 		<script type="text/javascript" src="../charts/amcharts/amcharts.js"></script>
 		<script type="text/javascript" src="../charts/amcharts/serial.js"></script>
-		<style type="text/css"> p {font-size: 13px !important;}</style>
+
+		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
+		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
+
+		<style type="text/css">
+			p {font-size: 13px !important;}
+			#mdalReport{
+				width: 98% !important;
+				font-size: 0.85em;
+			}
+
+			table.dataTable {
+				font-size: 0.8em;
+			}
+
+			table.dataTable thead th, table.dataTable tbody td {
+				vertical-align: middle;
+				/*text-align: center;*/
+			}
+
+			.text-center {
+				vertical-align: middle;
+			}
+
+			.fondo {
+				background-color: #ccc;
+			}
+		</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
+				var $usCons = '';
+				var $tpCons = '';
+				// var $tbReporte = $('#repCriticos').DataTable( {
+				// 	language:{ "url": "../js/Spanish.json" },
+				// 	responsive: true,
+				// 	retrieve: true,
+				// });
+
 				$('[data-toggle="tooltip"]').tooltip();
+
+				$('#example').DataTable( {
+					language:{ "url": "../js/Spanish.json" },
+					responsive: true,
+					// "pagingType": "numbers",
+					// "search": {
+					// 	"caseInsensitive": true
+					// }
+				});
+
+				$(".rpCritico").click(function(){
+					$usCons = $(this).parent().parent().attr('name');
+					$tpCons = $(this).attr('name');
+					$("#modalReportes").modal("show");
+			    });
+
+
+				$("#modalReportes").on('show.bs.modal', function () {
+					var $tbody = $('#repCriticos tbody');
+
+					$.ajax({
+						async: false,
+						cache: false,
+						url: '../persistencia/reporteCriticoListado.php',
+						type: 'POST',
+						dataType: 'json',
+						data: {'usuario': $usCons, 'tpConsulta': $tpCons, 'region': '<?php echo $regOpe; ?>'},
+					})
+					.done(function(data) {
+						if (data.success){
+							var $empresas = data.data;
+							var $title = $('.modal-header div');
+							$title.html('<h4 class="modal-title text-center"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> &nbsp; REPORTE DE CRITICOS</h4>');
+							$title.append('<h5 class="modal-title text-center"> <strong> Critico: </strong>'+ data.critico +'</h5>');
+							$.each($empresas,function(i, item){
+								$tbody.append('<tr class="text-center"> <td>'+item.nordemp+'</td> <td class="text-left">'+item.nombre+'</td> <td>'+item.depto+'</td> <td>'+item.mpio+'</td> <td>'+item.ciiu+'</td> <td>'+item.categoriaCiiu+'</td> <td>'+item.regional+'</td> <td>'+item.territorial+'</td> <td>'+item.codsede+'</td> <td>'+item.inclusion+'</td> <td>'+item.novedad+'</td> <td>'+item.estado+'</td> <td>'+item.devolucion+'</td> <td>'+item.fecha+'</td> <td>'+item.dias+'</td> <td>'+item.critico+'</td> <td> <button class="observa btn btn-link" name="'+item.nordemp+'" type="">Observaciones</button></td> </tr>');
+							});
+						}
+
+						$('#repCriticos').DataTable( {
+							language:{ "url": "../js/Spanish.json" },
+							responsive: true,
+							retrieve: true,
+						});
+					});
+
+					$("#modalReportes").on('hidden.bs.modal', function () {
+						$usCons = '';
+						$tpCons = '';
+
+						$('#repCriticos').DataTable().clear().draw();
+						$('#repCriticos').DataTable().destroy();
+					});
+
+				});
+
+				$('#repCriticos').on('click', '.observa', function() {
+					var $item = $(this);
+					BootstrapDialog.show({
+						// size: BootstrapDialog.SIZE_LARGE,
+						title: 'Observaciones de la empresa: '+$item.attr('name'),
+						message: function(dialogRef){
+							// dialogRef.setTitle('Observaciones de la empresa ' $);
+							var $message = $('<div></div>');
+							$message.append('<div class="row well well-sm text-center"> <div class="col-xs-1">Fecha</div> <div class="col-xs-1">Usuario</div> <div class="col-xs-3">Critico</div> <div class="col-xs-7">Observaciones</div> </div>')
+							var $datos = '';
+							$.ajax({
+								async: false,
+								cache: false,
+								url: '../persistencia/cargaObservaciones.php',
+								type: 'POST',
+								dataType: 'json',
+								data: {'empresa': $item.attr('name')},
+							}).done(function(data) {
+								// debugger;
+								if (data.success){
+									dialogRef.getModalDialog().css('width','70%');
+									dialogRef.getModalHeader().addClass('text-center')
+									var $observa = data.data;
+
+									$.each($observa, function(i, item) {
+										// if (i%2==0){
+										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
+										// 	// $message.append('<div class="row fondo"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
+										// }else{
+										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
+										//  	// $message.append('<div class="row"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
+										// }
+										$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
+									});
+
+								}
+							});
+							// $message.append('<h4>Esto es un contenido de prueba</h4>');
+
+							return $message;
+						},
+						closable: false,
+						// onshow: function(){
+
+						// },
+						buttons: [{
+							label: 'Cerrar',
+							action: function(dialog) {
+								dialog.close();
+							}
+						}]
+					});
+
+				});
 			});
 		</script>
 	</head>
@@ -73,148 +318,149 @@
 		<?php
 			include 'menuRet.php';
 		?>
-		<div class="container">
-			<div class="col-md-12">
-				<table class='table table-condensed table-hover'>
-					<thead>
-						<tr>
-							<th class="text-center">Usuario</th>
-							<th class='text-center'>Nombre</th>
-							<th class='text-right'>Sin Dist.</th>
-							<th class='text-right'>Distrib.</th>
-							<th class='text-right'>Pend.</th>
-							<th class='text-right'>En Dig.</th>
-							<th class='text-right'>Digit.</th>
-							<th class='text-right'>Revisi&oacute;n</th>
-							<th class='text-right'>Enviados DC.</th>
-							<th class='text-right'>Aceptados</th>
-							<th class='text-right'>Nove.</th>
-							<th class='text-right'>TOTAL</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-							foreach($qUsuarios as $lUsuarios) {
-								$usurep = $lUsuarios['ident'];
-								$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep'
-									AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
 
-								$valor1 =0; $valor2 =0; $valor3 =0; $valor4 =0; $valor5 =0; $valor6 =0; $valor7 =0; $valor8 =0; $valnov =0; $distri =0;
-								foreach($qControl AS $lControl) {
-									switch ($lControl['estado']) {
-										case "0":
-											$valor1 = $lControl['grpestado'];
-											break;
-										case "1":
-											$distri += $lControl['grpestado'];
-											$valor2 = $lControl['grpestado'];
-											break;
-										case "2":
-											$distri += $lControl['grpestado'];
-											$valor3 = $lControl['grpestado'];
-											break;
-										case "3":
-											$distri += $lControl['grpestado'];
-											$valor4 = $lControl['grpestado'];
-											break;
-										case "4":
-											$distri += $lControl['grpestado'];
-											$valor5 = $lControl['grpestado'];
-											break;
-										case "5":
-											$distri += $lControl['grpestado'];
-											$valor6 = $lControl['grpestado'];
-											break;
-										case "6":
-											$distri += $lControl['grpestado'];
-											$valor7 = $lControl['grpestado'];
-											break;
-										case "TOTAL":
-											$valor8 = $lControl['grpestado'];
-											break;
-									}
-								}
-								$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep'
-									AND novedad IN $novedades");
-								foreach($qNovedad AS $lNovedad) {
-									$valnov = $lNovedad['nove'];
-								}
-								echo "<tr>";
-								echo "<td>" . $lUsuarios['ident'] . "</td>";
-								echo "<td>" . $lUsuarios['nombre'] . "</td>";
-								if ($valor1 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==0&usu=" . $usurep . "' target='_blank'>" . $valor1 . "</a></td>";
-								}
-								if ($distri == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado=>0&usu=" . $usurep . "' target='_blank'>" . $distri . "</a></td>";
-								}
-								if ($valor2 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==1&usu=" . $usurep . "' target='_blank'>" . $valor2 . "</a></td>";
-								}
-								if ($valor3 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==2&usu=" . $usurep . "' target='_blank'>" . $valor3 . "</a></td>";
-								}
-								if ($valor4 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==3&usu=" . $usurep . "' target='_blank'>" . $valor4 . "</a></td>";
-								}
-								if ($valor5 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==4&usu=" . $usurep . "' target='_blank'>" . $valor5 . "</a></td>";
-								}
-								if ($valor6 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==5&usu=" . $usurep . "' target='_blank'>" . $valor6 . "</a></td>";
-								}
-								if ($valor7 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==6&usu=" . $usurep . "' target='_blank'>" . $valor7 . "</a></td>";
-								}
-								if ($valnov == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?nove=SI&usu=" . $usurep . "' target='_blank'>" . $valnov . "</a></td>";
-								}
-								$totalusu = $valor8+$valnov;
-								echo "<td class='text-center'>" . $totalusu . "</td>";
-								$totalG = $totalG + $totalusu;
-								echo "</tr>";
-								$totalusu =0;
-							}
-							echo "<tr>";
-							echo "<td colspan='11' class='text-right'><b>TOTAL</b></td>";
-							echo "<td class='text-right'>" . $totalG . "</td>";
-							echo "</tr>";
-						?>
-					</tbody>
-				</table>
-			</div>
-			<div class='col-sm-1 small'>
-				<a href='xlsRepCrit.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
-					<span class = "glyphicon glyphicon-download-alt"></span>
-				</a>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Titulo para la tabla de reporte</div>
+					<div class="panel-body">
+						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="text-center" rowspan="2">Nombre Critico</th>
+									<th class="text-center" rowspan="2">Directorio Asignado</th>
+									<th class="text-center" rowspan="2">Sin digitar</th>
+									<th class="text-center" rowspan="2">En digitaci&oacute;n</th>
+									<th class="text-center" rowspan="2">Grabados</th>
+									<th class="text-center" colspan="2">Devoluciones</th>
+									<th class="text-center" rowspan="2">Criticados</th>
+									<th class="text-center" rowspan="2">Aprobados</th>
+									<th class="text-center" rowspan="2">Novedades</th>
+									<th class="text-center" rowspan="2">Deuda</th>
+									<th class="text-center" rowspan="2">Recolectados</th>
+									<th class="text-center" rowspan="2">indicador Calidad</th>
+									<!-- <th>13</th> -->
+								</tr>
+
+								<tr class="text-center">
+									<th>Devueltos</th>
+									<th>Historico</th>
+								</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<th colspan="" class="text-left">TOTAL</th>
+									<th class="text-center"> <?php echo $totalG ?> </th>
+									<th colspan="11">&nbsp;</th>
+								</tr>
+							</tfoot>
+							<tbody>
+								<?php foreach($dtSource as $dt) { ?>
+									<tr name="<?php echo $dt['ident'] ?>">
+										<td class="text-left"><?php echo $dt['nombre']; ?></td>
+										<td class="text-center"> <button name="dr" class="rpCritico btn btn-link"> <?php echo $dt['totalUsu']; ?> </button></td>
+										<td class="text-center"> <button name="sd" class="rpCritico btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dg" class="rpCritico btn btn-link"> <?php echo $dt['digitacion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="gb" class="rpCritico btn btn-link"> <?php echo $dt['grabados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dv" class="rpCritico btn btn-link"> <?php echo $dt['devueltos'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="hdv" class="rpCritico btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="cr" class="rpCritico btn btn-link"> <?php echo $dt['dane'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="ap" class="rpCritico btn btn-link"> <?php echo $dt['aceptado'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="nv" class="rpCritico btn btn-link"> <?php echo $dt['novedad'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="de" class="rpCritico btn btn-link"> <?php echo $dt['deuda'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="re" class="rpCritico btn btn-link"> <?php echo $dt['recolectados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
+										<td class="text-center"><strong><?php echo $dt['calidad'] ?><strong></td>
+									</tr>
+									<!-- <tr>
+										<td class="text-left" rowspan="2"><?php echo $dt['nombre']; ?></td>
+										<td class="text-center" rowspan="2"> <button name="dr" class="btn btn-link"> <?php echo $dt['totalUsu']; ?> </button></td>
+										<td class="text-center"> <button name="sd" class="btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="dg" class="btn btn-link"> <?php echo $dt['digitacion'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="gb" class="btn btn-link"> <?php echo $dt['grabados'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="dv" class="btn btn-link"> <?php echo $dt['devueltos'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="hdv" class="btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="cr" class="btn btn-link"> <?php echo $dt['dane'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="ap" class="btn btn-link"> <?php echo $dt['aceptado'] . '</button>'; ?></td>
+										<td class="text-center"> <button name="nv" class="btn btn-link"> <?php echo $dt['novedad'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="de" class="btn btn-link"> <?php echo $dt['deuda'] . '</button> '; ?></td>
+										<td class="text-center"> <button name="re" class="btn btn-link"> <?php echo $dt['recolectados'] . '</button>'; ?></td>
+										<td class="text-center" rowspan="2"><strong><?php echo $dt['calidad'] ?><strong></td>
+									</tr>
+
+									<tr>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['deuda']).'</strong>'; ?></td>
+										<td class="text-center"> <?php echo ' <stron>' . porcentaje($dt['totalUsu'],$dt['recolectados']).'</strong>'; ?></td>
+									</tr> -->
+							<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					<div class="panel-footer">
+						<a href='xlsRepCrit.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
+							<span class = "glyphicon glyphicon-download-alt"></span>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
+
+		<!-- creacion y manejo de modal para reporte de empresas para critico -->
+		<div class="modal fade" id="modalReportes" role="dialog">
+			<div id="mdalReport" class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<div class="text-center">
+						</div>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-12">
+								<table id="repCriticos">
+									<thead>
+										<tr>
+											<th  class="text-center">N. Orden</th>
+											<th  class="text-center">Nombre</th>
+											<th  class="text-center">Departamento</th>
+											<th  class="text-center">Municipio</th>
+											<th  class="text-center">Ciiu4</th>
+											<th  class="text-center">Clase Ciiu4</th>
+											<th  class="text-center">Regional Dane</th>
+											<th  class="text-center">Dir Territorial - recolecta</th>
+											<th  class="text-center">Sede</th>
+											<th  class="text-center">Inclusión</th>
+											<th  class="text-center">Novedad</th>
+											<th  class="text-center">Estado</th>
+											<th  class="text-center">Devuelto acumulado</th>
+											<th  class="text-center">Fecha ultima devolución</th>
+											<th  class="text-center">Diías hasta hoy</th>
+											<th  class="text-center">Critico</th>
+											<th  class="text-center">Observaciones</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
  	</body>
  </html>

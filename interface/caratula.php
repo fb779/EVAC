@@ -38,7 +38,9 @@
 			'idDptoN' => $row ['depnotific']
 	) );
 
-	$qOrganiza = $conn->query ( "SELECT * FROM organiza order by codigo" );
+	// $qOrganiza = $conn->query ( "SELECT * FROM organiza order by codigo" );
+	$qOrganiza = $conn->query ( "SELECT * FROM organiza" );
+
 	$qEstadoAct = $conn->query ( "SELECT * FROM estadoact" );
 
 	$actividad = $row ['ciiu3'];
@@ -479,7 +481,7 @@ $(document).ready(function(){
 
 
 	var color = '#a94442';
-	// var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+	// var regexEmail = new RegExp( /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/);
 	var regexEmail = new RegExp(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/);
 
 	/** Validacion campo ndoc Numero documento */
@@ -697,7 +699,7 @@ $(document).ready(function(){
 		if ($(this).val() == ''){
 			$(this).parent().addClass('text-danger');
 			$(this).css('border',"1px solid" + color);
-			$(this).parent().append('<span class="text-danger">Debe espeficicar alguna organización</span>');
+			$(this).parent().append('<span class="text-danger">Debe especificar alguna organización</span>');
 		}
 	});
 
@@ -857,7 +859,6 @@ $(document).ready(function(){
 		});
 		return suma;
 	}
-
 });
 
 
@@ -1112,8 +1113,8 @@ $(document).ready(function(){
 						<label class='col-xs-4 text-right' for='idweb'>Sitio Web:</label>
 						<div class='col-sm-8 small'>
 							<input type="url" class='form-control input-sm' style='text-transform: lowercase' name="web" id="idweb" maxlength="50" value="<?php echo $row['web'] ?>" />
+							<span class="">* Si no tiene sitio web, por favor no diligencie este campo. </span>
 						</div>
-						<span class="col-xs-12 text-center">* Si no tiene sitio web, por favor no diligencie este campo. </span>
 					</div>
 					<div class="col-xs-12">&nbsp;</div>
 				</div>
@@ -1193,8 +1194,8 @@ $(document).ready(function(){
 						<label class='col-xs-4 text-right' for='idwebn'>Sitio Web Notificaci&oacute;n:</label>
 						<div class='col-sm-8'>
 							<input type="text" class='form-control input-sm' style='text-transform: lowercase' name="webnotif" id="idwebn" value="<?php echo $row['webnotif'] ?>" />
+							<span class="small">* Si no tiene sitio web, por favor no diligencie este campo. </span>
 						</div>
-						<span class="col-xs-12 text-center">* Si no tiene sitio web, por favor no diligencie este campo. </span>
 					</div>
 					<div class="col-xs-12">&nbsp;</div>
 				</div>
@@ -1553,10 +1554,10 @@ $(document).ready(function(){
 					<p class='bg-success text-center text-uppercase' style='display: none' id='idmsg'>Car&aacute;tula Actualizada Correctamente</p>
 				</div>
 				<div class='col-sm-1 small pull-right'>
-					<a href='capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente cap&iacute;tulo'>Continuar</a>
+					<a href='capitulo1.php?numord=<?php echo $numero . "&nombre=" . $nombre?>' class='btn btn-default' data-toggle='tooltip' title='Ir a siguiente M&oacute;dulo'>Continuar</a>
 				</div>
 				<div class='col-sm-1 small pull-right'>
-					<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Car&aacute;tula &uacute;nica'>Grabar</button>
+					<button type='submit' id="btnGuardar" class='btn btn-primary btn-md' data-toggle='tooltip' title='Actualizar informaci&oacute;n Car&aacute;tula &Uacute;nica'>Grabar</button>
 				</div>
 			</div>
 		</form>

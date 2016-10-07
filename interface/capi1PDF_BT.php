@@ -203,7 +203,7 @@
 						<table>
 							<thead>
 								<tr>
-									<th colspan="3"> Vacante <?php echo $c;?> </th>
+									<th colspan="3"> VACANTE <?php echo $c;?> </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -514,18 +514,15 @@
 					<b>Observaciones </b>
 				</div>
 				<div class="pconten">
-
-						<table>
-							<tr>
-								<td>
-									<div class='campTextarea' style='padding-bottom: 10px'>
-										<?php echo ($row['OBSERVACIONES'] != '') ? $row['OBSERVACIONES'] : '&nbsp;'; ?>
-									</div>
-								</td>
-							</tr>
-						</table>
-
-
+					<table>
+						<tr>
+							<td>
+								<div class='campTextarea' style='padding-bottom: 10px'>
+									<?php echo ($row['OBSERVACIONES'] != '') ? $row['OBSERVACIONES'] : '&nbsp;'; ?>
+								</div>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
  		</div>
