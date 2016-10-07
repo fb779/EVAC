@@ -11,7 +11,7 @@
 	$devoluciones = false;
 	$pagina = "REPORTE CRITICOS";
 	$vig=$_SESSION['vigencia'];
-	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $nove = 7; $totalG=0; $novedades = "(1,2,3,4,6,10,12,13,97,41,19)";
+	$sind = 0; $dist = ">0"; $digi = 2; $digit = 3; $crit = 4; $verif = 5; $acepta = 6; $nove = 7; $totalG=0; $novedades = "1,2,3,4,6,10,12,13,97,41,19";
 
 	if (isset($_GET['regi'])) {
 		$regOpe = $_GET['regi'];
@@ -85,7 +85,7 @@
 			}
 		}
 
-		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND codsede = '$sede' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
+		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND codsede = '$sede' AND novedad IN ($novedades)")->fetch(PDO::FETCH_ASSOC);
 		$valnov = $qNovedad['nove'];
 
 		$devolucion = $conn->query("SELECT count(*) as devolucion FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$sede' AND tipo IN ('DEV')")->fetch(PDO::FETCH_ASSOC);
@@ -94,7 +94,7 @@
 		$hisDevoluciones = $conn->query("SELECT count(*) as hisdevo FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$sede' AND tipo IN ('RV')")->fetch(PDO::FETCH_ASSOC);
 		$dtSource[$key]['hisDevolucion'] = $hisDevoluciones['hisdevo'];
 
-		$dtSource[$key]['ident'] = $lSede['ident'];
+		$dtSource[$key]['ident'] = $lSede['codis'];
 		$dtSource[$key]['nombre'] = $lSede['nombre'];
 		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
 
@@ -202,7 +202,7 @@
 		</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				var $usCons = '';
+				var $empCons = '';
 				var $tpCons = '';
 				// var $tbReporte = $('#repCriticos').DataTable( {
 				// 	language:{ "url": "../js/Spanish.json" },
@@ -222,7 +222,7 @@
 				});
 
 				$(".rpCritico").click(function(){
-					$usCons = $(this).parent().parent().attr('name');
+					$empCons = $(this).parent().parent().attr('name');
 					$tpCons = $(this).attr('name');
 					$("#modalReportes").modal("show");
 			    });
@@ -234,10 +234,10 @@
 					$.ajax({
 						async: false,
 						cache: false,
-						url: '../persistencia/reporteCriticoListado.php',
+						url: '../persistencia/reporteCriticoNacional.php',
 						type: 'POST',
 						dataType: 'json',
-						data: {'usuario': $usCons, 'tpConsulta': $tpCons, 'region': '<?php echo $regOpe; ?>'},
+						data: {'empresa': $empCons, 'tpConsulta': $tpCons, 'region': '<?php echo $regOpe; ?>'},
 					})
 					.done(function(data) {
 						if (data.success){
@@ -258,7 +258,7 @@
 					});
 
 					$("#modalReportes").on('hidden.bs.modal', function () {
-						$usCons = '';
+						$empCons = '';
 						$tpCons = '';
 
 						$('#repCriticos').DataTable().clear().draw();
@@ -364,8 +364,8 @@
 										<td class="text-center"> <button name="sd" class="rpCritico btn btn-link"> <?php echo $dt['sinDIgitar'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['sinDIgitar']).'</strong>'; ?></td>
 										<td class="text-center"> <button name="dg" class="rpCritico btn btn-link"> <?php echo $dt['digitacion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['digitacion']).'</strong>'; ?></td>
 										<td class="text-center"> <button name="gb" class="rpCritico btn btn-link"> <?php echo $dt['grabados'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['grabados']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="dv" class="rpCritico btn btn-link"> <?php echo $dt['devueltos'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
-										<td class="text-center"> <button name="hdv" class="rpCritico btn btn-link"> <?php echo $dt['hisDevolucion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="dv" class="rpCritico btn btn-link"> <?php // echo $dt['devueltos'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['devueltos']).'</strong>'; ?></td>
+										<td class="text-center"> <button name="hdv" class="rpCritico btn btn-link"> <?php // echo $dt['hisDevolucion'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['hisDevolucion']).'</strong>'; ?></td>
 										<td class="text-center"> <button name="cr" class="rpCritico btn btn-link"> <?php echo $dt['dane'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['dane']).'</strong>'; ?></td>
 										<td class="text-center"> <button name="ap" class="rpCritico btn btn-link"> <?php echo $dt['aceptado'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['aceptado']).'</strong>'; ?></td>
 										<td class="text-center"> <button name="nv" class="rpCritico btn btn-link"> <?php echo $dt['novedad'] . '</button> - <strong>' . porcentaje($dt['totalUsu'],$dt['novedad']).'</strong>'; ?></td>
