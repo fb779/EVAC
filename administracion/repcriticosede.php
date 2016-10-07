@@ -15,16 +15,18 @@
 
 	if (isset($_GET['regi'])) {
 		$regOpe = $_GET['regi'];
+		$sedes = '';
 	}
 	else {
 		$regOpe = $region;
+		$sedes = $regOpe;
 	}
 	if ($regOpe == 99) {
-		$campoUsu = "usuario";
+		$campoUsu = "codsede";
 		$campDevol = "coddev";
 	}
 	else {
-		$campoUsu = "usuarioss";
+		$campoUsu = "codsede";
 		$campDevol = "codcrit";
 	}
 
@@ -39,13 +41,13 @@
 		 "total" => 'TOTAL'
 	);
 
-	$qUsuarios = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
+	$qSedes = $conn->query("SELECT codis, nombre FROM regionales ORDER BY codis");
 	$qUsu = $conn->query("SELECT ident, nombre FROM usuarios WHERE region = $regOpe AND tipo = 'CR' ORDER BY ident");
 	/* crear datos para alimentar la tabla */
 	$dtSource = array();
-	foreach($qUsuarios as $key=>$lUsuarios) {
-		$usurep = $lUsuarios['ident'];
-		$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep' AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
+	foreach($qSedes as $key=>$lSede) {
+		$sede = $lSede['codis'];
+		$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE codsede in ($sede) AND vigencia = $vig AND novedad NOT IN ($novedades) GROUP BY estado WITH ROLLUP");
 
 		$sinDistribuir =0; $distribuidos =0; $digitacion =0; $grabados =0; $criticados =0; $dane =0; $aceptado =0; $tUsuario =0; $valnov =0; $distri =0;
 		foreach($qControl AS $lControl) {
@@ -83,17 +85,17 @@
 			}
 		}
 
-		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
+		$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND codsede = '$sede' AND novedad IN $novedades")->fetch(PDO::FETCH_ASSOC);
 		$valnov = $qNovedad['nove'];
 
-		$devolucion = $conn->query("SELECT count(*) as devolucion FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('DEV')")->fetch(PDO::FETCH_ASSOC);
+		$devolucion = $conn->query("SELECT count(*) as devolucion FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$sede' AND tipo IN ('DEV')")->fetch(PDO::FETCH_ASSOC);
 		$dtSource[$key]['devueltos'] = $devolucion['devolucion'];
 
-		$hisDevoluciones = $conn->query("SELECT count(*) as hisdevo FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$usurep' AND tipo IN ('RV')")->fetch(PDO::FETCH_ASSOC);
+		$hisDevoluciones = $conn->query("SELECT count(*) as hisdevo FROM devoluciones WHERE vigencia = $vig AND $campDevol = '$sede' AND tipo IN ('RV')")->fetch(PDO::FETCH_ASSOC);
 		$dtSource[$key]['hisDevolucion'] = $hisDevoluciones['hisdevo'];
 
-		$dtSource[$key]['ident'] = $lUsuarios['ident'];
-		$dtSource[$key]['nombre'] = $lUsuarios['nombre'];
+		$dtSource[$key]['ident'] = $lSede['ident'];
+		$dtSource[$key]['nombre'] = $lSede['nombre'];
 		$dtSource[$key]['totalUsu'] = $tUsuario+$valnov;
 
 		if (($sinDistribuir + $distribuidos) == 0) { $dtSource[$key]['sinDIgitar'] = 0; }
@@ -163,8 +165,7 @@
 
 		<link href="../bootstrap/css/jquery.dataTables.min.css" rel="stylesheet">
 		<script type="text/javascript" charset="utf8" src="../bootstrap/js/jquery.dataTables.min.js"></script>
-		<!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
-		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script> -->
+
 		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 		<script type="text/javascript" src="../js/bootstrap-dialog.min.js"></script>
 
@@ -172,9 +173,16 @@
 			p {font-size: 13px !important;}
 			#mdalReport{
 				width: 98% !important;
-				font-size: 0.85em;
+				/*font-size: 0.85em;*/
 			}
 
+			/*#mdalReport table.dataTable tbody {
+				font-size: 0.8em;
+			}*/
+
+			/*#mdalReport.btn{
+				font-size: 0.6em;
+			}*/
 			table.dataTable {
 				font-size: 0.8em;
 			}
@@ -262,7 +270,7 @@
 				$('#repCriticos').on('click', '.observa', function() {
 					var $item = $(this);
 					BootstrapDialog.show({
-						// size: BootstrapDialog.SIZE_LARGE,
+						size: BootstrapDialog.SIZE_WIDE,
 						title: 'Observaciones de la empresa: '+$item.attr('name'),
 						message: function(dialogRef){
 							// dialogRef.setTitle('Observaciones de la empresa ' $);
@@ -284,19 +292,11 @@
 									var $observa = data.data;
 
 									$.each($observa, function(i, item) {
-										// if (i%2==0){
-										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
-										// 	// $message.append('<div class="row fondo"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
-										// }else{
-										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
-										//  	// $message.append('<div class="row"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
-										// }
 										$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
 									});
 
 								}
 							});
-							// $message.append('<h4>Esto es un contenido de prueba</h4>');
 
 							return $message;
 						},
@@ -324,7 +324,7 @@
 		<div class="container-fluid">
 			<div class="col-xs-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Titulo para la tabla de reporte</div>
+					<div class="panel-heading">Reporte de criticos nacional  </div>
 					<div class="panel-body">
 						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
 							<thead>
@@ -458,7 +458,7 @@
 					</div>
 					<div class="modal-footer">
 
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 					</div>
 				</div>
 			</div>
