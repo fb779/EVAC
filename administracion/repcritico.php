@@ -170,11 +170,13 @@
 			p {font-size: 13px !important;}
 			#mdalReport{
 				width: 98% !important;
+				font-size: 0.85em;
 			}
 
 			table.dataTable {
 				font-size: 0.8em;
 			}
+
 			table.dataTable thead th, table.dataTable tbody td {
 				vertical-align: middle;
 				/*text-align: center;*/
@@ -182,6 +184,10 @@
 
 			.text-center {
 				vertical-align: middle;
+			}
+
+			.fondo {
+				background-color: #ccc;
 			}
 		</style>
 		<script type="text/javascript">
@@ -224,15 +230,13 @@
 						data: {'usuario': $usCons, 'tpConsulta': $tpCons, 'region': '<?php echo $regOpe; ?>'},
 					})
 					.done(function(data) {
-						// debugger;
 						if (data.success){
 							var $empresas = data.data;
-							var $title = $('.modal-header');
-
+							var $title = $('.modal-header div');
+							$title.html('<h4 class="modal-title text-center"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> &nbsp; REPORTE DE CRITICOS</h4>');
 							$title.append('<h5 class="modal-title text-center"> <strong> Critico: </strong>'+ data.critico +'</h5>');
 							$.each($empresas,function(i, item){
-								console.log(item.depto)
-								$tbody.append('<tr class="text-center"> <td>'+item.nordemp+'</td> <td class="text-left">'+item.nombre+'</td> <td>'+item.depto+'</td> <td>'+item.mpio+'</td> <td>'+item.ciiu+'</td> <td>'+item.categoriaCiiu+'</td> <td>'+item.regional+'</td> <td>'+item.territorial+'</td> <td>'+item.codsede+'</td> <td>'+item.inclusion+'</td> <td>'+item.novedad+'</td> <td>'+item.estado+'</td> <td>'+item.devolucion+'</td> <td>'+item.fecha+'</td> <td>'+item.dias+'</td> <td>'+item.critico+'</td> <td> <button class="observa btn btn-link" name="'+item.nordemp+'" type="">'+item.observacion+'</button></td> </tr>');
+								$tbody.append('<tr class="text-center"> <td>'+item.nordemp+'</td> <td class="text-left">'+item.nombre+'</td> <td>'+item.depto+'</td> <td>'+item.mpio+'</td> <td>'+item.ciiu+'</td> <td>'+item.categoriaCiiu+'</td> <td>'+item.regional+'</td> <td>'+item.territorial+'</td> <td>'+item.codsede+'</td> <td>'+item.inclusion+'</td> <td>'+item.novedad+'</td> <td>'+item.estado+'</td> <td>'+item.devolucion+'</td> <td>'+item.fecha+'</td> <td>'+item.dias+'</td> <td>'+item.critico+'</td> <td> <button class="observa btn btn-link" name="'+item.nordemp+'" type="">Observaciones</button></td> </tr>');
 							});
 						}
 
@@ -244,7 +248,6 @@
 					});
 
 					$("#modalReportes").on('hidden.bs.modal', function () {
-						// debugger;
 						$usCons = '';
 						$tpCons = '';
 
@@ -257,11 +260,12 @@
 				$('#repCriticos').on('click', '.observa', function() {
 					var $item = $(this);
 					BootstrapDialog.show({
-						size: BootstrapDialog.SIZE_NORMAL,
-						title: 'Empresa: '+$item.attr('name'),
+						// size: BootstrapDialog.SIZE_LARGE,
+						title: 'Observaciones de la empresa: '+$item.attr('name'),
 						message: function(dialogRef){
-
-							var $message = $('<div class="row"></div>');
+							// dialogRef.setTitle('Observaciones de la empresa ' $);
+							var $message = $('<div></div>');
+							$message.append('<div class="row well well-sm text-center"> <div class="col-xs-1">Fecha</div> <div class="col-xs-1">Usuario</div> <div class="col-xs-3">Critico</div> <div class="col-xs-7">Observaciones</div> </div>')
 							var $datos = '';
 							$.ajax({
 								async: false,
@@ -270,14 +274,22 @@
 								type: 'POST',
 								dataType: 'json',
 								data: {'empresa': $item.attr('name')},
-							})
-							.done(function(data) {
-								debugger;
+							}).done(function(data) {
+								// debugger;
 								if (data.success){
+									dialogRef.getModalDialog().css('width','70%');
+									dialogRef.getModalHeader().addClass('text-center')
 									var $observa = data.data;
 
 									$.each($observa, function(i, item) {
-										 $message.append('<div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-4">'+item.nombre+'</div> <div class="col-xs-6">'+item.observacion+'</div>');
+										// if (i%2==0){
+										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
+										// 	// $message.append('<div class="row fondo"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
+										// }else{
+										// 	$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
+										//  	// $message.append('<div class="row"> <div class="col-xs-2">'+item.fecha+'</div> <div class="col-xs-10">'+item.observacion+'</div> </div>');
+										// }
+										$message.append('<div class="row"> <div class="col-xs-1">'+item.fecha+'</div> <div class="col-xs-1">'+item.ident+'</div> <div class="col-xs-3">'+item.nombre+'</div> <div class="col-xs-7">'+item.observacion+'</div> </div>');
 									});
 
 								}
@@ -297,6 +309,7 @@
 							}
 						}]
 					});
+
 				});
 			});
 		</script>
@@ -399,150 +412,6 @@
 			</div>
 		</div>
 
-		<div class="container">
-			<div class="col-md-12">
-				<table class='table table-condensed table-hover'>
-					<thead>
-						<tr>
-							<th class="text-center">Usuario</th>
-							<th class='text-center'>Nombre</th>
-							<th class='text-right'>Sin Dist.</th>
-							<th class='text-right'>Distrib.</th>
-							<th class='text-right'>Pend.</th>
-							<th class='text-right'>En Dig.</th>
-							<th class='text-right'>Digit.</th>
-							<th class='text-right'>Revisi&oacute;n</th>
-							<th class='text-right'>Enviados DC.</th>
-							<th class='text-right'>Aceptados</th>
-							<th class='text-right'>Nove.</th>
-							<th class='text-right'>TOTAL</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-							foreach($qUsu as $lUsuarios) {
-								$usurep = $lUsuarios['ident'];
-								$qControl = $conn->query("SELECT IFNULL(estado, 'TOTAL') AS estado, COUNT( estado ) AS grpestado FROM `control` WHERE $campoUsu = '$usurep'
-									AND vigencia = $vig AND novedad NOT IN $novedades GROUP BY estado WITH ROLLUP");
-
-								$valor1 =0; $valor2 =0; $valor3 =0; $valor4 =0; $valor5 =0; $valor6 =0; $valor7 =0; $valor8 =0; $valnov =0; $distri =0;
-								foreach($qControl AS $lControl) {
-									switch ($lControl['estado']) {
-										case "0":
-											$valor1 = $lControl['grpestado'];
-											break;
-										case "1":
-											$distri += $lControl['grpestado'];
-											$valor2 = $lControl['grpestado'];
-											break;
-										case "2":
-											$distri += $lControl['grpestado'];
-											$valor3 = $lControl['grpestado'];
-											break;
-										case "3":
-											$distri += $lControl['grpestado'];
-											$valor4 = $lControl['grpestado'];
-											break;
-										case "4":
-											$distri += $lControl['grpestado'];
-											$valor5 = $lControl['grpestado'];
-											break;
-										case "5":
-											$distri += $lControl['grpestado'];
-											$valor6 = $lControl['grpestado'];
-											break;
-										case "6":
-											$distri += $lControl['grpestado'];
-											$valor7 = $lControl['grpestado'];
-											break;
-										case "TOTAL":
-											$valor8 = $lControl['grpestado'];
-											break;
-									}
-								}
-								$qNovedad = $conn->query("SELECT COUNT(nordemp) AS nove FROM control WHERE vigencia = $vig AND $campoUsu = '$usurep'
-									AND novedad IN $novedades");
-								foreach($qNovedad AS $lNovedad) {
-									$valnov = $lNovedad['nove'];
-								}
-								echo "<tr>";
-								echo "<td>" . $lUsuarios['ident'] . "</td>";
-								echo "<td>" . $lUsuarios['nombre'] . "</td>";
-								if ($valor1 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==0&usu=" . $usurep . "' target='_blank'>" . $valor1 . "</a></td>";
-								}
-								if ($distri == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado=>0&usu=" . $usurep . "' target='_blank'>" . $distri . "</a></td>";
-								}
-								if ($valor2 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==1&usu=" . $usurep . "' target='_blank'>" . $valor2 . "</a></td>";
-								}
-								if ($valor3 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==2&usu=" . $usurep . "' target='_blank'>" . $valor3 . "</a></td>";
-								}
-								if ($valor4 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==3&usu=" . $usurep . "' target='_blank'>" . $valor4 . "</a></td>";
-								}
-								if ($valor5 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==4&usu=" . $usurep . "' target='_blank'>" . $valor5 . "</a></td>";
-								}
-								if ($valor6 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==5&usu=" . $usurep . "' target='_blank'>" . $valor6 . "</a></td>";
-								}
-								if ($valor7 == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?estado==6&usu=" . $usurep . "' target='_blank'>" . $valor7 . "</a></td>";
-								}
-								if ($valnov == 0) {
-									echo "<td class='text-center'>0</td>";
-								}
-								else {
-									echo "<td class='text-center'><a href='listaRC.php?nove=SI&usu=" . $usurep . "' target='_blank'>" . $valnov . "</a></td>";
-								}
-								$totalusu = $valor8+$valnov;
-								echo "<td class='text-center'>" . $totalusu . "</td>";
-								$totalG = $totalG + $totalusu;
-								echo "</tr>";
-								$totalusu =0;
-							}
-							echo "<tr>";
-							echo "<td colspan='11' class='text-right'><b>TOTAL</b></td>";
-							echo "<td class='text-right'>" . $totalG . "</td>";
-							echo "</tr>";
-						?>
-					</tbody>
-				</table>
-			</div>
-			<div class='col-sm-1 small'>
-				<a href='xlsRepCrit.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
-					<span class = "glyphicon glyphicon-download-alt"></span>
-				</a>
-			</div>
-		</div>
-
 		<!-- creacion y manejo de modal para reporte de empresas para critico -->
 		<div class="modal fade" id="modalReportes" role="dialog">
 			<div id="mdalReport" class="modal-dialog">
@@ -552,10 +421,6 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<div class="text-center">
-							<h4 class="modal-title text-center">
-								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> &nbsp; REPORTE DE CRITICOS
-							</h4>
-
 						</div>
 					</div>
 					<div class="modal-body">

@@ -141,7 +141,6 @@
                 $empresas[$key]['fecha'] = ($value['fecha']!=null)?$value['fecha']:'';
                 $empresas[$key]['dias'] = ($value['dias']!=null)?$value['dias']:'0';
                 $empresas[$key]['critico'] = $value['critico'];
-                $empresas[$key]['observacion'] = 'Observaciones';
             }
 
             $critico = $conn->query("select nombre from usuarios where ident = '$usuario'")->fetch(PDO::FETCH_ASSOC);
