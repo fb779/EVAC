@@ -7,6 +7,7 @@
 	            	<li><a href="notificar.php">Notificaciones</a></li>
 					<li><a href="repcritico.php?regi=<?php echo $regOpe ?>">Reporte Cr&iacute;ticos</a></li>
 	            	<?php if ($id_region == 99) { ?>
+	            		<li><a href="repcriticosede.php">Reporte Cr&iacute;ticos Nacional</a></li>
 		            	<li><a href="capitulos.php">Descargar Archivos</a></li>
 		            	<li><a href="repproc.php">Reporte Procesos</a></li>
 		            	<li><a href="repaudit.php">Control Cambios</a></li>

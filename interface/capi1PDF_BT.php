@@ -131,7 +131,6 @@
 
 	</head>
 	<body>
-
  		<div class="contenido">
  			<div>
 				<h4>Este m&oacute;dulo determina la cantidad de vacantes durante el "<?php echo $nomPeriodo['nomperiodo'];?>" e identifica sus caracter&iacute;sticas.</h4>

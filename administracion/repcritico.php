@@ -130,6 +130,10 @@
 	$qNregion->execute(array(':nRegion'=>$region));
 	$rowRegion = $qNregion->fetch(PDO::FETCH_ASSOC);
 
+	$qNregion1 = $conn->prepare("SELECT nombre FROM regionales WHERE codis = :nRegion");
+	$qNregion1->execute(array(':nRegion'=>$regOpe ));
+	$rowRegion1 = $qNregion1->fetch(PDO::FETCH_ASSOC);
+
 	function porcentaje($muestra, $valor){
 		if ($muestra>0){
 			$porcentaje = ($valor * 100)/$muestra;
@@ -324,7 +328,7 @@
 		<div class="container-fluid">
 			<div class="col-xs-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Titulo para la tabla de reporte</div>
+					<div class="panel-heading">Reporte de criticos sede <?php echo $rowRegion1['nombre'] ?> </div>
 					<div class="panel-body">
 						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
 							<thead>
@@ -349,13 +353,13 @@
 									<th>Historico</th>
 								</tr>
 							</thead>
-							<tfoot>
+							<!-- <tfoot>
 								<tr>
 									<th colspan="" class="text-left">TOTAL</th>
 									<th class="text-center"> <?php echo $totalG ?> </th>
 									<th colspan="11">&nbsp;</th>
 								</tr>
-							</tfoot>
+							</tfoot -->>
 							<tbody>
 								<?php foreach($dtSource as $dt) { ?>
 									<tr name="<?php echo $dt['ident'] ?>">

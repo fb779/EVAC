@@ -37,13 +37,17 @@ $paper_2  : estilo del papel[*]
 
 	$numero = $_GET['numord'];
 
-	include('convertToPDF.php');
+    include('convertToPDF.php');
 
-	$path = $nameUsuario.' - '.$namePeriodo;
-	$content = utf8_decode(file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
-	$body = true;
-	$style = '';
-	$mode = false;
+    $host = $_SERVER['SERVER_NAME'];
+    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
+    // $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+    $path = $nameUsuario.' - '.$namePeriodo;
+    // $content = utf8_decode(file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+    $content = utf8_decode(file_get_contents($protocol."".$host."/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+    $body = true;
+    $style = '';
+    $mode = false;
 
 	toPDF($path,$content,$body,$style,false,'Letter','portrait');
 
