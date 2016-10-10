@@ -59,7 +59,8 @@ function toPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='
 
         $dompdf =  new DOMPDF();
         $dompdf -> set_paper($paper_1,$paper_2);
-        $dompdf -> load_html(utf8_encode(tildesToHtml($content)));
+        // $dompdf -> load_html(utf8_encode(tildesToHtml($content)));
+        $dompdf -> load_html($content);
         // ini_set("memory_limit","64M"); //opcional
         $dompdf -> render();
 

@@ -29,26 +29,34 @@ $paper_2  : estilo del papel[*]
 	if (session_id() == "") {
 		session_start();
 	}
-	ini_set('default_charset', 'UTF-8');
-	$nameUsuario = $_SESSION['nombreu'];
-	$region = $_SESSION['region'];
-	$vig=$_SESSION['vigencia'];
-	$namePeriodo =$_SESSION['nomPeriAct'];
+    include '../conecta.php';
 
-	$numero = $_GET['numord'];
+	ini_set('default_charset', 'UTF-8');
+
+    $vig = $_SESSION['vigencia'];
+    $namePeriodo = $_SESSION['nomPeriAct'];
+    // $nameUsuario = $_SESSION['nombreu'];
+    $numero = $_GET['numord'];
+
+    $emQuery = $conn->query("SELECT nombre FROM caratula WHERE nordemp = $numero")->fetch(PDO::FETCH_ASSOC);
+    $nameEmpresa = $emQuery['nombre'];
+    // $region = $_SESSION['region'];
 
     include('convertToPDF.php');
 
-    $host = $_SERVER['SERVER_NAME'];
+    $host  = $_SERVER['HTTP_HOST'];
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
-    // $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
-    $path = $nameUsuario.' - '.$namePeriodo;
-    // $content = utf8_decode(file_get_contents("http://localhost/evac/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
-    $content = utf8_decode(file_get_contents($protocol."".$host."/interface/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+    $selff = str_replace('aPDF.php', '', $_SERVER['PHP_SELF']);
+
+    $rutaBase = $protocol."".$host."".$selff;
+
+    $content = utf8_decode(file_get_contents($rutaBase."/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig));
+    // $content = file_get_contents($rutaBase."/capi1PDF_BT.php?numord=".$numero."&vigencia=".$vig);
+
+    $path = $nameEmpresa.' - '.$namePeriodo;
     $body = true;
     $style = '';
     $mode = false;
 
 	toPDF($path,$content,$body,$style,false,'Letter','portrait');
-
 ?>

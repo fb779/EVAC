@@ -1,5 +1,5 @@
 <?php
-    // if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
             $jsondata = array();
             if (session_id() == "") {
                 session_start();
@@ -31,14 +31,14 @@
             $jsondata['data'] = $observaciones;
             $jsondata['success'] = true;
             echo json_encode($jsondata);
-    // } else{
-    //     $jsondata['message'] = 'No es una peticion valida....';
-    //     $jsondata['success'] = false;
-    //     //header('location: operativo.php');
-    //     // echo "No es una peticion valida....";
-    //     echo json_encode($jsondata);
-    //     exit();
-    // }
+    } else{
+        $jsondata['message'] = 'No es una peticion valida....';
+        $jsondata['success'] = false;
+        //header('location: operativo.php');
+        // echo "No es una peticion valida....";
+        echo json_encode($jsondata);
+        exit();
+    }
 
 
 ?>

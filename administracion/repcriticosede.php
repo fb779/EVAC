@@ -332,7 +332,7 @@
 						<table id="example" class="display table table-hover" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th class="text-center" rowspan="2">Nombre Critico</th>
+									<th class="text-center" rowspan="2">Sede</th>
 									<th class="text-center" rowspan="2">Directorio Asignado</th>
 									<th class="text-center" rowspan="2">Sin digitar</th>
 									<th class="text-center" rowspan="2">En digitaci&oacute;n</th>
@@ -409,7 +409,7 @@
 						</table>
 					</div>
 					<div class="panel-footer">
-						<a href='xlsRepCrit.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
+						<a href='xlsRepCritSede.php' class='btn btn-primary btn-md' id="idxls" data-toggle='tooltip' title='Decargar a Excel'>
 							<span class = "glyphicon glyphicon-download-alt"></span>
 						</a>
 					</div>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2016 a las 22:39:54
+-- Tiempo de generación: 10-10-2016 a las 21:42:34
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -93,7 +93,7 @@ CREATE TABLE `capitulo_i_displab` (
   `i1r2c4` tinyint(10) DEFAULT NULL,
   `i1r2c5` tinyint(10) DEFAULT NULL,
   `i1r2c6` tinyint(10) DEFAULT NULL,
-  `i1r2c7` int(10) DEFAULT NULL,
+  `i1r2c7` varchar(12) COLLATE utf8_unicode_ci DEFAULT NULL,
   `i1r2c8` tinyint(10) DEFAULT NULL,
   `i1r2c9` tinyint(10) DEFAULT NULL,
   `i1r2c10` tinyint(10) DEFAULT NULL,
@@ -189,7 +189,8 @@ CREATE TABLE `caratula` (
   `activa` tinyint(1) NOT NULL COMMENT 'Indica si la empresa esta activa (1) o inactiva (2)',
   `fechadist` date DEFAULT NULL,
   `novedad` int(11) DEFAULT NULL,
-  `fechadili` date NOT NULL
+  `fechadili` date NOT NULL,
+  `inclusion` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

@@ -1,9 +1,11 @@
 <?php
-    // if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
             $jsondata = array();
             if (session_id() == "") {
                 session_start();
             }
+            $vig=$_SESSION['vigencia'];
+
             include '../conecta.php';
 
             $estadosCons = array('dr' => 'dr', 'sd' => 'sd', 'dg' => 'dg', 'gb' => 'gb', 'cr' => 'cr', 'ap' => 'ap');
@@ -95,27 +97,27 @@
             // tipo consulta = directorio=>'dr', sinDigitar=>'sd' - (0,1), digitando=>'dg' - 2,grabados=>'gb' - (3,4), devoluciones=>'dv' - (), hisDevoluciones=>'hdv' - (), criticados=>'cr' - 5, aprobados=>'ap' - 6, deuda=>'de' - (), recolectados=>'re' - ()
 
             if ( array_key_exists($consulta, $estadosCons) ){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND ct.estado in ($estados)";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND ct.estado in ($estados)";
             }
 
             if ( $consulta == $especialesCons['dv']){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND ct.estado in (4,5,6) AND ca.nordemp IN (SELECT DISTINCT(nordemp) FROM devoluciones WHERE $campDevUsu = '$usuario' AND tipo IN ('DEV'))";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND ct.estado in (4,5,6) AND ca.nordemp IN (SELECT DISTINCT(nordemp) FROM devoluciones WHERE $campDevUsu = '$usuario' AND tipo IN ('DEV'))";
             }
 
             if ( $consulta == $especialesCons['hdv']){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND ct.estado in (4,5,6) AND ca.nordemp IN (SELECT DISTINCT(nordemp) FROM devoluciones WHERE $campDevUsu = '$usuario' AND tipo IN ('DEV', 'DVR'))";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND ct.estado in (4,5,6) AND ca.nordemp IN (SELECT DISTINCT(nordemp) FROM devoluciones WHERE $campDevUsu = '$usuario' AND tipo IN ('DEV', 'DVR'))";
             }
 
             if ( $consulta == $especialesCons['nv']){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND ct.novedad in ($novedades)";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND ct.novedad in ($novedades)";
             }
 
             if ( $consulta == $especialesCons['de']){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND ct.estado in (0,1,2,3,4)";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND ct.estado in (0,1,2,3,4)";
             }
 
             if ( $consulta == $especialesCons['re']){
-                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, IFNULL('1-forzoso','2-Probabilistico') AS inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE $campUsuario = '$usuario' AND (ct.estado in (5,6) OR ct.novedad in ($novedades))";
+                $query = "SELECT ca.nordemp, ca.nombre, di.ndpto, di.nmuni, ca.ciiu3, re.nombre as codireg, re.nombre as codis, ca.inclusion, nv.desc_novedad, ct.estado, (SELECT if (count(nordemp)>0,'Si','No') FROM devoluciones WHERE nordemp = ca.nordemp) AS devolucion, (SELECT fecha FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS fecha, (SELECT datediff(curdate(),fecha) FROM devoluciones WHERE nordemp = ca.nordemp AND tipo = 'DVR' ORDER BY fecha DESC LIMIT 1) AS dias, (SELECT nombre FROM usuarios WHERE ident = '$usuario') AS critico FROM caratula AS ca INNER JOIN control AS ct ON ca.nordemp = ct.nordemp INNER JOIN divipola AS di ON ca.depto = di.dpto AND ca.mpio = di.muni INNER JOIN regionales AS re ON ct.codsede = re.codis INNER JOIN novedades AS nv ON ct.novedad = nv.idnovedades WHERE ct.vigencia = $vig AND $campUsuario = '$usuario' AND (ct.estado in (5,6) OR ct.novedad in ($novedades))";
             }
 
             $jsondata['query'] = $query;
@@ -149,14 +151,14 @@
             $jsondata['data'] = $empresas;
             $jsondata['success'] = true;
             echo json_encode($jsondata);
-    // } else{
-    //     $jsondata['message'] = 'No es una peticion valida....';
-    //     $jsondata['success'] = false;
-    //     //header('location: operativo.php');
-    //     // echo "No es una peticion valida....";
-    //     echo json_encode($jsondata);
-    //     exit();
-    // }
+    } else{
+        $jsondata['message'] = 'No es una peticion valida....';
+        $jsondata['success'] = false;
+        //header('location: operativo.php');
+        // echo "No es una peticion valida....";
+        echo json_encode($jsondata);
+        exit();
+    }
 
 
 ?>
