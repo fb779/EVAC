@@ -16,10 +16,13 @@
 
 	$usuario=$_REQUEST['ident'];
 
+	// if ($region == 99){
+	// 	$campoUsuario = 'usuario';
+	// }else{
+	// 	$campoUsuario = 'usuarioss';
+	// }
 
-	$sql_fuentes=$conn->prepare("SELECT a.nordemp, nombre, a.ciiu3  FROM control a, caratula b WHERE usuarioss = '".$usuario."' AND a.nordemp = b.nordemp AND vigencia = $vig");
-
-
+	$sql_fuentes=$conn->prepare("SELECT a.nordemp, nombre, a.ciiu3  FROM control a, caratula b WHERE (usuario = '".$usuario."' OR usuarioss = '".$usuario."' ) AND a.nordemp = b.nordemp AND vigencia = $vig");
 	//var_dump($sql_fuentes);
 	$sql_fuentes->execute();
 
@@ -74,7 +77,7 @@
 					message: id+' - '+nombre,
 					buttons: [{
 						label: 'Confirmar',
-						alert("borrar");
+						// alert("borrar");
 							action: function(borra) {
 								$.ajax({
 									url: "../persistencia/grabarusu.php",
@@ -86,7 +89,7 @@
 									}
 								});
 							}
-					}, {
+						}, {
 						label: 'Cancelar',
 							action: function(cerrar) {
 							cerrar.close();

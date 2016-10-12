@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top small">
 	<div class="container-fluid">
 	    	<div class="navbar-header">
-	        	<span class="navbar-brand">EVAC DISPONIBILIDAD LABORAL - <?php echo strtoupper($rowRegion['nombre']) . " " . $pagina; ?></span>
+	        	<span class="navbar-brand">ENCUESTA DE VACANTES - EVAC - <?php echo strtoupper($rowRegion['nombre']) . " " . $pagina; ?></span>
 	        </div>
 		<div id="navbar" class="navbar-collapse collapse">
 	          	<ul class="nav navbar-nav navbar-right">
